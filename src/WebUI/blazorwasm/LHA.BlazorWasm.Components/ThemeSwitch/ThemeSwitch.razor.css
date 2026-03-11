@@ -1,0 +1,78 @@
+.theme-switch {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+}
+
+.theme-switch:hover {
+    opacity: 0.8;
+}
+
+.theme-switch.ts-icon .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--theme-toggle-bg, #f0f0f0);
+    transition: background-color 0.3s;
+}
+
+.theme-switch.ts-sm .icon-wrapper { width: 32px; height: 32px; font-size: 1rem; }
+.theme-switch.ts-md .icon-wrapper { width: 40px; height: 40px; font-size: 1.25rem; }
+.theme-switch.ts-lg .icon-wrapper { width: 48px; height: 48px; font-size: 1.5rem; }
+
+.theme-switch.ts-toggle .toggle-track {
+    position: relative;
+    background-color: var(--theme-toggle-track, #ccc);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.theme-switch.ts-sm .toggle-track { width: 46px; height: 24px; }
+.theme-switch.ts-md .toggle-track { width: 56px; height: 30px; }
+.theme-switch.ts-lg .toggle-track { width: 66px; height: 36px; }
+
+.toggle-thumb {
+    position: absolute;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.theme-switch.ts-sm .toggle-thumb { width: 20px; height: 20px; }
+.theme-switch.ts-md .toggle-thumb { width: 26px; height: 26px; }
+.theme-switch.ts-lg .toggle-thumb { width: 32px; height: 32px; }
+
+/* Light Mode specific alignments */
+.toggle-thumb.light {
+    transform: translateX(2px);
+}
+
+.theme-switch.ts-sm .toggle-thumb.dark { transform: translateX(24px); }
+.theme-switch.ts-md .toggle-thumb.dark { transform: translateX(28px); }
+.theme-switch.ts-lg .toggle-thumb.dark { transform: translateX(32px); }
+
+.icon-small {
+    font-size: 0.75em;
+}
+
+.theme-label {
+    font-size: 0.9em;
+    color: var(--text-color, inherit);
+}
+
+.theme-dark .theme-switch.ts-toggle .toggle-track {
+    background-color: #4a4a4a;
+}
+
+.theme-dark .theme-switch.ts-icon .icon-wrapper {
+    background-color: #333;
+}

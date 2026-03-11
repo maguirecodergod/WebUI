@@ -1,0 +1,67 @@
+@namespace LHA.BlazorWasm.Components.LanguageSelector
+@using Microsoft.AspNetCore.Components.Web
+
+<HeadContent>
+    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/flag-icons/css/flag-icons.min.css" />
+</HeadContent>
+
+<div @ref="_containerRef" class="lang-selector-container @Class" style="@Style">
+
+    @if (Mode == LanguageSelectorMode.Dropdown)
+    {
+        <div class="lang-dropdown">
+            <button class="lang-dropdown-toggle" @onclick="ToggleDropdown" @onclick:preventDefault>
+                @if (ShowFlags && CurrentLanguage != null)
+                {
+                    <span class="lang-flag fi fi-@CurrentLanguage.Flag"></span>
+                }
+                @if (ShowNames && CurrentLanguage != null)
+                {
+                    <span class="lang-name">@CurrentLanguage.Name</span>
+                }
+                <i class="lang-caret">▼</i>
+            </button>
+
+            @if (_isDropdownOpen)
+            {
+                <ul class="lang-dropdown-menu">
+                    @foreach (var lang in SupportedOptions)
+                    {
+                        var isSelected = lang.Culture == CurrentLanguage?.Culture;
+                        <li class="lang-dropdown-item @(isSelected ? "selected" : "")"
+                            @onclick="() => SelectLanguageAsync(lang.Culture)">
+                            @if (ShowFlags)
+                            {
+                                <span class="lang-flag fi fi-@lang.Flag"></span>
+                            }
+                            @if (ShowNames)
+                            {
+                                <span class="lang-name">@lang.Name</span>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+    else if (Mode == LanguageSelectorMode.Inline)
+    {
+        <div class="lang-inline-group">
+            @foreach (var lang in SupportedOptions)
+            {
+                var isSelected = lang.Culture == CurrentLanguage?.Culture;
+                <button class="lang-btn @(isSelected ? "lang-btn-active" : "")"
+                        @onclick="() => SelectLanguageAsync(lang.Culture)">
+                    @if (ShowFlags)
+                    {
+                        <span class="lang-flag fi fi-@lang.Flag"></span>
+                    }
+                    @if (ShowNames)
+                    {
+                        <span class="lang-name">@lang.Name</span>
+                    }
+                </button>
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,32 @@
+@namespace LHA.BlazorWasm.Components.Buttons
+
+<button class="@GetCssClass()" 
+        disabled="@IsDisabled" 
+        @onclick="OnClick" 
+        @onclick:stopPropagation>
+    @if (IsLoading)
+    {
+        <span class="btn-spinner" aria-hidden="true"></span>
+    }
+    else
+    {
+        @if (!string.IsNullOrEmpty(Icon) && IconPosition == ButtonIconPosition.Left)
+        {
+            <i class="@Icon btn-icon-left" aria-hidden="true"></i>
+        }
+
+        @if (ChildContent != null)
+        {
+            <span class="btn-content">@ChildContent</span>
+        }
+        else if (!string.IsNullOrEmpty(Text))
+        {
+            <span class="btn-content">@Text</span>
+        }
+
+        @if (!string.IsNullOrEmpty(Icon) && IconPosition == ButtonIconPosition.Right)
+        {
+            <i class="@Icon btn-icon-right" aria-hidden="true"></i>
+        }
+    }
+</button>

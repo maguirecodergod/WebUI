@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/WebUI/" />
+  <Folder Name="/src/WebUI/blazorwasm/">
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.App/LHA.BlazorWasm.App.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.Components/LHA.BlazorWasm.Components.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.HttpApi.Client/LHA.BlazorWasm.HttpApi.Client.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.Modules/LHA.BlazorWasm.Modules.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.Services/LHA.BlazorWasm.Services.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.Shared/LHA.BlazorWasm.Shared.csproj" />
+  </Folder>
+</Solution>

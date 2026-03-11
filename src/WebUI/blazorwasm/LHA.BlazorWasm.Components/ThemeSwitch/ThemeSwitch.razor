@@ -1,0 +1,41 @@
+@inherits ThemeSwitchBase
+
+<div class="theme-switch @VariantClass @SizeClass @Class" style="@Style" @onclick="ToggleTheme">
+    @if (Variant == ThemeSwitchVariant.Icon)
+    {
+        <div class="icon-wrapper">
+            @if (CurrentTheme == LHA.BlazorWasm.Services.Theme.ThemeMode.Light)
+            {
+                <span class="icon">☀️</span>
+            }
+            else
+            {
+                <span class="icon">🌙</span>
+            }
+        </div>
+    }
+    else if (Variant == ThemeSwitchVariant.Toggle)
+    {
+        <div class="toggle-track">
+            <div class="toggle-thumb @(CurrentTheme == LHA.BlazorWasm.Services.Theme.ThemeMode.Light ? "light" : "dark")">
+                @if (CurrentTheme == LHA.BlazorWasm.Services.Theme.ThemeMode.Light)
+                {
+                    <span class="icon-small">☀️</span>
+                }
+                else
+                {
+                    <span class="icon-small">🌙</span>
+                }
+            </div>
+        </div>
+    }
+
+    @if (ShowLabel)
+    {
+        <span class="theme-label ms-2">
+            @(CurrentTheme == LHA.BlazorWasm.Services.Theme.ThemeMode.Light 
+                ? LocalizationService.L("Theme.LightMode") 
+                : LocalizationService.L("Theme.DarkMode"))
+        </span>
+    }
+</div>

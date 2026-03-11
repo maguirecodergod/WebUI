@@ -1,0 +1,125 @@
+@page "/"
+@implements IDisposable
+
+<PageTitle>@L.L("Common.Save")</PageTitle>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>@L.L("User.Title")</h1>
+    
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        <LanguageSelector Mode="LanguageSelectorMode.Dropdown"
+                          SupportedLanguages="new[] { LanguageCode.EN, LanguageCode.VI, LanguageCode.FR, LanguageCode.ES, LanguageCode.JA }" />
+    </div>
+</div>
+
+<p>@L.L("User.Create") | @L.L("Common.Cancel") | @L.L("Common.Delete")</p>
+    
+<Button Style="ButtonStyle.Secondary" Icon="fas fa-arrow-right" IconPosition="ButtonIconPosition.Right">
+    Secondary w/ Icon
+</Button>
+
+<Button Style="ButtonStyle.Success" IsLoading="@isLoading" OnClick="SimulateLoadAsync">
+    Save Changes (Async)
+</Button>
+
+<Button Style="ButtonStyle.Danger" Disabled="true">
+    Disabled Button
+</Button>
+
+<Button Style="ButtonStyle.Link" FullWidth="true" OnClick="OnLinkClick">
+    Full Width Link
+</Button>
+
+<hr />
+<h2>Skeleton Component Examples</h2>
+
+<div style="display: flex; flex-direction: column; gap: 2rem; max-width: 600px; margin-top: 2rem; margin-bottom: 4rem;">
+    <div>
+        <h3>Basic & Text Variants (Wave Animation)</h3>
+        <Skeleton Width="30%" Height="1.5rem" Style="margin-bottom: 1rem;" /> <!-- Title placeholder -->
+        <Skeleton Variant="SkeletonVariant.Text" Count="4" /> <!-- Paragraph placeholder -->
+    </div>
+
+    <div>
+        <h3>Avatar & Card Combo (Pulse Animation)</h3>
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+            <Skeleton Variant="SkeletonVariant.Circular" Width="60px" Height="60px"
+                      Animation="SkeletonAnimation.Pulse" />
+            <div style="flex: 1;">
+                <Skeleton Variant="SkeletonVariant.Rectangular" Height="150px" Animation="SkeletonAnimation.Pulse" />
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h3>Wrapper / IsLoading Toggle</h3>
+        <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
+            <Skeleton IsLoading="@isLoadingData">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div
+                        style="width: 50px; height: 50px; border-radius: 50%; background: #0d6efd; color: white; display:flex; align-items:center; justify-content:center; font-weight:bold;">
+                        JD
+                    </div>
+                    <div>
+                        <h4 style="margin: 0;">John Doe</h4>
+                        <p style="margin: 0; color: #666;">Software Architect</p>
+                    </div>
+                </div>
+            </Skeleton>
+            
+            <div style="margin-top: 1rem;">
+                <Button Style="ButtonStyle.Primary" Size="ButtonSize.Small" OnClick="ToggleDataLoadingAsync">
+                    Toggle Loading State
+                </Button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isLoading;
+    private bool isLoadingData = true;
+
+    private void OnPrimaryClick()
+    {
+        Console.WriteLine("Primary clicked!");
+    }
+
+    private void OnLinkClick()
+    {
+        Console.WriteLine("Link clicked!");
+    }
+
+    private async Task SimulateLoadAsync()
+    {
+        isLoading = true;
+        await Task.Delay(2000);
+        isLoading = false;
+    }
+
+    private async Task ToggleDataLoadingAsync()
+    {
+        isLoadingData = !isLoadingData;
+        
+        if (isLoadingData)
+        {
+            await Task.Delay(2000);
+            isLoadingData = false;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        L.OnLanguageChanged += RefreshUI;
+    }
+
+    private void RefreshUI()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        L.OnLanguageChanged -= RefreshUI;
+    }
+}

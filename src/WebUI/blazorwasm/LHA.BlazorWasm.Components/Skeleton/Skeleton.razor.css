@@ -1,0 +1,85 @@
+/* Base skeleton properties */
+.base-skeleton {
+    display: block;
+    background-color: var(--skeleton-bg, rgba(0, 0, 0, 0.11));
+    border-radius: 4px;
+    /* default tiny radius for generic rectangular items */
+    margin-bottom: 0.5rem;
+    /* space out multiples automatically */
+}
+
+/* Base variants */
+.skeleton-text {
+    /* Height roughly scales to the font size line height natively */
+    height: auto;
+    min-height: 1.25rem;
+    border-radius: 4px;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    transform: scale(1, 0.75);
+    /* scale down slightly visually imitating line spacing */
+}
+
+.skeleton-text:last-child {
+    margin-bottom: 0;
+}
+
+.skeleton-rectangular {
+    border-radius: 0;
+}
+
+.skeleton-circular {
+    border-radius: 50%;
+}
+
+.skeleton-rounded {
+    border-radius: 8px;
+    /* Pronounced rounded corners */
+}
+
+/* Animations */
+.skeleton-pulse {
+    animation: skeleton-pulse 1.5s ease-in-out 0.5s infinite;
+}
+
+@keyframes skeleton-pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.skeleton-wave {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Generate the active shimmer bar using absolute positioning an pseudo-element */
+.skeleton-wave::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: var(--skeleton-wave, linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0)));
+    animation: skeleton-wave 1.5s infinite linear;
+    content: "";
+}
+
+@keyframes skeleton-wave {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.skeleton-none {
+    /* Placeholder class for consistency, no animation natively applied */
+}

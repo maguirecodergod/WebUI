@@ -1,0 +1,13 @@
+@namespace LHA.BlazorWasm.Components.Skeleton
+
+@if (IsLoading)
+{
+    @for (int i = 0; i < Count; i++)
+    {
+        <div class="@GetCssClass()" style="@GetCssStyle()"></div>
+    }
+}
+else if (ChildContent != null)
+{
+    @ChildContent
+}

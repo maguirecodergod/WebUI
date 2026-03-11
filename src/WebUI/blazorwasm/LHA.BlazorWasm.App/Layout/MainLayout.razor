@@ -1,0 +1,40 @@
+@inherits LayoutComponentBase
+@implements IDisposable
+@using LHA.BlazorWasm.Services.Theme
+@using LHA.BlazorWasm.Components.ThemeSwitch
+@inject IThemeService ThemeService
+@inject ThemeState ThemeState
+
+<div class="page @ThemeService.ThemeClass">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4" style="justify-content: space-between;">
+            <ThemeSwitch Variant="ThemeSwitchVariant.Toggle" ShowLabel="true" />
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        ThemeState.OnThemeChanged += OnThemeChanged;
+    }
+
+    private void OnThemeChanged(ThemeMode mode)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        ThemeState.OnThemeChanged -= OnThemeChanged;
+    }
+}

@@ -1,0 +1,60 @@
+/* Theme Variables */
+.theme-light {
+    --background-color: #ffffff;
+    --text-color: #111111;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --hover-bg: #f8f9fa;
+    --theme-toggle-bg: #f0f0f0;
+    --theme-toggle-track: #ccc;
+    --skeleton-bg: rgba(0, 0, 0, 0.11);
+    --skeleton-wave: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.4) 20%, rgba(255, 255, 255, 0.8) 60%, rgba(255, 255, 255, 0));
+}
+
+.theme-dark {
+    --background-color: #1e1e1e;
+    --text-color: #ececec;
+    --text-muted: #a0a0a0;
+    --border-color: #444444;
+    --hover-bg: #2a2a2a;
+    --theme-toggle-bg: #333333;
+    --theme-toggle-track: #4a4a4a;
+    --skeleton-bg: rgba(255, 255, 255, 0.1);
+    --skeleton-wave: linear-gradient(90deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.2) 20%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0));
+}
+
+/* Apply background and color to the theme wrappers */
+.theme-light, .theme-dark {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Force inheritance for common structural elements inside the theme wrapper */
+.theme-light body, 
+.theme-dark body,
+.theme-light .page, 
+.theme-dark .page,
+.theme-light main,
+.theme-dark main,
+.theme-light article,
+.theme-dark article,
+.theme-light h1, .theme-dark h1,
+.theme-light h2, .theme-dark h2,
+.theme-light h3, .theme-dark h3,
+.theme-light h4, .theme-dark h4,
+.theme-light h5, .theme-dark h5,
+.theme-light h6, .theme-dark h6,
+.theme-light p, .theme-dark p {
+    color: var(--text-color);
+}
+
+.theme-dark .top-row {
+    background-color: #2a2a2a !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+.theme-dark .content {
+    background-color: var(--background-color);
+}
