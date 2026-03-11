@@ -1,0 +1,26 @@
+@namespace LHA.BlazorWasm.Components.Tooltip
+
+<div class="@WrapperClass"
+     @onmouseenter="OnMouseEnter"
+     @onmouseleave="OnMouseLeave"
+     @onfocusin="OnFocusIn"
+     @onfocusout="OnFocusOut"
+     @onclick="OnClick"
+     style="@Style">
+
+    <div class="tooltip-trigger" aria-describedby="@(_isVisible ? _tooltipId : null)">
+        @ChildContent
+    </div>
+
+    <div class="@TooltipClass @(_isVisible ? "visible" : "")" role="tooltip" id="@_tooltipId" aria-hidden="@(!_isVisible)">
+        @if (TooltipContent != null)
+        {
+            @TooltipContent
+        }
+        else
+        {
+            @Text
+        }
+        <div class="tooltip-arrow"></div>
+    </div>
+</div>

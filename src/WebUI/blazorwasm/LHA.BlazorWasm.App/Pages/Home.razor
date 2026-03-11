@@ -31,6 +31,47 @@
 </Button>
 
 <hr />
+<h2>Tooltip Component Examples</h2>
+
+<div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">
+    <Tooltip Text="Top tooltip" Placement="TooltipPlacement.Top">
+        <Button>Top Placement</Button>
+    </Tooltip>
+
+    <Tooltip Text="Bottom tooltip" Placement="TooltipPlacement.Bottom">
+        <Button>Bottom Placement</Button>
+    </Tooltip>
+
+    <Tooltip Text="Left tooltip" Placement="TooltipPlacement.Left">
+        <Button>Left Placement</Button>
+    </Tooltip>
+
+    <Tooltip Text="Right tooltip" Placement="TooltipPlacement.Right">
+        <Button>Right Placement</Button>
+    </Tooltip>
+</div>
+
+<div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 4rem;">
+    <Tooltip Text="Requires a click" Trigger="TooltipTrigger.Click">
+        <Button Style="ButtonStyle.Primary">Click me</Button>
+    </Tooltip>
+
+    <Tooltip Text="Appears on focus" Trigger="TooltipTrigger.Focus">
+        <input type="text" placeholder="Focus me" class="form-control" style="width: 200px;" />
+    </Tooltip>
+
+    <Tooltip Placement="TooltipPlacement.Right">
+        <TooltipContent>
+            <strong>Advanced Content!</strong><br />
+            With <em>HTML</em> support.
+        </TooltipContent>
+        <ChildContent>
+             <span style="font-size: 0.9rem; cursor:help; background:#0d6efd; color:#fff; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; font-weight:bold;">?</span>
+        </ChildContent>
+    </Tooltip>
+</div>
+
+<hr />
 <h2>Skeleton Component Examples</h2>
 
 <div style="display: flex; flex-direction: column; gap: 2rem; max-width: 600px; margin-top: 2rem; margin-bottom: 4rem;">
