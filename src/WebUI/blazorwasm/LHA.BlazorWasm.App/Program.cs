@@ -4,6 +4,7 @@ using LHA.BlazorWasm.App;
 using LHA.BlazorWasm.Services.Storage;
 using LHA.BlazorWasm.Services.Localization;
 using LHA.BlazorWasm.Services.Theme;
+using LHA.BlazorWasm.Services.Toast;
 using LHA.BlazorWasm.Components;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -24,6 +25,7 @@ builder.Services.AddAppLocalization(options =>
 });
 
 builder.Services.AddThemeService();
+builder.Services.AddToastService();
 builder.Services.AddBlazorWasmComponents();
 
 var host = builder.Build();

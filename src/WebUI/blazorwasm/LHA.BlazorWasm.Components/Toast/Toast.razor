@@ -1,0 +1,31 @@
+@namespace LHA.BlazorWasm.Components.Toast
+@using LHA.BlazorWasm.Services.Toast
+
+<div class="toast-wrapper @GetToastClass() @GetAnimationClass()" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-icon">
+        @if (Message?.Level == ToastLevel.Success)
+        {
+            <text>✔</text>
+        }
+        else if (Message?.Level == ToastLevel.Info)
+        {
+            <text>ℹ</text>
+        }
+        else if (Message?.Level == ToastLevel.Warning)
+        {
+            <text>⚠</text>
+        }
+        else if (Message?.Level == ToastLevel.Error)
+        {
+            <text>✖</text>
+        }
+    </div>
+    
+    <div class="toast-body">
+        @Message?.Message
+    </div>
+    
+    <button type="button" class="toast-close" aria-label="Close" @onclick="CloseToast">
+        <text>&times;</text>
+    </button>
+</div>

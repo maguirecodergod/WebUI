@@ -12,6 +12,18 @@ a,
     color: #0071c1;
 }
 
+/* Master Toast Viewport Anchoring Layer */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1.5rem;
+    z-index: 1055;
+    pointer-events: none; /* Let clicks strictly fall through invisible bounds */
+}
+.toast-container > * { 
+    pointer-events: auto; /* Re-enable for the generated internal alert elements exclusively */
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;

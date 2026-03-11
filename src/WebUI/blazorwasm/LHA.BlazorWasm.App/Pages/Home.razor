@@ -31,6 +31,27 @@
 </Button>
 
 <hr />
+<h2>Toast Notification Examples</h2>
+
+<div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem; flex-wrap: wrap;">
+    <Button Style="ButtonStyle.Success" OnClick="@(() => ToastService.Success("Changes saved successfully!"))">
+        Show Success
+    </Button>
+    <Button Style="ButtonStyle.Primary" OnClick="@(() => ToastService.Info("System update available."))">
+        Show Info
+    </Button>
+    <Button Style="ButtonStyle.Secondary" OnClick="@(() => ToastService.Warning("Approaching storage limit!"))">
+        Show Warning
+    </Button>
+    <Button Style="ButtonStyle.Danger" OnClick="@(() => ToastService.Error("Failed to connect to the database."))">
+        Show Error
+    </Button>
+    <Button Style="ButtonStyle.Secondary" OnClick="@(() => ToastService.Show("Custom persistent toast! (10s)", ToastLevel.Info, 10000))">
+        Show Custom (10s)
+    </Button>
+</div>
+
+<hr />
 <h2>Tooltip Component Examples</h2>
 
 <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">

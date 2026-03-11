@@ -1,0 +1,109 @@
+/* Isolated encapsulation mapping global structural models */
+.toast-wrapper {
+    display: flex;
+    align-items: center;
+    width: 350px;
+    max-width: 100%;
+    margin-bottom: 0.75rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    background-color: var(--bs-body-bg, #ffffff);
+    color: var(--bs-body-color, #212529);
+    border-left: 5px solid transparent;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Master binding interval */
+}
+
+/* Entering Keyframes natively injected by component insertion */
+.toast-enter {
+    animation: slideInRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+/* Outgoing animation requested via C# Task delay sequences */
+.toast-exit {
+    animation: slideOutRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.toast-icon {
+    font-size: 1.25rem;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.toast-body {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    word-break: break-word;
+}
+
+.toast-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 1rem;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.toast-close:hover {
+    color: #4b5563;
+}
+
+/* Explicit Theming Mappings */
+.toast-success {
+    border-left-color: #10b981;
+}
+.toast-success .toast-icon {
+    color: #10b981;
+}
+
+.toast-info {
+    border-left-color: #3b82f6;
+}
+.toast-info .toast-icon {
+    color: #3b82f6;
+}
+
+.toast-warning {
+    border-left-color: #f59e0b;
+}
+.toast-warning .toast-icon {
+    color: #f59e0b;
+}
+
+.toast-error {
+    border-left-color: #ef4444;
+}
+.toast-error .toast-icon {
+    color: #ef4444;
+}
+
+/* Keyframes rendering natively without standard component redrawing */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
