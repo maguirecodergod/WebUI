@@ -2,7 +2,7 @@
 @using LHA.BlazorWasm.Components.Pickers.Core
 @inherits PickerBase<DateTime?>
 
-<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut">
+<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalMouseDown">
     
     <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")" @onclick="TogglePopup">
         <input type="text" 

@@ -31,6 +31,8 @@ public abstract class PickerBase<TValue> : ComponentBase
 
     protected PickerState State { get; } = new();
 
+    private bool _preventFocusClose = false;
+
     protected async Task UpdateValueAsync(TValue? newValue)
     {
         Value = newValue;
@@ -59,24 +61,34 @@ public abstract class PickerBase<TValue> : ComponentBase
     {
         return UpdateValueAsync(default);
     }
+
+    /// <summary>
+    /// Captures mousedown events inside the component to prevent FocusOut from closing the popup prematurely.
+    /// </summary>
+    protected void HandleInternalMouseDown()
+    {
+        _preventFocusClose = true;
+    }
     
     /// <summary>
     /// Traps global click-away logic purely using Blazor FocusOut bubbling techniques.
     /// Handled cautiously via tab/blur mechanics rather than global JS interceptors.
     /// </summary>
-    protected void OnFocusOut()
+    protected async Task OnFocusOut()
     {
         // Delay needed to allow interactive clicks inside the dropdown to process first.
-        Task.Delay(150).ContinueWith(_ => 
+        await Task.Delay(200);
+        
+        if (_preventFocusClose)
         {
-            InvokeAsync(() => 
-            {
-                if (State.IsOpen)
-                {
-                    State.IsOpen = false;
-                    StateHasChanged();
-                }
-            });
-        });
+            _preventFocusClose = false;
+            return;
+        }
+
+        if (State.IsOpen)
+        {
+            State.IsOpen = false;
+            StateHasChanged();
+        }
     }
 }
