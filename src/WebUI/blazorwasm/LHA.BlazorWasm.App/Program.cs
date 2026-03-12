@@ -6,6 +6,7 @@ using LHA.BlazorWasm.Services.Localization;
 using LHA.BlazorWasm.Services.Theme;
 using LHA.BlazorWasm.Services.Toast;
 using LHA.BlazorWasm.Components;
+using LHA.BlazorWasm.Services.StatusBadge;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -26,9 +27,14 @@ builder.Services.AddAppLocalization(options =>
 
 builder.Services.AddThemeService();
 builder.Services.AddToastService();
+builder.Services.AddStatusBadgeServices();
 builder.Services.AddBlazorWasmComponents();
 
 var host = builder.Build();
+
+// Register module-specific enum mappings
+host.Services.RegisterOrderModuleMappings();
+host.Services.RegisterPaymentModuleMappings();
 
 var themeService = host.Services.GetRequiredService<IThemeService>();
 await themeService.InitializeAsync();

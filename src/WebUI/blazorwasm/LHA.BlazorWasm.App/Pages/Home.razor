@@ -180,6 +180,50 @@
     </div>
 </div>
 
+<hr />
+<h2>Status Badge Examples</h2>
+
+<div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 4rem; margin-top: 1rem;">
+    <div>
+        <h3>Order Statuses</h3>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <StatusBadge Status="OrderStatus.Pending" />
+            <StatusBadge Status="OrderStatus.Processing" />
+            <StatusBadge Status="OrderStatus.Completed" />
+            <StatusBadge Status="OrderStatus.Cancelled" />
+        </div>
+    </div>
+
+    <div>
+        <h3>Payment Statuses (Soft Variant - Matching requested style)</h3>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <StatusBadge Status="PaymentStatus.Unpaid" />
+            <StatusBadge Status="PaymentStatus.Paid" />
+            <StatusBadge Status="PaymentStatus.Failed" />
+            <StatusBadge Status="PaymentStatus.Refunded" />
+        </div>
+    </div>
+
+    <div>
+        <h3>Variant Comparison</h3>
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <span>Solid: <StatusBadge Status="OrderStatus.Completed" /></span>
+            <span>Soft: <StatusBadge Status="PaymentStatus.Paid" /></span>
+        </div>
+    </div>
+
+    <div>
+        <h3>Custom Overrides</h3>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <StatusBadge Status="OrderStatus.Completed">
+                <i class="fas fa-star me-1"></i> Special Order
+            </StatusBadge>
+            
+            <StatusBadge Status="PaymentStatus.Paid" Class="p-3 shadow-sm rounded-pill" />
+        </div>
+    </div>
+</div>
+
 @code {
     private bool isLoading;
     private bool isLoadingData = true;
