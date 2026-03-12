@@ -1,0 +1,48 @@
+@namespace LHA.BlazorWasm.Components.Pickers.Core
+
+<div class="time-view">
+    <div class="time-selectors">
+        <!-- Hour -->
+        <select class="time-select" @bind="State.SelectedHour" @bind:after="OnTimeChanged">
+            @for (int i = 0; i < (Is24Hour ? 24 : 12); i++)
+            {
+                // Format appropriately (12 AM becomes 12, 0 is 12)
+                var displayHour = !Is24Hour && i == 0 ? 12 : i;
+                <option value="@i">@displayHour.ToString("00")</option>
+            }
+        </select>
+        <span>:</span>
+        <!-- Minute -->
+        <select class="time-select" @bind="State.SelectedMinute" @bind:after="OnTimeChanged">
+            @for (int i = 0; i < 60; i += 5) // Step by 5 mins for cleaner UI default
+            {
+                <option value="@i">@i.ToString("00")</option>
+            }
+        </select>
+
+        @if (!Is24Hour)
+        {
+            <div class="ampm-toggle">
+                <button type="button" class="@(State.AmPm == "AM" ? "active" : "")" @onclick="@(() => SetAmPm("AM"))">AM</button>
+                <button type="button" class="@(State.AmPm == "PM" ? "active" : "")" @onclick="@(() => SetAmPm("PM"))">PM</button>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public PickerState State { get; set; } = default!;
+    [Parameter] public bool Is24Hour { get; set; } = false;
+    [Parameter] public EventCallback OnInteraction { get; set; }
+
+    private async Task OnTimeChanged()
+    {
+        await OnInteraction.InvokeAsync();
+    }
+
+    private async Task SetAmPm(string value)
+    {
+        State.AmPm = value;
+        await OnInteraction.InvokeAsync();
+    }
+}

@@ -1,0 +1,73 @@
+@namespace LHA.BlazorWasm.Components.Pickers.Core
+@using System.Globalization
+
+<div class="calendar">
+    <div class="calendar-header">
+        <button type="button" class="nav-btn" @onclick="PrevMonth">&lt;</button>
+        <div class="current-month">@State.CurrentMonth.ToString("MMMM yyyy", CultureInfo.InvariantCulture)</div>
+        <button type="button" class="nav-btn" @onclick="NextMonth">&gt;</button>
+    </div>
+
+    <div class="calendar-grid">
+        @foreach (var dayName in GetShortDaysOfWeek())
+        {
+            <div class="calendar-day-name">@dayName</div>
+        }
+
+        @foreach (var date in _grid)
+        {
+            var isCurrentMonth = date.Month == State.CurrentMonth.Month;
+            var isSelected = SelectedDate.HasValue && DateUtils.IsSameDay(date, SelectedDate.Value);
+            var isToday = DateUtils.IsSameDay(date, DateTime.Today);
+            var isInRange = Range.HasValue && DateUtils.IsBetween(date, Range.Value.Start, Range.Value.End);
+            var isRangeStart = Range.HasValue && DateUtils.IsSameDay(date, Range.Value.Start);
+            var isRangeEnd = Range.HasValue && DateUtils.IsSameDay(date, Range.Value.End);
+
+            var dayClass = $"calendar-day {(isCurrentMonth ? "" : "other-month")} " +
+                           $"{(isSelected ? "selected" : "")} " +
+                           $"{(isToday ? "today" : "")} " +
+                           $"{(isInRange ? "in-range" : "")} " +
+                           $"{(isRangeStart ? "range-start" : "")} " +
+                           $"{(isRangeEnd ? "range-end" : "")}";
+
+            <button type="button" class="@dayClass" @onclick="() => SelectDate(date)">
+                @date.Day
+            </button>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public PickerState State { get; set; } = default!;
+    [Parameter] public DateTime? SelectedDate { get; set; }
+    [Parameter] public DateRange? Range { get; set; }
+    [Parameter] public EventCallback<DateTime> OnDateSelected { get; set; }
+
+    private List<DateTime> _grid = new();
+
+    protected override void OnParametersSet()
+    {
+        _grid = DateUtils.GenerateCalendarGrid(State.CurrentMonth);
+    }
+
+    private void PrevMonth()
+    {
+        State.CurrentMonth = State.CurrentMonth.AddMonths(-1);
+    }
+
+    private void NextMonth()
+    {
+        State.CurrentMonth = State.CurrentMonth.AddMonths(1);
+    }
+
+    private async Task SelectDate(DateTime date)
+    {
+        await OnDateSelected.InvokeAsync(date);
+    }
+
+    private string[] GetShortDaysOfWeek()
+    {
+        // Sunday first sequence
+        return new[] { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" };
+    }
+}

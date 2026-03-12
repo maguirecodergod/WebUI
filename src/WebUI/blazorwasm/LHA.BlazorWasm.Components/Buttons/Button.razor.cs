@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System.Collections.Generic;
 
 namespace LHA.BlazorWasm.Components.Buttons;
 
@@ -58,6 +57,11 @@ public partial class Button : ComponentBase
     /// Gets or sets a value indicating whether the button should span the full width of its container.
     /// </summary>
     [Parameter] public bool FullWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the type of the button.
+    /// </summary>
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.Button;
 
     /// <summary>
     /// Gets or sets additional custom CSS classes for the button.

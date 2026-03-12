@@ -1,0 +1,138 @@
+.picker-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 250px;
+    font-family: inherit;
+}
+
+.picker-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.picker-input-container.active {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.picker-input-container.disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.picker-input {
+    width: 100%;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212529;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: inherit;
+    text-align: center;
+}
+
+.picker-icon {
+    position: absolute;
+    right: 0.75rem;
+    color: #6c757d;
+}
+
+.picker-clear {
+    position: absolute;
+    right: 2rem;
+    background: transparent;
+    border: none;
+    color: #999;
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+}
+
+::deep .picker-popup {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    z-index: 1050;
+    padding: 15px;
+}
+
+::deep .picker-popup.open {
+    display: block;
+    animation: fadeIn 0.15s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+::deep .range-layout {
+    display: flex;
+    gap: 10px;
+}
+
+::deep .time-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+::deep .panel-header {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+::deep .panel-divider {
+    width: 1px;
+    background-color: #dee2e6;
+    margin: 0 10px;
+}
+
+::deep .range-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: flex-end;
+}
+
+::deep .btn-confirm {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+    width: 100%;
+}
+
+::deep .btn-confirm:hover {
+    background-color: #0b5ed7;
+}
+
+/* Base bindings mapping securely down into custom scopes exclusively shielding leaks */
+::deep .time-selectors { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.25rem; }
+::deep .time-select { padding: 8px; border: 1px solid #ced4da; border-radius: 4px; outline: none; font-size: 1rem; cursor: pointer; background: #fff; }
+::deep .time-select:focus { border-color: #86b7fe; box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); }
+::deep .ampm-toggle { display: flex; flex-direction: column; gap: 4px; margin-left: 10px; }
+::deep .ampm-toggle button { background: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; transition: background-color 0.2s;}
+::deep .ampm-toggle button.active { background: #0d6efd; color: #fff; border-color: #0d6efd; }

@@ -52,6 +52,48 @@
 </div>
 
 <hr />
+<h2>Date & Time Picker Examples</h2>
+
+<div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem; margin-top: 1rem;">
+    <!-- Single Date Pickers -->
+    <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
+        <div>
+            <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Date Picker</label>
+            <DatePicker @bind-Value="testDate" Placeholder="Select Date" />
+        </div>
+        
+        <div>
+            <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Time Picker (12h)</label>
+            <TimePicker @bind-Value="testTime" Placeholder="Select Time" />
+        </div>
+        
+        <div>
+            <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Date Time Picker (24h)</label>
+            <DateTimePicker @bind-Value="testDateTime" Is24Hour="true" Placeholder="Select Date and Time" />
+        </div>
+    </div>
+    
+    <!-- Range Pickers -->
+    <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
+        <div>
+            <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Date Range</label>
+            <DateRangePicker @bind-Value="testDateRange" Placeholder="Select Range" />
+        </div>
+        
+        <div>
+            <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Time Range</label>
+            <TimeRangePicker @bind-Value="testTimeRange" Placeholder="Start ~ End" />
+        </div>
+        
+        <div style="width: 100%;">
+            <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Date Time Range (Massive)</label>
+            <DateTimeRangePicker @bind-Value="testDateTimeRange" Placeholder="Select Bounds" />
+        </div>
+    </div>
+    
+</div>
+
+<hr />
 <h2>Tooltip Component Examples</h2>
 
 <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">
@@ -141,6 +183,14 @@
 @code {
     private bool isLoading;
     private bool isLoadingData = true;
+
+    // Picker State Bindings
+    private DateTime? testDate = DateTime.Today;
+    private DateTime? testTime;
+    private DateTime? testDateTime;
+    private DateRange? testDateRange;
+    private DateRange? testTimeRange;
+    private DateRange? testDateTimeRange;
 
     private void OnPrimaryClick()
     {

@@ -1,6 +1,7 @@
 @namespace LHA.BlazorWasm.Components.Buttons
 
 <button class="@GetCssClass()" 
+        type="@Type.ToString().ToLowerInvariant()"
         disabled="@IsDisabled" 
         @onclick="OnClick" 
         @onclick:stopPropagation>

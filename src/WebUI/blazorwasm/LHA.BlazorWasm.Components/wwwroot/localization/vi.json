@@ -2,5 +2,16 @@
     "Theme": {
         "LightMode": "Chế độ sáng",
         "DarkMode": "Chế độ tối"
+    },
+    "DateTimeRangePicker": {
+        "Title": "Chọn khoảng thời gian",
+        "StartDate": "Ngày bắt đầu",
+        "EndDate": "Ngày kết thúc",
+        "StartTime": "Thời gian bắt đầu",
+        "EndTime": "Thời gian kết thúc",
+        "Apply": "Áp dụng",
+        "Cancel": "Hủy",
+        "Start": "Bắt đầu",
+        "End": "Kết thúc"
     }
 }

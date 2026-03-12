@@ -1,0 +1,10 @@
+@namespace LHA.BlazorWasm.Components.Pickers.Core
+
+<div class="picker-popup @(IsOpen ? "open" : "")" @onclick:stopPropagation="true">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public bool IsOpen { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -2,5 +2,16 @@
     "Theme": {
         "LightMode": "Light Mode",
         "DarkMode": "Dark Mode"
+    },
+    "DateTimeRangePicker": {
+        "Title": "Select date range",
+        "StartDate": "Start date",
+        "EndDate": "End date",
+        "StartTime": "Start time",
+        "EndTime": "End time",
+        "Apply": "Apply",
+        "Cancel": "Cancel",
+        "Start": "Start",
+        "End": "End"
     }
 }

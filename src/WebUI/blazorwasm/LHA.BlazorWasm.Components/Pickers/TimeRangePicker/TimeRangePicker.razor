@@ -1,0 +1,48 @@
+@namespace LHA.BlazorWasm.Components.Pickers.TimeRangePicker
+@using LHA.BlazorWasm.Components.Pickers.Core
+@inherits PickerBase<DateRange?>
+
+<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut">
+    
+    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")" @onclick="TogglePopup">
+        <input type="text" 
+               class="picker-input" 
+               placeholder="@Placeholder"
+               value="@FormattedValue"
+               readonly
+               disabled="@Disabled" />
+               
+        <div class="picker-icon">
+            <i class="fas fa-clock">⏱️</i>
+        </div>
+        
+        @if (ShowClear && Value.HasValue && !Disabled && !ReadOnly)
+        {
+            <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
+                &times;
+            </button>
+        }
+    </div>
+
+    <PickerPopup IsOpen="State.IsOpen">
+        <div class="range-layout">
+            <div class="time-panel">
+                <div class="panel-header">Start</div>
+                <TimeView State="StartState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
+            </div>
+            
+            <div class="panel-divider"></div>
+            
+            <div class="time-panel">
+                <div class="panel-header">End</div>
+                <TimeView State="EndState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
+            </div>
+        </div>
+        
+        <div class="range-actions">
+            <button type="button" class="btn-confirm" @onclick="ConfirmSelection">
+                @ConfirmText
+            </button>
+        </div>
+    </PickerPopup>
+</div>

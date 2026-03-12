@@ -1,0 +1,46 @@
+@namespace LHA.BlazorWasm.Components.Pickers.DateTimePicker
+@using LHA.BlazorWasm.Components.Pickers.Core
+@inherits PickerBase<DateTime?>
+
+<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut">
+    
+    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")" @onclick="TogglePopup">
+        <input type="text" 
+               class="picker-input" 
+               placeholder="@Placeholder"
+               value="@FormattedValue"
+               readonly
+               disabled="@Disabled" />
+               
+        <div class="picker-icon">
+            <i class="far fa-calendar-check">📆</i>
+        </div>
+        
+        @if (ShowClear && Value.HasValue && !Disabled && !ReadOnly)
+        {
+            <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
+                &times;
+            </button>
+        }
+    </div>
+
+    <PickerPopup IsOpen="State.IsOpen">
+        <div class="datetime-layout">
+            <div class="datetime-calendar">
+                <CalendarView State="State" 
+                              SelectedDate="Value" 
+                              OnDateSelected="HandleDateSelected" />
+            </div>
+            
+            <div class="datetime-divider"></div>
+            
+            <div class="datetime-time">
+                <TimeView State="State" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
+                
+                <button type="button" class="btn-confirm" @onclick="ConfirmSelection">
+                    @ConfirmText
+                </button>
+            </div>
+        </div>
+    </PickerPopup>
+</div>

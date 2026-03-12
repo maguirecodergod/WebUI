@@ -1,0 +1,65 @@
+@namespace LHA.BlazorWasm.Components.Pickers.DateTimeRangePicker
+@using LHA.BlazorWasm.Components.Buttons
+@using LHA.BlazorWasm.Components.Pickers.Core
+@inherits PickerBase<DateRange?>
+
+<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut">
+    
+    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")"
+         @onclick="TogglePopup">
+        <input type="text" class="picker-input" placeholder="@Placeholder" value="@FormattedValue" readonly
+               disabled="@Disabled" />
+               
+        <div class="picker-icon">
+            <i class="fas fa-calendar-check">📅</i>
+        </div>
+        
+        @if (ShowClear && Value.HasValue && !Disabled && !ReadOnly)
+        {
+            <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
+                &times;
+            </button>
+        }
+    </div>
+
+    <PickerPopup IsOpen="State.IsOpen">
+        <div class="range-layout">
+            
+            <!-- Left Panel: Start Date & Time -->
+            <div class="datetime-panel">
+                <div class="panel-header">@LocalizationService.L("DateTimeRangePicker.Start")</div>
+                <div class="datetime-split">
+                    <CalendarView State="StartState" SelectedDate="_tempValue?.Start" Range="_tempValue"
+                                  OnDateSelected="(d) => HandleDateSelected(d, true)" />
+                                  
+                    <div class="split-divider"></div>
+                    
+                    <TimeView State="StartState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
+                </div>
+            </div>
+            
+            <div class="panel-divider"></div>
+            
+            <!-- Right Panel: End Date & Time -->
+            <div class="datetime-panel">
+                <div class="panel-header">@LocalizationService.L("DateTimeRangePicker.End")</div>
+                <div class="datetime-split">
+                    <CalendarView State="EndState" SelectedDate="_tempValue?.End" Range="_tempValue"
+                                  OnDateSelected="(d) => HandleDateSelected(d, false)" />
+                                  
+                    <div class="split-divider"></div>
+                    
+                    <TimeView State="EndState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="range-actions">
+            <Button Type="ButtonType.Button" Class="btn-confirm" Disabled="@(!_tempValue?.IsComplete ?? false)"
+                    OnClick="ConfirmSelection">
+                @ComputedConfirmText
+            </Button>
+        </div>
+    </PickerPopup>
+</div>
