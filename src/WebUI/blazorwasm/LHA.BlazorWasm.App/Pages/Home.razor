@@ -1,5 +1,6 @@
 @page "/"
 @implements IDisposable
+@using LHA.BlazorWasm.Components.Select
 
 <PageTitle>@L.L("Common.Save")</PageTitle>
 
@@ -121,226 +122,357 @@
                                             <DatePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Error"
                                                         ValidationMessage="@L.L("Validation.DateInPast")" />
                                         </div>
-                                        <div>
-                                            <label
-                                                style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Warning
-                                                State</label>
-                                                <TimePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Warning"
-                                                            ValidationMessage="@L.L("Validation.LimitedAvailability")" />
+                                    <div>
+                                        <label
+                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Warning
+                                            State</label>
+                                            <TimePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Warning"
+                                                        ValidationMessage="@L.L("Validation.LimitedAvailability")" />
+                                        </div>
+                                    <div>
+                                        <label
+                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Success
+                                            State</label>
+                                            <DateTimePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Success"
+                                                            ValidationMessage="@L.L("Validation.LooksGood")" />
+                                        </div>
+                                    <div style="width: 100%;">
+                                        <label
+                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
+                                            Error</label>
+                                            <DateRangePicker TInner="DateTime?" ValidationStatus="ValidationStatus.Error"
+                                                             ValidationMessage="@L.L("Validation.OverlapBooking")" />
+                                        </div>
+                                </div>
+                            </div>
+
+                            <!-- DateTimeOffset Examples (New) -->
+                            <div
+                                style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border-color);">
+                                <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Enterprise Support: DateTimeOffset</h3>
+                                <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
+                                    <div>
+                                        <label
+                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
+                                            Date Picker</label>
+                                            <DatePicker TValue="DateTimeOffset?" @bind-Value="testDtoDate" Placeholder="" />
+                                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Value:
+                                                @testDtoDate?.ToString("O")</div>
+                                            </div>
+                                    <div>
+                                        <label
+                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
+                                            DateTime Picker</label>
+                                            <DateTimePicker TValue="DateTimeOffset?" @bind-Value="testDtoDateTime" Is24Hour="true" />
+                                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Value:
+                                                @testDtoDateTime?.ToString("O")</div>
+                                            </div>
+                                    <div style="width: 100%;">
+                                        <label
+                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
+                                            Date Range Picker</label>
+                                            <DateRangePicker TInner="DateTimeOffset?" @bind-Value="testDtoRange" />
+                                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Range:
+                                                @testDtoRange.Start?.ToString("d") ~ @testDtoRange.End?.ToString("d")</div>
+                                            </div>
+                                </div>
+                            </div>
+
+                            <!-- Disabled Date Logic Example (New) -->
+                            <div
+                                style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border-color);">
+                                <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Custom Disabled Dates (No Weekends)</h3>
+                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                                    Example: Disabling all Saturdays and Sundays using <code>DisabledDateFunc</code>.
+                                </p>
+                                <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
+                                    <div>
+                                        <label
+                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Disabled
+                                            Weekends</label>
+                                            <DatePicker TValue="DateTime?" DisabledDateFunc="DisableWeekends"
+                                                        Placeholder="Try picking a weekend..." />
+                                        </div>
+                                    <div>
+                                        <label
+                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
+                                            with Disabled Weekends</label>
+                                            <DateRangePicker TInner="DateTime?" DisabledDateFunc="DisableWeekends" Placeholder="Start ~ End" />
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <h2>Tooltip Component Examples</h2>
+
+                        <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">
+                            <Tooltip Text="Top tooltip" Placement="TooltipPlacement.Top">
+                                <Button>Top Placement</Button>
+                            </Tooltip>
+
+                            <Tooltip Text="Bottom tooltip" Placement="TooltipPlacement.Bottom">
+                                <Button>Bottom Placement</Button>
+                            </Tooltip>
+
+                            <Tooltip Text="Left tooltip" Placement="TooltipPlacement.Left">
+                                <Button>Left Placement</Button>
+                            </Tooltip>
+
+                            <Tooltip Text="Right tooltip" Placement="TooltipPlacement.Right">
+                                <Button>Right Placement</Button>
+                            </Tooltip>
+                        </div>
+
+                        <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 4rem;">
+                            <Tooltip Text="Requires a click" Trigger="TooltipTrigger.Click">
+                                <Button Style="ButtonStyle.Primary">Click me</Button>
+                            </Tooltip>
+
+                            <Tooltip Text="Appears on focus" Trigger="TooltipTrigger.Focus">
+                                <input type="text" placeholder="Focus me" class="form-control" style="width: 200px;" />
+                            </Tooltip>
+
+                            <Tooltip Placement="TooltipPlacement.Right">
+                                <TooltipContent>
+                                    <strong>Advanced Content!</strong><br />
+                                    With <em>HTML</em> support.
+                                </TooltipContent>
+                                <ChildContent>
+                                    <span
+                                    style="font-size: 0.9rem; cursor:help; background:#0d6efd; color:#fff; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; font-weight:bold;">?</span>
+                                </ChildContent>
+                            </Tooltip>
+                        </div>
+
+                        <hr />
+                        <h2>Skeleton Component Examples</h2>
+
+                        <div style="display: flex; flex-direction: column; gap: 2rem; max-width: 600px; margin-top: 2rem; margin-bottom: 4rem;">
+                            <div>
+                                <h3>Basic & Text Variants (Wave Animation)</h3>
+                                <Skeleton Width="30%" Height="1.5rem" Style="margin-bottom: 1rem;" /> <!-- Title placeholder -->
+                                <Skeleton Variant="SkeletonVariant.Text" Count="4" /> <!-- Paragraph placeholder -->
+                            </div>
+
+                            <div>
+                                <h3>Avatar & Card Combo (Pulse Animation)</h3>
+                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                    <Skeleton Variant="SkeletonVariant.Circular" Width="60px" Height="60px"
+                                              Animation="SkeletonAnimation.Pulse" />
+                                    <div style="flex: 1;">
+                                        <Skeleton Variant="SkeletonVariant.Rectangular" Height="150px" Animation="SkeletonAnimation.Pulse" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3>Wrapper / IsLoading Toggle</h3>
+                                <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
+                                    <Skeleton IsLoading="@isLoadingData">
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div
+                                                style="width: 50px; height: 50px; border-radius: 50%; background: #0d6efd; color: white; display:flex; align-items:center; justify-content:center; font-weight:bold;">
+                                                JD
                                             </div>
                                             <div>
-                                                <label
-                                                    style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Success
-                                                    State</label>
-                                                    <DateTimePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Success"
-                                                                    ValidationMessage="@L.L("Validation.LooksGood")" />
-                                                </div>
-                                                <div style="width: 100%;">
-                                                    <label
-                                                        style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
-                                                        Error</label>
-                                                        <DateRangePicker TInner="DateTime?" ValidationStatus="ValidationStatus.Error"
-                                                                         ValidationMessage="@L.L("Validation.OverlapBooking")" />
-                                                    </div>
-                                                </div>
+                                                <h4 style="margin: 0;">John Doe</h4>
+                                                <p style="margin: 0; color: #666;">Software Architect</p>
                                             </div>
-
-                                            <!-- DateTimeOffset Examples (New) -->
-                                            <div
-                                                style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border-color);">
-                                                <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Enterprise Support: DateTimeOffset</h3>
-                                                <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
-                                                    <div>
-                                                        <label
-                                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
-                                                            Date Picker</label>
-                                                            <DatePicker TValue="DateTimeOffset?" @bind-Value="testDtoDate" Placeholder="" />
-                                                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Value:
-                                                                @testDtoDate?.ToString("O")</div>
-                                                            </div>
-                                                            <div>
-                                                                <label
-                                                                    style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
-                                                                    DateTime Picker</label>
-                                                                    <DateTimePicker TValue="DateTimeOffset?" @bind-Value="testDtoDateTime" Is24Hour="true" />
-                                                                    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Value:
-                                                                        @testDtoDateTime?.ToString("O")</div>
-                                                                    </div>
-                                                                    <div style="width: 100%;">
-                                                                        <label
-                                                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
-                                                                            Date Range Picker</label>
-                                                                            <DateRangePicker TInner="DateTimeOffset?" @bind-Value="testDtoRange" />
-                                                                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Range:
-                                                                                @testDtoRange.Start?.ToString("d") ~ @testDtoRange.End?.ToString("d")</div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <!-- Disabled Date Logic Example (New) -->
-                                                                    <div
-                                                                        style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border-color);">
-                                                                        <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Custom Disabled Dates (No Weekends)</h3>
-                                                                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-                                                                            Example: Disabling all Saturdays and Sundays using <code>DisabledDateFunc</code>.
-                                                                        </p>
-                                                                        <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
-                                                                            <div>
-                                                                                <label
-                                                                                    style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Disabled
-                                                                                    Weekends</label>
-                                                                                    <DatePicker TValue="DateTime?" DisabledDateFunc="DisableWeekends"
-                                                                                                Placeholder="Try picking a weekend..." />
-                                                                                </div>
-                                                                                <div>
-                                                                                    <label
-                                                                                        style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
-                                                                                        with Disabled Weekends</label>
-                                                                                        <DateRangePicker TInner="DateTime?" DisabledDateFunc="DisableWeekends" Placeholder="Start ~ End" />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <hr />
-                                                                        <h2>Tooltip Component Examples</h2>
-
-                                                                        <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">
-                                                                            <Tooltip Text="Top tooltip" Placement="TooltipPlacement.Top">
-                                                                                <Button>Top Placement</Button>
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Text="Bottom tooltip" Placement="TooltipPlacement.Bottom">
-                                                                                <Button>Bottom Placement</Button>
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Text="Left tooltip" Placement="TooltipPlacement.Left">
-                                                                                <Button>Left Placement</Button>
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Text="Right tooltip" Placement="TooltipPlacement.Right">
-                                                                                <Button>Right Placement</Button>
-                                                                            </Tooltip>
-                                                                        </div>
-
-                                                                        <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 4rem;">
-                                                                            <Tooltip Text="Requires a click" Trigger="TooltipTrigger.Click">
-                                                                                <Button Style="ButtonStyle.Primary">Click me</Button>
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Text="Appears on focus" Trigger="TooltipTrigger.Focus">
-                                                                                <input type="text" placeholder="Focus me" class="form-control" style="width: 200px;" />
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Placement="TooltipPlacement.Right">
-                                                                                <TooltipContent>
-                                                                                    <strong>Advanced Content!</strong><br />
-                                                                                    With <em>HTML</em> support.
-                                                                                </TooltipContent>
-                                                                                <ChildContent>
-                                                                                    <span
-                                                                                    style="font-size: 0.9rem; cursor:help; background:#0d6efd; color:#fff; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; font-weight:bold;">?</span>
-                                                                                </ChildContent>
-                                                                            </Tooltip>
-                                                                        </div>
-
-                                                                        <hr />
-                                                                        <h2>Skeleton Component Examples</h2>
-
-                                                                        <div style="display: flex; flex-direction: column; gap: 2rem; max-width: 600px; margin-top: 2rem; margin-bottom: 4rem;">
-                                                                            <div>
-                                                                                <h3>Basic & Text Variants (Wave Animation)</h3>
-                                                                                <Skeleton Width="30%" Height="1.5rem" Style="margin-bottom: 1rem;" /> <!-- Title placeholder -->
-                                                                                <Skeleton Variant="SkeletonVariant.Text" Count="4" /> <!-- Paragraph placeholder -->
-                                                                            </div>
-
-                                                                            <div>
-                                                                                <h3>Avatar & Card Combo (Pulse Animation)</h3>
-                                                                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                                                                                    <Skeleton Variant="SkeletonVariant.Circular" Width="60px" Height="60px"
-                                                                                              Animation="SkeletonAnimation.Pulse" />
-                                                                                    <div style="flex: 1;">
-                                                                                        <Skeleton Variant="SkeletonVariant.Rectangular" Height="150px" Animation="SkeletonAnimation.Pulse" />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div>
-                                                                                <h3>Wrapper / IsLoading Toggle</h3>
-                                                                                <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
-                                                                                    <Skeleton IsLoading="@isLoadingData">
-                                                                                        <div style="display: flex; align-items: center; gap: 1rem;">
-                                                                                            <div
-                                                                                                style="width: 50px; height: 50px; border-radius: 50%; background: #0d6efd; color: white; display:flex; align-items:center; justify-content:center; font-weight:bold;">
-                                                                                                JD
-                                                                                            </div>
-                                                                                            <div>
-                                                                                                <h4 style="margin: 0;">John Doe</h4>
-                                                                                                <p style="margin: 0; color: #666;">Software Architect</p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </Skeleton>
+                                        </div>
+                                    </Skeleton>
             
-                                                                                    <div style="margin-top: 1rem;">
-                                                                                        <Button Style="ButtonStyle.Primary" Size="ButtonSize.Small" OnClick="ToggleDataLoadingAsync">
-                                                                                            Toggle Loading State
-                                                                                        </Button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                    <div style="margin-top: 1rem;">
+                                        <Button Style="ButtonStyle.Primary" Size="ButtonSize.Small" OnClick="ToggleDataLoadingAsync">
+                                            Toggle Loading State
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                                                        <hr />
-                                                                        <h2>Status Badge Examples</h2>
+                        <hr />
+                        <h2>Status Badge Examples</h2>
 
-                                                                        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 4rem; margin-top: 1rem;">
-                                                                            <div>
-                                                                                <h3>Order Statuses</h3>
-                                                                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                                                                    <StatusBadge Status="OrderStatus.Pending" />
-                                                                                    <StatusBadge Status="OrderStatus.Processing" />
-                                                                                    <StatusBadge Status="OrderStatus.Completed" />
-                                                                                    <StatusBadge Status="OrderStatus.Cancelled" />
-                                                                                </div>
-                                                                            </div>
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 4rem; margin-top: 1rem;">
+                            <div>
+                                <h3>Order Statuses</h3>
+                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                    <StatusBadge Status="OrderStatus.Pending" />
+                                    <StatusBadge Status="OrderStatus.Processing" />
+                                    <StatusBadge Status="OrderStatus.Completed" />
+                                    <StatusBadge Status="OrderStatus.Cancelled" />
+                                </div>
+                            </div>
 
-                                                                            <div>
-                                                                                <h3>Payment Statuses (Soft Variant - Matching requested style)</h3>
-                                                                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                                                                    <StatusBadge Status="PaymentStatus.Unpaid" />
-                                                                                    <StatusBadge Status="PaymentStatus.Paid" />
-                                                                                    <StatusBadge Status="PaymentStatus.Failed" />
-                                                                                    <StatusBadge Status="PaymentStatus.Refunded" />
-                                                                                </div>
-                                                                            </div>
+                            <div>
+                                <h3>Payment Statuses (Soft Variant - Matching requested style)</h3>
+                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                    <StatusBadge Status="PaymentStatus.Unpaid" />
+                                    <StatusBadge Status="PaymentStatus.Paid" />
+                                    <StatusBadge Status="PaymentStatus.Failed" />
+                                    <StatusBadge Status="PaymentStatus.Refunded" />
+                                </div>
+                            </div>
 
-                                                                            <div>
-                                                                                <h3>Variant Comparison</h3>
-                                                                                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                                                                                    <span>Solid:
-                                                                                        <StatusBadge Status="OrderStatus.Completed" />
-                                                                                    </span>
-                                                                                    <span>Soft:
-                                                                                        <StatusBadge Status="PaymentStatus.Paid" />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </div>
+                            <div>
+                                <h3>Variant Comparison</h3>
+                                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                                    <span>Solid:
+                                        <StatusBadge Status="OrderStatus.Completed" />
+                                    </span>
+                                    <span>Soft:
+                                        <StatusBadge Status="PaymentStatus.Paid" />
+                                    </span>
+                                </div>
+                            </div>
 
-                                                                            <div>
-                                                                                <h3>Custom Overrides</h3>
-                                                                                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                                                                    <StatusBadge Status="OrderStatus.Completed">
-                                                                                        <i class="fas fa-star me-1"></i> Special Order
-                                                                                    </StatusBadge>
+                            <div>
+                                <h3>Custom Overrides</h3>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <StatusBadge Status="OrderStatus.Completed">
+                                        <i class="fas fa-star me-1"></i> Special Order
+                                    </StatusBadge>
             
-                                                                                    <StatusBadge Status="PaymentStatus.Paid" Class="p-3 shadow-sm rounded-pill" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                    <StatusBadge Status="PaymentStatus.Paid" Class="p-3 shadow-sm rounded-pill" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <h2>Select Component Examples</h2>
+
+                        <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
+                            <!-- Basic Selection -->
+                            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 300px;">
+                                    <label style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Standard Select</label>
+                                    <Select TValue="string" 
+                                            Options="cityOptions" 
+                                            @bind-Value="selectedCity" 
+                                            Placeholder="Choose a city..." />
+                                    <div style="margin-top: 0.5rem; font-size: 0.85rem;">Selected: <b>@selectedCity</b></div>
+                                </div>
+
+                                <div style="flex: 1; min-width: 300px;">
+                                    <label style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Searchable Select</label>
+                                    <Select TValue="string" 
+                                            Options="cityOptions" 
+                                            Searchable="true" 
+                                            @bind-Value="selectedSearchCity" 
+                                            Placeholder="Search cities..." />
+                                    </div>
+                            </div>
+
+                            <!-- Multi Select & Templates -->
+                            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 300px;">
+                                    <label style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Multi Select (Tags)</label>
+                                    <Select TValue="string" 
+                                            Options="tagOptions" 
+                                            Mode="SelectMode.Multiple" 
+                                            @bind-Values="selectedTags" 
+                                            Placeholder="Select tags..." />
+                                </div>
+
+                                <div style="flex: 1; min-width: 300px;">
+                                    <label style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Custom Templates</label>
+                                    <Select TValue="string" 
+                                            Options="userOptions" 
+                                            @bind-Value="selectedUser">
+                                        <OptionTemplate Context="opt">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <div style="width: 20px; height: 20px; border-radius: 50%; background: #0d6efd; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">@opt.Label[0]</div>
+                                                <span>@opt.Label</span>
+                                            </div>
+                                        </OptionTemplate>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            <!-- Virtualization & Async -->
+                            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 300px;">
+                                    <label style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Virtualization Test (10,000 items)</label>
+                                    <Select TValue="int" 
+                                            Searchable="true"
+                                            OnLoadPage="LoadLargeDataAsync" 
+                                            Placeholder="Scroll fast - no lag!" />
+                                </div>
+
+                                <div style="flex: 1; min-width: 300px;">
+                                    <label style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Async API Search</label>
+                                    <Select TValue="string" 
+                                            AsyncSearch="true" 
+                                            LoadOptions="SearchUsersFromApi" 
+                                            Placeholder="Type to fetch users..." />
+                                </div>
+                            </div>
+                        </div>
 
 @code {
     private bool isLoading;
     private bool isLoadingData = true;
+
+    // Select Examples State
+    private string? selectedCity;
+    private string? selectedSearchCity;
+    private IEnumerable<string>? selectedTags = new List<string> { "Blazor", "C#" };
+    private string? selectedUser;
+    
+    private List<SelectOption<string>> cityOptions = new()
+    {
+        new() { Value = "New York", Label = "New York" },
+        new() { Value = "London", Label = "London" },
+        new() { Value = "Tokyo", Label = "Tokyo" },
+        new() { Value = "Paris", Label = "Paris" },
+        new() { Value = "Berlin", Label = "Berlin" }
+    };
+
+    private List<SelectOption<string>> tagOptions = new()
+    {
+        new() { Value = "Blazor", Label = "Blazor" },
+        new() { Value = "C#", Label = "C#" },
+        new() { Value = "WebAssembly", Label = "WebAssembly" },
+        new() { Value = "UI/UX", Label = "UI/UX" },
+        new() { Value = "DevOps", Label = "DevOps" }
+    };
+
+    private List<SelectOption<string>> userOptions = new()
+    {
+        new() { Value = "Alice Johnson", Label = "Alice Johnson" },
+        new() { Value = "Bob Smith", Label = "Bob Smith" },
+        new() { Value = "Charlie Brown", Label = "Charlie Brown" }
+    };
+
+    private List<SelectOption<int>> largeOptions = Enumerable.Range(1, 10000)
+        .Select(i => new SelectOption<int> { Value = i, Label = $"Item #{i}" })
+        .ToList();
+
+    private async Task<IEnumerable<SelectOption<string>>> SearchUsersFromApi(string query)
+    {
+        await Task.Delay(400); // Faster mock search
+        if (string.IsNullOrEmpty(query)) return userOptions;
+        
+        return userOptions.Where(o => o.Label.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    private async Task<(IEnumerable<SelectOption<int>> Items, int TotalCount)> LoadLargeDataAsync(int startIndex, int count, string? searchText)
+    {
+        // NO Task.Delay here for maximum performance test
+        // Use pre-generated list to avoid GC pressure
+        var query = largeOptions.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(searchText))
+        {
+            query = query.Where(o => o.Label.Contains(searchText, StringComparison.OrdinalIgnoreCase));
+        }
+
+        var total = query.Count();
+        var items = query.Skip(startIndex).Take(count).ToList();
+
+        return (items, total);
+    }
 
     // Picker State Bindings
     private DateTime? testDate = DateTime.Today;
@@ -374,7 +506,7 @@
     private async Task SimulateLoadAsync()
     {
         isLoading = true;
-        await Task.Delay(2000);
+        await Task.Delay(1000);
         isLoading = false;
     }
 
@@ -384,7 +516,7 @@
         
         if (isLoadingData)
         {
-            await Task.Delay(2000);
+            await Task.Delay(1000);
             isLoadingData = false;
         }
     }

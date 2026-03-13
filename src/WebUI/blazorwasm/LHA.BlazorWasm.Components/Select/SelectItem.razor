@@ -1,0 +1,17 @@
+@namespace LHA.BlazorWasm.Components.Select
+
+<div class="select-item @(IsSelected ? "selected" : "") @(IsFocused ? "focused" : "") @(Disabled ? "disabled" : "")"
+     role="option"
+     aria-selected="@(IsSelected ? "true" : "false")"
+     aria-disabled="@(Disabled ? "true" : "false")"
+     @onclick="HandleClick"
+     @onclick:stopPropagation="true">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        @Label
+    }
+</div>

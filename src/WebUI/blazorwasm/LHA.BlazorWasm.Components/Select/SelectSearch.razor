@@ -1,0 +1,32 @@
+@namespace LHA.BlazorWasm.Components.Select
+
+<div class="select-search">
+    <div class="search-input-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" class="search-input" placeholder="@Placeholder" value="@SearchText" @oninput="HandleInput"
+               @onclick:stopPropagation="true" />
+        
+        @if (!string.IsNullOrEmpty(SearchText))
+        {
+            <button class="search-clear" @onclick="ClearSearch" @onclick:stopPropagation="true">&times;</button>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Placeholder { get; set; } = "Search...";
+    [Parameter] public string SearchText { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> OnSearch { get; set; }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        SearchText = e.Value?.ToString() ?? string.Empty;
+        await OnSearch.InvokeAsync(SearchText);
+    }
+
+    private async Task ClearSearch()
+    {
+        SearchText = string.Empty;
+        await OnSearch.InvokeAsync(SearchText);
+    }
+}

@@ -1,0 +1,95 @@
+@namespace LHA.BlazorWasm.Components.Select
+@typeparam TValue
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+<div class="select-virtual-list" style="max-height: @MaxHeight; overflow-y: auto;" role="listbox">
+    @if (ItemsProvider != null)
+    {
+        <Virtualize @ref="_virtualizeProvider" ItemsProvider="ItemsProvider" Context="option" OverscanCount="5" ItemSize="38">
+            <ItemContent>
+                <SelectItem Label="@option.Label"
+                            IsSelected="@IsSelected(option)"
+                            IsFocused="@IsFocused(option)"
+                            Disabled="@option.Disabled"
+                            OnSelect="() => HandleSelect(option)">
+                    @OptionTemplate(option)
+                </SelectItem>
+            </ItemContent>
+            <Placeholder>
+                <div style="padding: 10px 12px;">
+                    <LHA.BlazorWasm.Components.Skeleton.Skeleton IsLoading="true" Height="14px" Width="80%" />
+                </div>
+            </Placeholder>
+        </Virtualize>
+    }
+    else
+    {
+        <Virtualize @ref="_virtualizeItems" Items="Items" Context="option" OverscanCount="5" ItemSize="38">
+            <ItemContent>
+                <SelectItem Label="@option.Label"
+                            IsSelected="@IsSelected(option)"
+                            IsFocused="@IsFocused(option)"
+                            Disabled="@option.Disabled"
+                            OnSelect="() => HandleSelect(option)">
+                    @OptionTemplate(option)
+                </SelectItem>
+            </ItemContent>
+            <Placeholder>
+                <div style="padding: 10px 12px;">
+                    <LHA.BlazorWasm.Components.Skeleton.Skeleton IsLoading="true" Height="14px" Width="80%" />
+                </div>
+            </Placeholder>
+        </Virtualize>
+    }
+</div>
+
+@implements IDisposable
+
+@code {
+    [Parameter] public ICollection<SelectOption<TValue>>? Items { get; set; }
+    [Parameter] public ItemsProviderDelegate<SelectOption<TValue>>? ItemsProvider { get; set; }
+    [Parameter] public string MaxHeight { get; set; } = "300px";
+    [Parameter] public Func<SelectOption<TValue>, bool> IsSelected { get; set; } = default!;
+    [Parameter] public Func<SelectOption<TValue>, bool> IsFocused { get; set; } = default!;
+    [Parameter] public EventCallback<SelectOption<TValue>> OnSelect { get; set; }
+    [Parameter] public RenderFragment<SelectOption<TValue>> OptionTemplate { get; set; } = default!;
+    [Parameter] public SelectState<TValue> State { get; set; } = default!;
+
+    private Virtualize<SelectOption<TValue>>? _virtualizeProvider;
+    private Virtualize<SelectOption<TValue>>? _virtualizeItems;
+
+    protected override void OnInitialized()
+    {
+        if (State != null)
+        {
+            State.OnOptionsChanged += RefreshList;
+        }
+    }
+
+    private async void RefreshList()
+    {
+        try
+        {
+            await InvokeAsync(async () => {
+                if (_virtualizeProvider != null) await _virtualizeProvider.RefreshDataAsync();
+                if (_virtualizeItems != null) await _virtualizeItems.RefreshDataAsync();
+                StateHasChanged();
+            });
+        }
+        catch (ObjectDisposedException) { /* Component was already disposed */ }
+        catch (Exception) { /* Handle or log other errors */ }
+    }
+
+    private async Task HandleSelect(SelectOption<TValue> option)
+    {
+        await OnSelect.InvokeAsync(option);
+    }
+
+    public void Dispose()
+    {
+        if (State != null)
+        {
+            State.OnOptionsChanged -= RefreshList;
+        }
+    }
+}
