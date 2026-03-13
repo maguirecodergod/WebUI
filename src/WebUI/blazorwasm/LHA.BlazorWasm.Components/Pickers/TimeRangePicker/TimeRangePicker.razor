@@ -17,7 +17,7 @@
         @if (ShowClear && Value.HasStart && !Disabled && !ReadOnly)
         {
             <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
-                &times;
+                <i class="fas fa-times-circle"></i>
             </button>
         }
     </div>
@@ -25,14 +25,14 @@
     <PickerPopup IsOpen="State.IsOpen">
         <div class="range-layout">
             <div class="time-panel">
-                <div class="panel-header">Start</div>
+                <div class="panel-title">Start</div>
                 <TimeView State="StartState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
             </div>
             
             <div class="panel-divider"></div>
             
             <div class="time-panel">
-                <div class="panel-header">End</div>
+                <div class="panel-title">End</div>
                 <TimeView State="EndState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
             </div>
         </div>

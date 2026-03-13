@@ -23,12 +23,12 @@
         }
     </div>
 
-    <PickerPopup IsOpen="State.IsOpen">
+    <PickerPopup IsOpen="State.IsOpen" Class="datetime-range-popup">
         <div class="range-layout">
             
             <!-- Left Panel: Start Date & Time -->
             <div class="datetime-panel">
-                <div class="panel-header">@LocalizationService.L("DateTimeRangePicker.Start")</div>
+                <div class="panel-title">@LocalizationService.L("DateTimeRangePicker.Start")</div>
                 <div class="datetime-split">
                     <CalendarView State="StartState" 
                                   SelectedDate="RangeConverter.MapRange(_tempValue).Start" 
@@ -45,7 +45,7 @@
             
             <!-- Right Panel: End Date & Time -->
             <div class="datetime-panel">
-                <div class="panel-header">@LocalizationService.L("DateTimeRangePicker.End")</div>
+                <div class="panel-title">@LocalizationService.L("DateTimeRangePicker.End")</div>
                 <div class="datetime-split">
                     <CalendarView State="EndState" 
                                   SelectedDate="RangeConverter.MapRange(_tempValue).End" 

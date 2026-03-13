@@ -1,138 +1,15 @@
-/* Cloned common CSS framework scopes for self-isolation natively protecting visual overrides robustly */
-.picker-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 320px; /* Wider input specific width required for Range variables uniquely mapped */
-    font-family: inherit;
-}
-
-.picker-input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    background-color: #fff;
-    cursor: pointer;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.picker-input-container.active {
-    border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-.picker-input-container.disabled {
-    background-color: #e9ecef;
-    cursor: not-allowed;
-}
-
-.picker-input {
-    width: 100%;
-    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #212529;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: inherit;
-    text-align: center;
-}
-
-.picker-icon {
-    position: absolute;
-    right: 0.75rem;
-    color: #6c757d;
-}
-
-.picker-clear {
-    position: absolute;
-    right: 2rem;
-    background: transparent;
-    border: none;
-    color: #999;
-    font-size: 1.25rem;
-    line-height: 1;
-    padding: 0;
-    cursor: pointer;
-}
-
+/* Minimal overrides for DateRangePicker */
 ::deep .picker-popup {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 4px;
-    background: #fff;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: 4px;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
-    z-index: 1050;
-    padding: 15px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-::deep .picker-popup.open {
-    display: block;
-    animation: fadeIn 0.15s;
+@media (max-width: 768px) {
+    ::deep .picker-popup {
+        left: 0;
+        transform: none;
+    }
+    ::deep .range-layout {
+        flex-direction: column;
+    }
 }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-::deep .range-layout {
-    display: flex;
-    gap: 20px;
-}
-
-::deep .calendar-panel {
-    min-width: 280px;
-}
-
-::deep .range-actions {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #dee2e6;
-    display: flex;
-    justify-content: flex-end;
-}
-
-::deep .btn-confirm {
-    background-color: #0d6efd;
-    color: #fff;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 4px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.15s ease-in-out;
-}
-
-::deep .btn-confirm:hover:not(:disabled) {
-    background-color: #0b5ed7;
-}
-
-::deep .btn-confirm:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-    opacity: 0.65;
-}
-
-/* Inherited layout bindings mapping generic constraints precisely mimicking CalendarView DOM */
-::deep .calendar { user-select: none; }
-::deep .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600; }
-::deep .nav-btn { background: transparent; border: none; cursor: pointer; font-size: 1.2rem; padding: 0 10px; color: #6c757d; }
-::deep .nav-btn:hover { color: #0d6efd; }
-::deep .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-::deep .calendar-day-name { text-align: center; font-size: 0.85rem; font-weight: 600; color: #6c757d; padding-bottom: 5px; }
-::deep .calendar-day { background: transparent; border: 1px solid transparent; border-radius: 4px; padding: 6px 0; text-align: center; cursor: pointer; font-size: 0.9rem; transition: background-color 0.15s; }
-::deep .calendar-day:hover { background-color: #f8f9fa; }
-::deep .calendar-day.other-month { color: #ced4da; }
-::deep .calendar-day.today { border-color: #0d6efd; color: #0d6efd; font-weight: bold; }
-::deep .calendar-day.selected { background-color: #0d6efd; color: #fff; }
-
-::deep .calendar-day.in-range { background-color: #e7f1ff; border-radius: 0; }
-::deep .calendar-day.range-start { background-color: #0d6efd; color: #fff; border-top-right-radius: 0; border-bottom-right-radius: 0; }
-::deep .calendar-day.range-end { background-color: #0d6efd; color: #fff; border-top-left-radius: 0; border-bottom-left-radius: 0; }

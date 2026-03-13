@@ -2,23 +2,26 @@
 
 <div class="time-view">
     <div class="time-selectors">
-        <!-- Hour -->
-        <select class="time-select" @bind="State.SelectedHour" @bind:after="OnTimeChanged">
-            @for (int i = 0; i < (Is24Hour ? 24 : 12); i++)
-            {
-                // Format appropriately (12 AM becomes 12, 0 is 12)
-                var displayHour = !Is24Hour && i == 0 ? 12 : i;
-                <option value="@i">@displayHour.ToString("00")</option>
-            }
-        </select>
-        <span>:</span>
-        <!-- Minute -->
-        <select class="time-select" @bind="State.SelectedMinute" @bind:after="OnTimeChanged">
-            @for (int i = 0; i < 60; i += 5) // Step by 5 mins for cleaner UI default
-            {
-                <option value="@i">@i.ToString("00")</option>
-            }
-        </select>
+        <div class="time-unit">
+            <select class="time-select" @bind="State.SelectedHour" @bind:after="OnTimeChanged">
+                @for (int i = 0; i < (Is24Hour ? 24 : 12); i++)
+                {
+                    var val = !Is24Hour && i == 0 ? 12 : i;
+                    <option value="@i">@val.ToString("00")</option>
+                }
+            </select>
+        </div>
+        
+        <span class="time-separator">:</span>
+        
+        <div class="time-unit">
+            <select class="time-select" @bind="State.SelectedMinute" @bind:after="OnTimeChanged">
+                @for (int i = 0; i < 60; i++)
+                {
+                    <option value="@i">@i.ToString("00")</option>
+                }
+            </select>
+        </div>
 
         @if (!Is24Hour)
         {

@@ -1,60 +1,68 @@
-/* Theme Variables */
+/* Premium Theme Design System */
+:root {
+    --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 .theme-light {
-    --background-color: #ffffff;
-    --text-color: #111111;
-    --text-muted: #6c757d;
-    --border-color: #dee2e6;
-    --hover-bg: #f8f9fa;
-    --theme-toggle-bg: #f0f0f0;
-    --theme-toggle-track: #ccc;
-    --skeleton-bg: rgba(0, 0, 0, 0.11);
-    --skeleton-wave: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.4) 20%, rgba(255, 255, 255, 0.8) 60%, rgba(255, 255, 255, 0));
+    --background-color: #fcfcfd;
+    --text-color: #1a1c21;
+    --text-muted: #5e6470;
+    --border-color: #eaecf0;
+    --hover-bg: #f9fafb;
+    --theme-toggle-bg: #f2f4f7;
+    --theme-toggle-track: #d0d5dd;
+    
+    /* Picker Premium Palette */
+    --primary-color: #6366f1; /* Indigo */
+    --primary-hover: #4f46e5;
+    --range-bg: rgba(99, 102, 241, 0.08);
+    --input-bg: #ffffff;
+    --popup-bg: #ffffff;
+    --popup-border: #eaecf0;
+    --popup-shadow: 0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
+    --day-other-month: #d0d5dd;
+    --divider-color: #f2f4f7;
+    --today-border: #6366f1;
 }
 
 .theme-dark {
-    --background-color: #1e1e1e;
-    --text-color: #ececec;
-    --text-muted: #a0a0a0;
-    --border-color: #444444;
-    --hover-bg: #2a2a2a;
-    --theme-toggle-bg: #333333;
-    --theme-toggle-track: #4a4a4a;
-    --skeleton-bg: rgba(255, 255, 255, 0.1);
-    --skeleton-wave: linear-gradient(90deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.2) 20%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0));
+    --background-color: #0f1115;
+    --text-color: #f9fafb;
+    --text-muted: #94a3b8;
+    --border-color: #1e293b;
+    --hover-bg: #1e293b;
+    --theme-toggle-bg: #1e293b;
+    --theme-toggle-track: #334155;
+
+    /* Picker Premium Palette */
+    --primary-color: #818cf8; /* Lighter Indigo */
+    --primary-hover: #a5b4fc;
+    --range-bg: rgba(129, 140, 248, 0.15);
+    --input-bg: #1e2229;
+    --popup-bg: #151921;
+    --popup-border: #1e293b;
+    --popup-shadow: 0 20px 24px -4px rgba(0, 0, 0, 0.44), 0 8px 8px -4px rgba(0, 0, 0, 0.24);
+    --day-other-month: #475569;
+    --divider-color: #1e293b;
+    --today-border: #818cf8;
 }
 
-/* Apply background and color to the theme wrappers */
 .theme-light, .theme-dark {
     background-color: var(--background-color);
     color: var(--text-color);
+    font-family: var(--font-family);
     min-height: 100vh;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Force inheritance for common structural elements inside the theme wrapper */
 .theme-light body, 
-.theme-dark body,
-.theme-light .page, 
-.theme-dark .page,
-.theme-light main,
-.theme-dark main,
-.theme-light article,
-.theme-dark article,
-.theme-light h1, .theme-dark h1,
-.theme-light h2, .theme-dark h2,
-.theme-light h3, .theme-dark h3,
-.theme-light h4, .theme-dark h4,
-.theme-light h5, .theme-dark h5,
-.theme-light h6, .theme-dark h6,
-.theme-light p, .theme-dark p {
+.theme-dark body {
+    font-family: var(--font-family);
     color: var(--text-color);
 }
 
 .theme-dark .top-row {
-    background-color: #2a2a2a !important;
-    border-bottom: 1px solid #444 !important;
+    background-color: #1a1c21 !important;
+    border-bottom: 1px solid #1e293b !important;
 }
 
-.theme-dark .content {
-    background-color: var(--background-color);
-}

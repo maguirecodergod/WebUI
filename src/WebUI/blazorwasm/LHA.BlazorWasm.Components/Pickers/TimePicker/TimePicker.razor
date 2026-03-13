@@ -11,13 +11,13 @@
                disabled="@Disabled" />
                
         <div class="picker-icon">
-            <i class="far fa-clock"></i>
+            <i class="fas fa-clock"></i>
         </div>
         
         @if (ShowClear && Value != null && !Disabled && !ReadOnly)
         {
             <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
-                &times;
+                <i class="fas fa-times-circle"></i>
             </button>
         }
     </div>

@@ -3,9 +3,13 @@
 
 <div class="calendar">
     <div class="calendar-header">
-        <button type="button" class="nav-btn" @onclick="PrevMonth">&lt;</button>
+        <button type="button" class="nav-btn" @onclick="PrevMonth">
+            <i class="fas fa-chevron-left"></i>
+        </button>
         <div class="current-month">@State.CurrentMonth.ToString("MMMM yyyy", CultureInfo.InvariantCulture)</div>
-        <button type="button" class="nav-btn" @onclick="NextMonth">&gt;</button>
+        <button type="button" class="nav-btn" @onclick="NextMonth">
+            <i class="fas fa-chevron-right"></i>
+        </button>
     </div>
 
     <div class="calendar-grid">

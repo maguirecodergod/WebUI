@@ -14,18 +14,18 @@
                disabled="@Disabled" />
                
         <div class="picker-icon">
-            <i class="far fa-calendar-alt"></i>
+            <i class="fas fa-calendar-alt"></i>
         </div>
         
         @if (ShowClear && Value.HasStart && !Disabled && !ReadOnly)
         {
             <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
-                &times;
+                <i class="fas fa-times-circle"></i>
             </button>
         }
     </div>
 
-    <PickerPopup IsOpen="State.IsOpen">
+    <PickerPopup IsOpen="State.IsOpen" Class="date-range-popup">
         <div class="range-layout">
             <div class="calendar-panel">
                 <CalendarView State="LeftState" 
