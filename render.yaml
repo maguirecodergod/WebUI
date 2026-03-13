@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: lha-webui
+    runtime: docker
+    plan: free # Can be changed to 'starter' or higher for better performance
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+    # Render will automatically use the Dockerfile in the repo
+    # If the Dockerfile is not in the root, specify the path:
+    dockerfilePath: src/WebUI/blazorwasm/LHA.BlazorWasm.App/Dockerfile
+    dockerContext: .
+    healthCheckPath: /
