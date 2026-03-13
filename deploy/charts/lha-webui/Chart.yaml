@@ -1,0 +1,6 @@
+apiVersion: v2
+name: lha-webui
+description: A Helm chart for LHA Blazor WASM Application
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
