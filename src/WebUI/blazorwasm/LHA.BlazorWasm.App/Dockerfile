@@ -27,11 +27,14 @@ FROM nginx:alpine
 # Remove default nginx site
 RUN rm -rf /usr/share/nginx/html/*
 
+# Copy custom nginx config first
+COPY src/WebUI/blazorwasm/LHA.BlazorWasm.App/nginx.conf /etc/nginx/nginx.conf
+
 # Copy Blazor build output
 COPY --from=build /app/publish/wwwroot/ /usr/share/nginx/html/
 
-# Copy custom nginx config
-COPY src/WebUI/blazorwasm/LHA.BlazorWasm.App/nginx.conf /etc/nginx/nginx.conf
+# Ensure permissions
+RUN chmod -R 755 /usr/share/nginx/html
 
 # Expose port for Render
 EXPOSE 8080
