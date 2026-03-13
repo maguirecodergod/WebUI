@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
 
@@ -50,7 +48,7 @@ public partial class TimePicker<TValue> : PickerBase<TValue>
         get 
         {
             var dt = EffectiveConverter.ToDateTime(Value);
-            return dt?.ToString(Format) ?? string.Empty;
+            return dt?.ToString(Format, System.Globalization.CultureInfo.CurrentCulture) ?? string.Empty;
         }
     }
 

@@ -1,10 +1,6 @@
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
 using LHA.BlazorWasm.Services.Storage;
 
 namespace LHA.BlazorWasm.Services.Localization;
@@ -103,6 +99,17 @@ public class LocalizationService : ILocalizationService
     {
         State.CurrentCulture = culture;
         State.Translations = translations;
+
+        var cultureInfo = (System.Globalization.CultureInfo)new System.Globalization.CultureInfo(culture).Clone();
+        
+        // Ensure AM/PM designators are mapped from translations if available
+        if (translations.TryGetValue("Time.AM", out var am)) cultureInfo.DateTimeFormat.AMDesignator = am;
+        if (translations.TryGetValue("Time.PM", out var pm)) cultureInfo.DateTimeFormat.PMDesignator = pm;
+
+        System.Globalization.CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+        System.Globalization.CultureInfo.CurrentCulture = cultureInfo;
+        System.Globalization.CultureInfo.CurrentUICulture = cultureInfo;
 
         OnLanguageChanged?.Invoke();
     }

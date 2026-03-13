@@ -22,5 +22,25 @@
     "Time": {
         "AM": "AM",
         "PM": "PM"
+    },
+    "Months": {
+        "1": "January",
+        "2": "February",
+        "3": "March",
+        "4": "April",
+        "5": "May",
+        "6": "June",
+        "7": "July",
+        "8": "August",
+        "9": "September",
+        "10": "October",
+        "11": "November",
+        "12": "December"
+    },
+    "Validation": {
+        "DateInPast": "This date is in the past",
+        "LimitedAvailability": "Limited availability at this time",
+        "LooksGood": "Looks good!",
+        "OverlapBooking": "Overlap detected with existing booking"
     }
 }

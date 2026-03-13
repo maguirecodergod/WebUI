@@ -83,7 +83,8 @@ public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
         {
             var (start, end) = RangeConverter.MapRange(Value);
             if (!start.HasValue || !end.HasValue) return string.Empty;
-            return $"{start.Value.ToString(Format)}{Separator}{end.Value.ToString(Format)}";
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            return $"{start.Value.ToString(Format, culture)}{Separator}{end.Value.ToString(Format, culture)}";
         }
     }
 

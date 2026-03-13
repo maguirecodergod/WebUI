@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
 using LHA.BlazorWasm.Shared.Constants.Formatters;
-using LHA.BlazorWasm.Services.Localization;
 
 namespace LHA.BlazorWasm.Components.Pickers.DateTimeRangePicker;
 
@@ -103,8 +102,9 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
             var (start, end) = RangeConverter.MapRange(Value);
             if (!start.HasValue) return string.Empty;
 
-            var startStr = start.Value.ToString(Format);
-            var endStr = end.HasValue ? end.Value.ToString(Format) : string.Empty;
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            var startStr = start.Value.ToString(Format, culture);
+            var endStr = end.HasValue ? end.Value.ToString(Format, culture) : string.Empty;
 
             return $"{startStr}{Separator}{endStr}";
         }

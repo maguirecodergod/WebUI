@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using LHA.BlazorWasm.Shared.Models.StatusBadge;
 
 namespace LHA.BlazorWasm.Services.StatusBadge;

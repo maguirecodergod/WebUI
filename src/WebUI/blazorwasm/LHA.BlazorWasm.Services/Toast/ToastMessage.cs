@@ -1,5 +1,3 @@
-using System;
-
 namespace LHA.BlazorWasm.Services.Toast;
 
 /// <summary>

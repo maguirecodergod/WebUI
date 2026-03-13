@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
 
 namespace LHA.BlazorWasm.Components.Skeleton;
 

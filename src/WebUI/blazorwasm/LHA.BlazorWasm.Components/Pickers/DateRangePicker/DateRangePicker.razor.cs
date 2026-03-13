@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
 
@@ -65,8 +63,9 @@ public partial class DateRangePicker<TInner> : PickerBase<DateRange<TInner>>
             var (start, end) = RangeConverter.MapRange(Value);
             if (!start.HasValue) return string.Empty;
             
-            var startStr = start.Value.ToString(Format);
-            var endStr = end.HasValue ? end.Value.ToString(Format) : "";
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            var startStr = start.Value.ToString(Format, culture);
+            var endStr = end.HasValue ? end.Value.ToString(Format, culture) : "";
             
             return $"{startStr}{Separator}{endStr}";
         }

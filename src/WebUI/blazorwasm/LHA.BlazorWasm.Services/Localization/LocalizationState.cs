@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace LHA.BlazorWasm.Services.Localization;
 
 /// <summary>

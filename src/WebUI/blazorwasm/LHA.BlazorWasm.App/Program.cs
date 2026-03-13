@@ -23,6 +23,7 @@ builder.Services.AddAppLocalStorage(options =>
 builder.Services.AddAppLocalization(options =>
 {
     options.DefaultCulture = "en";
+    options.SupportedCultures = new List<string> { "en", "vi" };
 });
 
 builder.Services.AddThemeService();

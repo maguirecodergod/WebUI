@@ -119,28 +119,28 @@
                                             style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Error
                                             State</label>
                                             <DatePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Error"
-                                                        ValidationMessage="This date is in the past" />
+                                                        ValidationMessage="@L.L("Validation.DateInPast")" />
                                         </div>
                                         <div>
                                             <label
                                                 style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Warning
                                                 State</label>
                                                 <TimePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Warning"
-                                                            ValidationMessage="Limited availability at this time" />
+                                                            ValidationMessage="@L.L("Validation.LimitedAvailability")" />
                                             </div>
                                             <div>
                                                 <label
                                                     style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Success
                                                     State</label>
                                                     <DateTimePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Success"
-                                                                    ValidationMessage="Looks good!" />
+                                                                    ValidationMessage="@L.L("Validation.LooksGood")" />
                                                 </div>
                                                 <div style="width: 100%;">
                                                     <label
                                                         style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
                                                         Error</label>
                                                         <DateRangePicker TInner="DateTime?" ValidationStatus="ValidationStatus.Error"
-                                                                         ValidationMessage="Overlap detected with existing booking" />
+                                                                         ValidationMessage="@L.L("Validation.OverlapBooking")" />
                                                     </div>
                                                 </div>
                                             </div>
