@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LHA.BlazorWasm.Services.Localization;
 using Microsoft.JSInterop;
+using LHA.BlazorWasm.Components.Select;
 
 namespace LHA.BlazorWasm.Components.LanguageSelector;
 
@@ -50,13 +51,21 @@ public partial class LanguageSelector : ComponentBase, IDisposable, IAsyncDispos
     /// </summary>
     [Parameter] public string? Style { get; set; }
 
-    /// <summary>
-    /// Private state to control internal Dropdown visibility natively without reliance on JS.
-    /// </summary>
-    private bool _isDropdownOpen;
-    private bool _shouldAlignDropdown;
     private ElementReference _containerRef;
     private IJSObjectReference? _jsModule;
+
+    private ICollection<SelectOption<string>> SelectOptions =>
+        SupportedOptions.Select(o => new SelectOption<string>
+        {
+            Value = o.Culture,
+            Label = o.Name
+        }).ToList();
+
+    private string? CurrentCulture
+    {
+        get => LocalizationService.State.CurrentCulture;
+        set { if (value != null) _ = SelectLanguageAsync(value); }
+    }
 
     /// <summary>
     /// The comprehensive list of worldly language enums this selector displays.
@@ -83,28 +92,6 @@ public partial class LanguageSelector : ComponentBase, IDisposable, IAsyncDispos
         LocalizationService.OnLanguageChanged += RefreshUI;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender && Mode == LanguageSelectorMode.Dropdown)
-        {
-            try
-            {
-                _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/LanguageSelector/LanguageSelector.razor.js");
-            }
-            catch { }
-        }
-
-        if (_shouldAlignDropdown && _jsModule != null)
-        {
-            _shouldAlignDropdown = false;
-            try
-            {
-                await _jsModule.InvokeVoidAsync("autoAlignDropdown", _containerRef);
-            }
-            catch { }
-        }
-    }
-
     private void RefreshUI()
     {
         InvokeAsync(StateHasChanged);
@@ -115,22 +102,7 @@ public partial class LanguageSelector : ComponentBase, IDisposable, IAsyncDispos
         if (LocalizationService.State.CurrentCulture != culture)
         {
             await LocalizationService.SetLanguageAsync(culture);
-            _isDropdownOpen = false;
         }
-    }
-
-    private void ToggleDropdown()
-    {
-        _isDropdownOpen = !_isDropdownOpen;
-        if (_isDropdownOpen)
-        {
-            _shouldAlignDropdown = true;
-        }
-    }
-
-    private void CloseDropdown()
-    {
-        _isDropdownOpen = false;
     }
 
     public void Dispose()

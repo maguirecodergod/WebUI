@@ -37,6 +37,7 @@ public partial class Select<TValue> : ComponentBase
     [Parameter] public bool ShowClear { get; set; } = true;
 
     [Parameter] public RenderFragment<SelectOption<TValue>>? OptionTemplate { get; set; }
+    [Parameter] public RenderFragment<TValue?>? ValueTemplate { get; set; }
     [Parameter] public EventCallback OnChange { get; set; }
 
     protected SelectState<TValue> State { get; } = new();

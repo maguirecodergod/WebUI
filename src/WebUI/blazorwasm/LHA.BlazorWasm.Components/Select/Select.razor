@@ -15,7 +15,14 @@
             {
                 if (HasValue)
                 {
-                    @GetLabel(Value)
+                    if (ValueTemplate != null)
+                    {
+                        @ValueTemplate(Value)
+                    }
+                    else
+                    {
+                        @GetLabel(Value)
+                    }
                 }
                 else
                 {

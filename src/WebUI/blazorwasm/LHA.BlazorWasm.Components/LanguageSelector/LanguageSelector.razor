@@ -1,6 +1,7 @@
 @namespace LHA.BlazorWasm.Components.LanguageSelector
 @using Microsoft.AspNetCore.Components.Web
 @using LHA.BlazorWasm.Services.Localization
+@using LHA.BlazorWasm.Components.Select
 
 <HeadContent>
     <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/flag-icons/css/flag-icons.min.css" />
@@ -10,40 +11,50 @@
 
     @if (Mode == LanguageSelectorMode.Dropdown)
     {
-        <div class="lang-dropdown">
-            <button class="lang-dropdown-toggle" @onclick="ToggleDropdown" @onclick:preventDefault>
-                @if (ShowFlags && CurrentLanguage != null)
-                {
-                    <span class="lang-flag fi fi-@CurrentLanguage.Flag"></span>
+        <Select TValue="string"
+                @bind-Value:get="CurrentCulture"
+                @bind-Value:set="v => CurrentCulture = v"
+                Options="SelectOptions"
+                ShowClear="false"
+                Searchable="false"
+                Class="lang-select">
+            <ValueTemplate Context="culture">
+                @{
+                    var vLang = SupportedOptions.FirstOrDefault(x => x.Culture == culture);
                 }
-                @if (ShowNames && CurrentLanguage != null)
+                @if (vLang != null)
                 {
-                    <span class="lang-name">@CurrentLanguage.Name</span>
+                    <div class="lang-selected-item">
+                        @if (ShowFlags)
+                        {
+                            <span class="lang-flag fi fi-@vLang.Flag"></span>
+                        }
+                        @if (ShowNames)
+                        {
+                            <span class="lang-name">@vLang.Name</span>
+                        }
+                    </div>
                 }
-                <i class="lang-caret">▼</i>
-            </button>
-
-            @if (_isDropdownOpen)
-            {
-                <ul class="lang-dropdown-menu">
-                    @foreach (var lang in SupportedOptions)
-                    {
-                        var isSelected = lang.Culture == CurrentLanguage?.Culture;
-                        <li class="lang-dropdown-item @(isSelected ? "selected" : "")"
-                            @onclick="() => SelectLanguageAsync(lang.Culture)">
-                            @if (ShowFlags)
-                            {
-                                <span class="lang-flag fi fi-@lang.Flag"></span>
-                            }
-                            @if (ShowNames)
-                            {
-                                <span class="lang-name">@lang.Name</span>
-                            }
-                        </li>
-                    }
-                </ul>
-            }
-        </div>
+            </ValueTemplate>
+            <OptionTemplate Context="option">
+                @{
+                    var oLang = SupportedOptions.FirstOrDefault(x => x.Culture == option.Value);
+                }
+                @if (oLang != null)
+                {
+                    <div class="lang-option-item">
+                        @if (ShowFlags)
+                        {
+                            <span class="lang-flag fi fi-@oLang.Flag"></span>
+                        }
+                        @if (ShowNames)
+                        {
+                            <span class="lang-name">@oLang.Name</span>
+                        }
+                    </div>
+                }
+            </OptionTemplate>
+        </Select>
     }
     else if (Mode == LanguageSelectorMode.Inline)
     {
