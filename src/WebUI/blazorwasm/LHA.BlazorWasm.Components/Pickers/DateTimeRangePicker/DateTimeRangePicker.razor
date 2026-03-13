@@ -6,7 +6,7 @@
 
 <div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalMouseDown">
     
-    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")"
+    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "") @ValidationClass"
          @onclick="TogglePopup">
         <input type="text" class="picker-input" placeholder="@Placeholder" value="@FormattedValue" readonly
                disabled="@Disabled" />
@@ -18,10 +18,12 @@
         @if (ShowClear && Value.HasStart && !Disabled && !ReadOnly)
         {
             <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
-                &times;
+                <i class="fas fa-times-circle"></i>
             </button>
         }
     </div>
+
+    <ValidationMessage Status="ValidationStatus" Message="@ValidationMessage" />
 
     <PickerPopup IsOpen="State.IsOpen" Class="datetime-range-popup">
         <div class="range-layout">

@@ -24,6 +24,17 @@ public abstract class PickerBase<TValue> : ComponentBase
     [Parameter] public string? Class { get; set; }
     [Parameter] public string? Style { get; set; }
 
+    [Parameter] public ValidationStatus ValidationStatus { get; set; } = ValidationStatus.None;
+    [Parameter] public string? ValidationMessage { get; set; }
+
+    protected string ValidationClass => ValidationStatus switch
+    {
+        ValidationStatus.Success => "success",
+        ValidationStatus.Warning => "warning",
+        ValidationStatus.Error => "error",
+        _ => ""
+    };
+
     [Parameter] public EventCallback<TValue?> OnChange { get; set; }
     
     [Parameter] public IPickerValueConverter<TValue>? Converter { get; set; }

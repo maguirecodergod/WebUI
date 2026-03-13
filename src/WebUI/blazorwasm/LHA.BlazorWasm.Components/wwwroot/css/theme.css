@@ -23,6 +23,14 @@
     --day-other-month: #d0d5dd;
     --divider-color: #f2f4f7;
     --today-border: #6366f1;
+    
+    /* Validation Colors */
+    --success-color: #12b76a;
+    --success-bg: rgba(18, 183, 106, 0.08);
+    --warning-color: #f79009;
+    --warning-bg: rgba(247, 144, 9, 0.08);
+    --error-color: #f04438;
+    --error-bg: rgba(240, 68, 56, 0.08);
 }
 
 .theme-dark {
@@ -45,6 +53,14 @@
     --day-other-month: #475569;
     --divider-color: #1e293b;
     --today-border: #818cf8;
+
+    /* Validation Colors */
+    --success-color: #32d583;
+    --success-bg: rgba(50, 213, 131, 0.15);
+    --warning-color: #fdb022;
+    --warning-bg: rgba(253, 176, 34, 0.15);
+    --error-color: #fda29b;
+    --error-bg: rgba(253, 162, 155, 0.15);
 }
 
 .theme-light, .theme-dark {
@@ -65,4 +81,3 @@
     background-color: #1a1c21 !important;
     border-bottom: 1px solid #1e293b !important;
 }
-

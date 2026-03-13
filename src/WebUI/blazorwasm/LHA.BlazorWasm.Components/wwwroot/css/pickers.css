@@ -36,6 +36,41 @@
     cursor: not-allowed;
 }
 
+/* Validation States */
+.picker-input-container.success {
+    border-color: var(--success-color);
+}
+.picker-input-container.success:focus-within {
+    box-shadow: 0 0 0 4px var(--success-bg);
+}
+
+.picker-input-container.warning {
+    border-color: var(--warning-color);
+}
+.picker-input-container.warning:focus-within {
+    box-shadow: 0 0 0 4px var(--warning-bg);
+}
+
+.picker-input-container.error {
+    border-color: var(--error-color);
+}
+.picker-input-container.error:focus-within {
+    box-shadow: 0 0 0 4px var(--error-bg);
+}
+
+.validation-msg {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 6px;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.validation-msg.success { color: var(--success-color); }
+.validation-msg.warning { color: var(--warning-color); }
+.validation-msg.error { color: var(--error-color); }
+
 .picker-input {
     width: 100%;
     padding: 12px 40px 12px 16px;
@@ -335,4 +370,3 @@
 /* Range specific overrides to avoid massive widths */
 .date-range-popup { min-width: 660px; }
 .datetime-range-popup { min-width: 880px; }
-
