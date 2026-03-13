@@ -1,0 +1,11 @@
+@namespace LHA.BlazorWasm.Components.Form
+
+@if (!string.IsNullOrWhiteSpace(Text))
+{
+    <div class="form-help" id="@Id">@Text</div>
+}
+
+@code {
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public string? Id { get; set; }
+}

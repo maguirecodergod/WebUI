@@ -1,0 +1,26 @@
+@namespace LHA.BlazorWasm.Components.Form
+
+<div class="@GetCssClass()" style="@Style">
+    @if (Layout == FormFieldLayout.Horizontal)
+    {
+        <div class="form-field-label-col">
+            <FormLabel Text="@Label" Required="@Required" For="@_fieldId" />
+        </div>
+        <div class="form-field-control-col">
+            <div class="form-control-wrapper" id="@_fieldId" aria-describedby="@_helpId">
+                @ChildContent
+            </div>
+            <FormHelp Text="@Help" Id="@_helpId" />
+            <FormMessage ValueExpression="@ValueExpression" />
+        </div>
+    }
+    else
+    {
+        <FormLabel Text="@Label" Required="@Required" For="@_fieldId" />
+        <div class="form-control-wrapper" id="@_fieldId" aria-describedby="@_helpId">
+            @ChildContent
+        </div>
+        <FormHelp Text="@Help" Id="@_helpId" />
+        <FormMessage ValueExpression="@ValueExpression" />
+    }
+</div>

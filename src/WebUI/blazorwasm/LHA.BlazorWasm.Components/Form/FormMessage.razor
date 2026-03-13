@@ -1,0 +1,14 @@
+@namespace LHA.BlazorWasm.Components.Form
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+
+@if (ValueExpression is not null)
+{
+    <div class="form-error">
+        <ValidationMessage For="@ValueExpression" />
+    </div>
+}
+
+@code {
+    [Parameter] public Expression<Func<object>>? ValueExpression { get; set; }
+}

@@ -42,5 +42,19 @@
         "LimitedAvailability": "Limited availability at this time",
         "LooksGood": "Looks good!",
         "OverlapBooking": "Overlap detected with existing booking"
+    },
+    "FormField": {
+        "Required": "Required",
+        "DemoTitle": "Form Field Component Examples",
+        "DemoName": "Full Name",
+        "DemoEmail": "Email Address",
+        "DemoCountry": "Country",
+        "DemoNameHelp": "Enter your legal full name",
+        "DemoEmailHelp": "We will never share your email",
+        "DemoNameRequired": "Full name is required.",
+        "DemoEmailRequired": "Email address is required.",
+        "DemoEmailInvalid": "Please enter a valid email address.",
+        "DemoSubmit": "Submit",
+        "DemoReset": "Reset"
     }
 }

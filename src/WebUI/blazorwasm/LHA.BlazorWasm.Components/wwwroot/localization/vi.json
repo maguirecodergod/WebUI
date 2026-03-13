@@ -42,5 +42,19 @@
         "LimitedAvailability": "Thời gian này không khả dụng",
         "LooksGood": "Trông ổn đấy!",
         "OverlapBooking": "Phát hiện sự trùng lặp với đặt chỗ hiện có"
+    },
+    "FormField": {
+        "Required": "Bắt buộc",
+        "DemoTitle": "Ví dụ Form Field",
+        "DemoName": "Họ và Tên",
+        "DemoEmail": "Địa chỉ Email",
+        "DemoCountry": "Quốc gia",
+        "DemoNameHelp": "Nhập họ tên đầy đủ theo giấy tờ",
+        "DemoEmailHelp": "Chúng tôi sẽ không chia sẻ email của bạn",
+        "DemoNameRequired": "Họ tên là bắt buộc.",
+        "DemoEmailRequired": "Địa chỉ email là bắt buộc.",
+        "DemoEmailInvalid": "Vui lòng nhập email hợp lệ.",
+        "DemoSubmit": "Gửi",
+        "DemoReset": "Đặt lại"
     }
 }
