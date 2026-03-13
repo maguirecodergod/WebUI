@@ -48,7 +48,7 @@ public partial class Toast : IDisposable
         StateHasChanged();
         
         // Wait strictly for the CSS transition length before killing object entirely via Service
-        await Task.Delay(300); // Maps 1:1 strictly to the 0.3s CSS ruleset mapped below
+        await Task.Delay(400); // Maps 1:1 strictly to the 0.4s CSS ruleset
         
         if (Message != null)
         {

@@ -1,109 +1,139 @@
-/* Isolated encapsulation mapping global structural models */
 .toast-wrapper {
     display: flex;
     align-items: center;
-    width: 350px;
-    max-width: 100%;
+    width: 380px;
+    max-width: calc(100vw - 32px);
     margin-bottom: 0.75rem;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    background-color: var(--bs-body-bg, #ffffff);
-    color: var(--bs-body-color, #212529);
-    border-left: 5px solid transparent;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Master binding interval */
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Entering Keyframes natively injected by component insertion */
+/* Entering Animation */
 .toast-enter {
-    animation: slideInRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: toast-slide-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Outgoing animation requested via C# Task delay sequences */
+/* Exiting Animation */
 .toast-exit {
-    animation: slideOutRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: toast-slide-out 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .toast-icon {
-    font-size: 1.25rem;
-    margin-right: 1rem;
+    font-size: 1.5rem;
+    margin-right: 0.85rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    width: 32px;
+    height: 32px;
 }
 
 .toast-body {
     flex-grow: 1;
     font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
     word-break: break-word;
 }
 
 .toast-close {
-    background: transparent;
+    background: var(--hover-bg, rgba(0,0,0,0.05));
     border: none;
-    font-size: 1.5rem;
-    line-height: 1;
-    color: #9ca3af;
+    font-size: 1.25rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
     cursor: pointer;
-    padding: 0;
-    margin-left: 1rem;
+    margin-left: 0.75rem;
     flex-shrink: 0;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .toast-close:hover {
-    color: #4b5563;
+    background: var(--border-color);
+    color: var(--text-color);
+    transform: rotate(90deg);
 }
 
-/* Explicit Theming Mappings */
+/* Status variants with subtle accents */
 .toast-success {
-    border-left-color: #10b981;
+    border-left: 4px solid var(--success-color, #10b981);
 }
 .toast-success .toast-icon {
-    color: #10b981;
+    color: var(--success-color, #10b981);
 }
 
 .toast-info {
-    border-left-color: #3b82f6;
+    border-left: 4px solid var(--primary-color, #3b82f6);
 }
 .toast-info .toast-icon {
-    color: #3b82f6;
+    color: var(--primary-color, #3b82f6);
 }
 
 .toast-warning {
-    border-left-color: #f59e0b;
+    border-left: 4px solid var(--warning-color, #f59e0b);
 }
 .toast-warning .toast-icon {
-    color: #f59e0b;
+    color: var(--warning-color, #f59e0b);
 }
 
 .toast-error {
-    border-left-color: #ef4444;
+    border-left: 4px solid var(--danger-color, #ef4444);
 }
 .toast-error .toast-icon {
-    color: #ef4444;
+    color: var(--danger-color, #ef4444);
 }
 
-/* Keyframes rendering natively without standard component redrawing */
-@keyframes slideInRight {
+/* Progress bar effect (optional, if we want to show timeout) */
+.toast-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.05);
+    z-index: 1;
+}
+
+/* Progress bar animation based on the toast type */
+.toast-success::after { background: var(--success-color, #10b981); opacity: 0.3; }
+.toast-info::after { background: var(--primary-color, #3b82f6); opacity: 0.3; }
+.toast-warning::after { background: var(--warning-color, #f59e0b); opacity: 0.3; }
+.toast-error::after { background: var(--danger-color, #ef4444); opacity: 0.3; }
+
+@keyframes toast-slide-in {
     from {
         opacity: 0;
-        transform: translateX(100%);
+        transform: translateX(120%) scale(0.9);
     }
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateX(0) scale(1);
     }
 }
 
-@keyframes slideOutRight {
+@keyframes toast-slide-out {
     from {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateX(0) scale(1);
     }
     to {
         opacity: 0;
-        transform: translateX(100%);
+        transform: translateX(120%) scale(0.8);
     }
 }

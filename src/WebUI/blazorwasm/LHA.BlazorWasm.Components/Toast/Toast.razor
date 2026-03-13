@@ -5,19 +5,19 @@
     <div class="toast-icon">
         @if (Message?.Level == ToastLevel.Success)
         {
-            <text>✔</text>
+            <i class="fas fa-check-circle"></i>
         }
         else if (Message?.Level == ToastLevel.Info)
         {
-            <text>ℹ</text>
+            <i class="fas fa-info-circle"></i>
         }
         else if (Message?.Level == ToastLevel.Warning)
         {
-            <text>⚠</text>
+            <i class="fas fa-exclamation-triangle"></i>
         }
         else if (Message?.Level == ToastLevel.Error)
         {
-            <text>✖</text>
+            <i class="fas fa-times-circle"></i>
         }
     </div>
     
