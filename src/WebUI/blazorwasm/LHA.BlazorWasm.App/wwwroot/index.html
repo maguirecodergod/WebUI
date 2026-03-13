@@ -4,19 +4,32 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>LHA | Premium Enterprise Platform</title>
-    <meta name="description" content="Experience the next generation of enterprise management with LHA's high-performance dashboard." />
+    <meta name="description"
+        content="Experience the next generation of enterprise management with LHA's high-performance dashboard." />
+
     <base href="/" />
+
+    <!-- Performance -->
+    <link rel="preconnect" href="_framework">
+
+    <!-- Fonts -->
     <link href="_content/LHA.BlazorWasm.Components/css/outfit.css" rel="stylesheet">
-    <link rel="preload" id="webassembly" />
+
+    <!-- Core CSS -->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/font-awesome/css/all.min.css" />
+
+    <!-- App CSS -->
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/css/theme.css" />
     <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/css/pickers.css" />
-    <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
     <link href="LHA.BlazorWasm.App.styles.css" rel="stylesheet" />
+
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+
     <style>
         :root {
             --primary-indigo: #6366f1;
@@ -64,8 +77,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .logo-wrapper {
@@ -81,8 +101,17 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px var(--primary-glow)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 25px var(--primary-glow)); }
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 15px var(--primary-glow));
+            }
+
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 25px var(--primary-glow));
+            }
         }
 
         .brand-name {
@@ -97,10 +126,9 @@
         }
 
         .loading-status {
-            font-size: 0.875rem;
+            font-size: .875rem;
             color: #94a3b8;
             margin-bottom: 2rem;
-            font-weight: 400;
         }
 
         .progress-bar-container {
@@ -109,7 +137,6 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
-            position: relative;
         }
 
         .progress-bar-fill {
@@ -117,56 +144,80 @@
             background: linear-gradient(90deg, #6366f1, #a855f7);
             width: var(--blazor-load-percentage, 0%);
             border-radius: 10px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width .4s cubic-bezier(.4, 0, .2, 1);
             box-shadow: 0 0 15px var(--primary-glow);
         }
 
         .loading-text {
             margin-top: 1rem;
-            font-size: 0.75rem;
+            font-size: .75rem;
             color: #64748b;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: .1em;
         }
 
-        /* Hide the default blazor loading screen elements */
-        .loading-progress, .loading-progress-text {
+        .loading-progress,
+        .loading-progress-text {
             display: none !important;
         }
     </style>
 </head>
 
 <body>
+
     <div id="app">
         <div id="app-loading">
             <div class="loading-container">
+
                 <div class="logo-wrapper">
                     <img src="images/logo.svg" alt="LHA Logo" />
                 </div>
-                <div class="brand-name">LHA Platform</div>
-                <div class="loading-status">Initializing workspace...</div>
+
+                <div class="brand-name">
+                    LHA Platform
+                </div>
+
+                <div class="loading-status">
+                    Initializing workspace...
+                </div>
+
                 <div class="progress-bar-container">
                     <div class="progress-bar-fill"></div>
                 </div>
+
                 <div class="loading-text">
                     <span id="load-percentage">0</span>% Loaded
                 </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // Update loading percentage text
-        const observer = new MutationObserver((mutations) => {
+        const observer = new MutationObserver(() => {
+
             const appDiv = document.getElementById('app');
-            const percentage = getComputedStyle(appDiv).getPropertyValue('--blazor-load-percentage').trim();
+            const percentage = getComputedStyle(appDiv)
+                .getPropertyValue('--blazor-load-percentage')
+                .trim();
+
             if (percentage) {
+
                 const numeric = percentage.replace('%', '');
-                document.getElementById('load-percentage').innerText = Math.round(numeric);
-                document.querySelector('.progress-bar-fill').style.width = percentage;
+
+                document.getElementById('load-percentage')
+                    .innerText = Math.round(numeric);
+
+                document.querySelector('.progress-bar-fill')
+                    .style.width = percentage;
             }
+
         });
-        observer.observe(document.getElementById('app'), { attributes: true, attributeFilter: ['style'] });
+
+        observer.observe(
+            document.getElementById('app'),
+            { attributes: true, attributeFilter: ['style'] }
+        );
     </script>
 
     <div id="blazor-error-ui">
@@ -174,7 +225,9 @@
         <a href="." class="reload">Reload</a>
         <span class="dismiss">🗙</span>
     </div>
-    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+
 </body>
 
 </html>
