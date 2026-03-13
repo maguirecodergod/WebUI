@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
 
@@ -8,14 +6,11 @@ namespace LHA.BlazorWasm.Components.Pickers.DateTimePicker;
 /// <summary>
 /// A dense layout mapping combination states of both pure explicit date clicks mapping into dynamic hour/minute combinations securely.
 /// </summary>
-public partial class DateTimePicker : PickerBase<DateTime?>
+public partial class DateTimePicker<TValue> : PickerBase<TValue>
 {
     [Parameter] public bool Is24Hour { get; set; } = false;
     [Parameter] public string ConfirmText { get; set; } = "Apply";
 
-    /// <summary>
-    /// Tracks temporarily unsaved changes blocking DOM push until strictly confirmed.
-    /// </summary>
     private DateTime? _internalValue;
 
     protected override void OnInitialized()
@@ -28,25 +23,25 @@ public partial class DateTimePicker : PickerBase<DateTime?>
 
     protected override void OnParametersSet()
     {
-        if (Value.HasValue && !State.IsOpen)
+        var dt = EffectiveConverter.ToDateTime(Value);
+        if (dt.HasValue && !State.IsOpen)
         {
-            _internalValue = Value;
+            _internalValue = dt;
             SyncStateWithInternalValue();
         }
-        else if (!_internalValue.HasValue && !Value.HasValue)
+        else if (!_internalValue.HasValue && dt == null)
         {
-            // Default explicit UI positions cleanly when no inputs provided globally
             _internalValue = DateTime.Today;
             SyncStateWithInternalValue();
         }
     }
-    
+
     private void SyncStateWithInternalValue()
     {
         if (!_internalValue.HasValue) return;
-        
+
         State.CurrentMonth = new DateTime(_internalValue.Value.Year, _internalValue.Value.Month, 1);
-        
+
         var h = _internalValue.Value.Hour;
         if (Is24Hour)
         {
@@ -61,7 +56,14 @@ public partial class DateTimePicker : PickerBase<DateTime?>
         State.SelectedMinute = _internalValue.Value.Minute;
     }
 
-    private string FormattedValue => Value?.ToString(Format) ?? string.Empty;
+    private string FormattedValue
+    {
+        get
+        {
+            var dt = EffectiveConverter.ToDateTime(Value);
+            return dt?.ToString(Format) ?? string.Empty;
+        }
+    }
 
     private Task HandleDateSelected(DateTime date)
     {
@@ -70,11 +72,11 @@ public partial class DateTimePicker : PickerBase<DateTime?>
 
         var time = _internalValue ?? DateTime.Now;
         _internalValue = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
-        
+
         StateHasChanged();
-        return Task.CompletedTask; // Selection is explicitly not pushed to Output Value until confirmation requested
+        return Task.CompletedTask;
     }
-    
+
     private Task HandleTimeChanged()
     {
         var h = State.SelectedHour;
@@ -86,7 +88,7 @@ public partial class DateTimePicker : PickerBase<DateTime?>
 
         var baseDate = _internalValue ?? DateTime.Today;
         _internalValue = new DateTime(baseDate.Year, baseDate.Month, baseDate.Day, h, State.SelectedMinute, 0);
-        
+
         StateHasChanged();
         return Task.CompletedTask;
     }
@@ -95,15 +97,15 @@ public partial class DateTimePicker : PickerBase<DateTime?>
     {
         if (_internalValue.HasValue)
         {
-            // Apply logic triggers strictly now modifying global properties mappings
-            await UpdateValueAsync(_internalValue.Value);
+            var newValue = EffectiveConverter.FromDateTime(_internalValue.Value);
+            await UpdateValueAsync(newValue);
         }
         ClosePopup();
     }
-    
+
     protected override Task ClearAsync()
     {
-         _internalValue = null;
-         return base.ClearAsync();
+        _internalValue = null;
+        return base.ClearAsync();
     }
 }

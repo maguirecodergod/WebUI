@@ -1,9 +1,42 @@
 using System;
+using System.Collections.Generic;
 
 namespace LHA.BlazorWasm.Components.Pickers.Core;
 
 /// <summary>
-/// Represents a range between two dates.
+/// Represents a range between two values (usually DateTime or DateTimeOffset).
+/// </summary>
+public struct DateRange<TValue> : IEquatable<DateRange<TValue>>
+{
+    public TValue? Start { get; set; }
+    public TValue? End { get; set; }
+
+    public DateRange(TValue? start, TValue? end)
+    {
+        Start = start;
+        End = end;
+    }
+
+    public bool HasStart => Start != null;
+    public bool HasEnd => End != null;
+    public bool IsComplete => Start != null && End != null;
+
+    public override bool Equals(object? obj) => obj is DateRange<TValue> range && Equals(range);
+
+    public bool Equals(DateRange<TValue> other)
+    {
+        return EqualityComparer<TValue>.Default.Equals(Start, other.Start) && 
+               EqualityComparer<TValue>.Default.Equals(End, other.End);
+    }
+
+    public override int GetHashCode() => HashCode.Combine(Start, End);
+
+    public static bool operator ==(DateRange<TValue> left, DateRange<TValue> right) => left.Equals(right);
+    public static bool operator !=(DateRange<TValue> left, DateRange<TValue> right) => !(left == right);
+}
+
+/// <summary>
+/// Legacy non-generic DateRange for backward compatibility or simple usage.
 /// </summary>
 public struct DateRange : IEquatable<DateRange>
 {
@@ -27,15 +60,9 @@ public struct DateRange : IEquatable<DateRange>
         return d >= Start.Value.Date && d <= End.Value.Date;
     }
 
+    public bool Equals(DateRange other) => Start == other.Start && End == other.End;
     public override bool Equals(object? obj) => obj is DateRange range && Equals(range);
-
-    public bool Equals(DateRange other)
-    {
-        return Start == other.Start && End == other.End;
-    }
-
     public override int GetHashCode() => HashCode.Combine(Start, End);
-
     public static bool operator ==(DateRange left, DateRange right) => left.Equals(right);
     public static bool operator !=(DateRange left, DateRange right) => !(left == right);
 }

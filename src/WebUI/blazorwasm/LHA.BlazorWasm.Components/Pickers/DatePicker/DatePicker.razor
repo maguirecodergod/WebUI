@@ -1,22 +1,20 @@
 @namespace LHA.BlazorWasm.Components.Pickers.DatePicker
 @using LHA.BlazorWasm.Components.Pickers.Core
-@inherits PickerBase<DateTime?>
+@typeparam TValue
+@inherits PickerBase<TValue>
 
 <div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalMouseDown">
     
-    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")" @onclick="TogglePopup">
-        <input type="text" 
-               class="picker-input" 
-               placeholder="@Placeholder"
-               value="@FormattedValue"
-               readonly
+    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")"
+         @onclick="TogglePopup">
+        <input type="text" class="picker-input" placeholder="@Placeholder" value="@FormattedValue" readonly
                disabled="@Disabled" />
                
         <div class="picker-icon">
-            <i class="far fa-calendar-alt">📅</i>
+            <i class="far fa-calendar-alt"></i>
         </div>
         
-        @if (ShowClear && Value.HasValue && !Disabled && !ReadOnly)
+        @if (ShowClear && Value != null && !Disabled && !ReadOnly)
         {
             <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
                 &times;
@@ -25,8 +23,6 @@
     </div>
 
     <PickerPopup IsOpen="State.IsOpen">
-        <CalendarView State="State" 
-                      SelectedDate="Value" 
-                      OnDateSelected="HandleDateSelected" />
+        <CalendarView State="State" SelectedDate="@EffectiveConverter.ToDateTime(Value)" OnDateSelected="HandleDateSelected" />
     </PickerPopup>
 </div>

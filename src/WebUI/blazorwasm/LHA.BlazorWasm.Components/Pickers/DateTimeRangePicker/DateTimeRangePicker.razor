@@ -1,7 +1,8 @@
 @namespace LHA.BlazorWasm.Components.Pickers.DateTimeRangePicker
 @using LHA.BlazorWasm.Components.Buttons
 @using LHA.BlazorWasm.Components.Pickers.Core
-@inherits PickerBase<DateRange?>
+@typeparam TInner
+@inherits PickerBase<DateRange<TInner>>
 
 <div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalMouseDown">
     
@@ -11,10 +12,10 @@
                disabled="@Disabled" />
                
         <div class="picker-icon">
-            <i class="fas fa-calendar-check">📅</i>
+            <i class="fas fa-calendar-check"></i>
         </div>
         
-        @if (ShowClear && Value.HasValue && !Disabled && !ReadOnly)
+        @if (ShowClear && Value.HasStart && !Disabled && !ReadOnly)
         {
             <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
                 &times;
@@ -29,7 +30,9 @@
             <div class="datetime-panel">
                 <div class="panel-header">@LocalizationService.L("DateTimeRangePicker.Start")</div>
                 <div class="datetime-split">
-                    <CalendarView State="StartState" SelectedDate="_tempValue?.Start" Range="_tempValue"
+                    <CalendarView State="StartState" 
+                                  SelectedDate="RangeConverter.MapRange(_tempValue).Start" 
+                                  Range="ConvertToLegacyRange(_tempValue)"
                                   OnDateSelected="(d) => HandleDateSelected(d, true)" />
                                   
                     <div class="split-divider"></div>
@@ -44,7 +47,9 @@
             <div class="datetime-panel">
                 <div class="panel-header">@LocalizationService.L("DateTimeRangePicker.End")</div>
                 <div class="datetime-split">
-                    <CalendarView State="EndState" SelectedDate="_tempValue?.End" Range="_tempValue"
+                    <CalendarView State="EndState" 
+                                  SelectedDate="RangeConverter.MapRange(_tempValue).End" 
+                                  Range="ConvertToLegacyRange(_tempValue)"
                                   OnDateSelected="(d) => HandleDateSelected(d, false)" />
                                   
                     <div class="split-divider"></div>
@@ -56,7 +61,7 @@
         </div>
         
         <div class="range-actions">
-            <Button Type="ButtonType.Button" Class="btn-confirm" Disabled="@(!_tempValue?.IsComplete ?? false)"
+            <Button Type="ButtonType.Button" Class="btn-confirm" Disabled="@(!_tempValue.IsComplete)"
                     OnClick="ConfirmSelection">
                 @ComputedConfirmText
             </Button>

@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
 
 namespace LHA.BlazorWasm.Components.Pickers.DatePicker;
@@ -8,17 +5,33 @@ namespace LHA.BlazorWasm.Components.Pickers.DatePicker;
 /// <summary>
 /// A standardized standard DatePicker binding exclusively mapped to standard DateTime targets visually.
 /// </summary>
-public partial class DatePicker : PickerBase<DateTime?>
+public partial class DatePicker<TValue> : PickerBase<TValue>
 {
-    protected override void OnParametersSet()
+    protected override void OnInitialized()
     {
-        if (Value.HasValue && !State.IsOpen)
+        if (string.IsNullOrEmpty(Format))
         {
-            State.CurrentMonth = new DateTime(Value.Value.Year, Value.Value.Month, 1);
+            Format = "yyyy-MM-dd";
         }
     }
 
-    private string FormattedValue => Value?.ToString(Format) ?? string.Empty;
+    protected override void OnParametersSet()
+    {
+        var dt = EffectiveConverter.ToDateTime(Value);
+        if (dt.HasValue && !State.IsOpen)
+        {
+            State.CurrentMonth = new DateTime(dt.Value.Year, dt.Value.Month, 1);
+        }
+    }
+
+    private string FormattedValue
+    {
+        get
+        {
+            var dt = EffectiveConverter.ToDateTime(Value);
+            return dt?.ToString(Format) ?? string.Empty;
+        }
+    }
 
     private async Task HandleDateSelected(DateTime date)
     {
@@ -26,7 +39,8 @@ public partial class DatePicker : PickerBase<DateTime?>
         if (Max.HasValue && date > Max.Value.Date) return;
 
         // Strip off any time variables natively strictly to date boundary
-        await UpdateValueAsync(date.Date);
+        var newValue = EffectiveConverter.FromDateTime(date.Date);
+        await UpdateValueAsync(newValue);
         ClosePopup();
     }
 }

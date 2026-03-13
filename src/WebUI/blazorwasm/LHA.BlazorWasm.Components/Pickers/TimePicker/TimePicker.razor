@@ -1,22 +1,20 @@
 @namespace LHA.BlazorWasm.Components.Pickers.TimePicker
 @using LHA.BlazorWasm.Components.Pickers.Core
-@inherits PickerBase<DateTime?>
+@typeparam TValue
+@inherits PickerBase<TValue>
 
 <div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalMouseDown">
     
-    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")" @onclick="TogglePopup">
-        <input type="text" 
-               class="picker-input" 
-               placeholder="@Placeholder"
-               value="@FormattedValue"
-               readonly
+    <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "")"
+         @onclick="TogglePopup">
+        <input type="text" class="picker-input" placeholder="@Placeholder" value="@FormattedValue" readonly
                disabled="@Disabled" />
                
         <div class="picker-icon">
-            <i class="far fa-clock">⏰</i>
+            <i class="far fa-clock"></i>
         </div>
         
-        @if (ShowClear && Value.HasValue && !Disabled && !ReadOnly)
+        @if (ShowClear && Value != null && !Disabled && !ReadOnly)
         {
             <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
                 &times;

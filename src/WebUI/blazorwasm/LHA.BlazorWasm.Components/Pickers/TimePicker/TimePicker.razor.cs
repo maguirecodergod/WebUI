@@ -9,7 +9,7 @@ namespace LHA.BlazorWasm.Components.Pickers.TimePicker;
 /// Mapped natively rendering standalone component pushing discrete structural logic resolving `TimeSpan` internally
 /// while pushing back standard exact output `DateTime` bindings.
 /// </summary>
-public partial class TimePicker : PickerBase<DateTime?>
+public partial class TimePicker<TValue> : PickerBase<TValue>
 {
     [Parameter] public bool Is24Hour { get; set; } = false;
 
@@ -24,9 +24,10 @@ public partial class TimePicker : PickerBase<DateTime?>
 
     protected override void OnParametersSet()
     {
-        if (Value.HasValue && !State.IsOpen)
+        var dt = EffectiveConverter.ToDateTime(Value);
+        if (dt.HasValue && !State.IsOpen)
         {
-            var h = Value.Value.Hour;
+            var h = dt.Value.Hour;
             
             if (Is24Hour)
             {
@@ -39,11 +40,18 @@ public partial class TimePicker : PickerBase<DateTime?>
                 if (State.SelectedHour == 0) State.SelectedHour = 12; // 12 AM math edge case
             }
             
-            State.SelectedMinute = Value.Value.Minute;
+            State.SelectedMinute = dt.Value.Minute;
         }
     }
 
-    private string FormattedValue => Value?.ToString(Format) ?? string.Empty;
+    private string FormattedValue 
+    {
+        get 
+        {
+            var dt = EffectiveConverter.ToDateTime(Value);
+            return dt?.ToString(Format) ?? string.Empty;
+        }
+    }
 
     private async Task HandleTimeChanged()
     {
@@ -55,9 +63,11 @@ public partial class TimePicker : PickerBase<DateTime?>
         }
 
         // Apply time strictly bounding against `Now` baseline standard cleanly
-        var baseDate = Value ?? DateTime.Today;
+        var dt = EffectiveConverter.ToDateTime(Value);
+        var baseDate = dt ?? DateTime.Today;
         var newTime = new DateTime(baseDate.Year, baseDate.Month, baseDate.Day, h, State.SelectedMinute, 0);
         
-        await UpdateValueAsync(newTime);
+        var newValue = EffectiveConverter.FromDateTime(newTime);
+        await UpdateValueAsync(newValue);
     }
 }

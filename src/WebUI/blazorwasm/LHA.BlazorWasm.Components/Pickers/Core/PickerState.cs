@@ -1,5 +1,3 @@
-using System;
-
 namespace LHA.BlazorWasm.Components.Pickers.Core;
 
 /// <summary>
@@ -8,13 +6,13 @@ namespace LHA.BlazorWasm.Components.Pickers.Core;
 public class PickerState
 {
     // Extracted out so all components share the same rendering/navigation math
-    
+
     // Toggle for the parent dropdown
     public bool IsOpen { get; set; }
-    
+
     // Time navigation
     public DateTime CurrentMonth { get; set; } = DateTime.Today;
-    
+
     // Time selection
     public int SelectedHour { get; set; } = 0;
     public int SelectedMinute { get; set; } = 0;

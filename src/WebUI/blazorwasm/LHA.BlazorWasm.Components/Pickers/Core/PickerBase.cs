@@ -1,7 +1,4 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace LHA.BlazorWasm.Components.Pickers.Core;
 
@@ -13,21 +10,24 @@ public abstract class PickerBase<TValue> : ComponentBase
 {
     [Parameter] public TValue? Value { get; set; }
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
-    
+
     [Parameter] public string Placeholder { get; set; } = "Select...";
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool ReadOnly { get; set; }
-    
+
     [Parameter] public DateTime? Min { get; set; }
     [Parameter] public DateTime? Max { get; set; }
-    
-    [Parameter] public string Format { get; set; } = "yyyy-MM-dd";
+
+    [Parameter] public string Format { get; set; } = string.Empty;
     [Parameter] public bool ShowClear { get; set; } = true;
-    
+
     [Parameter] public string? Class { get; set; }
     [Parameter] public string? Style { get; set; }
-    
+
     [Parameter] public EventCallback<TValue?> OnChange { get; set; }
+    
+    [Parameter] public IPickerValueConverter<TValue>? Converter { get; set; }
+    protected IPickerValueConverter<TValue> EffectiveConverter => Converter ?? new DefaultPickerConverter<TValue>();
 
     protected PickerState State { get; } = new();
 
@@ -56,7 +56,7 @@ public abstract class PickerBase<TValue> : ComponentBase
             State.IsOpen = false;
         }
     }
-    
+
     protected virtual Task ClearAsync()
     {
         return UpdateValueAsync(default);
@@ -69,7 +69,7 @@ public abstract class PickerBase<TValue> : ComponentBase
     {
         _preventFocusClose = true;
     }
-    
+
     /// <summary>
     /// Traps global click-away logic purely using Blazor FocusOut bubbling techniques.
     /// Handled cautiously via tab/blur mechanics rather than global JS interceptors.
@@ -78,7 +78,7 @@ public abstract class PickerBase<TValue> : ComponentBase
     {
         // Delay needed to allow interactive clicks inside the dropdown to process first.
         await Task.Delay(200);
-        
+
         if (_preventFocusClose)
         {
             _preventFocusClose = false;

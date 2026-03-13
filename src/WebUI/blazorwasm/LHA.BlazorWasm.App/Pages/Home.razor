@@ -59,17 +59,17 @@
     <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
         <div>
             <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Date Picker</label>
-            <DatePicker @bind-Value="testDate" Placeholder="Select Date" />
+            <DatePicker TValue="DateTime?" @bind-Value="testDate" Placeholder="Select Date" />
         </div>
         
         <div>
             <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Time Picker (12h)</label>
-            <TimePicker @bind-Value="testTime" Placeholder="Select Time" />
+            <TimePicker TValue="DateTime?" @bind-Value="testTime" Placeholder="Select Time" />
         </div>
         
         <div>
             <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Date Time Picker (24h)</label>
-            <DateTimePicker @bind-Value="testDateTime" Is24Hour="true" Placeholder="Select Date and Time" />
+            <DateTimePicker TValue="DateTime?" @bind-Value="testDateTime" Is24Hour="true" Placeholder="Select Date and Time" />
         </div>
     </div>
     
@@ -77,20 +77,41 @@
     <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
         <div>
             <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Date Range</label>
-            <DateRangePicker @bind-Value="testDateRange" Placeholder="Select Range" />
+            <DateRangePicker TInner="DateTime?" @bind-Value="testDateRange" Placeholder="Select Range" />
         </div>
         
         <div>
             <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Time Range</label>
-            <TimeRangePicker @bind-Value="testTimeRange" Placeholder="Start ~ End" />
+            <TimeRangePicker TInner="DateTime?" @bind-Value="testTimeRange" Placeholder="Start ~ End" />
         </div>
         
         <div style="width: 100%;">
             <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">Date Time Range (Massive)</label>
-            <DateTimeRangePicker @bind-Value="testDateTimeRange" Placeholder="Select Bounds" />
+            <DateTimeRangePicker TInner="DateTime?" @bind-Value="testDateTimeRange" Placeholder="Select Bounds" />
         </div>
     </div>
     
+    <!-- DateTimeOffset Examples (New) -->
+    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+        <h3 style="margin-top: 0;">Enterprise Support: DateTimeOffset</h3>
+        <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
+            <div>
+                <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">DTO Date Picker</label>
+                <DatePicker TValue="DateTimeOffset?" @bind-Value="testDtoDate" Placeholder="DateTimeOffset?" />
+                <small style="color: grey;">Value: @testDtoDate?.ToString("O")</small>
+            </div>
+            <div>
+                <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">DTO DateTime Picker</label>
+                <DateTimePicker TValue="DateTimeOffset?" @bind-Value="testDtoDateTime" Is24Hour="true" />
+                <small style="color: grey;">Value: @testDtoDateTime?.ToString("O")</small>
+            </div>
+            <div style="width: 100%;">
+                <label style="display:block; font-weight:bold; margin-bottom:0.5rem;">DTO Date Range Picker</label>
+                <DateRangePicker TInner="DateTimeOffset?" @bind-Value="testDtoRange" />
+                <small style="color: grey;">Range: @testDtoRange.Start?.ToString("d") ~ @testDtoRange.End?.ToString("d")</small>
+            </div>
+        </div>
+    </div>
 </div>
 
 <hr />
@@ -232,9 +253,14 @@
     private DateTime? testDate = DateTime.Today;
     private DateTime? testTime;
     private DateTime? testDateTime;
-    private DateRange? testDateRange;
-    private DateRange? testTimeRange;
-    private DateRange? testDateTimeRange;
+    private DateRange<DateTime?> testDateRange;
+    private DateRange<DateTime?> testTimeRange;
+    private DateRange<DateTime?> testDateTimeRange;
+
+    // DateTimeOffset Examples
+    private DateTimeOffset? testDtoDate;
+    private DateTimeOffset? testDtoDateTime = DateTimeOffset.Now;
+    private DateRange<DateTimeOffset?> testDtoRange;
 
     private void OnPrimaryClick()
     {

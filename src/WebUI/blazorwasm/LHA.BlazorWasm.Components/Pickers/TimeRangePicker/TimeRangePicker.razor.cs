@@ -8,7 +8,7 @@ namespace LHA.BlazorWasm.Components.Pickers.TimeRangePicker;
 /// <summary>
 /// Dual clock instantiation pushing structural variables cleanly mapping generic base bounds natively over logical ranges sequentially.
 /// </summary>
-public partial class TimeRangePicker : PickerBase<DateRange?>
+public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
 {
     [Parameter] public string Separator { get; set; } = " ~ ";
     [Parameter] public string ConfirmText { get; set; } = "Apply";
@@ -17,7 +17,8 @@ public partial class TimeRangePicker : PickerBase<DateRange?>
     protected PickerState StartState { get; } = new();
     protected PickerState EndState { get; } = new();
 
-    private DateRange? _tempValue;
+    private DateRange<TInner> _tempValue;
+    private DateRangeConverter<TInner> RangeConverter => new();
 
     protected override void OnInitialized()
     {
@@ -29,7 +30,7 @@ public partial class TimeRangePicker : PickerBase<DateRange?>
 
     protected override void OnParametersSet()
     {
-        if (Value.HasValue && !State.IsOpen)
+        if (!State.IsOpen)
         {
             _tempValue = Value;
             SyncStateWithInternalValue();
@@ -38,24 +39,23 @@ public partial class TimeRangePicker : PickerBase<DateRange?>
     
     private void SyncStateWithInternalValue()
     {
-        if (_tempValue?.Start.HasValue == true)
+        var (start, end) = RangeConverter.MapRange(_tempValue);
+        if (start.HasValue)
         {
-            SetStateFromTime(StartState, _tempValue.Value.Start.Value);
+            SetStateFromTime(StartState, start.Value);
         }
         else
         {
-            // Default 9:00 AM
             SetStateFromTime(StartState, DateTime.Today.AddHours(9));
         }
         
-        if (_tempValue?.End.HasValue == true)
+        if (end.HasValue)
         {
-            SetStateFromTime(EndState, _tempValue.Value.End.Value);
+            SetStateFromTime(EndState, end.Value);
         }
         else
         {
-            // Default 5:00 PM
-            SetStateFromTime(EndState, DateTime.Today.AddHours(17));
+             SetStateFromTime(EndState, DateTime.Today.AddHours(17));
         }
     }
     
@@ -79,15 +79,14 @@ public partial class TimeRangePicker : PickerBase<DateRange?>
     {
         get
         {
-            if (!Value.HasValue || !Value.Value.Start.HasValue || !Value.Value.End.HasValue) return string.Empty;
-            return $"{Value.Value.Start.Value.ToString(Format)}{Separator}{Value.Value.End.Value.ToString(Format)}";
+            var (start, end) = RangeConverter.MapRange(Value);
+            if (!start.HasValue || !end.HasValue) return string.Empty;
+            return $"{start.Value.ToString(Format)}{Separator}{end.Value.ToString(Format)}";
         }
     }
 
     private Task HandleTimeChanged()
     {
-        // Interacts seamlessly whenever any internal sub-select element broadcasts.
-        // Syncs local variables strictly preserving logical bounds for visual accuracy
         StateHasChanged();
         return Task.CompletedTask;
     }
@@ -100,7 +99,6 @@ public partial class TimeRangePicker : PickerBase<DateRange?>
             if (state.AmPm == "PM" && h < 12) h += 12;
             if (state.AmPm == "AM" && h == 12) h = 0;
         }
-        // Project onto today
         return new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, h, state.SelectedMinute, 0);
     }
 
@@ -109,15 +107,14 @@ public partial class TimeRangePicker : PickerBase<DateRange?>
         var start = GetTimeFromState(StartState);
         var end = GetTimeFromState(EndState);
         
-        // Auto-fix inverted bindings natively enforcing logical flow strictly
         if (start > end)
         {
-            _tempValue = new DateRange(end, start);
-            SyncStateWithInternalValue(); // Repair visual elements to match chronological order
+            _tempValue = RangeConverter.CreateRange(end, start);
+            SyncStateWithInternalValue();
         }
         else
         {
-            _tempValue = new DateRange(start, end);
+            _tempValue = RangeConverter.CreateRange(start, end);
         }
         
         await UpdateValueAsync(_tempValue);
@@ -126,7 +123,7 @@ public partial class TimeRangePicker : PickerBase<DateRange?>
     
     protected override Task ClearAsync()
     {
-        _tempValue = null;
+        _tempValue = default;
         return base.ClearAsync();
     }
 }
