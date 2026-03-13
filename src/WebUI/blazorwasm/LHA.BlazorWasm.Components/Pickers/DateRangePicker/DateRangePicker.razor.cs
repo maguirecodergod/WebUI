@@ -24,6 +24,7 @@ public partial class DateRangePicker<TInner> : PickerBase<DateRange<TInner>>
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         if (string.IsNullOrEmpty(Format))
         {
             Format = "yyyy-MM-dd";

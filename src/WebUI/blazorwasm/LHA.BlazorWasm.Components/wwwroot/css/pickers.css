@@ -268,8 +268,20 @@
 }
 
 .calendar-day.other-month {
-    color: var(--day-other-month);
+    color: var(--text-muted);
     opacity: 0.4;
+}
+
+.calendar-day.disabled {
+    cursor: not-allowed;
+    opacity: 0.25;
+    background: transparent !important;
+    text-decoration: line-through;
+}
+
+.calendar-day:not(.disabled):hover {
+    background: var(--hover-bg);
+    color: var(--primary-color);
 }
 
 .calendar-day.today {

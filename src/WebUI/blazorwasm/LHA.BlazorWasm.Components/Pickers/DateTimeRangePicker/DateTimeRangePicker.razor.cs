@@ -28,6 +28,7 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         if (string.IsNullOrEmpty(Format))
         {
             Format = Is24Hour ? DateTimeFormatter.DateTime24 : DateTimeFormatter.DateTime12;

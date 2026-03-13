@@ -9,6 +9,7 @@ public partial class DatePicker<TValue> : PickerBase<TValue>
 {
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         if (string.IsNullOrEmpty(Format))
         {
             Format = "yyyy-MM-dd";

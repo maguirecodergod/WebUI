@@ -35,7 +35,10 @@
                     <CalendarView State="StartState" 
                                   SelectedDate="RangeConverter.MapRange(_tempValue).Start" 
                                   Range="ConvertToLegacyRange(_tempValue)"
-                                  OnDateSelected="(d) => HandleDateSelected(d, true)" />
+                                  OnDateSelected="(d) => HandleDateSelected(d, true)"
+                                  Min="Min"
+                                  Max="Max"
+                                  DisabledDateFunc="DisabledDateFunc" />
                                   
                     <div class="split-divider"></div>
                     
@@ -52,7 +55,10 @@
                     <CalendarView State="EndState" 
                                   SelectedDate="RangeConverter.MapRange(_tempValue).End" 
                                   Range="ConvertToLegacyRange(_tempValue)"
-                                  OnDateSelected="(d) => HandleDateSelected(d, false)" />
+                                  OnDateSelected="(d) => HandleDateSelected(d, false)"
+                                  Min="Min"
+                                  Max="Max"
+                                  DisabledDateFunc="DisabledDateFunc" />
                                   
                     <div class="split-divider"></div>
                     

@@ -40,15 +40,20 @@
             var isInRange = Range.HasValue && DateUtils.IsBetween(date, Range.Value.Start, Range.Value.End);
             var isRangeStart = Range.HasValue && DateUtils.IsSameDay(date, Range.Value.Start);
             var isRangeEnd = Range.HasValue && DateUtils.IsSameDay(date, Range.Value.End);
+            
+            var isDisabled = (Min.HasValue && date.Date < Min.Value.Date) || 
+                             (Max.HasValue && date.Date > Max.Value.Date) || 
+                             (DisabledDateFunc?.Invoke(date) ?? false);
 
             var dayClass = $"calendar-day {(isCurrentMonth ? "" : "other-month")} " +
                            $"{(isSelected ? "selected" : "")} " +
                            $"{(isToday ? "today" : "")} " +
                            $"{(isInRange ? "in-range" : "")} " +
                            $"{(isRangeStart ? "range-start" : "")} " +
-                           $"{(isRangeEnd ? "range-end" : "")}";
+                           $"{(isRangeEnd ? "range-end" : "")} " +
+                           $"{(isDisabled ? "disabled" : "")}";
 
-            <button type="button" class="@dayClass" @onclick="() => SelectDate(date)">
+            <button type="button" class="@dayClass" @onclick="() => SelectDate(date)" disabled="@isDisabled">
                 @date.Day
             </button>
         }
@@ -59,6 +64,9 @@
     [Parameter] public PickerState State { get; set; } = default!;
     [Parameter] public DateTime? SelectedDate { get; set; }
     [Parameter] public DateRange? Range { get; set; }
+    [Parameter] public DateTime? Min { get; set; }
+    [Parameter] public DateTime? Max { get; set; }
+    [Parameter] public Func<DateTime, bool>? DisabledDateFunc { get; set; }
     [Parameter] public EventCallback<DateTime> OnDateSelected { get; set; }
 
     private List<DateTime> _grid = new();

@@ -16,6 +16,7 @@ public partial class TimePicker<TValue> : PickerBase<TValue>
     // Default formatting strictly enforcing Time
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         if (string.IsNullOrEmpty(Format))
         {
             Format = Is24Hour ? "HH:mm" : "hh:mm tt";

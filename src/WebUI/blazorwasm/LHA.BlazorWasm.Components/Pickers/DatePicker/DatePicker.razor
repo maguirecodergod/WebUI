@@ -25,6 +25,11 @@
     <ValidationMessage Status="ValidationStatus" Message="@ValidationMessage" />
 
     <PickerPopup IsOpen="State.IsOpen">
-        <CalendarView State="State" SelectedDate="@EffectiveConverter.ToDateTime(Value)" OnDateSelected="HandleDateSelected" />
+        <CalendarView State="State" 
+                      SelectedDate="@EffectiveConverter.ToDateTime(Value)" 
+                      OnDateSelected="HandleDateSelected"
+                      Min="Min"
+                      Max="Max"
+                      DisabledDateFunc="DisabledDateFunc" />
     </PickerPopup>
 </div>

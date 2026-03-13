@@ -27,7 +27,12 @@
     <PickerPopup IsOpen="State.IsOpen">
         <div class="datetime-layout">
             <div class="datetime-calendar">
-                <CalendarView State="State" SelectedDate="_internalValue" OnDateSelected="HandleDateSelected" />
+                <CalendarView State="State" 
+                              SelectedDate="_internalValue" 
+                              OnDateSelected="HandleDateSelected"
+                              Min="Min"
+                              Max="Max"
+                              DisabledDateFunc="DisabledDateFunc" />
             </div>
             
             <div class="datetime-divider"></div>

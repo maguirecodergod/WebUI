@@ -33,14 +33,20 @@
                 <CalendarView State="LeftState" 
                                SelectedDate="RangeConverter.MapRange(_tempValue).Start" 
                                Range="ConvertToLegacyRange(_tempValue)"
-                               OnDateSelected="HandleDateSelected" />
+                               OnDateSelected="HandleDateSelected"
+                               Min="Min"
+                               Max="Max"
+                               DisabledDateFunc="DisabledDateFunc" />
             </div>
             
             <div class="calendar-panel">
                 <CalendarView State="RightState" 
                                SelectedDate="RangeConverter.MapRange(_tempValue).End" 
                                Range="ConvertToLegacyRange(_tempValue)"
-                               OnDateSelected="HandleDateSelected" />
+                               OnDateSelected="HandleDateSelected"
+                               Min="Min"
+                               Max="Max"
+                               DisabledDateFunc="DisabledDateFunc" />
             </div>
         </div>
         

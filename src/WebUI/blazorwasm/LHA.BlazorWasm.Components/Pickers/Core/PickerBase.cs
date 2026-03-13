@@ -7,7 +7,7 @@ namespace LHA.BlazorWasm.Components.Pickers.Core;
 /// Abstract base defining robust shared UI parameters ensuring zero-configuration consistency across all Pickers.
 /// Integrates pure C# blur mechanics and custom events.
 /// </summary>
-public abstract class PickerBase<TValue> : ComponentBase
+public abstract class PickerBase<TValue> : ComponentBase, IDisposable
 {
     [Inject] protected ILocalizationService LocalizationService { get; set; } = default!;
 
@@ -15,12 +15,31 @@ public abstract class PickerBase<TValue> : ComponentBase
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
 
     [Parameter] public string? Placeholder { get; set; }
-    protected string EffectivePlaceholder => Placeholder ?? LocalizationService.L("Common.Select");
+    protected string EffectivePlaceholder => string.IsNullOrEmpty(Placeholder) 
+        ? LocalizationService.L("Common.Select") 
+        : Placeholder;
+
+    protected override void OnInitialized()
+    {
+        LocalizationService.OnLanguageChanged += HandleLanguageChanged;
+    }
+
+    private void HandleLanguageChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public virtual void Dispose()
+    {
+        LocalizationService.OnLanguageChanged -= HandleLanguageChanged;
+    }
+
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool ReadOnly { get; set; }
 
     [Parameter] public DateTime? Min { get; set; }
     [Parameter] public DateTime? Max { get; set; }
+    [Parameter] public Func<DateTime, bool>? DisabledDateFunc { get; set; }
 
     [Parameter] public string Format { get; set; } = string.Empty;
     [Parameter] public bool ShowClear { get; set; } = true;

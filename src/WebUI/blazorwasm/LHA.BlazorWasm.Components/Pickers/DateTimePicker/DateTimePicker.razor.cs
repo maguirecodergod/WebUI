@@ -16,6 +16,7 @@ public partial class DateTimePicker<TValue> : PickerBase<TValue>
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         if (string.IsNullOrEmpty(Format))
         {
             Format = Is24Hour ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd hh:mm tt";

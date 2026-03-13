@@ -23,6 +23,7 @@ public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         if (string.IsNullOrEmpty(Format))
         {
             Format = Is24Hour ? "HH:mm" : "hh:mm tt";
