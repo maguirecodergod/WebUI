@@ -1,4 +1,1 @@
-/* Minimal overrides for TimeRangePicker */
-.picker-wrapper {
-    max-width: 320px;
-}
+/* TimeRangePicker Specific Styles - Using shared responsive architecture in pickers.css */

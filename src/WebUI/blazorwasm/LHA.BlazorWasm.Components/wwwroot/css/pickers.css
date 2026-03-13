@@ -1,4 +1,39 @@
-/* Modern & Premium Picker Orchestration */
+:root {
+    --picker-touch-target: 44px;
+    --picker-font-size: 14px;
+    --picker-mobile-padding: 16px;
+}
+
+/* Global Scrollbar Customization */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-muted) transparent;
+}
+
+.picker-popup::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    width: 4px; /* Even thinner */
+    height: 4px;
+}
+
+.picker-popup::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.picker-popup::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 10px;
+    border: 2px solid transparent;
+}
+
+.picker-wrapper,
+.picker-wrapper *,
+.picker-popup,
+.picker-popup * {
+    box-sizing: border-box;
+}
 
 .picker-wrapper {
     position: relative;
@@ -8,6 +43,7 @@
     font-family: var(--font-family);
 }
 
+/* Base Input Styles */
 .picker-input-container {
     position: relative;
     display: flex;
@@ -17,6 +53,7 @@
     background-color: var(--input-bg);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 48px; /* Standardize height */
 }
 
 .picker-input-container:hover {
@@ -37,26 +74,9 @@
 }
 
 /* Validation States */
-.picker-input-container.success {
-    border-color: var(--success-color);
-}
-.picker-input-container.success:focus-within {
-    box-shadow: 0 0 0 4px var(--success-bg);
-}
-
-.picker-input-container.warning {
-    border-color: var(--warning-color);
-}
-.picker-input-container.warning:focus-within {
-    box-shadow: 0 0 0 4px var(--warning-bg);
-}
-
-.picker-input-container.error {
-    border-color: var(--error-color);
-}
-.picker-input-container.error:focus-within {
-    box-shadow: 0 0 0 4px var(--error-bg);
-}
+.picker-input-container.success { border-color: var(--success-color); }
+.picker-input-container.warning { border-color: var(--warning-color); }
+.picker-input-container.error { border-color: var(--error-color); }
 
 .validation-msg {
     font-size: 0.8rem;
@@ -74,7 +94,7 @@
 .picker-input {
     width: 100%;
     padding: 12px 40px 12px 16px;
-    font-size: 0.95rem;
+    font-size: var(--picker-font-size);
     font-weight: 500;
     line-height: normal;
     color: var(--text-color);
@@ -93,10 +113,6 @@
     transition: color 0.2s;
 }
 
-.picker-input-container:hover .picker-icon {
-    color: var(--primary-color);
-}
-
 .picker-clear {
     position: absolute;
     right: 42px;
@@ -104,8 +120,8 @@
     border: none;
     color: var(--text-muted);
     font-size: 0.8rem;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -113,6 +129,7 @@
     justify-content: center;
     transition: all 0.2s;
     opacity: 0;
+    z-index: 5;
 }
 
 .picker-input-container:hover .picker-clear {
@@ -140,6 +157,7 @@
     color: var(--text-color);
     backdrop-filter: blur(12px);
     transform-origin: top left;
+    overflow-y: auto;
 }
 
 .picker-popup.open {
@@ -153,20 +171,18 @@
 }
 
 /* Calendar Styling */
-.calendar {
-    user-select: none;
-}
+.calendar { user-select: none; }
 
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .current-month {
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--text-color);
 }
 
@@ -175,8 +191,8 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -197,7 +213,7 @@
 
 .calendar-day-name {
     text-align: center;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     color: var(--text-muted);
@@ -214,16 +230,18 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 500;
     transition: all 0.15s;
     color: var(--text-color);
+    min-width: 38px;
+    min-height: 38px;
 }
 
 .calendar-day:hover {
     background-color: var(--hover-bg);
     color: var(--primary-color);
-    transform: scale(1.1);
+    z-index: 1;
 }
 
 .calendar-day.other-month {
@@ -234,6 +252,17 @@
 .calendar-day.today {
     color: var(--primary-color);
     font-weight: 700;
+    position: relative;
+}
+
+.calendar-day.today::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
 }
 
 .calendar-day.selected {
@@ -259,56 +288,70 @@
     color: #fff;
 }
 
-/* Time Selection Refined */
+/* Time Selection - Extremely Compact & Horizontal */
 .time-selectors {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    gap: 6px;
+    padding: 4px 8px;
+    background: var(--divider-color);
+    border-radius: 10px;
 }
 
 .time-unit select {
-    padding: 10px 14px;
-    border: 1.5px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    background: var(--input-bg);
-    color: var(--text-color);
+    padding: 4px 8px;
+    border: 1px solid var(--border-color); /* Add subtle border for definition */
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    min-width: 44px;
+    text-align: center;
+    background-color: var(--input-bg);
+    color: var(--text-color) !important;
     cursor: pointer;
     outline: none;
     transition: all 0.2s;
 }
 
+.time-unit select option {
+    background-color: var(--popup-bg);
+    color: var(--text-color);
+}
+
 .time-unit select:hover {
-    border-color: var(--primary-color);
+    background: var(--hover-bg);
 }
 
 .time-separator {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-weight: 800;
     color: var(--text-muted);
 }
 
 .ampm-toggle {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    background: var(--divider-color);
-    padding: 4px;
-    border-radius: 10px;
+    flex-direction: row; /* Horizontal AM/PM */
+    gap: 2px;
+    background: var(--input-bg);
+    padding: 2px;
+    border-radius: 6px;
+    margin-left: 4px;
 }
 
 .ampm-toggle button {
     border: none;
     background: transparent;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 800;
     color: var(--text-muted);
     cursor: pointer;
-    transition: all 0.2s;
+}
+
+.ampm-toggle button.active {
+    background: var(--primary-color);
+    color: #fff;
 }
 
 .ampm-toggle button.active {
@@ -317,25 +360,54 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Layout Consistencies */
+/* Layout Containers */
 .range-layout {
     display: flex;
-    gap: 20px;
+    gap: 24px;
     align-items: flex-start;
 }
 
-.datetime-layout {
+.datetime-layout,
+.datetime-split {
     display: flex;
-    gap: 24px;
+    flex-direction: column; /* Date on top, Time on bottom */
+    gap: 16px;
+    align-items: center;
 }
 
-.datetime-divider {
+.datetime-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-divider {
     width: 1px;
     background: var(--border-color);
+    align-self: stretch;
+}
+
+.datetime-divider,
+.split-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border-color);
+    margin: 4px 0;
+}
+
+.panel-divider {
+    width: 1px;
+    background: var(--border-color);
+    align-self: stretch;
+}
+
+.datetime-panel,
+.calendar-panel {
+    padding: 0 8px;
 }
 
 .panel-title {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    text-align: center;
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--text-muted);
@@ -344,29 +416,108 @@
 }
 
 .btn-confirm {
-    margin-top: 20px;
+    margin-top: 24px;
     background: var(--primary-color);
     color: #fff;
     border: none;
-    padding: 12px 24px;
+    padding: 14px 24px;
     border-radius: 12px;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.2s;
     width: 100%;
 }
 
 .btn-confirm:hover:not(:disabled) {
     background: var(--primary-hover);
-    transform: translateY(-1px);
 }
 
-.btn-confirm:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+/* Shared Responsive Breakpoints */
+
+/* Range specific min-widths for larger screens */
+@media (min-width: 768px) {
+    .date-range-popup { min-width: 660px; }
+    .datetime-range-popup { min-width: 680px; }
 }
 
-/* Range specific overrides to avoid massive widths */
-.date-range-popup { min-width: 660px; }
-.datetime-range-popup { min-width: 880px; }
+/* Tablet (768px–1199px) */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .picker-wrapper {
+        max-width: 320px;
+    }
+    
+    .picker-popup {
+        left: 50%;
+        transform: translateX(-50%);
+        transform-origin: top center;
+    }
+}
+
+/* Mobile (<768px) */
+@media (max-width: 767px) {
+    .picker-wrapper {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .picker-input {
+        font-size: 16px; /* Prevent iPhone zoom */
+    }
+
+    .picker-popup {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        min-width: 100%;
+        max-height: 85vh;
+        border-radius: 20px 20px 0 0;
+        padding: 24px var(--picker-mobile-padding);
+        transform: translateY(100%);
+        box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
+        animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+        to { transform: translateY(0); }
+    }
+
+    .range-layout {
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .datetime-layout,
+    .datetime-split {
+        /* Already column by default in base style now */
+        gap: 24px;
+    }
+
+    .datetime-divider,
+    .panel-divider,
+    .split-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .calendar-day {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .nav-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .time-unit select {
+        padding: 14px 20px;
+        font-size: 1.4rem;
+    }
+}
+
+/* Desktop (>=1200px) */
+@media (min-width: 1200px) {
+    /* Maintain current desktop styles, refined in base rules */
+}

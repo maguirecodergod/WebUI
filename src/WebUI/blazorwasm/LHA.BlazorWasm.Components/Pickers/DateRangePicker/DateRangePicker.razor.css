@@ -1,15 +1,1 @@
-/* Minimal overrides for DateRangePicker */
-::deep .picker-popup {
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-@media (max-width: 768px) {
-    ::deep .picker-popup {
-        left: 0;
-        transform: none;
-    }
-    ::deep .range-layout {
-        flex-direction: column;
-    }
-}
+/* DateRangePicker Specific Styles - Using shared responsive architecture in pickers.css */

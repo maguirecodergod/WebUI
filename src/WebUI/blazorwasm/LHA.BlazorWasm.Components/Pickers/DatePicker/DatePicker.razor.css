@@ -1,4 +1,1 @@
-/* DatePicker Specific Overrides */
-.picker-wrapper {
-    width: 250px;
-}
+/* DatePicker Specific Styles - Using shared responsive architecture in pickers.css */
