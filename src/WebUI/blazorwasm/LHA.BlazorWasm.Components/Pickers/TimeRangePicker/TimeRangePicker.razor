@@ -7,7 +7,7 @@
     
     <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "") @ValidationClass"
          @onclick="TogglePopup">
-        <input type="text" class="picker-input" placeholder="@Placeholder" value="@FormattedValue" readonly
+        <input type="text" class="picker-input" placeholder="@EffectivePlaceholder" value="@FormattedValue" readonly
                disabled="@Disabled" />
                
         <div class="picker-icon">
@@ -27,21 +27,21 @@
     <PickerPopup IsOpen="State.IsOpen">
         <div class="range-layout">
             <div class="time-panel">
-                <div class="panel-title">Start</div>
+                <div class="panel-title">@LocalizationService.L("Common.Start")</div>
                 <TimeView State="StartState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
             </div>
             
             <div class="panel-divider"></div>
             
             <div class="time-panel">
-                <div class="panel-title">End</div>
+                <div class="panel-title">@LocalizationService.L("Common.End")</div>
                 <TimeView State="EndState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
             </div>
         </div>
         
         <div class="range-actions">
             <button type="button" class="btn-confirm" @onclick="ConfirmSelection">
-                @ConfirmText
+                @ComputedConfirmText
             </button>
         </div>
     </PickerPopup>

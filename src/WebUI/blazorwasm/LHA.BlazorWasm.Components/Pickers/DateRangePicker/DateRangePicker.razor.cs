@@ -11,7 +11,8 @@ namespace LHA.BlazorWasm.Components.Pickers.DateRangePicker;
 public partial class DateRangePicker<TInner> : PickerBase<DateRange<TInner>>
 {
     [Parameter] public string Separator { get; set; } = " ~ ";
-    [Parameter] public string ConfirmText { get; set; } = "Apply";
+    [Parameter] public string? ConfirmText { get; set; }
+    protected string ComputedConfirmText => ConfirmText ?? LocalizationService.L("Common.Apply");
 
     protected PickerState LeftState { get; } = new();
     protected PickerState RightState { get; } = new();

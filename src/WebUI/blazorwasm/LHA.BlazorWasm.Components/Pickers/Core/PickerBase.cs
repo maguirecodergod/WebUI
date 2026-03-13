@@ -1,3 +1,4 @@
+using LHA.BlazorWasm.Services.Localization;
 using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.Pickers.Core;
@@ -8,10 +9,13 @@ namespace LHA.BlazorWasm.Components.Pickers.Core;
 /// </summary>
 public abstract class PickerBase<TValue> : ComponentBase
 {
+    [Inject] protected ILocalizationService LocalizationService { get; set; } = default!;
+
     [Parameter] public TValue? Value { get; set; }
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
 
-    [Parameter] public string Placeholder { get; set; } = "Select...";
+    [Parameter] public string? Placeholder { get; set; }
+    protected string EffectivePlaceholder => Placeholder ?? LocalizationService.L("Common.Select");
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool ReadOnly { get; set; }
 

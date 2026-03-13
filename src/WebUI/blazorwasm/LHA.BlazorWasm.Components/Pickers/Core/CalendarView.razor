@@ -1,12 +1,26 @@
 @namespace LHA.BlazorWasm.Components.Pickers.Core
 @using System.Globalization
+@inject LHA.BlazorWasm.Services.Localization.ILocalizationService LocalizationService
 
 <div class="calendar">
     <div class="calendar-header">
         <button type="button" class="nav-btn" @onclick="PrevMonth">
             <i class="fas fa-chevron-left"></i>
         </button>
-        <div class="current-month">@State.CurrentMonth.ToString("MMMM yyyy", CultureInfo.InvariantCulture)</div>
+        <div class="current-month-selects">
+            <select class="header-select month-select" @bind="CurrentMonthVal">
+                @for (int i = 1; i <= 12; i++)
+                {
+                    <option value="@i">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</option>
+                }
+            </select>
+            <select class="header-select year-select" @bind="CurrentYearVal">
+                @for (int year = DateTime.Today.Year - 100; year <= DateTime.Today.Year + 50; year++)
+                {
+                    <option value="@year">@year</option>
+                }
+            </select>
+        </div>
         <button type="button" class="nav-btn" @onclick="NextMonth">
             <i class="fas fa-chevron-right"></i>
         </button>
@@ -49,7 +63,32 @@
 
     private List<DateTime> _grid = new();
 
+    private int CurrentMonthVal
+    {
+        get => State.CurrentMonth.Month;
+        set
+        {
+            State.CurrentMonth = new DateTime(State.CurrentMonth.Year, value, 1);
+            RefreshGrid();
+        }
+    }
+
+    private int CurrentYearVal
+    {
+        get => State.CurrentMonth.Year;
+        set
+        {
+            State.CurrentMonth = new DateTime(value, State.CurrentMonth.Month, 1);
+            RefreshGrid();
+        }
+    }
+
     protected override void OnParametersSet()
+    {
+        RefreshGrid();
+    }
+
+    private void RefreshGrid()
     {
         _grid = DateUtils.GenerateCalendarGrid(State.CurrentMonth);
     }
@@ -57,11 +96,13 @@
     private void PrevMonth()
     {
         State.CurrentMonth = State.CurrentMonth.AddMonths(-1);
+        RefreshGrid();
     }
 
     private void NextMonth()
     {
         State.CurrentMonth = State.CurrentMonth.AddMonths(1);
+        RefreshGrid();
     }
 
     private async Task SelectDate(DateTime date)
@@ -72,6 +113,14 @@
     private string[] GetShortDaysOfWeek()
     {
         // Sunday first sequence
-        return new[] { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" };
+        return new[] { 
+            LocalizationService.L("Calendar.Sun"), 
+            LocalizationService.L("Calendar.Mon"), 
+            LocalizationService.L("Calendar.Tue"), 
+            LocalizationService.L("Calendar.Wed"), 
+            LocalizationService.L("Calendar.Thu"), 
+            LocalizationService.L("Calendar.Fri"), 
+            LocalizationService.L("Calendar.Sat") 
+        };
     }
 }

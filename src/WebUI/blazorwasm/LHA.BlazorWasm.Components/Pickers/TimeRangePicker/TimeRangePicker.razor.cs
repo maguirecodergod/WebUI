@@ -11,7 +11,8 @@ namespace LHA.BlazorWasm.Components.Pickers.TimeRangePicker;
 public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
 {
     [Parameter] public string Separator { get; set; } = " ~ ";
-    [Parameter] public string ConfirmText { get; set; } = "Apply";
+    [Parameter] public string? ConfirmText { get; set; }
+    protected string ComputedConfirmText => ConfirmText ?? LocalizationService.L("Common.Apply");
     [Parameter] public bool Is24Hour { get; set; } = false;
 
     protected PickerState StartState { get; } = new();

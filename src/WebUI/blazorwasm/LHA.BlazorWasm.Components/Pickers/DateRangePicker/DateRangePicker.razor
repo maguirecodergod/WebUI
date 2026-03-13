@@ -8,7 +8,7 @@
     <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "") @ValidationClass" @onclick="TogglePopup">
         <input type="text" 
                class="picker-input" 
-               placeholder="@Placeholder"
+               placeholder="@EffectivePlaceholder"
                value="@FormattedValue"
                readonly
                disabled="@Disabled" />
@@ -46,7 +46,7 @@
         
         <div class="range-actions">
             <button type="button" class="btn-confirm" disabled="@(!_tempValue.IsComplete)" @onclick="ConfirmSelection">
-                @ConfirmText
+                @ComputedConfirmText
             </button>
         </div>
     </PickerPopup>

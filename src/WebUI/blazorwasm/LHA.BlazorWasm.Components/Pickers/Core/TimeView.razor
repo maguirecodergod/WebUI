@@ -1,4 +1,5 @@
 @namespace LHA.BlazorWasm.Components.Pickers.Core
+@inject LHA.BlazorWasm.Services.Localization.ILocalizationService LocalizationService
 
 <div class="time-view">
     <div class="time-selectors">
@@ -26,8 +27,12 @@
         @if (!Is24Hour)
         {
             <div class="ampm-toggle">
-                <button type="button" class="@(State.AmPm == "AM" ? "active" : "")" @onclick="@(() => SetAmPm("AM"))">AM</button>
-                <button type="button" class="@(State.AmPm == "PM" ? "active" : "")" @onclick="@(() => SetAmPm("PM"))">PM</button>
+                <button type="button" class="@(State.AmPm == "AM" ? "active" : "")" @onclick="@(() => SetAmPm("AM"))">
+                    @LocalizationService.L("Time.AM")
+                </button>
+                <button type="button" class="@(State.AmPm == "PM" ? "active" : "")" @onclick="@(() => SetAmPm("PM"))">
+                    @LocalizationService.L("Time.PM")
+                </button>
             </div>
         }
     </div>

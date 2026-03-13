@@ -8,7 +8,7 @@
     
     <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "") @ValidationClass"
          @onclick="TogglePopup">
-        <input type="text" class="picker-input" placeholder="@Placeholder" value="@FormattedValue" readonly
+        <input type="text" class="picker-input" placeholder="@EffectivePlaceholder" value="@FormattedValue" readonly
                disabled="@Disabled" />
                
         <div class="picker-icon">
@@ -30,7 +30,7 @@
             
             <!-- Left Panel: Start Date & Time -->
             <div class="datetime-panel">
-                <div class="panel-title">@LocalizationService.L("DateTimeRangePicker.Start")</div>
+                <div class="panel-title">@LocalizationService.L("Common.Start")</div>
                 <div class="datetime-split">
                     <CalendarView State="StartState" 
                                   SelectedDate="RangeConverter.MapRange(_tempValue).Start" 
@@ -47,7 +47,7 @@
             
             <!-- Right Panel: End Date & Time -->
             <div class="datetime-panel">
-                <div class="panel-title">@LocalizationService.L("DateTimeRangePicker.End")</div>
+                <div class="panel-title">@LocalizationService.L("Common.End")</div>
                 <div class="datetime-split">
                     <CalendarView State="EndState" 
                                   SelectedDate="RangeConverter.MapRange(_tempValue).End" 

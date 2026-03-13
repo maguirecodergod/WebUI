@@ -1,17 +1,26 @@
-﻿{
+{
     "Theme": {
         "LightMode": "Light Mode",
         "DarkMode": "Dark Mode"
     },
-    "DateTimeRangePicker": {
-        "Title": "Select date range",
-        "StartDate": "Start date",
-        "EndDate": "End date",
-        "StartTime": "Start time",
-        "EndTime": "End time",
+    "Common": {
+        "Select": "Select...",
         "Apply": "Apply",
-        "Cancel": "Cancel",
+        "Clear": "Clear",
         "Start": "Start",
         "End": "End"
+    },
+    "Calendar": {
+        "Sun": "Su",
+        "Mon": "Mo",
+        "Tue": "Tu",
+        "Wed": "We",
+        "Thu": "Th",
+        "Fri": "Fr",
+        "Sat": "Sa"
+    },
+    "Time": {
+        "AM": "AM",
+        "PM": "PM"
     }
 }

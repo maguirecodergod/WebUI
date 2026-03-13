@@ -9,7 +9,8 @@ namespace LHA.BlazorWasm.Components.Pickers.DateTimePicker;
 public partial class DateTimePicker<TValue> : PickerBase<TValue>
 {
     [Parameter] public bool Is24Hour { get; set; } = false;
-    [Parameter] public string ConfirmText { get; set; } = "Apply";
+    [Parameter] public string? ConfirmText { get; set; }
+    protected string ComputedConfirmText => ConfirmText ?? LocalizationService.L("Common.Apply");
 
     private DateTime? _internalValue;
 

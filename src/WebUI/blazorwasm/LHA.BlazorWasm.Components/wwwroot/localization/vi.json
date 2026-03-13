@@ -1,17 +1,26 @@
-﻿{
+{
     "Theme": {
         "LightMode": "Chế độ sáng",
         "DarkMode": "Chế độ tối"
     },
-    "DateTimeRangePicker": {
-        "Title": "Chọn khoảng thời gian",
-        "StartDate": "Ngày bắt đầu",
-        "EndDate": "Ngày kết thúc",
-        "StartTime": "Thời gian bắt đầu",
-        "EndTime": "Thời gian kết thúc",
+    "Common": {
+        "Select": "Chọn...",
         "Apply": "Áp dụng",
-        "Cancel": "Hủy",
+        "Clear": "Xóa sạch",
         "Start": "Bắt đầu",
         "End": "Kết thúc"
+    },
+    "Calendar": {
+        "Sun": "CN",
+        "Mon": "T2",
+        "Tue": "T3",
+        "Wed": "T4",
+        "Thu": "T5",
+        "Fri": "T6",
+        "Sat": "T7"
+    },
+    "Time": {
+        "AM": "SA",
+        "PM": "CH"
     }
 }

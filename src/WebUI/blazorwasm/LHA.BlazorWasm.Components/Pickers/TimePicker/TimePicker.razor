@@ -7,7 +7,7 @@
     
     <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "") @ValidationClass"
          @onclick="TogglePopup">
-        <input type="text" class="picker-input" placeholder="@Placeholder" value="@FormattedValue" readonly
+        <input type="text" class="picker-input" placeholder="@EffectivePlaceholder" value="@FormattedValue" readonly
                disabled="@Disabled" />
                
         <div class="picker-icon">
