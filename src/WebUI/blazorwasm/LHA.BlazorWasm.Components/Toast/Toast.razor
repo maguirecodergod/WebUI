@@ -26,10 +26,10 @@
         {
             <div class="toast-title">@Message.Title</div>
         }
-        <div class="toast-content">@Message?.Message</div>
+        <div class="toast-content">@((MarkupString)(Message?.Message ?? string.Empty))</div>
     </div>
     
     <button type="button" class="toast-close" aria-label="Close" @onclick="CloseToast">
-        <text>&times;</text>
+        <i class="fas fa-times"></i>
     </button>
 </div>

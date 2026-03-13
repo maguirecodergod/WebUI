@@ -44,41 +44,48 @@
     flex-direction: column;
     justify-content: center;
     gap: 2px;
+    padding-right: 1.5rem; /* Space for the absolute close button */
 }
 
 .toast-title {
     font-size: 0.95rem;
     font-weight: 700;
+    line-height: 1.2;
     color: var(--text-color);
 }
 
 .toast-content {
     font-size: 0.85rem;
     font-weight: 400;
+    line-height: 1.4;
     color: var(--text-muted);
 }
 
 .toast-close {
-    background: var(--hover-bg, rgba(0,0,0,0.05));
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
     border: none;
-    font-size: 1.25rem;
-    width: 28px;
-    height: 28px;
+    font-size: 0.9rem;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-muted);
     cursor: pointer;
-    margin-left: 0.75rem;
     flex-shrink: 0;
     transition: all 0.2s ease;
+    opacity: 0.6;
 }
 
 .toast-close:hover {
-    background: var(--border-color);
+    background: var(--hover-bg);
     color: var(--text-color);
     transform: rotate(90deg);
+    opacity: 1;
 }
 
 /* Status variants with subtle accents */
