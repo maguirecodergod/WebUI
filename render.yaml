@@ -8,6 +8,6 @@ services:
         value: Production
     # Render will automatically use the Dockerfile in the repo
     # If the Dockerfile is not in the root, specify the path:
-    dockerFilePath: src/WebUI/blazorwasm/LHA.BlazorWasm.App/Dockerfile
+    dockerfilePath: src/WebUI/blazorwasm/LHA.BlazorWasm.App/Dockerfile
     dockerContext: .
     healthCheckPath: /
