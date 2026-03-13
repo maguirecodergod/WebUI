@@ -22,7 +22,11 @@
     </div>
     
     <div class="toast-body">
-        @Message?.Message
+        @if (!string.IsNullOrEmpty(Message?.Title))
+        {
+            <div class="toast-title">@Message.Title</div>
+        }
+        <div class="toast-content">@Message?.Message</div>
     </div>
     
     <button type="button" class="toast-close" aria-label="Close" @onclick="CloseToast">

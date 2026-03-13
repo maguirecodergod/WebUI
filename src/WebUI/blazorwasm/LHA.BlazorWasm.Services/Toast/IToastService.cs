@@ -15,27 +15,27 @@ public interface IToastService
     /// <summary>
     /// Dispatches a high-priority green 'Success' notification.
     /// </summary>
-    void Success(string message);
+    void Success(string message, string? title = null);
 
     /// <summary>
     /// Dispatches a standard blue 'Info' notification.
     /// </summary>
-    void Info(string message);
+    void Info(string message, string? title = null);
 
     /// <summary>
     /// Dispatches a yellow 'Warning' notification.
     /// </summary>
-    void Warning(string message);
+    void Warning(string message, string? title = null);
 
     /// <summary>
     /// Dispatches a critical red 'Error' notification.
     /// </summary>
-    void Error(string message);
+    void Error(string message, string? title = null);
 
     /// <summary>
     /// Fully robust manual override configuration to dictate precise duration and formatting limits.
     /// </summary>
-    void Show(string message, ToastLevel level, int duration = 3000);
+    void Show(string message, ToastLevel level, string? title = null, int duration = 3000);
     
     /// <summary>
     /// Programmatically triggers the UI removal via ToastId bypassing internal timer logic.

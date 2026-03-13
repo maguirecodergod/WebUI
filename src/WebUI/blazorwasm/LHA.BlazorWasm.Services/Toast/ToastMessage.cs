@@ -8,6 +8,7 @@ namespace LHA.BlazorWasm.Services.Toast;
 public class ToastMessage
 {
     public Guid Id { get; } = Guid.NewGuid();
+    public string? Title { get; init; }
     public string Message { get; init; } = string.Empty;
     public ToastLevel Level { get; init; } = ToastLevel.Info;
     public int Duration { get; init; } = 3000;

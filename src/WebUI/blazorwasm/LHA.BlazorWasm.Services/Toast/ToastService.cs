@@ -14,15 +14,16 @@ public class ToastService : IToastService
 
     public ToastState State { get; } = new();
 
-    public void Success(string message) => Show(message, ToastLevel.Success);
-    public void Info(string message) => Show(message, ToastLevel.Info);
-    public void Warning(string message) => Show(message, ToastLevel.Warning);
-    public void Error(string message) => Show(message, ToastLevel.Error, 5000); // Give errors longer readability duration
+    public void Success(string message, string? title = null) => Show(message, ToastLevel.Success, title);
+    public void Info(string message, string? title = null) => Show(message, ToastLevel.Info, title);
+    public void Warning(string message, string? title = null) => Show(message, ToastLevel.Warning, title);
+    public void Error(string message, string? title = null) => Show(message, ToastLevel.Error, title, 5000); // Give errors longer readability duration
 
-    public void Show(string message, ToastLevel level, int duration = 3000)
+    public void Show(string message, ToastLevel level, string? title = null, int duration = 3000)
     {
         var toast = new ToastMessage
         {
+            Title = title,
             Message = message,
             Level = level,
             Duration = duration
