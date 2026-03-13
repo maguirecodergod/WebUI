@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace LHA.BlazorWasm.Components.LanguageSelector;
+namespace LHA.BlazorWasm.Services.Localization;
 
 /// <summary>
 /// Static provider bridging the LanguageCode enum to the rich LanguageOption UI model (Culture, Name, Flag).
@@ -23,7 +21,7 @@ public static class LanguageProvider
         { LanguageCode.AR, new LanguageOption { Culture = "ar", Name = "العربية", Flag = "sa" } },
         { LanguageCode.HI, new LanguageOption { Culture = "hi", Name = "हिन्दी", Flag = "in" } },
         { LanguageCode.BN, new LanguageOption { Culture = "bn", Name = "বাংলা", Flag = "bd" } },
-        { LanguageCode.PA, new LanguageOption { Culture = "pa", Name = "ਪੰਜਾਬي", Flag = "in" } },
+        { LanguageCode.PA, new LanguageOption { Culture = "pa", Name = "ਪੰਜਾਬੀ", Flag = "in" } },
         { LanguageCode.JV, new LanguageOption { Culture = "jv", Name = "Basa Jawa", Flag = "id" } },
         { LanguageCode.MS, new LanguageOption { Culture = "ms", Name = "Bahasa Melayu", Flag = "my" } },
         { LanguageCode.ID, new LanguageOption { Culture = "id", Name = "Bahasa Indonesia", Flag = "id" } },

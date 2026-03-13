@@ -8,12 +8,12 @@ public class LocalizationOptions
     /// <summary>
     /// The default culture if none is previously selected.
     /// </summary>
-    public string DefaultCulture { get; set; } = "en";
+    public LanguageCode DefaultCulture { get; set; } = LanguageCode.EN;
 
     /// <summary>
     /// The supported cultures in the application.
     /// </summary>
-    public List<string> SupportedCultures { get; set; } = new() { "en", "vi" };
+    public List<LanguageCode> SupportedCultures { get; set; } = new() { LanguageCode.EN, LanguageCode.VI };
 
     /// <summary>
     /// The local storage key used to persist the selected language. Our ILocalStorageService 

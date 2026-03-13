@@ -1,4 +1,4 @@
-namespace LHA.BlazorWasm.Components.LanguageSelector;
+namespace LHA.BlazorWasm.Services.Localization;
 
 /// <summary>
 /// A comprehensive enumeration of world languages (ISO 639-1 basis).

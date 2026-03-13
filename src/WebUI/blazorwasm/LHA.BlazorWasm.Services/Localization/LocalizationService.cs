@@ -45,9 +45,10 @@ public class LocalizationService : ILocalizationService
         var savedCulture = await _localStorage.GetAsync<string>(_options.LocalStorageKey);
 
         // 2. Fallback to default if not present or unsupported natively
-        var targetCulture = !string.IsNullOrEmpty(savedCulture) && _options.SupportedCultures.Contains(savedCulture)
+        var targetCulture = !string.IsNullOrEmpty(savedCulture) && 
+                            LanguageProvider.GetOptions(_options.SupportedCultures).Any(x => x.Culture == savedCulture)
             ? savedCulture
-            : _options.DefaultCulture;
+            : LanguageProvider.GetOption(_options.DefaultCulture).Culture;
 
         // 3. Load the language
         await SetLanguageAsync(targetCulture);
@@ -55,9 +56,9 @@ public class LocalizationService : ILocalizationService
 
     public async Task SetLanguageAsync(string culture)
     {
-        if (!_options.SupportedCultures.Contains(culture))
+        if (!LanguageProvider.GetOptions(_options.SupportedCultures).Any(x => x.Culture == culture))
         {
-            culture = _options.DefaultCulture;
+            culture = LanguageProvider.GetOption(_options.DefaultCulture).Culture;
         }
 
         // Fast path if already cached natively

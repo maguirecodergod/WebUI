@@ -22,8 +22,8 @@ builder.Services.AddAppLocalStorage(options =>
 
 builder.Services.AddAppLocalization(options =>
 {
-    options.DefaultCulture = "en";
-    options.SupportedCultures = new List<string> { "en", "vi" };
+    options.DefaultCulture = LanguageCode.EN;
+    options.SupportedCultures = new List<LanguageCode> { LanguageCode.EN, LanguageCode.VI, LanguageCode.FR, LanguageCode.JA, LanguageCode.ES };
 });
 
 builder.Services.AddThemeService();

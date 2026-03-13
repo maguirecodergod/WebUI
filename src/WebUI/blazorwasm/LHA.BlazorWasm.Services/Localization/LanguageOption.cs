@@ -1,4 +1,4 @@
-namespace LHA.BlazorWasm.Components.LanguageSelector;
+namespace LHA.BlazorWasm.Services.Localization;
 
 /// <summary>
 /// Defines a language option for the LanguageSelector.
