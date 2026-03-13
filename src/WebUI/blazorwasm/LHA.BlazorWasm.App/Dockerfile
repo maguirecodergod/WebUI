@@ -1,24 +1,25 @@
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-WORKDIR /app
-EXPOSE 5000
-
-ENV ASPNETCORE_URLS=http://+:5000
-
-USER app
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-ARG configuration=Release
+# Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["src/WebUI/blazorwasm/LHA.BlazorWasm.App/LHA.BlazorWasm.App.csproj", "src/WebUI/blazorwasm/LHA.BlazorWasm.App/"]
-RUN dotnet restore "src/WebUI/blazorwasm/LHA.BlazorWasm.App/LHA.BlazorWasm.App.csproj"
+
+# Copy everything and restore
 COPY . .
-WORKDIR "/src/src/WebUI/blazorwasm/LHA.BlazorWasm.App"
-RUN dotnet build "LHA.BlazorWasm.App.csproj" -c $configuration -o /app/build
+RUN dotnet restore "src/WebUI/blazorwasm/LHA.BlazorWasm.App/LHA.BlazorWasm.App.csproj"
 
-FROM build AS publish
-ARG configuration=Release
-RUN dotnet publish "LHA.BlazorWasm.App.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
+# Publish the app
+RUN dotnet publish "src/WebUI/blazorwasm/LHA.BlazorWasm.App/LHA.BlazorWasm.App.csproj" -c Release -o /app/publish
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "LHA.BlazorWasm.App.dll"]
+# Runtime Stage (Nginx)
+FROM nginx:alpine AS final
+WORKDIR /usr/share/nginx/html
+
+# Copy published files from build stage
+COPY --from=build /app/publish/wwwroot .
+
+# Copy custom nginx configuration
+COPY src/WebUI/blazorwasm/LHA.BlazorWasm.App/nginx.conf /etc/nginx/nginx.conf
+
+# Render expects the app to listen on a port, usually 80 or 10000
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
