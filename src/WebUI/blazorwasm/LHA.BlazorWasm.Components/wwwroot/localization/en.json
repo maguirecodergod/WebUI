@@ -56,5 +56,13 @@
         "DemoEmailInvalid": "Please enter a valid email address.",
         "DemoSubmit": "Submit",
         "DemoReset": "Reset"
+    },
+    "Section": {
+        "DemoTitle": "Collapsible Section Examples",
+        "UserInfo": "User Information",
+        "Security": "Security Settings",
+        "Notifications": "Notifications",
+        "SecurityNote": "Configure your security preferences here.",
+        "NotificationNote": "Manage your notification channels and frequency."
     }
 }

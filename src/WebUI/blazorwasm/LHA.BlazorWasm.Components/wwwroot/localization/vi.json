@@ -56,5 +56,13 @@
         "DemoEmailInvalid": "Vui lòng nhập email hợp lệ.",
         "DemoSubmit": "Gửi",
         "DemoReset": "Đặt lại"
+    },
+    "Section": {
+        "DemoTitle": "Ví dụ Section Thu Gọn",
+        "UserInfo": "Thông tin Người dùng",
+        "Security": "Cài đặt Bảo mật",
+        "Notifications": "Thông báo",
+        "SecurityNote": "Cấu hình tùy chọn bảo mật của bạn tại đây.",
+        "NotificationNote": "Quản lý kênh và tần suất thông báo của bạn."
     }
 }

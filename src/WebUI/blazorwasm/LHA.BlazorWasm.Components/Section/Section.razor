@@ -1,0 +1,36 @@
+@namespace LHA.BlazorWasm.Components.Section
+
+<section class="@GetCssClass()" style="@Style" role="region" aria-expanded="@IsExpanded.ToString().ToLowerInvariant()">
+    @if (!string.IsNullOrWhiteSpace(Title) || Collapsible)
+    {
+        <div class="section-header" @onclick="ToggleAsync">
+            <div class="section-header-left">
+                @if (!string.IsNullOrWhiteSpace(Icon))
+                {
+                    <span class="section-icon" aria-hidden="true">@Icon</span>
+                }
+                @if (!string.IsNullOrWhiteSpace(Title))
+                {
+                    <h3 class="section-title">@Title</h3>
+                }
+            </div>
+            @if (Collapsible)
+            {
+                <span class="section-toggle" aria-hidden="true">
+                    @if (IsExpanded)
+                    {
+                        <text>▼</text>
+                    }
+                    else
+                    {
+                        <text>▶</text>
+                    }
+                </span>
+            }
+        </div>
+    }
+
+    <div class="section-content">
+        @ChildContent
+    </div>
+</section>

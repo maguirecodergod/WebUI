@@ -1,0 +1,164 @@
+/* ======================================
+   Section — Scoped Styles
+   ====================================== */
+
+/* Root */
+.section {
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* ── Variant: Default ── */
+.section-default {
+    border: 1px solid var(--border-color, #dee2e6);
+    background: var(--card-bg, #fff);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.section-default:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+/* ── Variant: Subtle ── */
+.section-subtle {
+    border: 1px solid transparent;
+    background: var(--hover-bg, #f8f9fa);
+}
+
+/* ── Variant: Flush ── */
+.section-flush {
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.section-flush .section-header {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.section-flush .section-content {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* ======================================
+   Header
+   ====================================== */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    user-select: none;
+    gap: 0.75rem;
+    transition: background-color 0.15s ease;
+}
+
+.section-collapsible .section-header {
+    cursor: pointer;
+}
+
+.section-collapsible .section-header:hover {
+    background: var(--hover-bg, rgba(0, 0, 0, 0.03));
+}
+
+.section-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-width: 0;
+}
+
+.section-icon {
+    font-size: 1.15rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.section-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 650;
+    color: var(--text-color, #212529);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ======================================
+   Toggle Indicator
+   ====================================== */
+
+.section-toggle {
+    font-size: 0.7rem;
+    color: var(--text-muted, #6c757d);
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.375rem;
+}
+
+.section-collapsible .section-header:hover .section-toggle {
+    color: var(--primary-color, #0d6efd);
+    background: rgba(13, 110, 253, 0.08);
+}
+
+/* ======================================
+   Content — Smooth Collapse Animation
+   ====================================== */
+
+.section-content {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    padding: 0 1.25rem;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.25s ease,
+                padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-expanded .section-content {
+    max-height: 2000px;
+    opacity: 1;
+    padding: 0.25rem 1.25rem 1.25rem 1.25rem;
+}
+
+/* Non-collapsible sections always show content */
+.section:not(.section-collapsible) .section-content {
+    max-height: none;
+    opacity: 1;
+    padding: 0.25rem 1.25rem 1.25rem 1.25rem;
+}
+
+/* ======================================
+   Responsive
+   ====================================== */
+
+@media (max-width: 576px) {
+    .section-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .section-content {
+        padding: 0 1rem;
+    }
+
+    .section-expanded .section-content {
+        padding: 0.25rem 1rem 1rem 1rem;
+    }
+
+    .section:not(.section-collapsible) .section-content {
+        padding: 0.25rem 1rem 1rem 1rem;
+    }
+}
