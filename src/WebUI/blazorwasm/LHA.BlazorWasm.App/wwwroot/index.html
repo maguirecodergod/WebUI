@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LHA.BlazorWasm.App</title>
+    <title>LHA | Premium Enterprise Platform</title>
+    <meta name="description" content="Experience the next generation of enterprise management with LHA's high-performance dashboard." />
     <base href="/" />
     <link href="_content/LHA.BlazorWasm.Components/css/outfit.css" rel="stylesheet">
     <link rel="preload" id="webassembly" />
@@ -14,19 +15,159 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/css/theme.css" />
     <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/css/pickers.css" />
-    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
     <link href="LHA.BlazorWasm.App.styles.css" rel="stylesheet" />
-    <script type="importmap"></script>
+    <style>
+        :root {
+            --primary-indigo: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.5);
+            --bg-dark: #0f1115;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+        }
+
+        #app-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url('images/bg.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 9999;
+            color: white;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+
+        .loading-container {
+            text-align: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 17, 21, 0.6);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-wrapper {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .logo-wrapper img {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 15px var(--primary-glow));
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px var(--primary-glow)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 25px var(--primary-glow)); }
+        }
+
+        .brand-name {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .loading-status {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            width: var(--blazor-load-percentage, 0%);
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .loading-text {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Hide the default blazor loading screen elements */
+        .loading-progress, .loading-progress-text {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div id="app-loading">
+            <div class="loading-container">
+                <div class="logo-wrapper">
+                    <img src="images/logo.svg" alt="LHA Logo" />
+                </div>
+                <div class="brand-name">LHA Platform</div>
+                <div class="loading-status">Initializing workspace...</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="loading-text">
+                    <span id="load-percentage">0</span>% Loaded
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Update loading percentage text
+        const observer = new MutationObserver((mutations) => {
+            const appDiv = document.getElementById('app');
+            const percentage = getComputedStyle(appDiv).getPropertyValue('--blazor-load-percentage').trim();
+            if (percentage) {
+                const numeric = percentage.replace('%', '');
+                document.getElementById('load-percentage').innerText = Math.round(numeric);
+                document.querySelector('.progress-bar-fill').style.width = percentage;
+            }
+        });
+        observer.observe(document.getElementById('app'), { attributes: true, attributeFilter: ['style'] });
+    </script>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
