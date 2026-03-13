@@ -34,7 +34,7 @@ COPY --from=build /app/publish/wwwroot/ /usr/share/nginx/html/
 COPY src/WebUI/blazorwasm/LHA.BlazorWasm.App/nginx.conf /etc/nginx/nginx.conf
 
 # Expose port for Render
-EXPOSE 80
+EXPOSE 8080
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
