@@ -23,8 +23,30 @@
     --rte-primary: #1a73e8;
     --rte-primary-hover: #1557b0;
     --rte-danger: #e53e3e;
-    --rte-dialog-overlay: rgba(0, 0, 0, 0.4);
     --rte-transition: 0.15s ease;
+
+    /* Syntax Highlighting - VS Code Light Modern */
+    --rte-code-bg: #ffffff;
+    --rte-code-text: #000000;
+    --rte-hljs-comment: #008000;
+    --rte-hljs-keyword: #0000ff;
+    --rte-hljs-string: #a31515;
+    --rte-hljs-title: #795e26;
+    --rte-hljs-variable: #001080;
+    --rte-hljs-type: #267f99;
+    --rte-hljs-attr: #005cc5;
+}
+
+.theme-dark {
+    --rte-code-bg: #1e1e1e;
+    --rte-code-text: #dcdcdc;
+    --rte-hljs-comment: #6a9955;
+    --rte-hljs-keyword: #569cd6;
+    --rte-hljs-string: #ce9178;
+    --rte-hljs-title: #dcdcaa;
+    --rte-hljs-variable: #9cdcfe;
+    --rte-hljs-type: #4ec9b0;
+    --rte-hljs-attr: #9cdcfe;
 }
 
 /* ----- Main Container ----- */
@@ -1042,8 +1064,8 @@ body.rte-fullscreen-active {
 
 /* Code block in content area */
 .rte-content-area pre {
-    background: #0d1117; /* GitHub Dark background */
-    border: 1px solid #30363d;
+    background: var(--rte-code-bg);
+    border: 1px solid var(--rte-border-color);
     border-radius: 8px;
     padding: 16px;
     margin: 1.5em 0;
@@ -1051,29 +1073,36 @@ body.rte-fullscreen-active {
     position: relative;
     white-space: pre;
     tab-size: 4;
+    transition: background var(--rte-transition), border-color var(--rte-transition);
 }
 
 .rte-content-area pre code {
     font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', monospace;
     font-size: 13.5px;
     line-height: 1.6;
-    color: #e6edf3;
+    color: var(--rte-code-text);
     background: none;
     padding: 0;
     display: block;
 }
 
-.theme-dark .rte-content-area pre {
-    background: #0d1117;
-    border-color: #30363d;
-}
+/* Highlight.js Color Mapping to Variables */
+.hljs-comment, .hljs-quote { color: var(--rte-hljs-comment); font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-section { color: var(--rte-hljs-keyword); }
+.hljs-string, .hljs-addition { color: var(--rte-hljs-string); }
+.hljs-title, .hljs-section, .hljs-name { color: var(--rte-hljs-title); }
+.hljs-variable, .hljs-template-variable { color: var(--rte-hljs-variable); }
+.hljs-type, .hljs-built_in, .hljs-class { color: var(--rte-hljs-type); }
+.hljs-attr, .hljs-attribute { color: var(--rte-hljs-attr); }
+.hljs-number { color: var(--rte-hljs-variable); }
+.hljs-meta { color: #858585; }
+.hljs-deletion { background: rgba(255, 0, 0, 0.1); }
 
-.theme-dark .rte-content-area pre code {
-    color: #e6edf3;
-}
-
+/* Overrides for CodeBlockDialog in Dark Mode */
 .theme-dark .rte-code-editor-wrapper { border-color: #333; }
 .theme-dark .rte-select { background: #0f1115; border-color: #475569; color: #f8fafc; }
+
+
 
 
 
