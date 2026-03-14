@@ -1,0 +1,11 @@
+**/.git
+**/.github
+**/.vscode
+**/bin
+**/obj
+**/TestResults
+**/.gemini
+**/node_modules
+*.log
+deploy/
+build_rebuild.log

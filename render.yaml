@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: lha-blazor-wasm
+    env: docker
+    plan: free # Change to 'starter' or higher if needed
+    region: singapore # Choose the region closest to your users
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: DOTNET_ENVIRONMENT
+        value: Production
