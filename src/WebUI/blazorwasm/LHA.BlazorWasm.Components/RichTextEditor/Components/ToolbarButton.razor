@@ -1,18 +1,40 @@
 @namespace LHA.BlazorWasm.Components.RichTextEditor.Components
 
-<button class="@GetCssClass()"
-        type="button"
-        title="@Tooltip"
-        disabled="@Disabled"
-        @onclick="HandleClick"
-        @onclick:stopPropagation
-        @onclick:preventDefault>
-    @if (ChildContent != null)
-    {
-        @ChildContent
-    }
-    else if (!string.IsNullOrEmpty(SvgIcon))
-    {
-        @((MarkupString)SvgIcon)
-    }
-</button>
+@if (!string.IsNullOrEmpty(Tooltip))
+{
+    <LHA.BlazorWasm.Components.Tooltip.Tooltip Text="@Tooltip" Style="display: inline-flex;">
+        <button class="@GetCssClass()"
+                type="button"
+                disabled="@Disabled"
+                @onclick="HandleClick"
+                @onclick:stopPropagation
+                @onclick:preventDefault>
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+            else if (!string.IsNullOrEmpty(SvgIcon))
+            {
+                @((MarkupString)SvgIcon)
+            }
+        </button>
+    </LHA.BlazorWasm.Components.Tooltip.Tooltip>
+}
+else
+{
+    <button class="@GetCssClass()"
+            type="button"
+            disabled="@Disabled"
+            @onclick="HandleClick"
+            @onclick:stopPropagation
+            @onclick:preventDefault>
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        else if (!string.IsNullOrEmpty(SvgIcon))
+        {
+            @((MarkupString)SvgIcon)
+        }
+    </button>
+}

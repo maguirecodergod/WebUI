@@ -169,6 +169,19 @@ public partial class RichTextEditor : ComponentBase, IAsyncDisposable
         await _interop.InsertTableAsync(EditorId, size.rows, size.cols);
     }
 
+    private async Task HandleClearContentAsync()
+    {
+        await SetHtmlAsync("");
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync("");
+        }
+        if (OnContentChanged.HasDelegate)
+        {
+            await OnContentChanged.InvokeAsync("");
+        }
+    }
+
     /// <summary>
     /// Programmatically get the current HTML content.
     /// </summary>

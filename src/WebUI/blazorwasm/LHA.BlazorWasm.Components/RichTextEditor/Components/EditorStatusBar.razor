@@ -8,8 +8,13 @@
         }
     </div>
     <div class="rte-status-info">
-        <span class="rte-word-count">Words: @WordCount</span>
-        <span class="rte-char-count">Chars: @CharCount</span>
+        <span class="rte-word-count">@Localizer.L("Words"): @WordCount</span>
+        <span class="rte-char-count">@Localizer.L("Chars"): @CharCount</span>
+        <LHA.BlazorWasm.Components.Tooltip.Tooltip Text='@Localizer.L("Clear Content")' Style="display: inline-flex; margin-left: 12px; cursor: pointer;">
+            <div @onclick="HandleClearContent" style="color: var(--bs-danger, #dc3545);">
+                @((MarkupString)Icons.Trash)
+            </div>
+        </LHA.BlazorWasm.Components.Tooltip.Tooltip>
     </div>
 </div>
 
@@ -17,4 +22,13 @@
     [Parameter] public int WordCount { get; set; }
     [Parameter] public int CharCount { get; set; }
     [Parameter] public string ElementPath { get; set; } = "";
+    [Parameter] public EventCallback OnClearContent { get; set; }
+
+    private async Task HandleClearContent()
+    {
+        if (OnClearContent.HasDelegate)
+        {
+            await OnClearContent.InvokeAsync();
+        }
+    }
 }
