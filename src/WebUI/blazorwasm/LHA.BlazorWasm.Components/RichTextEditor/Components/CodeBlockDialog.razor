@@ -1,0 +1,56 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+@if (IsVisible)
+{
+    <div class="rte-dialog-overlay" @onclick="Close">
+        <div class="rte-dialog rte-code-dialog" @onclick:stopPropagation>
+            <div class="rte-dialog-header">
+                <div class="rte-dialog-title-wrapper">
+                    <span class="rte-dialog-icon">@((MarkupString)Icons.SourceCode)</span>
+                    <h3>@Localizer.L("Editor.Insert Code Block")</h3>
+                </div>
+                <button class="rte-dialog-close" type="button" @onclick="Close">
+                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+            </div>
+            
+            <div class="rte-dialog-body">
+                <div class="rte-form-group">
+                    <label>@Localizer.L("Editor.Language")</label>
+                    <div class="rte-select-wrapper">
+                        <select class="rte-select" @bind="Language">
+                            @foreach (var lang in _languages)
+                            {
+                                <option value="@lang.Key">@lang.Value</option>
+                            }
+                        </select>
+                        <svg class="rte-select-arrow" viewBox="0 0 12 12" width="10" height="10">
+                            <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="rte-form-group">
+                    <div class="rte-code-editor-wrapper">
+                        <div class="rte-code-editor-header">
+                            <span class="rte-code-editor-tag">@Language.ToUpper()</span>
+                            <span class="rte-code-editor-dots">
+                                <span></span><span></span><span></span>
+                            </span>
+                        </div>
+                        <textarea class="rte-code-textarea" 
+                                  @bind="Code" 
+                                  @bind:event="oninput"
+                                  spellcheck="false"
+                                  placeholder='@Localizer.L("Editor.Paste your code here...")'></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="rte-dialog-footer">
+                <button class="rte-btn rte-btn-secondary" type="button" @onclick="Close">@Localizer.L("Editor.Cancel")</button>
+                <button class="rte-btn rte-btn-primary" type="button" @onclick="Submit" disabled="@string.IsNullOrWhiteSpace(Code)">@Localizer.L("Editor.Insert Code")</button>
+            </div>
+        </div>
+    </div>
+}

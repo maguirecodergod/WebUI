@@ -23,11 +23,13 @@ public partial class EditorToolbar : ComponentBase
     private ToolbarDropdown? _backColorDropdown;
     private ToolbarDropdown? _imageDropdown;
     private ToolbarDropdown? _videoDropdown;
+    private ToolbarDropdown? _specialCharsDropdown;
 
     private bool _showLinkDialog;
     private bool _showImageDialog;
     private bool _showTableDialog;
     private bool _showDragDropDialog;
+    private bool _showCodeBlockDialog;
 
     private string _uploadInputId = $"upload-{Guid.NewGuid():N}";
     private string _cameraInputId = $"camera-{Guid.NewGuid():N}";
@@ -135,6 +137,19 @@ public partial class EditorToolbar : ComponentBase
     private void ShowLinkDialog() => _showLinkDialog = true;
     private void ShowImageDialog() => _showImageDialog = true;
     private void ShowTableDialog() => _showTableDialog = true;
+    private void ShowCodeBlockDialog() => _showCodeBlockDialog = true;
+
+    private async Task OnCodeBlockSubmit(CodeBlockResult result)
+    {
+        _showCodeBlockDialog = false;
+        var html = $"<pre><code class=\"language-{result.Language}\">{System.Web.HttpUtility.HtmlEncode(result.Code)}</code></pre><p><br></p>";
+        await ExecuteCommand("insertHTML", html);
+    }
+
+    private async Task OnSpecialCharsSubmit(string chr)
+    {
+        await ExecuteCommand("insertHTML", chr);
+    }
 
     private async Task OnLinkSubmit(LinkDialogResult? result)
     {

@@ -1,0 +1,23 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+<div class="rte-special-chars-popup">
+    <div class="rte-tabs">
+        @foreach (var tab in _charSets.Keys)
+        {
+            <div class="rte-tab @(tab == _activeTab ? "active" : "")" @onclick="() => _activeTab = tab">
+                @Localizer.L($"Editor.{tab}")
+            </div>
+        }
+    </div>
+
+    <div class="rte-special-chars-content">
+        <div class="rte-char-grid">
+            @foreach (var chr in _charSets[_activeTab])
+            {
+                <div class="rte-char-item" @onclick="() => SelectChar(chr)" title="@chr">
+                    @chr
+                </div>
+            }
+        </div>
+    </div>
+</div>

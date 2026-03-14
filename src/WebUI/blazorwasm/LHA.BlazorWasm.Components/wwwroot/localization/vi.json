@@ -106,6 +106,12 @@
         "Superscript": "Chỉ số trên",
         "Source Code": "Mã nguồn",
         "Fullscreen": "Toàn màn hình",
+        "Special Characters": "Ký tự đặc biệt",
+        "Unicode": "Unicode",
+        "ASCII": "ASCII",
+        "European": "Châu Âu",
+        "Roma": "La Mã",
+        "Symbol": "Biểu tượng",
         "Custom": "Tùy chỉnh",
         "Drag and drop an image here": "Kéo và thả một hình ảnh vào đây",
         "or click to browse": "hoặc nhấp để duyệt",
@@ -114,6 +120,7 @@
         "Title": "Tiêu đề",
         "Open in new tab": "Mở trong tab mới",
         "Cancel": "Hủy",
+        "Close": "Đóng",
         "Image URL": "Đường dẫn Ảnh",
         "Alt Text": "Văn bản thay thế",
         "Describe the image": "Mô tả hình ảnh",
@@ -125,6 +132,10 @@
         "https://example.com": "https://vidu.com",
         "Link text": "Văn bản liên kết",
         "Tooltip text": "Nội dung chú thích",
-        "Drag & Drop Image": "Kéo & Thả Ảnh"
+        "Drag & Drop Image": "Kéo & Thả Ảnh",
+        "Insert Code Block": "Chèn khối mã",
+        "Language": "Ngôn ngữ",
+        "Paste your code here...": "Dán mã của bạn vào đây...",
+        "Insert Code": "Chèn mã"
     }
 }

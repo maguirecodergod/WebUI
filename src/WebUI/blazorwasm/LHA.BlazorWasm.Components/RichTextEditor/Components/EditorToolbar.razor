@@ -109,7 +109,10 @@
 
         @* Special Characters *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.SpecialChars" Tooltip='@Localizer.L("Editor.Horizontal Rule")'
+            <ToolbarDropdown SvgIcon="@Icons.SpecialChars" Tooltip='@Localizer.L("Editor.Special Characters")' @ref="_specialCharsDropdown">
+                <SpecialCharsPopup OnCharSelected="OnSpecialCharsSubmit" />
+            </ToolbarDropdown>
+            <ToolbarButton SvgIcon="@Icons.HorizontalRule" Tooltip='@Localizer.L("Editor.Horizontal Rule")'
                            OnClick="@(() => ExecuteCommand("insertHorizontalRule"))" />
         </div>
 
@@ -154,6 +157,9 @@
                     </div>
                 </div>
             </ToolbarDropdown>
+            
+            <ToolbarButton SvgIcon="@Icons.SourceCode" Tooltip='@Localizer.L("Editor.Insert Code Block")'
+                           OnClick="@ShowCodeBlockDialog" />
         </div>
 
         <ToolbarSeparator />
@@ -183,6 +189,7 @@
 <ImageDialog IsVisible="@_showImageDialog" OnSubmit="@OnImageSubmit" OnClose="@(() => { _showImageDialog = false; })" />
 <TableDialog IsVisible="@_showTableDialog" OnSubmit="@OnTableSubmit" OnClose="@(() => { _showTableDialog = false; })" />
 <DragDropDialog IsVisible="@_showDragDropDialog" OnSubmit="@OnImageSubmit" OnClose="@(() => { _showDragDropDialog = false; })" />
+<CodeBlockDialog IsVisible="@_showCodeBlockDialog" OnSubmit="@OnCodeBlockSubmit" OnClose="@(() => { _showCodeBlockDialog = false; })" />
 
 @* Hidden file inputs for direct system integration *@
 <Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleImageUpload" accept="image/*" id="@_uploadInputId" style="display:none;" />

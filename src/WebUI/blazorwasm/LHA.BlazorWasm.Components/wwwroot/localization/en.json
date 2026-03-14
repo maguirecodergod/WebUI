@@ -106,6 +106,12 @@
         "Superscript": "Superscript",
         "Source Code": "Source Code",
         "Fullscreen": "Fullscreen",
+        "Special Characters": "Special Characters",
+        "Unicode": "Unicode",
+        "ASCII": "ASCII",
+        "European": "European",
+        "Roma": "Roma",
+        "Symbol": "Symbol",
         "Custom": "Custom",
         "Drag and drop an image here": "Drag and drop an image here",
         "or click to browse": "or click to browse",
@@ -114,6 +120,7 @@
         "Title": "Title",
         "Open in new tab": "Open in new tab",
         "Cancel": "Cancel",
+        "Close": "Close",
         "Image URL": "Image URL",
         "Alt Text": "Alt Text",
         "Describe the image": "Describe the image",
@@ -125,6 +132,10 @@
         "https://example.com": "https://example.com",
         "Link text": "Link text",
         "Tooltip text": "Tooltip text",
-        "Drag & Drop Image": "Drag & Drop Image"
+        "Drag & Drop Image": "Drag & Drop Image",
+        "Insert Code Block": "Insert Code Block",
+        "Language": "Language",
+        "Paste your code here...": "Paste your code here...",
+        "Insert Code": "Insert Code"
     }
 }

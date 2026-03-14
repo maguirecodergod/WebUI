@@ -1,0 +1,39 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+@if (IsVisible)
+{
+    <div class="rte-dialog-overlay" @onclick="Close">
+        <div class="rte-dialog rte-special-chars-dialog" @onclick:stopPropagation>
+            <div class="rte-dialog-header">
+                <h3>@Localizer.L("Editor.Special Characters")</h3>
+                <button class="rte-dialog-close" type="button" @onclick="Close">
+                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+            </div>
+            
+            <div class="rte-tabs">
+                @foreach (var tab in _charSets.Keys)
+                {
+                    <div class="rte-tab @(tab == _activeTab ? "active" : "")" @onclick="() => _activeTab = tab">
+                        @Localizer.L($"Editor.{tab}")
+                    </div>
+                }
+            </div>
+
+            <div class="rte-dialog-body rte-special-chars-body">
+                <div class="rte-char-grid">
+                    @foreach (var chr in _charSets[_activeTab])
+                    {
+                        <div class="rte-char-item" @onclick="() => SelectChar(chr)" title="@chr">
+                            @chr
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            <div class="rte-dialog-footer">
+                <button class="rte-btn rte-btn-primary" type="button" @onclick="Close">@Localizer.L("Editor.Close")</button>
+            </div>
+        </div>
+    </div>
+}
