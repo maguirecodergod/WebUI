@@ -2,10 +2,24 @@
     "Common": {
         "Save": "Lưu",
         "Cancel": "Hủy",
-        "Delete": "Xóa"
+        "Delete": "Xóa",
+        "Suggestions": "Hãy thử các cách sau:"
     },
     "User": {
         "Title": "Người dùng",
         "Create": "Tạo người dùng"
+    },
+    "Errors": {
+        "NotFound": {
+            "Title": "Không tìm thấy trang",
+            "Description": "Rất tiếc, chúng tôi không thể tìm thấy trang bạn yêu cầu. Có thể trang đã bị di chuyển hoặc bị xóa.",
+            "GoHome": "Về trang chủ",
+            "GoBack": "Quay lại",
+            "Suggestion": {
+                "CheckUrl": "Kiểm tra kỹ URL xem có bị sai sót không",
+                "GoHome": "Quay lại trang chủ",
+                "Menu": "Sử dụng menu điều hướng để tìm trang bạn cần"
+            }
+        }
     }
 }

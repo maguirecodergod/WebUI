@@ -8,7 +8,8 @@
         "Apply": "Áp dụng",
         "Clear": "Xóa sạch",
         "Start": "Bắt đầu",
-        "End": "Kết thúc"
+        "End": "Kết thúc",
+        "Suggestions": "Hãy thử các cách sau:"
     },
     "Calendar": {
         "Sun": "CN",
@@ -137,5 +138,18 @@
         "Language": "Ngôn ngữ",
         "Paste your code here...": "Dán mã của bạn vào đây...",
         "Insert Code": "Chèn mã"
+    },
+    "Errors": {
+        "NotFound": {
+            "Title": "Không tìm thấy trang",
+            "Description": "Rất tiếc, chúng tôi không thể tìm thấy trang bạn yêu cầu. Có thể trang đã bị di chuyển hoặc bị xóa.",
+            "GoHome": "Về trang chủ",
+            "GoBack": "Quay lại",
+            "Suggestion": {
+                "CheckUrl": "Kiểm tra kỹ URL xem có bị sai sót không",
+                "GoHome": "Quay lại trang chủ",
+                "Menu": "Sử dụng menu điều hướng để tìm trang bạn cần"
+            }
+        }
     }
 }

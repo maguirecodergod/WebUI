@@ -13,5 +13,6 @@ public enum ButtonStyle
     Info,
     Light,
     Dark,
-    Link
+    Link,
+    Ghost
 }

@@ -1,0 +1,57 @@
+@using LHA.BlazorWasm.Components.Buttons
+@namespace LHA.BlazorWasm.Components.Errors
+
+<div class="not-found-container">
+    <div class="not-found-content">
+        <div class="illustration-wrapper">
+            <div class="glitch-wrapper">
+                <div class="glitch" data-text="404">404</div>
+            </div>
+            <div class="floating-icon">
+                <i class="@IllustrationIcon"></i>
+            </div>
+        </div>
+
+        <h1 class="not-found-title">@DisplayTitle</h1>
+        <p class="not-found-message">@DisplayMessage</p>
+
+        @if (SearchSlot != null)
+        {
+            <div class="search-slot">
+                @SearchSlot
+            </div>
+        }
+
+        <div class="suggestions">
+            <h2 class="suggestions-title">@L.L("Common.Suggestions")</h2>
+            <ul class="suggestions-list">
+                <li><i class="fas fa-check"></i> @L.L("Errors.NotFound.Suggestion.CheckUrl")</li>
+                <li><i class="fas fa-check"></i> @L.L("Errors.NotFound.Suggestion.GoHome")</li>
+                <li><i class="fas fa-check"></i> @L.L("Errors.NotFound.Suggestion.Menu")</li>
+            </ul>
+        </div>
+
+        <div class="actions">
+            @if (ShowHomeButton)
+            {
+                <Button Style="ButtonStyle.Primary" OnClick="HandleHome" Icon="fas fa-home">
+                    @GoHomeText
+                </Button>
+            }
+
+            @if (ShowBackButton)
+            {
+                <Button Style="ButtonStyle.Ghost" OnClick="HandleBackAsync" Icon="fas fa-arrow-left">
+                    @GoBackText
+                </Button>
+            }
+        </div>
+
+        @if (ExtraActions != null)
+        {
+            <div class="extra-actions">
+                @ExtraActions
+            </div>
+        }
+    </div>
+</div>

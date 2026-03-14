@@ -142,6 +142,16 @@
     color: #0a58ca;
 }
 
+.btn-ghost {
+    color: var(--text-color, #111827);
+    background-color: transparent;
+    border-color: transparent;
+}
+.btn-ghost:hover:not(:disabled) {
+    background-color: var(--hover-bg, #f3f4f6);
+    color: var(--primary-color, #3b82f6);
+}
+
 /* spinner */
 .btn-spinner {
     display: inline-block;

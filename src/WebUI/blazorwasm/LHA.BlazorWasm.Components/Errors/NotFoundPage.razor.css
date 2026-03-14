@@ -1,0 +1,192 @@
+.not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1rem;
+    text-align: center;
+}
+
+.not-found-content {
+    max-width: 600px;
+    width: 100%;
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Illustration / 404 Glitch Effect */
+.illustration-wrapper {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.glitch-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.glitch {
+    position: relative;
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--text-color, #111827);
+    letter-spacing: -0.05em;
+    z-index: 1;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.glitch::before {
+    color: #ff00c1;
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+    left: 2px;
+    text-shadow: -2px 0 #ff00c1;
+    clip: rect(44px, 450px, 56px, 0);
+}
+
+.glitch::after {
+    color: #00fff9;
+    animation: glitch-anim2 2s infinite linear alternate-reverse;
+    left: -2px;
+    text-shadow: -2px 0 #00fff9;
+    clip: rect(44px, 450px, 56px, 0);
+}
+
+.floating-icon {
+    position: absolute;
+    top: -20px;
+    right: 20%;
+    font-size: 2.5rem;
+    color: var(--primary-color, #3b82f6);
+    opacity: 0.6;
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Typography */
+.not-found-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-color, #111827);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.025em;
+}
+
+.not-found-message {
+    font-size: 1.05rem;
+    color: var(--text-muted, #6b7280);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Search Slot */
+.search-slot {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+/* Suggestions */
+.suggestions {
+    background: var(--hover-bg, #f9fafb);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    text-align: left;
+    border: 1px solid var(--border-color, #e5e7eb);
+}
+
+.suggestions-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-color, #111827);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+.suggestions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggestions-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--text-muted, #4b5563);
+    margin-bottom: 0.4rem;
+}
+
+.suggestions-list li i {
+    color: var(--success-color, #10b981);
+    font-size: 0.75rem;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.extra-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color, #f3f4f6);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(10px, 9999px, 85px, 0); }
+    20% { clip: rect(48px, 9999px, 81px, 0); }
+    40% { clip: rect(9px, 9999px, 20px, 0); }
+    60% { clip: rect(58px, 9999px, 35px, 0); }
+    80% { clip: rect(56px, 9999px, 84px, 0); }
+    100% { clip: rect(32px, 9999px, 12px, 0); }
+}
+
+@keyframes glitch-anim2 {
+    0% { clip: rect(76px, 9999px, 49px, 0); }
+    20% { clip: rect(21px, 9999px, 80px, 0); }
+    40% { clip: rect(16px, 9999px, 24px, 0); }
+    60% { clip: rect(2px, 9999px, 60px, 0); }
+    80% { clip: rect(11px, 9999px, 94px, 0); }
+    100% { clip: rect(59px, 9999px, 33px, 0); }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .glitch {
+        font-size: 5rem;
+    }
+    .not-found-title {
+        font-size: 1.75rem;
+    }
+    .actions {
+        flex-direction: column;
+    }
+    .actions ::deep .base-btn {
+        width: 100%;
+    }
+}
+

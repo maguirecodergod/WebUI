@@ -8,7 +8,8 @@
         "Apply": "Apply",
         "Clear": "Clear",
         "Start": "Start",
-        "End": "End"
+        "End": "End",
+        "Suggestions": "Try the following:"
     },
     "Calendar": {
         "Sun": "Su",
@@ -137,5 +138,18 @@
         "Language": "Language",
         "Paste your code here...": "Paste your code here...",
         "Insert Code": "Insert Code"
+    },
+    "Errors": {
+        "NotFound": {
+            "Title": "Page not found",
+            "Description": "Sorry, we couldn't find the page you're looking for. It might have been moved or deleted.",
+            "GoHome": "Go Home",
+            "GoBack": "Go Back",
+            "Suggestion": {
+                "CheckUrl": "Double check the URL for typos",
+                "GoHome": "Return to the homepage",
+                "Menu": "Use the navigation menu to find what you need"
+            }
+        }
     }
 }
