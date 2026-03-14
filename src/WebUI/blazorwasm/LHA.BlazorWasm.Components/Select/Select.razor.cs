@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,10 @@ namespace LHA.BlazorWasm.Components.Select;
 
 public partial class Select<TValue> : ComponentBase
 {
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+    private IJSObjectReference? _jsModule;
+    private ElementReference _selectRef;
+
     [Parameter] public TValue? Value { get; set; }
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
 
@@ -39,8 +44,10 @@ public partial class Select<TValue> : ComponentBase
     [Parameter] public RenderFragment<SelectOption<TValue>>? OptionTemplate { get; set; }
     [Parameter] public RenderFragment<TValue?>? ValueTemplate { get; set; }
     [Parameter] public EventCallback OnChange { get; set; }
+    [Parameter] public SelectPlacement Placement { get; set; } = SelectPlacement.Auto;
 
     protected SelectState<TValue> State { get; } = new();
+    private bool _isOpeningUpwards;
     private List<SelectOption<TValue>> _internalOptions = new();
     private List<SelectOption<TValue>> _filteredOptions = new();
 
@@ -114,9 +121,28 @@ public partial class Select<TValue> : ComponentBase
         StateHasChanged();
     }
 
-    private void ToggleDropdown()
+    private async Task ToggleDropdown()
     {
         if (Disabled || ReadOnly) return;
+        HandleInternalInteraction();
+        
+        if (!State.IsOpen)
+        {
+            if (Placement == SelectPlacement.Top)
+            {
+                _isOpeningUpwards = true;
+            }
+            else if (Placement == SelectPlacement.Bottom)
+            {
+                _isOpeningUpwards = false;
+            }
+            else // Auto
+            {
+                _jsModule ??= await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/Select/Select.razor.js");
+                _isOpeningUpwards = await _jsModule.InvokeAsync<bool>("shouldOpenUpwards", _selectRef);
+            }
+        }
+
         State.IsOpen = !State.IsOpen;
         if (State.IsOpen)
         {
@@ -238,17 +264,19 @@ public partial class Select<TValue> : ComponentBase
         }
     }
 
-    protected void HandleInternalMouseDown()
+    private DateTime _lastInteractionTime = DateTime.MinValue;
+
+    protected void HandleInternalInteraction()
     {
-        State.PreventFocusClose = true;
+        _lastInteractionTime = DateTime.Now;
     }
 
     protected async Task OnFocusOut()
     {
-        await Task.Delay(200);
-        if (State.PreventFocusClose)
+        await Task.Delay(300);
+        
+        if ((DateTime.Now - _lastInteractionTime).TotalMilliseconds < 500)
         {
-            State.PreventFocusClose = false;
             return;
         }
 

@@ -10,10 +10,6 @@ public class SelectState<TValue>
     public int FocusedIndex { get; set; } = -1;
     public bool IsLoading { get; set; }
     
-    /// <summary>
-    /// Flag to prevent FocusOut from closing the popup prematurely during internal clicks.
-    /// </summary>
-    public bool PreventFocusClose { get; set; }
 
     public ItemsProviderDelegate<SelectOption<TValue>>? ItemsProvider { get; set; }
     public event Action? OnOptionsChanged;

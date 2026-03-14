@@ -136,8 +136,21 @@
     animation: selectFadeIn 0.15s ease-out;
 }
 
+.select-dropdown.open-top {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 2px;
+    animation: selectFadeInTop 0.15s ease-out;
+}
+
 @keyframes selectFadeIn {
     from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes selectFadeInTop {
+    from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
 }
 

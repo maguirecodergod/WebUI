@@ -3,7 +3,8 @@
 @typeparam TInner
 @inherits PickerBase<DateRange<TInner>>
 
-<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalMouseDown">
+<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" 
+     @onmousedown="HandleInternalInteraction" @ontouchstart="HandleInternalInteraction">
     
     <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "") @ValidationClass" @onclick="TogglePopup">
         <input type="text" 

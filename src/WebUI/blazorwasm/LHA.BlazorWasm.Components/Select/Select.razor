@@ -3,7 +3,8 @@
 @using Microsoft.AspNetCore.Components.Web
 @using LHA.BlazorWasm.Components.Skeleton
 
-<div class="select-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalMouseDown"
+<div @ref="_selectRef" class="select-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" 
+     @onmousedown="HandleInternalInteraction" @ontouchstart="HandleInternalInteraction"
      @onkeydown="HandleKeyDown" tabindex="0" role="combobox" aria-expanded="@State.IsOpen.ToString().ToLower()"
      aria-haspopup="listbox">
     
@@ -71,7 +72,7 @@
         </div>
     </div>
 
-    <div class="select-dropdown @(State.IsOpen ? "open" : "")" @onclick:stopPropagation="true">
+    <div class="select-dropdown @(State.IsOpen ? "open" : "") @(_isOpeningUpwards ? "open-top" : "")" @onclick:stopPropagation="true">
         @if (Searchable)
         {
             <SelectSearch Placeholder="Search..." SearchText="@State.SearchText" OnSearch="HandleSearch" />

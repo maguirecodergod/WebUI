@@ -162,7 +162,18 @@
 
 .picker-popup.open {
     display: block;
-    animation: pickerEntrance 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tablet and Desktop float animation */
+@media (min-width: 576px) {
+    .picker-popup.open {
+        animation: pickerEntrance 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .picker-popup {
+        min-width: 320px;
+        max-width: 400px; /* Limit max width for better appearance */
+        overflow: visible; /* Allow system selects to pop out of the picker if needed */
+    }
 }
 
 @keyframes pickerEntrance {
@@ -517,26 +528,32 @@
 /* Shared Responsive Breakpoints */
 
 /* Range specific min-widths for larger screens */
-@media (min-width: 768px) {
-    .date-range-popup { min-width: 660px; }
-    .datetime-range-popup { min-width: 680px; }
+@media (min-width: 992px) {
+    .date-range-popup { min-width: 660px; max-width: none; }
+    .datetime-range-popup { min-width: 680px; max-width: none; }
 }
 
-/* Tablet (768px–1199px) */
-@media (min-width: 768px) and (max-width: 1199px) {
+/* Tablet range refinements */
+@media (min-width: 576px) and (max-width: 991px) {
     .picker-wrapper {
-        max-width: 320px;
+        max-width: 300px;
     }
     
     .picker-popup {
         left: 50%;
         transform: translateX(-50%);
         transform-origin: top center;
+        min-width: 320px;
+    }
+
+    .range-layout {
+        flex-direction: column;
+        gap: 16px;
     }
 }
 
-/* Mobile (<768px) */
-@media (max-width: 767px) {
+/* Mobile (<576px) */
+@media (max-width: 575px) {
     .picker-wrapper {
         max-width: 100%;
         width: 100%;
@@ -558,10 +575,16 @@
         padding: 24px var(--picker-mobile-padding);
         transform: translateY(100%);
         box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
-        animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        z-index: 9999; /* Ensure it is above everywhere */
+    }
+
+    .picker-popup.open {
+        transform: translateY(0);
+        animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @keyframes slideUp {
+        from { transform: translateY(100%); }
         to { transform: translateY(0); }
     }
 

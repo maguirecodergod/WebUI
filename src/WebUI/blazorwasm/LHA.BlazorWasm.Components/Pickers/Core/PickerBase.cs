@@ -65,7 +65,6 @@ public abstract class PickerBase<TValue> : ComponentBase, IDisposable
 
     protected PickerState State { get; } = new();
 
-    private bool _preventFocusClose = false;
 
     protected async Task UpdateValueAsync(TValue? newValue)
     {
@@ -80,6 +79,7 @@ public abstract class PickerBase<TValue> : ComponentBase, IDisposable
     public void TogglePopup()
     {
         if (Disabled || ReadOnly) return;
+        HandleInternalInteraction(); // Record click time
         State.IsOpen = !State.IsOpen;
     }
 
@@ -96,12 +96,14 @@ public abstract class PickerBase<TValue> : ComponentBase, IDisposable
         return UpdateValueAsync(default);
     }
 
+    private DateTime _lastInteractionTime = DateTime.MinValue;
+
     /// <summary>
-    /// Captures mousedown events inside the component to prevent FocusOut from closing the popup prematurely.
+    /// Captures mousedown or touchstart events inside the component to prevent FocusOut from closing the popup prematurely.
     /// </summary>
-    protected void HandleInternalMouseDown()
+    protected void HandleInternalInteraction()
     {
-        _preventFocusClose = true;
+        _lastInteractionTime = DateTime.Now;
     }
 
     /// <summary>
@@ -111,11 +113,12 @@ public abstract class PickerBase<TValue> : ComponentBase, IDisposable
     protected async Task OnFocusOut()
     {
         // Delay needed to allow interactive clicks inside the dropdown to process first.
-        await Task.Delay(200);
+        // Increased for mobile stability.
+        await Task.Delay(300);
 
-        if (_preventFocusClose)
+        // If an internal interaction happened very recently (including the click that opened it), don't close.
+        if ((DateTime.Now - _lastInteractionTime).TotalMilliseconds < 500)
         {
-            _preventFocusClose = false;
             return;
         }
 
