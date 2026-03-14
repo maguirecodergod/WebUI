@@ -1,0 +1,24 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+<div class="rte-dropdown-wrapper" @onclick:stopPropagation>
+    <button class="@GetButtonCssClass()"
+            type="button"
+            title="@Tooltip"
+            disabled="@Disabled"
+            @onclick="ToggleDropdown">
+        @if (!string.IsNullOrEmpty(SvgIcon))
+        {
+            @((MarkupString)SvgIcon)
+        }
+        <svg class="rte-dropdown-arrow" viewBox="0 0 12 12" width="8" height="8">
+            <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    @if (IsOpen)
+    {
+        <div class="rte-dropdown-popup open" @onclick:stopPropagation>
+            @ChildContent
+        </div>
+    }
+</div>

@@ -1,0 +1,21 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+<div class="rte-color-picker" @onclick:stopPropagation>
+    <div class="rte-color-grid">
+        @foreach (var color in PresetColors)
+        {
+            <button class="rte-color-swatch @(color == SelectedColor ? "selected" : "")"
+                    style="background-color: @color"
+                    title="@color"
+                    type="button"
+                    @onclick="() => SelectColor(color)">
+            </button>
+        }
+    </div>
+    <div class="rte-color-custom">
+        <label>
+            <span>Custom:</span>
+            <input type="color" value="@SelectedColor" @onchange="OnCustomColorChange"/>
+        </label>
+    </div>
+</div>

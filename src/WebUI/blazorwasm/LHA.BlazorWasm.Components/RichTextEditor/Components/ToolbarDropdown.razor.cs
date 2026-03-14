@@ -1,0 +1,37 @@
+using Microsoft.AspNetCore.Components;
+
+namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
+
+public partial class ToolbarDropdown : ComponentBase
+{
+    [Parameter] public string? SvgIcon { get; set; }
+    [Parameter] public string? Tooltip { get; set; }
+    [Parameter] public bool IsActive { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private bool IsOpen { get; set; }
+
+    private string GetButtonCssClass()
+    {
+        var classes = "rte-toolbar-btn rte-dropdown-btn";
+        if (IsActive) classes += " active";
+        if (IsOpen) classes += " open";
+        if (Disabled) classes += " disabled";
+        return classes;
+    }
+
+    private void ToggleDropdown()
+    {
+        if (!Disabled)
+        {
+            IsOpen = !IsOpen;
+        }
+    }
+
+    public void Close()
+    {
+        IsOpen = false;
+        StateHasChanged();
+    }
+}

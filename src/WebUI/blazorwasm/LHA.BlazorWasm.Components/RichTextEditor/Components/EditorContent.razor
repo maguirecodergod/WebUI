@@ -1,0 +1,15 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+<div class="rte-content-wrapper" style="height: @Height">
+    <div class="rte-content-area"
+         data-placeholder="@Placeholder"
+         spellcheck="false">
+    </div>
+    <textarea class="rte-source-area" style="display:none" spellcheck="false"></textarea>
+</div>
+
+@code {
+    [Parameter] public string Height { get; set; } = "350px";
+    [Parameter] public string Placeholder { get; set; } = "Start typing...";
+
+}

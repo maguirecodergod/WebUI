@@ -1,0 +1,151 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+@using LHA.BlazorWasm.Components.RichTextEditor.Models
+
+<div class="rte-toolbar">
+    @* ===== ROW 1: Text Formatting & Alignment ===== *@
+    <div class="rte-toolbar-row">
+        @* Bold / Italic / Underline *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.Bold" Tooltip="Bold (Ctrl+B)" IsActive="@State.IsBold"
+                           OnClick="@(() => ExecuteCommand("bold"))" />
+            <ToolbarButton SvgIcon="@Icons.Italic" Tooltip="Italic (Ctrl+I)" IsActive="@State.IsItalic"
+                           OnClick="@(() => ExecuteCommand("italic"))" />
+            <ToolbarButton SvgIcon="@Icons.Underline" Tooltip="Underline (Ctrl+U)" IsActive="@State.IsUnderline"
+                           OnClick="@(() => ExecuteCommand("underline"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Font Color / Background Color *@
+        <div class="rte-toolbar-group">
+            <ToolbarDropdown SvgIcon="@Icons.FontColor" Tooltip="Font Color" @ref="_foreColorDropdown">
+                <ColorPickerPopup SelectedColor="@State.FontColor"
+                                  OnColorSelected="@OnForeColor" />
+            </ToolbarDropdown>
+            <ToolbarDropdown SvgIcon="@Icons.BackColor" Tooltip="Highlight Color" @ref="_backColorDropdown">
+                <ColorPickerPopup SelectedColor="@State.BackColor"
+                                  OnColorSelected="@OnBackColor" />
+            </ToolbarDropdown>
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Alignment *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.AlignLeft" Tooltip="Align Left" IsActive="@(State.Alignment == "left")"
+                           OnClick="@(() => ExecuteCommand("justifyLeft"))" />
+            <ToolbarButton SvgIcon="@Icons.AlignCenter" Tooltip="Align Center" IsActive="@(State.Alignment == "center")"
+                           OnClick="@(() => ExecuteCommand("justifyCenter"))" />
+            <ToolbarButton SvgIcon="@Icons.AlignRight" Tooltip="Align Right" IsActive="@(State.Alignment == "right")"
+                           OnClick="@(() => ExecuteCommand("justifyRight"))" />
+            <ToolbarButton SvgIcon="@Icons.AlignJustify" Tooltip="Justify" IsActive="@(State.Alignment == "justify")"
+                           OnClick="@(() => ExecuteCommand("justifyFull"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Lists *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.OrderedList" Tooltip="Numbered List" IsActive="@State.IsOrderedList"
+                           OnClick="@(() => ExecuteCommand("insertOrderedList"))" />
+            <ToolbarButton SvgIcon="@Icons.UnorderedList" Tooltip="Bullet List" IsActive="@State.IsUnorderedList"
+                           OnClick="@(() => ExecuteCommand("insertUnorderedList"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Indent / Outdent *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.Outdent" Tooltip="Decrease Indent"
+                           OnClick="@(() => ExecuteCommand("outdent"))" />
+            <ToolbarButton SvgIcon="@Icons.Indent" Tooltip="Increase Indent"
+                           OnClick="@(() => ExecuteCommand("indent"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Blockquote *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.Blockquote" Tooltip="Blockquote"
+                           OnClick="@(() => ExecuteCommand("formatBlock", "blockquote"))" />
+        </div>
+    </div>
+
+    @* ===== ROW 2: Editing Tools, Insert, View ===== *@
+    <div class="rte-toolbar-row">
+        @* Clear / Cut / Copy / Paste *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.ClearFormat" Tooltip="Clear Formatting"
+                           OnClick="@(() => ExecuteCommand("removeFormat"))" />
+            <ToolbarButton SvgIcon="@Icons.Cut" Tooltip="Cut (Ctrl+X)"
+                           OnClick="@(() => ExecuteCommand("cut"))" />
+            <ToolbarButton SvgIcon="@Icons.Copy" Tooltip="Copy (Ctrl+C)"
+                           OnClick="@(() => ExecuteCommand("copy"))" />
+            <ToolbarButton SvgIcon="@Icons.Paste" Tooltip="Paste (Ctrl+V)"
+                           OnClick="@(() => ExecuteCommand("paste"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Undo / Redo *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.Undo" Tooltip="Undo (Ctrl+Z)"
+                           OnClick="@(() => ExecuteCommand("undo"))" />
+            <ToolbarButton SvgIcon="@Icons.Redo" Tooltip="Redo (Ctrl+Y)"
+                           OnClick="@(() => ExecuteCommand("redo"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Link / Unlink *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.Link" Tooltip="Insert Link"
+                           OnClick="@ShowLinkDialog" />
+            <ToolbarButton SvgIcon="@Icons.Unlink" Tooltip="Remove Link"
+                           OnClick="@(() => ExecuteCommand("unlink"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Special Characters *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.SpecialChars" Tooltip="Horizontal Rule"
+                           OnClick="@(() => ExecuteCommand("insertHorizontalRule"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Table / Image *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.Table" Tooltip="Insert Table"
+                           OnClick="@ShowTableDialog" />
+            <ToolbarButton SvgIcon="@Icons.Image" Tooltip="Insert Image"
+                           OnClick="@ShowImageDialog" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Subscript / Superscript *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.Subscript" Tooltip="Subscript" IsActive="@State.IsSubscript"
+                           OnClick="@(() => ExecuteCommand("subscript"))" />
+            <ToolbarButton SvgIcon="@Icons.Superscript" Tooltip="Superscript" IsActive="@State.IsSuperscript"
+                           OnClick="@(() => ExecuteCommand("superscript"))" />
+        </div>
+
+        <ToolbarSeparator />
+
+        @* Source Code / Fullscreen *@
+        <div class="rte-toolbar-group">
+            <ToolbarButton SvgIcon="@Icons.SourceCode" Tooltip="Source Code" IsActive="@State.IsSourceView"
+                           OnClick="@ToggleSourceView" />
+            <ToolbarButton SvgIcon="@Icons.Fullscreen" Tooltip="Fullscreen" IsActive="@State.IsFullscreen"
+                           OnClick="@ToggleFullscreen" />
+        </div>
+    </div>
+</div>
+
+@* Dialogs *@
+<LinkDialog IsVisible="@_showLinkDialog" OnSubmit="@OnLinkSubmit" OnClose="@(() => { _showLinkDialog = false; })" />
+<ImageDialog IsVisible="@_showImageDialog" OnSubmit="@OnImageSubmit" OnClose="@(() => { _showImageDialog = false; })" />
+<TableDialog IsVisible="@_showTableDialog" OnSubmit="@OnTableSubmit" OnClose="@(() => { _showTableDialog = false; })" />

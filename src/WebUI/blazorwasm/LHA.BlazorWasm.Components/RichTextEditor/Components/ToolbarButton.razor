@@ -1,0 +1,18 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+<button class="@GetCssClass()"
+        type="button"
+        title="@Tooltip"
+        disabled="@Disabled"
+        @onclick="HandleClick"
+        @onclick:stopPropagation
+        @onclick:preventDefault>
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+    else if (!string.IsNullOrEmpty(SvgIcon))
+    {
+        @((MarkupString)SvgIcon)
+    }
+</button>

@@ -1,0 +1,32 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+@if (IsVisible)
+{
+    <div class="rte-dialog-overlay" @onclick="Close">
+        <div class="rte-dialog rte-table-dialog" @onclick:stopPropagation>
+            <div class="rte-dialog-header">
+                <h3>Insert Table</h3>
+                <button class="rte-dialog-close" type="button" @onclick="Close">
+                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+            </div>
+            <div class="rte-dialog-body">
+                <div class="rte-table-grid">
+                    @for (int r = 1; r <= MaxRows; r++)
+                    {
+                        var row = r;
+                        @for (int c = 1; c <= MaxCols; c++)
+                        {
+                            var col = c;
+                            <div class="rte-table-cell @(row <= HoverRows && col <= HoverCols ? "highlight" : "")"
+                                 @onmouseover="() => OnCellHover(row, col)"
+                                 @onclick="() => OnCellClick(row, col)">
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="rte-table-size-label">@HoverRows × @HoverCols</div>
+            </div>
+        </div>
+    </div>
+}

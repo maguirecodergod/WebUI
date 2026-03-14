@@ -1,0 +1,39 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+@if (IsVisible)
+{
+    <div class="rte-dialog-overlay" @onclick="Close">
+        <div class="rte-dialog" @onclick:stopPropagation>
+            <div class="rte-dialog-header">
+                <h3>Insert Image</h3>
+                <button class="rte-dialog-close" type="button" @onclick="Close">
+                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+            </div>
+            <div class="rte-dialog-body">
+                <div class="rte-form-group">
+                    <label>Image URL</label>
+                    <input type="url" class="rte-input" @bind="ImageUrl" placeholder="https://example.com/image.jpg"/>
+                </div>
+                <div class="rte-form-group">
+                    <label>Alt Text</label>
+                    <input type="text" class="rte-input" @bind="AltText" placeholder="Describe the image"/>
+                </div>
+                <div class="rte-form-row">
+                    <div class="rte-form-group">
+                        <label>Width</label>
+                        <input type="text" class="rte-input" @bind="Width" placeholder="e.g., 400px or 100%"/>
+                    </div>
+                    <div class="rte-form-group">
+                        <label>Height</label>
+                        <input type="text" class="rte-input" @bind="Height" placeholder="auto"/>
+                    </div>
+                </div>
+            </div>
+            <div class="rte-dialog-footer">
+                <button class="rte-btn rte-btn-secondary" type="button" @onclick="Close">Cancel</button>
+                <button class="rte-btn rte-btn-primary" type="button" @onclick="Submit" disabled="@string.IsNullOrWhiteSpace(ImageUrl)">Insert Image</button>
+            </div>
+        </div>
+    </div>
+}

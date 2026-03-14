@@ -1,0 +1,26 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+@using LHA.BlazorWasm.Components.RichTextEditor.Models
+
+<div id="@EditorId" class="rte-container @(State.IsFullscreen ? "rte-fullscreen" : "")" style="width: @(Options.Width)">
+    @if (Options.ShowToolbar && !Options.ReadOnly)
+    {
+        <EditorToolbar State="@State"
+                       OnCommand="HandleCommand"
+                       OnToggleSourceView="HandleToggleSourceView"
+                       OnToggleFullscreen="HandleToggleFullscreen"
+                       OnInsertLink="HandleInsertLink"
+                       OnInsertImage="HandleInsertImage"
+                       OnInsertTable="HandleInsertTable" />
+    }
+
+    <EditorContent Height="@Options.Height"
+                   Placeholder="@Options.Placeholder" />
+
+
+    @if (Options.ShowStatusBar)
+    {
+        <EditorStatusBar WordCount="@State.WordCount"
+                         CharCount="@State.CharCount"
+                         ElementPath="@State.ElementPath" />
+    }
+</div>

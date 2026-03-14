@@ -1,0 +1,20 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+
+<div class="rte-status-bar">
+    <div class="rte-element-path">
+        @if (!string.IsNullOrEmpty(ElementPath))
+        {
+            @((MarkupString)ElementPath)
+        }
+    </div>
+    <div class="rte-status-info">
+        <span class="rte-word-count">Words: @WordCount</span>
+        <span class="rte-char-count">Chars: @CharCount</span>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int WordCount { get; set; }
+    [Parameter] public int CharCount { get; set; }
+    [Parameter] public string ElementPath { get; set; } = "";
+}
