@@ -1,0 +1,31 @@
+@namespace LHA.BlazorWasm.Components.Breadcrumb
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+
+<li class="@ItemCssClass" aria-current="@(IsLast ? "page" : null)">
+    @if (!string.IsNullOrWhiteSpace(Icon))
+    {
+        if (Icon.Contains(" ") || Icon.Contains("-"))
+        {
+            <i class="breadcrumb-icon @Icon" aria-hidden="true"></i>
+        }
+        else
+        {
+            <span class="breadcrumb-icon" aria-hidden="true">@Icon</span>
+        }
+    }
+
+    @if (IsLink)
+    {
+        <NavLink class="breadcrumb-link" href="@Href">@Text</NavLink>
+    }
+    else
+    {
+        <span class="breadcrumb-text">@Text</span>
+    }
+</li>
+
+@if (!IsLast && !string.IsNullOrEmpty(Separator))
+{
+    <li class="breadcrumb-separator" aria-hidden="true">@Separator</li>
+}

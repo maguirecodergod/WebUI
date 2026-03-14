@@ -1,0 +1,63 @@
+@namespace LHA.BlazorWasm.Components.Breadcrumb
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+
+<nav class="@NavClass" style="@Style" aria-label="breadcrumb">
+    <ol class="breadcrumb-list">
+
+        @if (UseChildContent)
+        {
+            @* ── Markup mode ──
+               CascadingValue passes both the parent reference (for registration)
+               and the current separator to each BreadcrumbItem.
+               Each item renders its own <li> plus, when not last, a separator <li>.
+            *@
+            <CascadingValue Value="this" IsFixed="true">
+                <CascadingValue Name="BreadcrumbSeparator" Value="@Separator" IsFixed="false">
+                    @ChildContent
+                </CascadingValue>
+            </CascadingValue>
+        }
+        else
+        {
+            @* ── Data-driven mode: Items parameter ── *@
+            @for (var i = 0; i < DataItems.Count; i++)
+            {
+                var item   = DataItems[i];
+                var isLast = i == DataItems.Count - 1;
+                var isLink = !string.IsNullOrWhiteSpace(item.Href) && !isLast && !item.Disabled;
+
+                <li class="breadcrumb-item @(isLast ? "breadcrumb-active" : "") @(item.Disabled ? "breadcrumb-disabled" : "")"
+                    aria-current="@(isLast ? "page" : null)">
+
+                    @if (!string.IsNullOrWhiteSpace(item.Icon))
+                    {
+                        if (item.Icon.Contains(" ") || item.Icon.Contains("-"))
+                        {
+                            <i class="breadcrumb-icon @item.Icon" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <span class="breadcrumb-icon" aria-hidden="true">@item.Icon</span>
+                        }
+                    }
+
+                    @if (isLink)
+                    {
+                        <NavLink class="breadcrumb-link" href="@item.Href">@item.Text</NavLink>
+                    }
+                    else
+                    {
+                        <span class="breadcrumb-text">@item.Text</span>
+                    }
+                </li>
+
+                @if (!isLast)
+                {
+                    <li class="breadcrumb-separator" aria-hidden="true">@Separator</li>
+                }
+            }
+        }
+
+    </ol>
+</nav>

@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Breadcrumb Component Styles
+   ========================================================================== */
+
+.breadcrumb-nav {
+    font-family: inherit;
+    font-size: 0.875rem; /* 14px */
+}
+
+.breadcrumb-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* ==========================================================================
+   Breadcrumb Items
+   ========================================================================== */
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted, #6c757d);
+}
+
+.breadcrumb-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.375rem;
+    font-size: 1.1em;
+}
+
+.breadcrumb-link {
+    color: var(--primary-color, #0d6efd);
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+}
+
+.breadcrumb-link:hover,
+.breadcrumb-link:focus {
+    color: var(--primary-hover-color, #0a58ca);
+    text-decoration: underline;
+}
+
+.breadcrumb-text {
+    color: inherit;
+}
+
+/* ==========================================================================
+   Active / Disabled States
+   ========================================================================== */
+
+.breadcrumb-active {
+    color: var(--text-color, #212529);
+    font-weight: 500;
+}
+
+.breadcrumb-active .breadcrumb-text {
+    color: inherit;
+}
+
+.breadcrumb-disabled {
+    color: var(--text-muted-light, #adb5bd);
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.breadcrumb-disabled .breadcrumb-link {
+    color: inherit;
+    pointer-events: none;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   Separators
+   ========================================================================== */
+
+.breadcrumb-separator {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted-light, #adb5bd);
+    padding: 0 0.5rem;
+    user-select: none;
+}

@@ -1,8 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LHA.BlazorWasm.Services.Localization;
 using Microsoft.JSInterop;
 using LHA.BlazorWasm.Components.Select;
@@ -21,7 +17,7 @@ namespace LHA.BlazorWasm.Components.LanguageSelector;
 /// Inline:
 /// <LanguageSelector Mode="LanguageSelectorMode.Inline" />
 /// </summary>
-public partial class LanguageSelector : ComponentBase, IDisposable, IAsyncDisposable
+public partial class LanguageSelector : ComponentBase, IDisposable
 {
     [Inject] private ILocalizationService LocalizationService { get; set; } = default!;
     [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
@@ -50,9 +46,6 @@ public partial class LanguageSelector : ComponentBase, IDisposable, IAsyncDispos
     /// Additional inline style properties.
     /// </summary>
     [Parameter] public string? Style { get; set; }
-
-    private ElementReference _containerRef;
-    private IJSObjectReference? _jsModule;
 
     private ICollection<SelectOption<string>> SelectOptions =>
         SupportedOptions.Select(o => new SelectOption<string>
@@ -108,17 +101,5 @@ public partial class LanguageSelector : ComponentBase, IDisposable, IAsyncDispos
     public void Dispose()
     {
         LocalizationService.OnLanguageChanged -= RefreshUI;
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_jsModule is not null)
-        {
-            try
-            {
-                await _jsModule.DisposeAsync();
-            }
-            catch { }
-        }
     }
 }
