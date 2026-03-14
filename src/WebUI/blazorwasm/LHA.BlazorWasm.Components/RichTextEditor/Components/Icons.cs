@@ -57,5 +57,10 @@ public static class Icons
     public const string Superscript = "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"currentColor\" stroke=\"none\"><path d=\"M3 6l6 8-6 8h3l4.5-6 4.5 6h3l-6-8 6-8h-3L10.5 12 6 6H3z\" font-size=\"10\"/><text x=\"17\" y=\"10\" font-size=\"8\" font-family=\"sans-serif\">2</text></svg>";
 
     public const string SourceCode = "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"16 18 22 12 16 6\"/><polyline points=\"8 6 2 12 8 18\"/></svg>";
+    public const string InsertSourceCode = @"<svg viewBox=""0 0 24 24"" width=""18"" height=""18"" fill=""none"" stroke=""currentColor"" stroke-width=""2"">
+        <path d=""M7 8L3 12L7 16""/>
+        <path d=""M17 8L21 12L17 16""/>
+        <line x1=""10"" y1=""18"" x2=""14"" y2=""6""/>
+        </svg>";
     public const string Fullscreen = $"<svg {V}><polyline points=\"15 3 21 3 21 9\"/><polyline points=\"9 21 3 21 3 15\"/><line x1=\"21\" y1=\"3\" x2=\"14\" y2=\"10\"/><line x1=\"3\" y1=\"21\" x2=\"10\" y2=\"14\"/></svg>";
 }

@@ -15,8 +15,11 @@
     --rte-btn-hover-bg: #e2e6ed;
     --rte-btn-active-bg: #d0d5dd;
     --rte-btn-active-color: #1a73e8;
-    --rte-btn-icon-color: #374151;
+    --rte-btn-active-highlight: #dbeafe;
+    --rte-btn-active-highlight-hover: #bfdbfe;
+    --rte-icon-color: #374151;
     --rte-content-bg: #ffffff;
+    --rte-content-color: #1f2937;
     --rte-content-min-height: 200px;
     --rte-status-bg: #f4f5f7;
     --rte-status-color: #6b7280;
@@ -25,6 +28,12 @@
     --rte-primary-hover: #1557b0;
     --rte-danger: #e53e3e;
     --rte-transition: 0.15s ease;
+    --rte-popup-bg: #ffffff;
+    --rte-popup-border: #d4d9e0;
+    --rte-menu-text: #374151;
+    --rte-menu-hover-bg: #f3f4f6;
+    --rte-menu-hover-text: #111827;
+    --rte-divider-color: #f0f0f0;
 
     /* Syntax Highlighting - VS Code Light Modern */
     --rte-code-bg: #ffffff;
@@ -39,7 +48,31 @@
 }
 
 .theme-dark {
-    --rte-btn-icon-color: #d1d5db;
+    --rte-border-color: #1e293b;
+    --rte-toolbar-bg: #1e2229;
+    --rte-toolbar-border: #2a3040;
+    --rte-btn-hover-bg: #2a3347;
+    --rte-btn-active-bg: #334155;
+    --rte-btn-active-color: #818cf8;
+    --rte-btn-active-highlight: #2d2a5e;
+    --rte-btn-active-highlight-hover: #3b3680;
+    --rte-icon-color: #d1d5db;
+    --rte-content-bg: #0f1115;
+    --rte-content-color: #e2e8f0;
+    --rte-status-bg: #1e2229;
+    --rte-status-color: #94a3b8;
+    --rte-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    --rte-primary: #818cf8;
+    --rte-primary-hover: #a5b4fc;
+    --rte-danger: #fda29b;
+    --rte-popup-bg: #151921;
+    --rte-popup-border: #1e293b;
+    --rte-menu-text: #e2e8f0;
+    --rte-menu-hover-bg: #1e293b;
+    --rte-menu-hover-text: #f9fafb;
+    --rte-divider-color: #1e293b;
+
+    /* Syntax Highlighting - VS Code Dark */
     --rte-code-bg: #1e1e1e;
     --rte-code-text: #dcdcdc;
     --rte-hljs-comment: #6a9955;
@@ -125,7 +158,7 @@ body.rte-fullscreen-active {
 }
 
 .rte-toolbar .btn-link {
-    color: inherit !important;
+    color: var(--rte-icon-color) !important;
     text-decoration: none !important;
     box-shadow: none !important;
 }
@@ -140,7 +173,7 @@ body.rte-fullscreen-active {
     border: none;
     border-radius: var(--rte-btn-radius);
     background: transparent;
-    color: var(--rte-btn-icon-color);
+    color: var(--rte-icon-color);
     cursor: pointer;
     transition: background-color var(--rte-transition), color var(--rte-transition);
     font-size: 14px;
@@ -149,8 +182,8 @@ body.rte-fullscreen-active {
 }
 
 .rte-toolbar-btn:hover {
-    background: var(--rte-btn-hover-bg);
-    color: #111827;
+    background: var(--rte-btn-hover-bg) !important;
+    color: var(--rte-icon-color) !important;
 }
 
 .rte-toolbar-btn:active {
@@ -158,12 +191,15 @@ body.rte-fullscreen-active {
 }
 
 .rte-toolbar-btn.active {
-    background: #dbeafe;
-    color: var(--rte-btn-active-color);
+    background: var(--rte-btn-active-highlight) !important;
+    color: var(--rte-btn-active-color) !important;
+    border-bottom: 2px solid var(--rte-btn-active-color);
 }
 
 .rte-toolbar-btn.active:hover {
-    background: #bfdbfe;
+    background: var(--rte-btn-active-highlight-hover) !important;
+    color: var(--rte-btn-active-color) !important;
+    border-bottom: 2px solid var(--rte-btn-active-color);
 }
 
 .rte-toolbar-btn:disabled,
@@ -221,8 +257,8 @@ body.rte-fullscreen-active {
     top: calc(100% + 4px);
     left: 0;
     z-index: 1000;
-    background: var(--popup-bg, #ffffff);
-    border: 1px solid var(--popup-border, var(--rte-border-color));
+    background: var(--rte-popup-bg);
+    border: 1px solid var(--rte-popup-border);
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     padding: 8px;
@@ -257,7 +293,7 @@ body.rte-fullscreen-active {
     justify-content: flex-start;
     padding: 8px 12px;
     background: transparent;
-    color: var(--text-color, #374151) !important;
+    color: var(--rte-menu-text) !important;
     font-weight: normal;
     font-size: 14px;
     border: none;
@@ -276,8 +312,8 @@ body.rte-fullscreen-active {
 }
 
 .rte-menu-item:hover {
-    background: var(--hover-bg, #f3f4f6);
-    color: var(--text-color, #111827);
+    background: var(--rte-menu-hover-bg);
+    color: var(--rte-menu-hover-text);
 }
 
 .rte-menu-icon {
@@ -286,11 +322,16 @@ body.rte-fullscreen-active {
     justify-content: center;
     width: 18px;
     height: 18px;
+    color: inherit;
+}
+
+.rte-menu-icon--primary {
+    color: var(--rte-primary);
 }
 
 .rte-menu-divider {
     height: 1px;
-    background: #f0f0f0;
+    background: var(--rte-divider-color);
     margin: 4px 0;
 }
 
@@ -362,7 +403,7 @@ body.rte-fullscreen-active {
     align-items: center;
     gap: 8px;
     font-size: 12px;
-    color: var(--text-muted, #6b7280);
+    color: var(--rte-status-color);
     cursor: pointer;
     width: 100%;
 }
@@ -370,7 +411,7 @@ body.rte-fullscreen-active {
 .rte-color-custom input[type="color"] {
     width: 32px;
     height: 28px;
-    border: 1px solid var(--border-color, #d1d5db);
+    border: 1px solid var(--rte-border-color);
     border-radius: 4px;
     cursor: pointer;
     padding: 2px;
@@ -390,7 +431,7 @@ body.rte-fullscreen-active {
     outline: none;
     font-size: 15px;
     line-height: 1.7;
-    color: #1f2937;
+    color: var(--rte-content-color);
     overflow-y: auto;
     min-height: var(--rte-content-min-height);
     word-wrap: break-word;
@@ -399,7 +440,7 @@ body.rte-fullscreen-active {
 
 .rte-content-area:empty::before {
     content: attr(data-placeholder);
-    color: #9ca3af;
+    color: var(--rte-status-color);
     pointer-events: none;
     font-style: italic;
 }
