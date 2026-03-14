@@ -33,7 +33,6 @@
     border: 1px solid var(--rte-border-color);
     border-radius: var(--rte-border-radius);
     box-shadow: var(--rte-shadow);
-    overflow: hidden;
     background: var(--rte-content-bg);
     display: flex;
     flex-direction: column;
@@ -49,6 +48,7 @@
     z-index: 99999;
     border-radius: 0;
     border: none;
+    overflow: visible !important;
 }
 
 .rte-container.rte-fullscreen .rte-content-wrapper {
@@ -69,6 +69,8 @@ body.rte-fullscreen-active {
     flex-direction: column;
     gap: 2px;
     user-select: none;
+    border-top-left-radius: calc(var(--rte-border-radius) - 1px);
+    border-top-right-radius: calc(var(--rte-border-radius) - 1px);
 }
 
 .rte-toolbar-row {
@@ -407,6 +409,8 @@ body.rte-fullscreen-active {
     font-size: 12px;
     color: var(--rte-status-color);
     min-height: 28px;
+    border-bottom-left-radius: calc(var(--rte-border-radius) - 1px);
+    border-bottom-right-radius: calc(var(--rte-border-radius) - 1px);
 }
 
 .rte-element-path {
