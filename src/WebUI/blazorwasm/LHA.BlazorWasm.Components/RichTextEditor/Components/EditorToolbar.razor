@@ -124,27 +124,27 @@
                            OnClick="@ShowTableDialog" />
             <ToolbarDropdown SvgIcon="@Icons.Image" Tooltip='@Localizer.L("Editor.Insert Image")' @ref="_imageDropdown">
                 <div class="rte-menu-list">
-                    <button class="rte-menu-item" @onclick="OnUploadClick">
+                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnUploadClick">
                         <span class="rte-menu-icon" style="color: #1a73e8;">@((MarkupString)Icons.Upload)</span>
                         <span>@Localizer.L("Editor.Upload")</span>
-                    </button>
-                    <button class="rte-menu-item" @onclick="OnCameraClick">
+                    </Button>
+                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnCameraClick">
                         <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Camera)</span>
                         <span>@Localizer.L("Editor.Camera")</span>
-                    </button>
-                    <button class="rte-menu-item" @onclick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
+                    </Button>
+                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
                         <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Image)</span>
                         <span>@Localizer.L("Editor.By Url")</span>
-                    </button>
-                    <button class="rte-menu-item" @onclick="OnDragDropClick">
+                    </Button>
+                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnDragDropClick">
                         <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.DragDrop)</span>
                         <span>@Localizer.L("Editor.Drag & Drop")</span>
-                    </button>
+                    </Button>
                     <div class="rte-menu-divider"></div>
-                    <button class="rte-menu-item" @onclick="OnImageGalleryClick">
+                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnImageGalleryClick">
                         <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Image)</span>
                         <span>@Localizer.L("Editor.Image Gallery")</span>
-                    </button>
+                    </Button>
                 </div>
             </ToolbarDropdown>
             <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip='@Localizer.L("Editor.Insert Video")' @ref="_videoDropdown">
@@ -153,7 +153,7 @@
                         <input type="text" class="rte-input" placeholder='@Localizer.L("Editor.Url")' @bind="_videoUrl" @bind:event="oninput" @onkeydown="@(async e => { if (e.Key == "Enter") await OnInsertVideoClick(); })" />
                     </div>
                     <div style="text-align: right;">
-                        <button class="rte-btn rte-btn-primary" @onclick="OnInsertVideoClick" disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</button>
+                        <Button Style="ButtonStyle.Primary" OnClick="OnInsertVideoClick" Disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</Button>
                     </div>
                 </div>
             </ToolbarDropdown>

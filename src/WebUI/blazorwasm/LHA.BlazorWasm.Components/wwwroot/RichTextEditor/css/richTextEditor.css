@@ -110,6 +110,24 @@ body.rte-fullscreen-active {
 }
 
 /* ----- Toolbar Buttons ----- */
+.rte-toolbar .base-btn {
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font-weight: normal;
+    gap: 0;
+    text-decoration: none !important;
+    min-width: var(--rte-btn-size);
+    height: var(--rte-btn-size);
+}
+
+.rte-toolbar .btn-link {
+    color: inherit !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
 .rte-toolbar-btn {
     display: inline-flex;
     align-items: center;
@@ -221,6 +239,22 @@ body.rte-fullscreen-active {
 }
 
 .rte-menu-item {
+    text-decoration: none !important;
+}
+
+.rte-menu-item.base-btn {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 8px 12px;
+    background: transparent;
+    color: inherit;
+    font-weight: normal;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+}
+
+.rte-menu-item {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -266,6 +300,16 @@ body.rte-fullscreen-active {
     grid-template-columns: repeat(10, 1fr);
     gap: 3px;
     margin-bottom: 8px;
+}
+
+.rte-color-swatch.base-btn {
+    padding: 0;
+    min-width: 0;
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: transparent;
+    text-decoration: none !important;
 }
 
 .rte-color-swatch {
@@ -511,6 +555,16 @@ body.rte-fullscreen-active {
     font-size: 16px;
     font-weight: 600;
     color: #111827;
+}
+
+.rte-dialog-close.base-btn {
+    padding: 0;
+    min-width: 32px;
+    height: 32px;
+    background: transparent;
+    color: #6b7280;
+    border: none;
+    text-decoration: none !important;
 }
 
 .rte-dialog-close {

@@ -7,9 +7,9 @@
         <div class="rte-dialog" @onclick:stopPropagation>
             <div class="rte-dialog-header">
                 <h3>@Localizer.L("Editor.Drag & Drop Image")</h3>
-                <button type="button" class="rte-dialog-close" @onclick="OnClose">
+                <Button Style="ButtonStyle.Link" Class="rte-dialog-close" OnClick="OnClose">
                     <span class="bi bi-x-lg" style="font-size: 16px;">&times;</span>
-                </button>
+                </Button>
             </div>
             <div class="rte-dialog-body" style="padding: 30px;">
                  <div class="rte-dropzone">

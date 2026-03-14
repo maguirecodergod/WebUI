@@ -4,10 +4,10 @@
     @if (!string.IsNullOrEmpty(Tooltip))
     {
         <LHA.BlazorWasm.Components.Tooltip.Tooltip Text="@Tooltip" Style="display: inline-flex;">
-            <button class="@GetButtonCssClass()"
-                    type="button"
-                    disabled="@Disabled"
-                    @onclick="ToggleDropdown">
+            <Button Class="@GetButtonCssClass()"
+                    Style="ButtonStyle.Link"
+                    Disabled="@Disabled"
+                    OnClick="ToggleDropdown">
                 @if (!string.IsNullOrEmpty(SvgIcon))
                 {
                     @((MarkupString)SvgIcon)
@@ -15,15 +15,15 @@
                 <svg class="rte-dropdown-arrow" viewBox="0 0 12 12" width="8" height="8">
                     <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-            </button>
+            </Button>
         </LHA.BlazorWasm.Components.Tooltip.Tooltip>
     }
     else
     {
-        <button class="@GetButtonCssClass()"
-                type="button"
-                disabled="@Disabled"
-                @onclick="ToggleDropdown">
+        <Button Class="@GetButtonCssClass()"
+                Style="ButtonStyle.Link"
+                Disabled="@Disabled"
+                OnClick="ToggleDropdown">
             @if (!string.IsNullOrEmpty(SvgIcon))
             {
                 @((MarkupString)SvgIcon)
@@ -31,7 +31,7 @@
             <svg class="rte-dropdown-arrow" viewBox="0 0 12 12" width="8" height="8">
                 <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
-        </button>
+        </Button>
     }
 
     @if (IsOpen)
