@@ -12,7 +12,8 @@
 
 .picker-popup::-webkit-scrollbar,
 *::-webkit-scrollbar {
-    width: 4px; /* Even thinner */
+    width: 4px;
+    /* Even thinner */
     height: 4px;
 }
 
@@ -53,7 +54,8 @@
     background-color: var(--input-bg);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    min-height: 48px; /* Standardize height */
+    min-height: 48px;
+    /* Standardize height */
 }
 
 .picker-input-container:hover {
@@ -74,9 +76,17 @@
 }
 
 /* Validation States */
-.picker-input-container.success { border-color: var(--success-color); }
-.picker-input-container.warning { border-color: var(--warning-color); }
-.picker-input-container.error { border-color: var(--error-color); }
+.picker-input-container.success {
+    border-color: var(--success-color);
+}
+
+.picker-input-container.warning {
+    border-color: var(--warning-color);
+}
+
+.picker-input-container.error {
+    border-color: var(--error-color);
+}
 
 .validation-msg {
     font-size: 0.8rem;
@@ -87,9 +97,18 @@
     align-items: center;
     gap: 4px;
 }
-.validation-msg.success { color: var(--success-color); }
-.validation-msg.warning { color: var(--warning-color); }
-.validation-msg.error { color: var(--error-color); }
+
+.validation-msg.success {
+    color: var(--success-color);
+}
+
+.validation-msg.warning {
+    color: var(--warning-color);
+}
+
+.validation-msg.error {
+    color: var(--error-color);
+}
 
 .picker-input {
     width: 100%;
@@ -152,12 +171,18 @@
     border-radius: 16px;
     box-shadow: var(--popup-shadow);
     z-index: 1050;
-    min-width: 320px;
-    padding: 20px;
+    width: max-content;
+    /* Fit contents exactly */
+    min-width: auto;
+    /* Remove the 320px forced width */
+    max-width: 90vw;
+    /* Prevent overflowing screen */
+    padding: 12px;
+    /* Slightly more compact padding */
     color: var(--text-color);
     backdrop-filter: blur(12px);
     transform-origin: top left;
-    overflow-y: auto;
+    overflow: visible;
 }
 
 .picker-popup.open {
@@ -169,20 +194,34 @@
     .picker-popup.open {
         animation: pickerEntrance 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .picker-popup {
-        min-width: 320px;
-        max-width: 400px; /* Limit max width for better appearance */
-        overflow: visible; /* Allow system selects to pop out of the picker if needed */
+        /* For Calendars, we still want a decent base width but not forced */
+        min-width: 280px;
     }
 }
 
+/* Specific override for Time-only pickers to be even smaller */
+.time-picker-popup.picker-popup {
+    min-width: auto;
+}
+
 @keyframes pickerEntrance {
-    from { opacity: 0; transform: scale(0.95) translateY(4px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 /* Calendar Styling */
-.calendar { user-select: none; }
+.calendar {
+    user-select: none;
+}
 
 .calendar-header {
     display: flex;
@@ -198,7 +237,8 @@
 }
 
 .header-select {
-    background: var(--divider-color); /* Add a light background for contrast */
+    background: var(--divider-color);
+    /* Add a light background for contrast */
     border: none;
     font-weight: 700;
     font-size: 0.95rem;
@@ -245,8 +285,13 @@
     height: 14px !important;
 }
 
-.month-select.select-wrapper { width: 100px !important; }
-.year-select.select-wrapper { width: 80px !important; }
+.month-select.select-wrapper {
+    width: 100px !important;
+}
+
+.year-select.select-wrapper {
+    width: 80px !important;
+}
 
 .nav-btn {
     background: var(--hover-bg);
@@ -367,14 +412,18 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 8px;
+    /* Slightly more space between elements */
+    padding: 4px 12px;
+    /* Wider shaded area */
     background: var(--divider-color);
     border-radius: 10px;
+    /* Modern rounded look */
 }
 
 .time-unit select {
     padding: 4px 8px;
-    border: 1px solid var(--border-color); /* Add subtle border for definition */
+    border: 1px solid var(--border-color);
+    /* Add subtle border for definition */
     border-radius: 6px;
     font-size: 0.95rem;
     font-weight: 700;
@@ -394,25 +443,28 @@
 /* System Select Overrides for Time */
 .time-select.select-wrapper {
     min-width: 0 !important;
-    width: 60px !important;
+    width: 52px !important;
+    /* Narrower */
 }
 
 .time-select .select-input-container {
-    min-height: 36px !important;
-    padding: 0 4px 0 8px !important;
+    min-height: 28px !important;
+    /* Much shorter */
+    padding: 0 2px 0 6px !important;
     background-color: var(--input-bg) !important;
     border: 1px solid var(--border-color) !important;
-    border-radius: 6px !important;
+    border-radius: 4px !important;
 }
 
 .time-select .select-value {
     font-weight: 700 !important;
-    font-size: 0.95rem !important;
+    font-size: 0.85rem !important;
+    /* Smaller text */
 }
 
 .time-select .select-arrow-container {
-    width: 14px !important;
-    height: 14px !important;
+    width: 10px !important;
+    height: 10px !important;
 }
 
 .time-separator {
@@ -423,7 +475,8 @@
 
 .ampm-toggle {
     display: flex;
-    flex-direction: row; /* Horizontal AM/PM */
+    flex-direction: row;
+    /* Horizontal AM/PM */
     gap: 2px;
     background: var(--input-bg);
     padding: 2px;
@@ -434,36 +487,33 @@
 .ampm-toggle button {
     border: none;
     background: transparent;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.65rem;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.6rem;
     font-weight: 800;
     color: var(--text-muted);
     cursor: pointer;
 }
 
 .ampm-toggle button.active {
-    background: var(--primary-color);
-    color: #fff;
-}
-
-.ampm-toggle button.active {
-    background: var(--input-bg);
+    background: #ffffff;
     color: var(--primary-color);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Layout Containers */
 .range-layout {
     display: flex;
-    gap: 24px;
+    gap: 16px;
+    /* Reduced from 24px */
     align-items: flex-start;
 }
 
 .datetime-layout,
 .datetime-split {
     display: flex;
-    flex-direction: column; /* Date on top, Time on bottom */
+    flex-direction: column;
+    /* Date on top, Time on bottom */
     gap: 16px;
     align-items: center;
 }
@@ -484,7 +534,8 @@
     width: 100%;
     height: 1px;
     background: var(--border-color);
-    margin: 4px 0;
+    margin: 2px 0;
+    /* Reduced from 4px */
 }
 
 .panel-divider {
@@ -499,26 +550,37 @@
 }
 
 .panel-title {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
+    /* Reduced from 20px */
     text-align: center;
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.75rem;
+    /* Reduced from 0.85rem */
+    font-weight: 800;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 .btn-confirm {
-    margin-top: 24px;
+    margin-top: 16px;
+    /* Reduced from 24px */
     background: var(--primary-color);
     color: #fff;
     border: none;
-    padding: 14px 24px;
-    border-radius: 12px;
+    padding: 10px 20px;
+    /* Reduced from 14px 24px */
+    border-radius: 10px;
+    /* More modern */
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    /* Reduced from 1rem */
     cursor: pointer;
     width: 100%;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.range-actions {
+    margin-top: 12px;
 }
 
 .btn-confirm:hover:not(:disabled) {
@@ -529,8 +591,15 @@
 
 /* Range specific min-widths for larger screens */
 @media (min-width: 992px) {
-    .date-range-popup { min-width: 660px; max-width: none; }
-    .datetime-range-popup { min-width: 680px; max-width: none; }
+    .date-range-popup {
+        min-width: 660px;
+        max-width: none;
+    }
+
+    .datetime-range-popup {
+        min-width: 680px;
+        max-width: none;
+    }
 }
 
 /* Tablet range refinements */
@@ -538,7 +607,7 @@
     .picker-wrapper {
         max-width: 300px;
     }
-    
+
     .picker-popup {
         left: 50%;
         transform: translateX(-50%);
@@ -560,7 +629,8 @@
     }
 
     .picker-input {
-        font-size: 16px; /* Prevent iPhone zoom */
+        font-size: 16px;
+        /* Prevent iPhone zoom */
     }
 
     .picker-popup {
@@ -574,8 +644,9 @@
         border-radius: 20px 20px 0 0;
         padding: 24px var(--picker-mobile-padding);
         transform: translateY(100%);
-        box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
-        z-index: 9999; /* Ensure it is above everywhere */
+        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
+        z-index: 9999;
+        /* Ensure it is above everywhere */
     }
 
     .picker-popup.open {
@@ -584,15 +655,20 @@
     }
 
     @keyframes slideUp {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
+        from {
+            transform: translateY(100%);
+        }
+
+        to {
+            transform: translateY(0);
+        }
     }
 
     .range-layout {
         flex-direction: column;
         gap: 24px;
     }
-    
+
     .datetime-layout,
     .datetime-split {
         /* Already column by default in base style now */
