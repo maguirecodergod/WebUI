@@ -1,0 +1,13 @@
+@namespace LHA.BlazorWasm.Components.Emoji
+
+<button type="button" 
+        class="lha-emoji-item" 
+        title="@Emoji.Name" 
+        @onclick="() => OnClick.InvokeAsync(Emoji)">
+    @Emoji.Unicode
+</button>
+
+@code {
+    [Parameter, EditorRequired] public EmojiModel Emoji { get; set; } = default!;
+    [Parameter] public EventCallback<EmojiModel> OnClick { get; set; }
+}

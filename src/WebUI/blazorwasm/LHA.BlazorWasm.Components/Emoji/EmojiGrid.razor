@@ -1,0 +1,49 @@
+@namespace LHA.BlazorWasm.Components.Emoji
+
+<div class="lha-emoji-grid-container" @ref="_gridContainer">
+    @if (!string.IsNullOrEmpty(SearchQuery))
+    {
+        <div class="emoji-section">
+            <h3 class="category-title">Search Results</h3>
+            <div class="emoji-items">
+                @foreach (var emoji in FilteredEmojis)
+                {
+                    <EmojiItem Emoji="@emoji" OnClick="OnEmojiSelected" />
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var group in GroupedEmojis)
+        {
+            <div class="emoji-section" id="category-@group.Key.ToString().ToLower()">
+                <h3 class="category-title">@group.Key.ToString()</h3>
+                <div class="emoji-items">
+                    @foreach (var emoji in group)
+                    {
+                        <EmojiItem Emoji="@emoji" OnClick="OnEmojiSelected" />
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private ElementReference _gridContainer;
+
+    [Parameter] public IEnumerable<EmojiModel> Emojis { get; set; } = Enumerable.Empty<EmojiModel>();
+    [Parameter] public string SearchQuery { get; set; } = string.Empty;
+    [Parameter] public EmojiCategory? ActiveCategory { get; set; }
+    [Parameter] public EventCallback<EmojiModel> OnEmojiSelected { get; set; }
+
+    private IEnumerable<IGrouping<EmojiCategory, EmojiModel>> GroupedEmojis => 
+        Emojis.Where(e => !ActiveCategory.HasValue || e.Category == ActiveCategory.Value)
+              .OrderBy(e => e.Category)
+              .GroupBy(e => e.Category);
+
+    private IEnumerable<EmojiModel> FilteredEmojis => 
+        Emojis.Where(e => e.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) || 
+                         e.Keywords.Any(k => k.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)));
+}

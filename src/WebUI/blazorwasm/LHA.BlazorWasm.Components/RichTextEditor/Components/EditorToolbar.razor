@@ -8,23 +8,23 @@
         <div class="rte-toolbar-group">
             <ToolbarButton SvgIcon="@Icons.Bold" Tooltip='@Localizer.L("Editor.Bold (Ctrl+B)")' IsActive="@State.IsBold"
                            OnClick="@(() => ExecuteCommand("bold"))" />
-            <ToolbarButton SvgIcon="@Icons.Italic" Tooltip='@Localizer.L("Editor.Italic (Ctrl+I)")' IsActive="@State.IsItalic"
-                           OnClick="@(() => ExecuteCommand("italic"))" />
-            <ToolbarButton SvgIcon="@Icons.Underline" Tooltip='@Localizer.L("Editor.Underline (Ctrl+U)")' IsActive="@State.IsUnderline"
-                           OnClick="@(() => ExecuteCommand("underline"))" />
+            <ToolbarButton SvgIcon="@Icons.Italic" Tooltip='@Localizer.L("Editor.Italic (Ctrl+I)")'
+                           IsActive="@State.IsItalic" OnClick="@(() => ExecuteCommand("italic"))" />
+            <ToolbarButton SvgIcon="@Icons.Underline" Tooltip='@Localizer.L("Editor.Underline (Ctrl+U)")'
+                           IsActive="@State.IsUnderline" OnClick="@(() => ExecuteCommand("underline"))" />
         </div>
 
         <ToolbarSeparator />
 
         @* Font Color / Background Color *@
         <div class="rte-toolbar-group">
-            <ToolbarDropdown SvgIcon="@Icons.FontColor" Tooltip='@Localizer.L("Editor.Font Color")' @ref="_foreColorDropdown">
-                <ColorPickerPopup SelectedColor="@State.FontColor"
-                                  OnColorSelected="@OnForeColor" />
+            <ToolbarDropdown SvgIcon="@Icons.FontColor" Tooltip='@Localizer.L("Editor.Font Color")'
+                             @ref="_foreColorDropdown">
+                <ColorPickerPopup SelectedColor="@State.FontColor" OnColorSelected="@OnForeColor" />
             </ToolbarDropdown>
-            <ToolbarDropdown SvgIcon="@Icons.BackColor" Tooltip='@Localizer.L("Editor.Highlight Color")' @ref="_backColorDropdown">
-                <ColorPickerPopup SelectedColor="@State.BackColor"
-                                  OnColorSelected="@OnBackColor" />
+            <ToolbarDropdown SvgIcon="@Icons.BackColor" Tooltip='@Localizer.L("Editor.Highlight Color")'
+                             @ref="_backColorDropdown">
+                <ColorPickerPopup SelectedColor="@State.BackColor" OnColorSelected="@OnBackColor" />
             </ToolbarDropdown>
         </div>
 
@@ -32,24 +32,24 @@
 
         @* Alignment *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.AlignLeft" Tooltip='@Localizer.L("Editor.Align Left")' IsActive="@(State.Alignment == "left")"
-                           OnClick="@(() => ExecuteCommand("justifyLeft"))" />
-            <ToolbarButton SvgIcon="@Icons.AlignCenter" Tooltip='@Localizer.L("Editor.Align Center")' IsActive="@(State.Alignment == "center")"
-                           OnClick="@(() => ExecuteCommand("justifyCenter"))" />
-            <ToolbarButton SvgIcon="@Icons.AlignRight" Tooltip='@Localizer.L("Editor.Align Right")' IsActive="@(State.Alignment == "right")"
-                           OnClick="@(() => ExecuteCommand("justifyRight"))" />
-            <ToolbarButton SvgIcon="@Icons.AlignJustify" Tooltip='@Localizer.L("Editor.Justify")' IsActive="@(State.Alignment == "justify")"
-                           OnClick="@(() => ExecuteCommand("justifyFull"))" />
+            <ToolbarButton SvgIcon="@Icons.AlignLeft" Tooltip='@Localizer.L("Editor.Align Left")'
+                           IsActive="@(State.Alignment == "left")" OnClick="@(() => ExecuteCommand("justifyLeft"))" />
+            <ToolbarButton SvgIcon="@Icons.AlignCenter" Tooltip='@Localizer.L("Editor.Align Center")'
+                           IsActive="@(State.Alignment == "center")" OnClick="@(() => ExecuteCommand("justifyCenter"))" />
+            <ToolbarButton SvgIcon="@Icons.AlignRight" Tooltip='@Localizer.L("Editor.Align Right")'
+                           IsActive="@(State.Alignment == "right")" OnClick="@(() => ExecuteCommand("justifyRight"))" />
+            <ToolbarButton SvgIcon="@Icons.AlignJustify" Tooltip='@Localizer.L("Editor.Justify")'
+                           IsActive="@(State.Alignment == "justify")" OnClick="@(() => ExecuteCommand("justifyFull"))" />
         </div>
 
         <ToolbarSeparator />
 
         @* Lists *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.OrderedList" Tooltip='@Localizer.L("Editor.Numbered List")' IsActive="@State.IsOrderedList"
-                           OnClick="@(() => ExecuteCommand("insertOrderedList"))" />
-            <ToolbarButton SvgIcon="@Icons.UnorderedList" Tooltip='@Localizer.L("Editor.Bullet List")' IsActive="@State.IsUnorderedList"
-                           OnClick="@(() => ExecuteCommand("insertUnorderedList"))" />
+            <ToolbarButton SvgIcon="@Icons.OrderedList" Tooltip='@Localizer.L("Editor.Numbered List")'
+                           IsActive="@State.IsOrderedList" OnClick="@(() => ExecuteCommand("insertOrderedList"))" />
+            <ToolbarButton SvgIcon="@Icons.UnorderedList" Tooltip='@Localizer.L("Editor.Bullet List")'
+                           IsActive="@State.IsUnorderedList" OnClick="@(() => ExecuteCommand("insertUnorderedList"))" />
         </div>
 
         <ToolbarSeparator />
@@ -107,10 +107,15 @@
 
         <ToolbarSeparator />
 
-        @* Special Characters *@
+        @* Special Characters / Emojis *@
         <div class="rte-toolbar-group">
-            <ToolbarDropdown SvgIcon="@Icons.SpecialChars" Tooltip='@Localizer.L("Editor.Special Characters")' @ref="_specialCharsDropdown">
+            <ToolbarDropdown SvgIcon="@Icons.SpecialChars" Tooltip='@Localizer.L("Editor.Special Characters")'
+                             @ref="_specialCharsDropdown">
                 <SpecialCharsPopup OnCharSelected="OnSpecialCharsSubmit" />
+            </ToolbarDropdown>
+            <ToolbarDropdown SvgIcon="@Icons.Emoji" Tooltip='@Localizer.L("Editor.Emoji")' @ref="_emojiDropdown">
+                <LHA.BlazorWasm.Components.Emoji.EmojiPicker IsOpen="true" OnEmojiSelected="OnEmojiSubmit"
+                                                             Placement="relative" />
             </ToolbarDropdown>
             <ToolbarButton SvgIcon="@Icons.HorizontalRule" Tooltip='@Localizer.L("Editor.Horizontal Rule")'
                            OnClick="@(() => ExecuteCommand("insertHorizontalRule"))" />
@@ -125,24 +130,25 @@
             <ToolbarDropdown SvgIcon="@Icons.Image" Tooltip='@Localizer.L("Editor.Insert Image")' @ref="_imageDropdown">
                 <div class="rte-menu-list">
                     <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnUploadClick">
-                        <span class="rte-menu-icon" style="color: #1a73e8;">@((MarkupString)Icons.Upload)</span>
+                        <span class="rte-menu-icon" style="color: var(--primary-color, #1a73e8);">@((MarkupString)Icons.Upload)</span>
                         <span>@Localizer.L("Editor.Upload")</span>
                     </Button>
                     <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnCameraClick">
-                        <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Camera)</span>
+                        <span class="rte-menu-icon" style="color: var(--text-muted, #6b7280);">@((MarkupString)Icons.Camera)</span>
                         <span>@Localizer.L("Editor.Camera")</span>
                     </Button>
-                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
-                        <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Image)</span>
+                    <Button Style="ButtonStyle.Link" Class="rte-menu-item"
+                            OnClick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
+                        <span class="rte-menu-icon" style="color: var(--text-muted, #6b7280);">@((MarkupString)Icons.Image)</span>
                         <span>@Localizer.L("Editor.By Url")</span>
                     </Button>
                     <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnDragDropClick">
-                        <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.DragDrop)</span>
+                        <span class="rte-menu-icon" style="color: var(--text-muted, #6b7280);">@((MarkupString)Icons.DragDrop)</span>
                         <span>@Localizer.L("Editor.Drag & Drop")</span>
                     </Button>
                     <div class="rte-menu-divider"></div>
                     <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnImageGalleryClick">
-                        <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Image)</span>
+                        <span class="rte-menu-icon" style="color: var(--text-muted, #6b7280);">@((MarkupString)Icons.Image)</span>
                         <span>@Localizer.L("Editor.Image Gallery")</span>
                     </Button>
                 </div>
@@ -150,10 +156,13 @@
             <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip='@Localizer.L("Editor.Insert Video")' @ref="_videoDropdown">
                 <div style="padding: 16px; width: 300px;">
                     <div class="rte-form-group" style="margin-bottom: 12px;">
-                        <input type="text" class="rte-input" placeholder='@Localizer.L("Editor.Url")' @bind="_videoUrl" @bind:event="oninput" @onkeydown="@(async e => { if (e.Key == "Enter") await OnInsertVideoClick(); })" />
+                        <input type="text" class="rte-input" placeholder='@Localizer.L("Editor.Url")' @bind="_videoUrl"
+                               @bind:event="oninput"
+                               @onkeydown="@(async e => { if (e.Key == "Enter") await OnInsertVideoClick(); })" />
                     </div>
                     <div style="text-align: right;">
-                        <Button Style="ButtonStyle.Primary" OnClick="OnInsertVideoClick" Disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</Button>
+                        <Button Style="ButtonStyle.Primary" OnClick="OnInsertVideoClick"
+                                Disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</Button>
                     </div>
                 </div>
             </ToolbarDropdown>
@@ -166,20 +175,20 @@
 
         @* Subscript / Superscript *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.Subscript" Tooltip='@Localizer.L("Editor.Subscript")' IsActive="@State.IsSubscript"
-                           OnClick="@(() => ExecuteCommand("subscript"))" />
-            <ToolbarButton SvgIcon="@Icons.Superscript" Tooltip='@Localizer.L("Editor.Superscript")' IsActive="@State.IsSuperscript"
-                           OnClick="@(() => ExecuteCommand("superscript"))" />
+            <ToolbarButton SvgIcon="@Icons.Subscript" Tooltip='@Localizer.L("Editor.Subscript")'
+                           IsActive="@State.IsSubscript" OnClick="@(() => ExecuteCommand("subscript"))" />
+            <ToolbarButton SvgIcon="@Icons.Superscript" Tooltip='@Localizer.L("Editor.Superscript")'
+                           IsActive="@State.IsSuperscript" OnClick="@(() => ExecuteCommand("superscript"))" />
         </div>
 
         <ToolbarSeparator />
 
         @* Source Code / Fullscreen *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.SourceCode" Tooltip='@Localizer.L("Editor.Source Code")' IsActive="@State.IsSourceView"
-                           OnClick="@ToggleSourceView" />
-            <ToolbarButton SvgIcon="@Icons.Fullscreen" Tooltip='@Localizer.L("Editor.Fullscreen")' IsActive="@State.IsFullscreen"
-                           OnClick="@ToggleFullscreen" />
+            <ToolbarButton SvgIcon="@Icons.SourceCode" Tooltip='@Localizer.L("Editor.Source Code")'
+                           IsActive="@State.IsSourceView" OnClick="@ToggleSourceView" />
+            <ToolbarButton SvgIcon="@Icons.Fullscreen" Tooltip='@Localizer.L("Editor.Fullscreen")'
+                           IsActive="@State.IsFullscreen" OnClick="@ToggleFullscreen" />
         </div>
     </div>
 </div>
@@ -188,9 +197,13 @@
 <LinkDialog IsVisible="@_showLinkDialog" OnSubmit="@OnLinkSubmit" OnClose="@(() => { _showLinkDialog = false; })" />
 <ImageDialog IsVisible="@_showImageDialog" OnSubmit="@OnImageSubmit" OnClose="@(() => { _showImageDialog = false; })" />
 <TableDialog IsVisible="@_showTableDialog" OnSubmit="@OnTableSubmit" OnClose="@(() => { _showTableDialog = false; })" />
-<DragDropDialog IsVisible="@_showDragDropDialog" OnSubmit="@OnImageSubmit" OnClose="@(() => { _showDragDropDialog = false; })" />
-<CodeBlockDialog IsVisible="@_showCodeBlockDialog" OnSubmit="@OnCodeBlockSubmit" OnClose="@(() => { _showCodeBlockDialog = false; })" />
+<DragDropDialog IsVisible="@_showDragDropDialog" OnSubmit="@OnImageSubmit"
+                OnClose="@(() => { _showDragDropDialog = false; })" />
+<CodeBlockDialog IsVisible="@_showCodeBlockDialog" OnSubmit="@OnCodeBlockSubmit"
+                 OnClose="@(() => { _showCodeBlockDialog = false; })" />
 
 @* Hidden file inputs for direct system integration *@
-<Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleImageUpload" accept="image/*" id="@_uploadInputId" style="display:none;" />
-<Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleImageUpload" accept="image/*" capture="environment" id="@_cameraInputId" style="display:none;" />
+<Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleImageUpload" accept="image/*" id="@_uploadInputId"
+                                                 style="display:none;" />
+<Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleImageUpload" accept="image/*" capture="environment"
+                                                 id="@_cameraInputId" style="display:none;" />

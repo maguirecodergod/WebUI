@@ -1,0 +1,25 @@
+@namespace LHA.BlazorWasm.Components.Emoji
+@inject LHA.BlazorWasm.Services.Localization.ILocalizationService L
+
+<div class="lha-emoji-search">
+    <div class="search-input-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" 
+               placeholder="@L.L("Emoji.SearchPlaceholder")" 
+               value="@Value"
+               @oninput="OnInput" 
+               class="search-input" />
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        var val = e.Value?.ToString() ?? string.Empty;
+        Value = val;
+        await ValueChanged.InvokeAsync(val);
+    }
+}

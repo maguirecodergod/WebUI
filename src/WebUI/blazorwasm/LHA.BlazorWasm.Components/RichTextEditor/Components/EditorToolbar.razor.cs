@@ -25,6 +25,7 @@ public partial class EditorToolbar : ComponentBase
     private ToolbarDropdown? _imageDropdown;
     private ToolbarDropdown? _videoDropdown;
     private ToolbarDropdown? _specialCharsDropdown;
+    private ToolbarDropdown? _emojiDropdown;
 
     private bool _showLinkDialog;
     private bool _showImageDialog;
@@ -152,6 +153,12 @@ public partial class EditorToolbar : ComponentBase
     private async Task OnSpecialCharsSubmit(string chr)
     {
         await ExecuteCommand("insertHTML", chr);
+    }
+
+    private async Task OnEmojiSubmit(Emoji.EmojiModel emoji)
+    {
+        await ExecuteCommand("insertHTML", emoji.Unicode);
+        _emojiDropdown?.Close();
     }
 
     private async Task OnLinkSubmit(LinkDialogResult? result)

@@ -1,0 +1,20 @@
+@namespace LHA.BlazorWasm.Components.Emoji
+
+<div class="lha-emoji-picker-container" @onclick:stopPropagation>
+    @if (IsOpen)
+    {
+        <div class="lha-emoji-picker-popup @Placement" style="--lha-picker-max-height: @MaxHeight">
+            <EmojiSearch @bind-Value="_searchQuery" />
+            
+            <div class="grid-scroll-area">
+                <EmojiGrid Emojis="AllEmojis" 
+                           SearchQuery="@_searchQuery" 
+                           ActiveCategory="@_activeCategory"
+                           OnEmojiSelected="HandleEmojiSelected" />
+            </div>
+
+            <EmojiCategoryBar ActiveCategory="@_activeCategory" 
+                               OnCategorySelected="HandleCategorySelected" />
+        </div>
+    }
+</div>

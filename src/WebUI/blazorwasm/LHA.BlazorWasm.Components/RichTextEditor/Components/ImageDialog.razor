@@ -7,32 +7,38 @@
             <div class="rte-dialog-header">
                 <h3>@Localizer.L("Editor.Insert Image")</h3>
                 <Button Style="ButtonStyle.Link" Class="rte-dialog-close" OnClick="Close">
-                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <svg viewBox="0 0 24 24" width="18" height="18">
+                        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
                 </Button>
             </div>
             <div class="rte-dialog-body">
                 <div class="rte-form-group">
                     <label>@Localizer.L("Editor.Image URL")</label>
-                    <input type="url" class="rte-input" @bind="ImageUrl" placeholder='@Localizer.L("Editor.https://example.com/image.jpg")'/>
+                    <input type="url" class="rte-input" @bind="ImageUrl"
+                           placeholder='@Localizer.L("Editor.https://example.com/image.jpg")' />
                 </div>
                 <div class="rte-form-group">
                     <label>@Localizer.L("Editor.Alt Text")</label>
-                    <input type="text" class="rte-input" @bind="AltText" placeholder='@Localizer.L("Editor.Describe the image")'/>
+                    <input type="text" class="rte-input" @bind="AltText"
+                           placeholder='@Localizer.L("Editor.Describe the image")' />
                 </div>
                 <div class="rte-form-row">
                     <div class="rte-form-group">
                         <label>@Localizer.L("Editor.Width")</label>
-                        <input type="text" class="rte-input" @bind="Width" placeholder='@Localizer.L("Editor.e.g., 400px or 100%")'/>
+                        <input type="text" class="rte-input" @bind="Width"
+                               placeholder='@Localizer.L("Editor.e.g., 400px or 100%")' />
                     </div>
                     <div class="rte-form-group">
                         <label>@Localizer.L("Editor.Height")</label>
-                        <input type="text" class="rte-input" @bind="Height" placeholder='@Localizer.L("Editor.auto")'/>
+                        <input type="text" class="rte-input" @bind="Height" placeholder='@Localizer.L("Editor.auto")' />
                     </div>
                 </div>
             </div>
             <div class="rte-dialog-footer">
                 <Button Style="ButtonStyle.Secondary" OnClick="Close">@Localizer.L("Editor.Cancel")</Button>
-                <Button Style="ButtonStyle.Primary" OnClick="Submit" Disabled="@string.IsNullOrWhiteSpace(ImageUrl)">@Localizer.L("Editor.Insert Image")</Button>
+                <Button Style="ButtonStyle.Primary" OnClick="Submit"
+                        Disabled="@string.IsNullOrWhiteSpace(ImageUrl)">@Localizer.L("Editor.Insert Image")</Button>
             </div>
         </div>
     </div>

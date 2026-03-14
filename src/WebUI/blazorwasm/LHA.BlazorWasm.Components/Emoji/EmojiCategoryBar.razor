@@ -1,0 +1,31 @@
+@namespace LHA.BlazorWasm.Components.Emoji
+
+<div class="lha-emoji-category-bar">
+    @foreach (var category in Enum.GetValues<EmojiCategory>().Where(c => c != EmojiCategory.Recent))
+    {
+        <button type="button" 
+                class="category-btn @(ActiveCategory == category ? "active" : "")" 
+                @onclick="() => OnCategorySelected.InvokeAsync(category)"
+                title="@category.ToString()">
+            <i class="@GetCategoryIcon(category)"></i>
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter] public EmojiCategory ActiveCategory { get; set; }
+    [Parameter] public EventCallback<EmojiCategory> OnCategorySelected { get; set; }
+
+    private string GetCategoryIcon(EmojiCategory category) => category switch
+    {
+        EmojiCategory.Smileys => "far fa-smile",
+        EmojiCategory.People => "fas fa-user",
+        EmojiCategory.Animals => "fas fa-paw",
+        EmojiCategory.Food => "fas fa-utensils",
+        EmojiCategory.Travel => "fas fa-plane",
+        EmojiCategory.Objects => "fas fa-lightbulb",
+        EmojiCategory.Symbols => "fas fa-hashtag",
+        EmojiCategory.Flags => "fas fa-flag",
+        _ => "fas fa-clock"
+    };
+}

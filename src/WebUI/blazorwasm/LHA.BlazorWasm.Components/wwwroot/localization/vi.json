@@ -139,6 +139,9 @@
         "Paste your code here...": "Dán mã của bạn vào đây...",
         "Insert Code": "Chèn mã"
     },
+    "Emoji": {
+        "SearchPlaceholder": "Tìm kiếm emoji..."
+    },
     "Errors": {
         "NotFound": {
             "Title": "Không tìm thấy trang",

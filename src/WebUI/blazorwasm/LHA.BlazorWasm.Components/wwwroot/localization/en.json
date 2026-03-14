@@ -139,6 +139,9 @@
         "Paste your code here...": "Paste your code here...",
         "Insert Code": "Insert Code"
     },
+    "Emoji": {
+        "SearchPlaceholder": "Search emoji..."
+    },
     "Errors": {
         "NotFound": {
             "Title": "Page not found",
