@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64"
+     width="64" height="64"
+     fill="none"
+     aria-label="LHA Platform">
+
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#a5b4fc"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Three rotated rects → six-point star / grid node -->
+  <rect x="27" y="14" width="10" height="36" rx="3"
+        fill="url(#g1)" opacity="0.95"/>
+  <rect x="27" y="14" width="10" height="36" rx="3"
+        fill="url(#g1)" opacity="0.95"
+        transform="rotate(60 32 32)"/>
+  <rect x="27" y="14" width="10" height="36" rx="3"
+        fill="url(#g1)" opacity="0.95"
+        transform="rotate(120 32 32)"/>
+
+  <!-- Central accent dot -->
+  <circle cx="32" cy="32" r="6" fill="url(#g2)"/>
+</svg>

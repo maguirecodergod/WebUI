@@ -1,6 +1,6 @@
 ﻿# Project Structure
 
-_Generated automatically on 2026-03-14 17:50:15_
+_Generated automatically on 2026-03-14 22:07:39_
 
 ```
 .
@@ -54,6 +54,20 @@ _Generated automatically on 2026-03-14 17:50:15_
 |           |   |   +-- ButtonSize.cs
 |           |   |   +-- ButtonStyle.cs
 |           |   |   \-- ButtonType.cs
+|           |   +-- Emoji
+|           |   |   +-- EmojiCategory.cs
+|           |   |   +-- EmojiCategoryBar.razor
+|           |   |   +-- EmojiGrid.razor
+|           |   |   +-- EmojiItem.razor
+|           |   |   +-- EmojiModel.cs
+|           |   |   +-- EmojiPicker.razor
+|           |   |   +-- EmojiPicker.razor.cs
+|           |   |   +-- EmojiPicker.razor.css
+|           |   |   \-- EmojiSearch.razor
+|           |   +-- Errors
+|           |   |   +-- NotFoundPage.razor
+|           |   |   +-- NotFoundPage.razor.cs
+|           |   |   \-- NotFoundPage.razor.css
 |           |   +-- Form
 |           |   |   +-- Internal
 |           |   |   +-- FormField.razor
