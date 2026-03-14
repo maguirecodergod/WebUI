@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using LHA.BlazorWasm.Components.Select;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
@@ -10,6 +11,8 @@ public partial class CodeBlockDialog : ComponentBase
 
     private string Language { get; set; } = "javascript";
     private string Code { get; set; } = string.Empty;
+
+    private List<SelectOption<string>> LanguageOptions => _languages.Select(l => new SelectOption<string> { Value = l.Key, Label = l.Value }).ToList();
 
     private readonly Dictionary<string, string> _languages = new()
     {

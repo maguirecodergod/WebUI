@@ -209,6 +209,34 @@
     color: var(--text-color);
 }
 
+/* System Select Overrides for Header */
+.header-select.select-wrapper {
+    min-width: 0 !important;
+    width: auto !important;
+    flex: 0 0 auto;
+}
+
+.header-select .select-input-container {
+    min-height: 32px !important;
+    padding: 0 4px 0 8px !important;
+    background: var(--divider-color) !important;
+    border: none !important;
+    border-radius: 6px !important;
+}
+
+.header-select .select-value {
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+}
+
+.header-select .select-arrow-container {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.month-select.select-wrapper { width: 100px !important; }
+.year-select.select-wrapper { width: 80px !important; }
+
 .nav-btn {
     background: var(--hover-bg);
     border: none;
@@ -348,13 +376,32 @@
     transition: all 0.2s;
 }
 
-.time-unit select option {
-    background-color: var(--popup-bg);
-    color: var(--text-color);
-}
-
 .time-unit select:hover {
     background: var(--hover-bg);
+}
+
+/* System Select Overrides for Time */
+.time-select.select-wrapper {
+    min-width: 0 !important;
+    width: 60px !important;
+}
+
+.time-select .select-input-container {
+    min-height: 36px !important;
+    padding: 0 4px 0 8px !important;
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important;
+}
+
+.time-select .select-value {
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+}
+
+.time-select .select-arrow-container {
+    width: 14px !important;
+    height: 14px !important;
 }
 
 .time-separator {

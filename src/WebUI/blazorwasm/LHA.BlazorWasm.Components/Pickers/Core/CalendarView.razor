@@ -8,18 +8,19 @@
             <i class="fas fa-chevron-left"></i>
         </button>
         <div class="current-month-selects">
-            <select class="header-select month-select" @bind="CurrentMonthVal">
-                @for (int i = 1; i <= 12; i++)
-                {
-                    <option value="@i">@LocalizationService.L($"Months.{i}")</option>
-                }
-            </select>
-            <select class="header-select year-select" @bind="CurrentYearVal">
-                @for (int year = DateTime.Today.Year - 100; year <= DateTime.Today.Year + 50; year++)
-                {
-                    <option value="@year">@year</option>
-                }
-            </select>
+            <Select TValue="int" 
+                    Value="@CurrentMonthVal"
+                    ValueChanged="OnMonthChanged"
+                    Options="@MonthOptions"
+                    ShowClear="false"
+                    Class="header-select month-select" />
+            
+            <Select TValue="int" 
+                    Value="@CurrentYearVal"
+                    ValueChanged="OnYearChanged"
+                    Options="@YearOptions"
+                    ShowClear="false"
+                    Class="header-select year-select" />
         </div>
         <button type="button" class="nav-btn" @onclick="NextMonth">
             <i class="fas fa-chevron-right"></i>
@@ -71,24 +72,27 @@
 
     private List<DateTime> _grid = new();
 
-    private int CurrentMonthVal
+    private int CurrentMonthVal => State.CurrentMonth.Month;
+    private int CurrentYearVal => State.CurrentMonth.Year;
+
+    private List<SelectOption<int>> MonthOptions => Enumerable.Range(1, 12)
+        .Select(i => new SelectOption<int> { Value = i, Label = LocalizationService.L($"Months.{i}") })
+        .ToList();
+
+    private List<SelectOption<int>> YearOptions => Enumerable.Range(DateTime.Today.Year - 100, 151)
+        .Select(year => new SelectOption<int> { Value = year, Label = year.ToString() })
+        .ToList();
+
+    private void OnMonthChanged(int month)
     {
-        get => State.CurrentMonth.Month;
-        set
-        {
-            State.CurrentMonth = new DateTime(State.CurrentMonth.Year, value, 1);
-            RefreshGrid();
-        }
+        State.CurrentMonth = new DateTime(State.CurrentMonth.Year, month, 1);
+        RefreshGrid();
     }
 
-    private int CurrentYearVal
+    private void OnYearChanged(int year)
     {
-        get => State.CurrentMonth.Year;
-        set
-        {
-            State.CurrentMonth = new DateTime(value, State.CurrentMonth.Month, 1);
-            RefreshGrid();
-        }
+        State.CurrentMonth = new DateTime(year, State.CurrentMonth.Month, 1);
+        RefreshGrid();
     }
 
     protected override void OnParametersSet()

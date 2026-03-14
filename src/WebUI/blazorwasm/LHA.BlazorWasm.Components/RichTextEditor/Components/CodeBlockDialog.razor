@@ -17,17 +17,10 @@
             <div class="rte-dialog-body">
                 <div class="rte-form-group">
                     <label>@Localizer.L("Editor.Language")</label>
-                    <div class="rte-select-wrapper">
-                        <select class="rte-select" @bind="Language">
-                            @foreach (var lang in _languages)
-                            {
-                                <option value="@lang.Key">@lang.Value</option>
-                            }
-                        </select>
-                        <svg class="rte-select-arrow" viewBox="0 0 12 12" width="10" height="10">
-                            <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </div>
+                    <Select TValue="string" 
+                            Options="@LanguageOptions" 
+                            @bind-Value="Language"
+                            Placeholder='@Localizer.L("Editor.Select Language")' />
                 </div>
                 
                 <div class="rte-form-group">

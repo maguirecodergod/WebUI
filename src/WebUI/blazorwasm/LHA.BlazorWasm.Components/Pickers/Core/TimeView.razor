@@ -4,24 +4,23 @@
 <div class="time-view">
     <div class="time-selectors">
         <div class="time-unit">
-            <select class="time-select" @bind="State.SelectedHour" @bind:after="OnTimeChanged">
-                @for (int i = 0; i < (Is24Hour ? 24 : 12); i++)
-                {
-                    var val = !Is24Hour && i == 0 ? 12 : i;
-                    <option value="@i">@val.ToString("00")</option>
-                }
-            </select>
+            <Select TValue="int"
+                    Value="@State.SelectedHour"
+                    ValueChanged="OnHourChanged"
+                    Options="@HourOptions"
+                    ShowClear="false"
+                    Class="time-select" />
         </div>
         
         <span class="time-separator">:</span>
         
         <div class="time-unit">
-            <select class="time-select" @bind="State.SelectedMinute" @bind:after="OnTimeChanged">
-                @for (int i = 0; i < 60; i++)
-                {
-                    <option value="@i">@i.ToString("00")</option>
-                }
-            </select>
+            <Select TValue="int"
+                    Value="@State.SelectedMinute"
+                    ValueChanged="OnMinuteChanged"
+                    Options="@MinuteOptions"
+                    ShowClear="false"
+                    Class="time-select" />
         </div>
 
         @if (!Is24Hour)
@@ -39,6 +38,27 @@
 </div>
 
 @code {
+    private List<SelectOption<int>> HourOptions => Enumerable.Range(0, Is24Hour ? 24 : 12)
+        .Select(i => {
+            var val = !Is24Hour && i == 0 ? 12 : i;
+            return new SelectOption<int> { Value = i, Label = val.ToString("00") };
+        }).ToList();
+
+    private List<SelectOption<int>> MinuteOptions => Enumerable.Range(0, 60)
+        .Select(i => new SelectOption<int> { Value = i, Label = i.ToString("00") }).ToList();
+
+    private async Task OnHourChanged(int hour)
+    {
+        State.SelectedHour = hour;
+        await OnInteraction.InvokeAsync();
+    }
+
+    private async Task OnMinuteChanged(int minute)
+    {
+        State.SelectedMinute = minute;
+        await OnInteraction.InvokeAsync();
+    }
+
     [Parameter] public PickerState State { get; set; } = default!;
     [Parameter] public bool Is24Hour { get; set; } = false;
     [Parameter] public EventCallback OnInteraction { get; set; }

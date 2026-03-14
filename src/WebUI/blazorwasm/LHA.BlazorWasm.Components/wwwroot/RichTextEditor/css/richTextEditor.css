@@ -1052,6 +1052,29 @@ body.rte-fullscreen-active {
     transition: all var(--rte-transition);
 }
 
+/* System Select Overrides for RTE */
+.rte-form-group .select-wrapper {
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.rte-form-group .select-input-container {
+    padding: 2px 14px !important;
+    min-height: 42px !important;
+    border-radius: 8px !important;
+    border-color: #d1d5db !important;
+}
+
+.rte-form-group .select-input-container.active {
+    border-color: var(--rte-primary);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.rte-form-group .select-value {
+    font-size: 14px !important;
+    font-family: var(--rte-font-family) !important;
+}
+
 .rte-select:focus {
     border-color: var(--rte-primary);
     box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
@@ -1155,6 +1178,8 @@ body.rte-fullscreen-active {
 /* Overrides for CodeBlockDialog in Dark Mode */
 .theme-dark .rte-code-editor-wrapper { border-color: #333; }
 .theme-dark .rte-select { background: #0f1115; border-color: #475569; color: #f8fafc; }
+.theme-dark .rte-form-group .select-input-container { background-color: #0f1115; border-color: #475569; }
+.theme-dark .rte-form-group .select-value { color: #f8fafc; }
 
 
 
