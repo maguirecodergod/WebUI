@@ -6,11 +6,11 @@
     <div class="rte-toolbar-row">
         @* Bold / Italic / Underline *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.Bold" Tooltip='@Localizer.L("Bold (Ctrl+B)")' IsActive="@State.IsBold"
+            <ToolbarButton SvgIcon="@Icons.Bold" Tooltip='@Localizer.L("Editor.Bold (Ctrl+B)")' IsActive="@State.IsBold"
                            OnClick="@(() => ExecuteCommand("bold"))" />
-            <ToolbarButton SvgIcon="@Icons.Italic" Tooltip='@Localizer.L("Italic (Ctrl+I)")' IsActive="@State.IsItalic"
+            <ToolbarButton SvgIcon="@Icons.Italic" Tooltip='@Localizer.L("Editor.Italic (Ctrl+I)")' IsActive="@State.IsItalic"
                            OnClick="@(() => ExecuteCommand("italic"))" />
-            <ToolbarButton SvgIcon="@Icons.Underline" Tooltip='@Localizer.L("Underline (Ctrl+U)")' IsActive="@State.IsUnderline"
+            <ToolbarButton SvgIcon="@Icons.Underline" Tooltip='@Localizer.L("Editor.Underline (Ctrl+U)")' IsActive="@State.IsUnderline"
                            OnClick="@(() => ExecuteCommand("underline"))" />
         </div>
 
@@ -18,11 +18,11 @@
 
         @* Font Color / Background Color *@
         <div class="rte-toolbar-group">
-            <ToolbarDropdown SvgIcon="@Icons.FontColor" Tooltip='@Localizer.L("Font Color")' @ref="_foreColorDropdown">
+            <ToolbarDropdown SvgIcon="@Icons.FontColor" Tooltip='@Localizer.L("Editor.Font Color")' @ref="_foreColorDropdown">
                 <ColorPickerPopup SelectedColor="@State.FontColor"
                                   OnColorSelected="@OnForeColor" />
             </ToolbarDropdown>
-            <ToolbarDropdown SvgIcon="@Icons.BackColor" Tooltip='@Localizer.L("Highlight Color")' @ref="_backColorDropdown">
+            <ToolbarDropdown SvgIcon="@Icons.BackColor" Tooltip='@Localizer.L("Editor.Highlight Color")' @ref="_backColorDropdown">
                 <ColorPickerPopup SelectedColor="@State.BackColor"
                                   OnColorSelected="@OnBackColor" />
             </ToolbarDropdown>
@@ -32,13 +32,13 @@
 
         @* Alignment *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.AlignLeft" Tooltip='@Localizer.L("Align Left")' IsActive="@(State.Alignment == "left")"
+            <ToolbarButton SvgIcon="@Icons.AlignLeft" Tooltip='@Localizer.L("Editor.Align Left")' IsActive="@(State.Alignment == "left")"
                            OnClick="@(() => ExecuteCommand("justifyLeft"))" />
-            <ToolbarButton SvgIcon="@Icons.AlignCenter" Tooltip='@Localizer.L("Align Center")' IsActive="@(State.Alignment == "center")"
+            <ToolbarButton SvgIcon="@Icons.AlignCenter" Tooltip='@Localizer.L("Editor.Align Center")' IsActive="@(State.Alignment == "center")"
                            OnClick="@(() => ExecuteCommand("justifyCenter"))" />
-            <ToolbarButton SvgIcon="@Icons.AlignRight" Tooltip='@Localizer.L("Align Right")' IsActive="@(State.Alignment == "right")"
+            <ToolbarButton SvgIcon="@Icons.AlignRight" Tooltip='@Localizer.L("Editor.Align Right")' IsActive="@(State.Alignment == "right")"
                            OnClick="@(() => ExecuteCommand("justifyRight"))" />
-            <ToolbarButton SvgIcon="@Icons.AlignJustify" Tooltip='@Localizer.L("Justify")' IsActive="@(State.Alignment == "justify")"
+            <ToolbarButton SvgIcon="@Icons.AlignJustify" Tooltip='@Localizer.L("Editor.Justify")' IsActive="@(State.Alignment == "justify")"
                            OnClick="@(() => ExecuteCommand("justifyFull"))" />
         </div>
 
@@ -46,9 +46,9 @@
 
         @* Lists *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.OrderedList" Tooltip='@Localizer.L("Numbered List")' IsActive="@State.IsOrderedList"
+            <ToolbarButton SvgIcon="@Icons.OrderedList" Tooltip='@Localizer.L("Editor.Numbered List")' IsActive="@State.IsOrderedList"
                            OnClick="@(() => ExecuteCommand("insertOrderedList"))" />
-            <ToolbarButton SvgIcon="@Icons.UnorderedList" Tooltip='@Localizer.L("Bullet List")' IsActive="@State.IsUnorderedList"
+            <ToolbarButton SvgIcon="@Icons.UnorderedList" Tooltip='@Localizer.L("Editor.Bullet List")' IsActive="@State.IsUnorderedList"
                            OnClick="@(() => ExecuteCommand("insertUnorderedList"))" />
         </div>
 
@@ -56,9 +56,9 @@
 
         @* Indent / Outdent *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.Outdent" Tooltip='@Localizer.L("Decrease Indent")'
+            <ToolbarButton SvgIcon="@Icons.Outdent" Tooltip='@Localizer.L("Editor.Decrease Indent")'
                            OnClick="@(() => ExecuteCommand("outdent"))" />
-            <ToolbarButton SvgIcon="@Icons.Indent" Tooltip='@Localizer.L("Increase Indent")'
+            <ToolbarButton SvgIcon="@Icons.Indent" Tooltip='@Localizer.L("Editor.Increase Indent")'
                            OnClick="@(() => ExecuteCommand("indent"))" />
         </div>
 
@@ -66,7 +66,7 @@
 
         @* Blockquote *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.Blockquote" Tooltip='@Localizer.L("Blockquote")'
+            <ToolbarButton SvgIcon="@Icons.Blockquote" Tooltip='@Localizer.L("Editor.Blockquote")'
                            OnClick="@(() => ExecuteCommand("formatBlock", "blockquote"))" />
         </div>
     </div>
@@ -75,13 +75,13 @@
     <div class="rte-toolbar-row">
         @* Clear / Cut / Copy / Paste *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.ClearFormat" Tooltip='@Localizer.L("Clear Formatting")'
+            <ToolbarButton SvgIcon="@Icons.ClearFormat" Tooltip='@Localizer.L("Editor.Clear Formatting")'
                            OnClick="@(() => ExecuteCommand("removeFormat"))" />
-            <ToolbarButton SvgIcon="@Icons.Cut" Tooltip='@Localizer.L("Cut (Ctrl+X)")'
+            <ToolbarButton SvgIcon="@Icons.Cut" Tooltip='@Localizer.L("Editor.Cut (Ctrl+X)")'
                            OnClick="@(() => ExecuteCommand("cut"))" />
-            <ToolbarButton SvgIcon="@Icons.Copy" Tooltip='@Localizer.L("Copy (Ctrl+C)")'
+            <ToolbarButton SvgIcon="@Icons.Copy" Tooltip='@Localizer.L("Editor.Copy (Ctrl+C)")'
                            OnClick="@(() => ExecuteCommand("copy"))" />
-            <ToolbarButton SvgIcon="@Icons.Paste" Tooltip='@Localizer.L("Paste (Ctrl+V)")'
+            <ToolbarButton SvgIcon="@Icons.Paste" Tooltip='@Localizer.L("Editor.Paste (Ctrl+V)")'
                            OnClick="@(() => ExecuteCommand("paste"))" />
         </div>
 
@@ -89,9 +89,9 @@
 
         @* Undo / Redo *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.Undo" Tooltip='@Localizer.L("Undo (Ctrl+Z)")'
+            <ToolbarButton SvgIcon="@Icons.Undo" Tooltip='@Localizer.L("Editor.Undo (Ctrl+Z)")'
                            OnClick="@(() => ExecuteCommand("undo"))" />
-            <ToolbarButton SvgIcon="@Icons.Redo" Tooltip='@Localizer.L("Redo (Ctrl+Y)")'
+            <ToolbarButton SvgIcon="@Icons.Redo" Tooltip='@Localizer.L("Editor.Redo (Ctrl+Y)")'
                            OnClick="@(() => ExecuteCommand("redo"))" />
         </div>
 
@@ -99,9 +99,9 @@
 
         @* Link / Unlink *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.Link" Tooltip='@Localizer.L("Insert Link")'
+            <ToolbarButton SvgIcon="@Icons.Link" Tooltip='@Localizer.L("Editor.Insert Link")'
                            OnClick="@ShowLinkDialog" />
-            <ToolbarButton SvgIcon="@Icons.Unlink" Tooltip='@Localizer.L("Remove Link")'
+            <ToolbarButton SvgIcon="@Icons.Unlink" Tooltip='@Localizer.L("Editor.Remove Link")'
                            OnClick="@(() => ExecuteCommand("unlink"))" />
         </div>
 
@@ -109,7 +109,7 @@
 
         @* Special Characters *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.SpecialChars" Tooltip='@Localizer.L("Horizontal Rule")'
+            <ToolbarButton SvgIcon="@Icons.SpecialChars" Tooltip='@Localizer.L("Editor.Horizontal Rule")'
                            OnClick="@(() => ExecuteCommand("insertHorizontalRule"))" />
         </div>
 
@@ -117,40 +117,40 @@
 
         @* Table / Image / Video *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.Table" Tooltip='@Localizer.L("Insert Table")'
+            <ToolbarButton SvgIcon="@Icons.Table" Tooltip='@Localizer.L("Editor.Insert Table")'
                            OnClick="@ShowTableDialog" />
-            <ToolbarDropdown SvgIcon="@Icons.Image" Tooltip='@Localizer.L("Insert Image")' @ref="_imageDropdown">
+            <ToolbarDropdown SvgIcon="@Icons.Image" Tooltip='@Localizer.L("Editor.Insert Image")' @ref="_imageDropdown">
                 <div class="rte-menu-list">
                     <button class="rte-menu-item" @onclick="OnUploadClick">
                         <span class="rte-menu-icon" style="color: #1a73e8;">@((MarkupString)Icons.Upload)</span>
-                        <span>@Localizer.L("Upload")</span>
+                        <span>@Localizer.L("Editor.Upload")</span>
                     </button>
                     <button class="rte-menu-item" @onclick="OnCameraClick">
                         <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Camera)</span>
-                        <span>@Localizer.L("Camera")</span>
+                        <span>@Localizer.L("Editor.Camera")</span>
                     </button>
                     <button class="rte-menu-item" @onclick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
                         <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Image)</span>
-                        <span>@Localizer.L("By Url")</span>
+                        <span>@Localizer.L("Editor.By Url")</span>
                     </button>
                     <button class="rte-menu-item" @onclick="OnDragDropClick">
                         <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.DragDrop)</span>
-                        <span>@Localizer.L("Drag & Drop")</span>
+                        <span>@Localizer.L("Editor.Drag & Drop")</span>
                     </button>
                     <div class="rte-menu-divider"></div>
                     <button class="rte-menu-item" @onclick="OnImageGalleryClick">
                         <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Image)</span>
-                        <span>@Localizer.L("Image Gallery")</span>
+                        <span>@Localizer.L("Editor.Image Gallery")</span>
                     </button>
                 </div>
             </ToolbarDropdown>
-            <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip='@Localizer.L("Insert Video")' @ref="_videoDropdown">
+            <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip='@Localizer.L("Editor.Insert Video")' @ref="_videoDropdown">
                 <div style="padding: 16px; width: 300px;">
                     <div class="rte-form-group" style="margin-bottom: 12px;">
-                        <input type="text" class="rte-input" placeholder='@Localizer.L("Url")' @bind="_videoUrl" @bind:event="oninput" @onkeydown="@(async e => { if (e.Key == "Enter") await OnInsertVideoClick(); })" />
+                        <input type="text" class="rte-input" placeholder='@Localizer.L("Editor.Url")' @bind="_videoUrl" @bind:event="oninput" @onkeydown="@(async e => { if (e.Key == "Enter") await OnInsertVideoClick(); })" />
                     </div>
                     <div style="text-align: right;">
-                        <button class="rte-btn rte-btn-primary" @onclick="OnInsertVideoClick" disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Insert")</button>
+                        <button class="rte-btn rte-btn-primary" @onclick="OnInsertVideoClick" disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</button>
                     </div>
                 </div>
             </ToolbarDropdown>
@@ -160,9 +160,9 @@
 
         @* Subscript / Superscript *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.Subscript" Tooltip='@Localizer.L("Subscript")' IsActive="@State.IsSubscript"
+            <ToolbarButton SvgIcon="@Icons.Subscript" Tooltip='@Localizer.L("Editor.Subscript")' IsActive="@State.IsSubscript"
                            OnClick="@(() => ExecuteCommand("subscript"))" />
-            <ToolbarButton SvgIcon="@Icons.Superscript" Tooltip='@Localizer.L("Superscript")' IsActive="@State.IsSuperscript"
+            <ToolbarButton SvgIcon="@Icons.Superscript" Tooltip='@Localizer.L("Editor.Superscript")' IsActive="@State.IsSuperscript"
                            OnClick="@(() => ExecuteCommand("superscript"))" />
         </div>
 
@@ -170,9 +170,9 @@
 
         @* Source Code / Fullscreen *@
         <div class="rte-toolbar-group">
-            <ToolbarButton SvgIcon="@Icons.SourceCode" Tooltip='@Localizer.L("Source Code")' IsActive="@State.IsSourceView"
+            <ToolbarButton SvgIcon="@Icons.SourceCode" Tooltip='@Localizer.L("Editor.Source Code")' IsActive="@State.IsSourceView"
                            OnClick="@ToggleSourceView" />
-            <ToolbarButton SvgIcon="@Icons.Fullscreen" Tooltip='@Localizer.L("Fullscreen")' IsActive="@State.IsFullscreen"
+            <ToolbarButton SvgIcon="@Icons.Fullscreen" Tooltip='@Localizer.L("Editor.Fullscreen")' IsActive="@State.IsFullscreen"
                            OnClick="@ToggleFullscreen" />
         </div>
     </div>
