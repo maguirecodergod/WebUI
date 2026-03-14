@@ -44,6 +44,11 @@ public static class Icons
 
     public const string Table = "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><line x1=\"3\" y1=\"9\" x2=\"21\" y2=\"9\"/><line x1=\"3\" y1=\"15\" x2=\"21\" y2=\"15\"/><line x1=\"9\" y1=\"3\" x2=\"9\" y2=\"21\"/><line x1=\"15\" y1=\"3\" x2=\"15\" y2=\"21\"/></svg>";
     public const string Image = $"<svg {V}><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>";
+    public const string Video = $"<svg {V}><path d=\"M23 7l-7 5 7 5V7z\"/><rect x=\"1\" y=\"5\" width=\"15\" height=\"14\" rx=\"2\" ry=\"2\"/></svg>";
+    public const string Upload = $"<svg {V}><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"17 8 12 3 7 8\"/><line x1=\"12\" y1=\"3\" x2=\"12\" y2=\"15\"/></svg>";
+    public const string Camera = $"<svg {V}><path d=\"M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z\"/><circle cx=\"12\" cy=\"13\" r=\"4\"/></svg>";
+    public const string DragDrop = $"<svg {V}><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\" stroke-dasharray=\"4\"/><path d=\"M13 13l6 6\"/><path d=\"M13 13l3.5-9.5-2.5 10 9 2.5-10-3z\" fill=\"currentColor\"/></svg>";
+
 
     public const string Subscript = "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"currentColor\" stroke=\"none\"><path d=\"M3 4l6 8-6 8h3l4.5-6 4.5 6h3l-6-8 6-8h-3L10.5 10 6 4H3z\" font-size=\"10\"/><text x=\"17\" y=\"22\" font-size=\"8\" font-family=\"sans-serif\">2</text></svg>";
     public const string Superscript = "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"currentColor\" stroke=\"none\"><path d=\"M3 6l6 8-6 8h3l4.5-6 4.5 6h3l-6-8 6-8h-3L10.5 12 6 6H3z\" font-size=\"10\"/><text x=\"17\" y=\"10\" font-size=\"8\" font-family=\"sans-serif\">2</text></svg>";

@@ -115,12 +115,45 @@
 
         <ToolbarSeparator />
 
-        @* Table / Image *@
+        @* Table / Image / Video *@
         <div class="rte-toolbar-group">
             <ToolbarButton SvgIcon="@Icons.Table" Tooltip="Insert Table"
                            OnClick="@ShowTableDialog" />
-            <ToolbarButton SvgIcon="@Icons.Image" Tooltip="Insert Image"
-                           OnClick="@ShowImageDialog" />
+            <ToolbarDropdown SvgIcon="@Icons.Image" Tooltip="Insert Image" @ref="_imageDropdown">
+                <div class="rte-menu-list">
+                    <button class="rte-menu-item" @onclick="OnUploadClick">
+                        <span class="rte-menu-icon" style="color: #1a73e8;">@((MarkupString)Icons.Upload)</span>
+                        <span>Upload</span>
+                    </button>
+                    <button class="rte-menu-item" @onclick="OnCameraClick">
+                        <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Camera)</span>
+                        <span>Camera</span>
+                    </button>
+                    <button class="rte-menu-item" @onclick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
+                        <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Image)</span>
+                        <span>By Url</span>
+                    </button>
+                    <button class="rte-menu-item" @onclick="OnDragDropClick">
+                        <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.DragDrop)</span>
+                        <span>Drag &amp; Drop</span>
+                    </button>
+                    <div class="rte-menu-divider"></div>
+                    <button class="rte-menu-item" @onclick="OnImageGalleryClick">
+                        <span class="rte-menu-icon" style="color: #6b7280;">@((MarkupString)Icons.Image)</span>
+                        <span>Image Gallery</span>
+                    </button>
+                </div>
+            </ToolbarDropdown>
+            <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip="Insert Video" @ref="_videoDropdown">
+                <div style="padding: 16px; width: 300px;">
+                    <div class="rte-form-group" style="margin-bottom: 12px;">
+                        <input type="text" class="rte-input" placeholder="Url" @bind="_videoUrl" @bind:event="oninput" @onkeydown="@(e => { if (e.Key == "Enter") OnInsertVideoClick(); })" />
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="rte-btn rte-btn-primary" @onclick="OnInsertVideoClick" disabled="@string.IsNullOrWhiteSpace(_videoUrl)">Insert</button>
+                    </div>
+                </div>
+            </ToolbarDropdown>
         </div>
 
         <ToolbarSeparator />
@@ -149,3 +182,8 @@
 <LinkDialog IsVisible="@_showLinkDialog" OnSubmit="@OnLinkSubmit" OnClose="@(() => { _showLinkDialog = false; })" />
 <ImageDialog IsVisible="@_showImageDialog" OnSubmit="@OnImageSubmit" OnClose="@(() => { _showImageDialog = false; })" />
 <TableDialog IsVisible="@_showTableDialog" OnSubmit="@OnTableSubmit" OnClose="@(() => { _showTableDialog = false; })" />
+<DragDropDialog IsVisible="@_showDragDropDialog" OnSubmit="@OnImageSubmit" OnClose="@(() => { _showDragDropDialog = false; })" />
+
+@* Hidden file inputs for direct system integration *@
+<Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleImageUpload" accept="image/*" id="@_uploadInputId" style="display:none;" />
+<Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleImageUpload" accept="image/*" capture="environment" id="@_cameraInputId" style="display:none;" />

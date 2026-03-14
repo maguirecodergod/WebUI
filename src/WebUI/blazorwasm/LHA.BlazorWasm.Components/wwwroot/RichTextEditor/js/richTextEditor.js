@@ -48,6 +48,9 @@ export function initEditor(editorId, dotNetRef, options) {
 
     editors.set(editorId, editor);
 
+    // Initialize drag resizer for images and iframes
+    initResizer(editor);
+
     // Initial state sync
     setTimeout(() => onSelectionChanged(editor), 100);
 }
@@ -288,6 +291,10 @@ export function dispose(editorId) {
         clearTimeout(editor.debounceTimer);
     }
 
+    if (editor.onWindowBlur) {
+        window.removeEventListener('blur', editor.onWindowBlur);
+    }
+
     editors.delete(editorId);
 }
 
@@ -410,4 +417,137 @@ function formatHtml(html) {
     }
 
     return formatted.trim();
+}
+
+function initResizer(editor) {
+    const resizer = document.createElement('div');
+    resizer.className = 'rte-resizer';
+    resizer.innerHTML = `
+        <div class="rte-resizer-handle nw" data-dir="nw"></div>
+        <div class="rte-resizer-handle ne" data-dir="ne"></div>
+        <div class="rte-resizer-handle sw" data-dir="sw"></div>
+        <div class="rte-resizer-handle se" data-dir="se"></div>
+        <div class="rte-resizer-handle n" data-dir="n"></div>
+        <div class="rte-resizer-handle s" data-dir="s"></div>
+        <div class="rte-resizer-handle e" data-dir="e"></div>
+        <div class="rte-resizer-handle w" data-dir="w"></div>
+    `;
+    resizer.style.display = 'none';
+    editor.contentArea.parentNode.appendChild(resizer);
+
+    editor.resizer = resizer;
+    let currentElement = null;
+    let isResizing = false;
+    let startX, startY;
+    let startWidth, startHeight;
+    let currentDir = '';
+
+    const updateResizerPos = () => {
+        if (!currentElement) return;
+        const rect = currentElement.getBoundingClientRect();
+        const wrapperRect = editor.contentArea.parentNode.getBoundingClientRect();
+
+        resizer.style.display = 'block';
+        resizer.style.top = (rect.top - wrapperRect.top) + 'px';
+        resizer.style.left = (rect.left - wrapperRect.left) + 'px';
+        resizer.style.width = rect.width + 'px';
+        resizer.style.height = rect.height + 'px';
+    };
+
+    const selectElement = (el) => {
+        currentElement = el;
+        updateResizerPos();
+        try {
+            const sel = window.getSelection();
+            const range = document.createRange();
+            range.selectNode(currentElement);
+            if (sel) {
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        } catch(e) {}
+    };
+
+    editor.contentArea.addEventListener('click', (e) => {
+        if (e.target.tagName === 'IMG' || e.target.tagName === 'IFRAME' || e.target.tagName === 'VIDEO') {
+            selectElement(e.target);
+        } else {
+            currentElement = null;
+            resizer.style.display = 'none';
+        }
+    });
+
+    editor.onWindowBlur = () => {
+        setTimeout(() => {
+            if (document.activeElement && 
+               (document.activeElement.tagName === 'IFRAME' || document.activeElement.tagName === 'VIDEO') && 
+               editor.contentArea.contains(document.activeElement)) {
+                selectElement(document.activeElement);
+            }
+        }, 100);
+    };
+    window.addEventListener('blur', editor.onWindowBlur);
+
+    editor.contentArea.addEventListener('scroll', () => {
+        if (currentElement) updateResizerPos();
+    });
+
+    resizer.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('rte-resizer-handle')) {
+            e.preventDefault();
+            e.stopPropagation();
+            isResizing = true;
+            currentDir = e.target.dataset.dir;
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = currentElement.getBoundingClientRect();
+            startWidth = rect.width;
+            startHeight = rect.height;
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        }
+    });
+
+    const onMouseMove = (e) => {
+        if (!isResizing || !currentElement) return;
+        e.preventDefault();
+
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        let newWidth = startWidth;
+        let newHeight = startHeight;
+
+        if (currentDir.includes('e')) newWidth = startWidth + dx;
+        if (currentDir.includes('w')) newWidth = startWidth - dx;
+        if (currentDir.includes('s')) newHeight = startHeight + dy;
+        if (currentDir.includes('n')) newHeight = startHeight - dy;
+
+        if (newWidth > 20) {
+            currentElement.style.width = newWidth + 'px';
+            currentElement.width = newWidth;
+        }
+        if (newHeight > 20) {
+            currentElement.style.height = newHeight + 'px';
+            currentElement.height = newHeight;
+        }
+        updateResizerPos();
+    };
+
+    const onMouseUp = (e) => {
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        onContentChanged(editor);
+    };
+
+    editor.contentArea.addEventListener('input', () => {
+        if (currentElement && !editor.contentArea.contains(currentElement)) {
+            currentElement = null;
+            resizer.style.display = 'none';
+        } else if (currentElement) {
+            updateResizerPos();
+        }
+    });
 }

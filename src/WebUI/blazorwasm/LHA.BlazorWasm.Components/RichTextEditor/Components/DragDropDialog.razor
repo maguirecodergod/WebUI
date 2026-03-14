@@ -1,0 +1,28 @@
+@namespace LHA.BlazorWasm.Components.RichTextEditor.Components
+@using Microsoft.AspNetCore.Components.Forms
+
+@if (IsVisible)
+{
+    <div class="rte-dialog-overlay" @onclick="OnClose">
+        <div class="rte-dialog" @onclick:stopPropagation>
+            <div class="rte-dialog-header">
+                <h3>Drag &amp; Drop Image</h3>
+                <button type="button" class="rte-dialog-close" @onclick="OnClose">
+                    <span class="bi bi-x-lg" style="font-size: 16px;">&times;</span>
+                </button>
+            </div>
+            <div class="rte-dialog-body" style="padding: 30px;">
+                 <div class="rte-dropzone">
+                     <InputFile OnChange="HandleDropzoneUpload" accept="image/*" class="rte-dropzone-input" />
+                     <div class="rte-dropzone-content">
+                         <span style="color: #9ca3af; display: inline-block; width: 32px; height: 32px;">
+                             @((MarkupString)Icons.DragDrop)
+                         </span>
+                         <p style="margin: 0; font-size: 14px;">Drag and drop an image here</p>
+                         <span style="font-size: 12px; opacity: 0.7;">or click to browse</span>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+}
