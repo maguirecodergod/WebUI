@@ -1,6 +1,4 @@
-using System.Text.Json;
 using LHA.BlazorWasm.Components.RichTextEditor.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Interop;
@@ -99,6 +97,15 @@ public class RichTextEditorInterop : IAsyncDisposable
     {
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("insertHtml", editorId, html);
+    }
+
+    /// <summary>
+    /// Insert a code block with syntax highlighting.
+    /// </summary>
+    public async Task InsertCodeBlockAsync(string editorId, string code, string language)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("insertCodeBlock", editorId, code, language);
     }
 
     /// <summary>

@@ -1042,29 +1042,39 @@ body.rte-fullscreen-active {
 
 /* Code block in content area */
 .rte-content-area pre {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: #0d1117; /* GitHub Dark background */
+    border: 1px solid #30363d;
     border-radius: 8px;
     padding: 16px;
     margin: 1.5em 0;
     overflow-x: auto;
     position: relative;
     white-space: pre;
+    tab-size: 4;
 }
 
 .rte-content-area pre code {
     font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', monospace;
-    font-size: 13px;
+    font-size: 13.5px;
     line-height: 1.6;
-    color: #334155;
+    color: #e6edf3;
     background: none;
     padding: 0;
+    display: block;
 }
 
-/* Dark mode overrides */
+.theme-dark .rte-content-area pre {
+    background: #0d1117;
+    border-color: #30363d;
+}
+
+.theme-dark .rte-content-area pre code {
+    color: #e6edf3;
+}
+
 .theme-dark .rte-code-editor-wrapper { border-color: #333; }
 .theme-dark .rte-select { background: #0f1115; border-color: #475569; color: #f8fafc; }
-.theme-dark .rte-content-area pre { background: #0f1115; border-color: #334155; }
-.theme-dark .rte-content-area pre code { color: #cbd5e1; }
+
+
 
 

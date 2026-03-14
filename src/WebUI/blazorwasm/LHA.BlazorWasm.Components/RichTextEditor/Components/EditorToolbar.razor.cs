@@ -14,6 +14,7 @@ public partial class EditorToolbar : ComponentBase
     [Parameter] public EventCallback<LinkDialogResult> OnInsertLink { get; set; }
     [Parameter] public EventCallback<ImageDialogResult> OnInsertImage { get; set; }
     [Parameter] public EventCallback<(int rows, int cols)> OnInsertTable { get; set; }
+    [Parameter] public EventCallback<CodeBlockResult> OnInsertCodeBlock { get; set; }
 
     [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
 
@@ -142,8 +143,10 @@ public partial class EditorToolbar : ComponentBase
     private async Task OnCodeBlockSubmit(CodeBlockResult result)
     {
         _showCodeBlockDialog = false;
-        var html = $"<pre><code class=\"language-{result.Language}\">{System.Web.HttpUtility.HtmlEncode(result.Code)}</code></pre><p><br></p>";
-        await ExecuteCommand("insertHTML", html);
+        if (OnInsertCodeBlock.HasDelegate)
+        {
+            await OnInsertCodeBlock.InvokeAsync(result);
+        }
     }
 
     private async Task OnSpecialCharsSubmit(string chr)

@@ -169,6 +169,12 @@ public partial class RichTextEditor : ComponentBase, IAsyncDisposable
         await _interop.InsertTableAsync(EditorId, size.rows, size.cols);
     }
 
+    private async Task HandleInsertCodeBlock(CodeBlockResult result)
+    {
+        if (_interop == null || !_initialized) return;
+        await _interop.InsertCodeBlockAsync(EditorId, result.Code, result.Language);
+    }
+
     private async Task HandleClearContentAsync()
     {
         await SetHtmlAsync("");

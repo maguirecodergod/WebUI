@@ -190,6 +190,35 @@ export function insertTable(editorId, rows, cols) {
 }
 
 /**
+ * Insert a code block with syntax highlighting.
+ */
+export function insertCodeBlock(editorId, code, language) {
+    const editor = editors.get(editorId);
+    if (!editor) return;
+
+    // Create a temporary container to get the highlighted HTML
+    const pre = document.createElement('pre');
+    const codeEl = document.createElement('code');
+    codeEl.className = `language-${language}`;
+    codeEl.textContent = code;
+    pre.appendChild(codeEl);
+
+    if (window.hljs) {
+        window.hljs.highlightElement(codeEl);
+    }
+
+    // Wrap in a div to ensure it's treated as a block and followed by a newline
+    const wrapper = document.createElement('div');
+    wrapper.appendChild(pre);
+    
+    const p = document.createElement('p');
+    p.innerHTML = '<br>';
+    wrapper.appendChild(p);
+
+    insertHtml(editorId, wrapper.innerHTML);
+}
+
+/**
  * Get the current formatting state for toolbar sync.
  */
 export function getFormatState(editorId) {
