@@ -11,7 +11,7 @@ namespace LHA.BlazorWasm.Services.Storage;
 /// await storage.SetAsync("language", "en");
 /// var lang = await storage.GetAsync<string>("language");
 /// </summary>
-public class LocalStorageService : ILocalStorageService
+internal sealed class LocalStorageService : ILocalStorageService
 {
     private readonly Blazored.LocalStorage.ILocalStorageService _blazoredLocalStorage;
     private readonly StorageOptions _options;

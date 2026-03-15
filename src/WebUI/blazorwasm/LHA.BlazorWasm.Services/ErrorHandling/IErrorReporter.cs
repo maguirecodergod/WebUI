@@ -15,7 +15,7 @@ public sealed record ErrorReport
     public string? StackTrace { get; init; }
 
     /// <summary>UTC timestamp when the error was captured.</summary>
-    public required DateTime Timestamp { get; init; }
+    public required DateTimeOffset Timestamp { get; init; }
 
     /// <summary>The URL the user was on when the error occurred.</summary>
     public string? Url { get; init; }

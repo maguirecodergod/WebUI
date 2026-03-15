@@ -6,7 +6,7 @@ namespace LHA.BlazorWasm.Services.ErrorHandling;
 /// Default implementation of <see cref="IErrorReporter"/>.
 /// Generates a short error ID, logs the error, and returns a structured report.
 /// </summary>
-public sealed class ErrorReporter : IErrorReporter
+internal sealed class ErrorReporter : IErrorReporter
 {
     private readonly ILogger<ErrorReporter> _logger;
 
@@ -19,7 +19,7 @@ public sealed class ErrorReporter : IErrorReporter
     public ErrorReport ReportError(Exception exception, string? url = null)
     {
         var errorId = Guid.NewGuid().ToString("N")[..8];
-        var timestamp = DateTime.UtcNow;
+        var timestamp = DateTimeOffset.UtcNow.ToLocalTime();
 
         var report = new ErrorReport
         {

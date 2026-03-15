@@ -5,7 +5,7 @@ using LHA.BlazorWasm.Shared.Models.StatusBadge;
 
 namespace LHA.BlazorWasm.Services.StatusBadge;
 
-public class StatusBadgeService : IStatusBadgeService
+internal sealed class StatusBadgeService : IStatusBadgeService
 {
     private readonly ConcurrentDictionary<Type, Dictionary<object, StatusBadgeMetadata>> _manualMappings = new();
     private readonly ConcurrentDictionary<(Type, object), StatusBadgeMetadata> _resolvedCache = new();
@@ -20,10 +20,10 @@ public class StatusBadgeService : IStatusBadgeService
     {
         var builder = new StatusBadgeMappingBuilder<TEnum>();
         builderAction(builder);
-        
+
         var mappings = builder.Build();
         var typeMappings = new Dictionary<object, StatusBadgeMetadata>();
-        
+
         foreach (var kvp in mappings)
         {
             typeMappings[kvp.Key] = kvp.Value;
@@ -45,7 +45,7 @@ public class StatusBadgeService : IStatusBadgeService
     private StatusBadgeMetadata ResolveMetadata<TEnum>(TEnum value) where TEnum : struct, Enum
     {
         // 1. Check manual mappings (highest priority/override)
-        if (_manualMappings.TryGetValue(typeof(TEnum), out var typeMappings) && 
+        if (_manualMappings.TryGetValue(typeof(TEnum), out var typeMappings) &&
             typeMappings.TryGetValue(value, out var metadata))
         {
             return ApplyDefaults(value, metadata);
@@ -54,7 +54,7 @@ public class StatusBadgeService : IStatusBadgeService
         // 2. Check for StatusBadgeAttribute on the enum field
         var memInfo = typeof(TEnum).GetMember(value.ToString());
         var attribute = memInfo[0].GetCustomAttribute<StatusBadgeAttribute>();
-        
+
         if (attribute != null)
         {
             return ApplyDefaults(value, new StatusBadgeMetadata
@@ -93,7 +93,7 @@ public class StatusBadgeService : IStatusBadgeService
         name = name.ToLower();
         if (name.Contains("success") || name.Contains("paid") || name.Contains("completed") || name.Contains("active"))
             return new StatusBadgeMetadata { Style = BadgeStyle.Success, Variant = BadgeVariant.Soft };
-        
+
         if (name.Contains("error") || name.Contains("fail") || name.Contains("cancel") || name.Contains("deleted"))
             return new StatusBadgeMetadata { Style = BadgeStyle.Danger, Variant = BadgeVariant.Soft };
 

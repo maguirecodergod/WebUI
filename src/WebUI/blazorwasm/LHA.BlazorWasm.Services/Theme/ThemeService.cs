@@ -2,7 +2,7 @@ using LHA.BlazorWasm.Services.Storage;
 
 namespace LHA.BlazorWasm.Services.Theme;
 
-public class ThemeService(ThemeState themeState, ILocalStorageService localStorage) : IThemeService
+internal sealed class ThemeService(ThemeState themeState, ILocalStorageService localStorage) : IThemeService
 {
     private const string ThemeStorageKey = "app:theme";
 
@@ -19,7 +19,7 @@ public class ThemeService(ThemeState themeState, ILocalStorageService localStora
     public async Task InitializeAsync()
     {
         var savedThemeStr = await localStorage.GetAsync<string>(ThemeStorageKey);
-        
+
         if (Enum.TryParse<ThemeMode>(savedThemeStr, out var savedTheme))
         {
             themeState.NotifyThemeChanged(savedTheme);
