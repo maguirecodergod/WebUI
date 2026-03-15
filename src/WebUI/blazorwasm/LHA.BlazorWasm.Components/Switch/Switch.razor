@@ -1,0 +1,73 @@
+@namespace LHA.BlazorWasm.Components.Switch
+@using LHA.BlazorWasm.Components.Tooltip
+
+<div class="@GetCssClass()">
+    @if (LabelPosition == SwitchLabelPosition.Left && !string.IsNullOrEmpty(Label))
+    {
+        <span class="lha-switch-label">@Label</span>
+    }
+
+    @if (HasTooltip)
+    {
+        <Tooltip Text="@Tooltip">
+            <button
+                class="lha-switch-control"
+                role="switch"
+                aria-checked="@Value"
+                aria-disabled="@Disabled"
+                disabled="@Disabled"
+                @onclick="Toggle"
+                @onkeydown="HandleKeyDown">
+
+                <span class="lha-switch-track">
+                    <span class="lha-switch-thumb">
+                        @if (ShouldShowIcons)
+                        {
+                            @if (!string.IsNullOrEmpty(OnIcon))
+                            {
+                                <i class="@OnIcon lha-switch-icon lha-switch-icon-on" aria-hidden="true"></i>
+                            }
+                            @if (!string.IsNullOrEmpty(OffIcon))
+                            {
+                                <i class="@OffIcon lha-switch-icon lha-switch-icon-off" aria-hidden="true"></i>
+                            }
+                        }
+                    </span>
+                </span>
+            </button>
+        </Tooltip>
+    }
+    else
+    {
+        <button
+            class="lha-switch-control"
+            role="switch"
+            aria-checked="@Value"
+            aria-disabled="@Disabled"
+            disabled="@Disabled"
+            @onclick="Toggle"
+            @onkeydown="HandleKeyDown">
+
+            <span class="lha-switch-track">
+                <span class="lha-switch-thumb">
+                    @if (ShouldShowIcons)
+                    {
+                        @if (!string.IsNullOrEmpty(OnIcon))
+                        {
+                            <i class="@OnIcon lha-switch-icon lha-switch-icon-on" aria-hidden="true"></i>
+                        }
+                        @if (!string.IsNullOrEmpty(OffIcon))
+                        {
+                            <i class="@OffIcon lha-switch-icon lha-switch-icon-off" aria-hidden="true"></i>
+                        }
+                    }
+                </span>
+            </span>
+        </button>
+    }
+
+    @if (LabelPosition == SwitchLabelPosition.Right && !string.IsNullOrEmpty(Label))
+    {
+        <span class="lha-switch-label">@Label</span>
+    }
+</div>

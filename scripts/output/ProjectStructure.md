@@ -1,11 +1,17 @@
 ﻿# Project Structure
 
-_Generated automatically on 2026-03-15 12:11:07_
+_Generated automatically on 2026-03-15 23:08:43_
 
 ```
 .
++-- .github
+|   \-- workflows
 +-- .vscode
 |   \-- settings.json
++-- deploy
+|   \-- charts
+|       \-- lha-webui
+|           \-- templates
 +-- src
 |   \-- WebUI
 |       \-- blazorwasm
@@ -20,13 +26,18 @@ _Generated automatically on 2026-03-15 12:11:07_
 |           |   |   +-- EditorExample.razor
 |           |   |   +-- Home.razor
 |           |   |   +-- NotFound.razor
+|           |   |   +-- Test.razor
 |           |   |   \-- Weather.razor
+|           |   +-- Properties
+|           |   |   \-- launchSettings.json
 |           |   +-- App.razor
 |           |   +-- LHA.BlazorWasm.App.csproj
+|           |   +-- MockAccessTokenProvider.cs
 |           |   +-- Program.cs
 |           |   +-- StatusBadgeModuleRegistration.cs
 |           |   \-- _Imports.razor
 |           +-- LHA.BlazorWasm.Components
+|           |   +-- Badges
 |           |   |   +-- StatusBadge.razor
 |           |   |   +-- StatusBadge.razor.cs
 |           |   |   \-- StatusBadge.razor.css
@@ -56,6 +67,8 @@ _Generated automatically on 2026-03-15 12:11:07_
 |           |   |   +-- EmojiPicker.razor.css
 |           |   |   \-- EmojiSearch.razor
 |           |   +-- Errors
+|           |   |   +-- GlobalException
+|           |   |   +-- NotFound
 |           |   |   +-- GlobalErrorBoundary.razor
 |           |   |   +-- GlobalErrorBoundary.razor.cs
 |           |   |   +-- GlobalErrorBoundary.razor.css
@@ -64,6 +77,7 @@ _Generated automatically on 2026-03-15 12:11:07_
 |           |   |   +-- NotFoundPage.razor.cs
 |           |   |   \-- NotFoundPage.razor.css
 |           |   +-- Form
+|           |   |   +-- Internal
 |           |   |   +-- FormField.razor
 |           |   |   +-- FormField.razor.cs
 |           |   |   +-- FormField.razor.css
@@ -120,6 +134,8 @@ _Generated automatically on 2026-03-15 12:11:07_
 |           |   |   |   +-- ColorPickerPopup.razor.cs
 |           |   |   |   +-- DragDropDialog.razor
 |           |   |   |   +-- DragDropDialog.razor.cs
+|           |   |   |   +-- EditorContent.razor
+|           |   |   |   +-- EditorStatusBar.razor
 |           |   |   |   +-- EditorToolbar.razor
 |           |   |   |   +-- EditorToolbar.razor.cs
 |           |   |   |   +-- Icons.cs
@@ -171,6 +187,12 @@ _Generated automatically on 2026-03-15 12:11:07_
 |           |   |   +-- Skeleton.razor.css
 |           |   |   +-- SkeletonAnimation.cs
 |           |   |   \-- SkeletonVariant.cs
+|           |   +-- Switch
+|           |   |   +-- Switch.razor
+|           |   |   +-- Switch.razor.cs
+|           |   |   +-- Switch.razor.css
+|           |   |   +-- SwitchLabelPosition.cs
+|           |   |   \-- SwitchSize.cs
 |           |   +-- ThemeSwitch
 |           |   |   +-- ThemeSwitch.razor
 |           |   |   +-- ThemeSwitch.razor.cs
@@ -214,7 +236,8 @@ _Generated automatically on 2026-03-15 12:11:07_
 |           |   |   +-- AuthMessageHandler.cs
 |           |   |   +-- ContextMessageHandler.cs
 |           |   |   +-- LoggingMessageHandler.cs
-|           |   |   \-- RetryMessageHandler.cs
+|           |   |   +-- RetryMessageHandler.cs
+|           |   |   \-- SecureHttpHandler.cs
 |           |   +-- Options
 |           |   |   \-- HttpApiClientOptions.cs
 |           |   +-- Serialization
@@ -226,7 +249,8 @@ _Generated automatically on 2026-03-15 12:11:07_
 |           |   +-- ErrorHandling
 |           |   |   +-- ErrorReporter.cs
 |           |   |   +-- ErrorReportingExtensions.cs
-|           |   |   \-- IErrorReporter.cs
+|           |   |   +-- IErrorReporter.cs
+|           |   |   \-- ToastApiErrorHandler.cs
 |           |   +-- Localization
 |           |   |   +-- LanguageCode.cs
 |           |   |   +-- LanguageOption.cs
@@ -258,24 +282,48 @@ _Generated automatically on 2026-03-15 12:11:07_
 |           |   |   +-- ToastService.cs
 |           |   |   \-- ToastState.cs
 |           |   \-- LHA.BlazorWasm.Services.csproj
-|           \-- LHA.BlazorWasm.Shared
-|               +-- Abstractions
-|               |   \-- Localization
-|               |       \-- ILocalizationService.cs
-|               +-- Constants
-|               |   +-- Formatters
-|               |   |   \-- DateTimeFormatter.cs
-|               |   \-- CustomHttpHeaderNames.cs
-|               +-- Localization
-|               |   +-- en.json
-|               |   \-- vi.json
-|               +-- Models
-|               |   +-- Localization
-|               |   |   \-- LocalizationState.cs
-|               |   +-- StatusBadge
-|               |   |   \-- StatusBadgeModels.cs
-|               |   \-- ExampleEnums.cs
-|               \-- LHA.BlazorWasm.Shared.csproj
+|           +-- LHA.BlazorWasm.Shared
+|           |   +-- Abstractions
+|           |   |   \-- Localization
+|           |   |       \-- ILocalizationService.cs
+|           |   +-- Constants
+|           |   |   +-- Formatters
+|           |   |   |   \-- DateTimeFormatter.cs
+|           |   |   \-- CustomHttpHeaderNames.cs
+|           |   +-- Localization
+|           |   |   +-- en.json
+|           |   |   \-- vi.json
+|           |   +-- Models
+|           |   |   +-- Localization
+|           |   |   |   \-- LocalizationState.cs
+|           |   |   +-- StatusBadge
+|           |   |   |   \-- StatusBadgeModels.cs
+|           |   |   \-- ExampleEnums.cs
+|           |   \-- LHA.BlazorWasm.Shared.csproj
+|           \-- LHA.Security
+|               +-- Device
+|               |   \-- DeviceFingerprintService.cs
+|               +-- Encryption
+|               |   +-- AesEncryptionService.cs
+|               |   \-- RsaEncryptionService.cs
+|               +-- Keys
+|               |   \-- KeyRotationService.cs
+|               +-- Middleware
+|               |   \-- SecureRequestMiddleware.cs
+|               +-- Options
+|               |   \-- SecurityOptions.cs
+|               +-- ReplayProtection
+|               |   \-- ReplayProtectionService.cs
+|               +-- Signing
+|               |   \-- RequestSigner.cs
+|               \-- LHA.Security.csproj
++-- test
+|   \-- Test.API
+|       +-- appsettings.Development.json
+|       +-- appsettings.json
+|       +-- Program.cs
+|       +-- Test.API.csproj
+|       \-- Test.API.http
 +-- .dockerignore
 +-- .gitignore
 +-- Dockerfile

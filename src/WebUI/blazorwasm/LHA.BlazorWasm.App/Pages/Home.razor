@@ -3,6 +3,8 @@
 @using LHA.BlazorWasm.Components.Select
 @using LHA.BlazorWasm.Components.Breadcrumb
 @using LHA.BlazorWasm.Components.Section
+@using LHA.BlazorWasm.Components.Switch
+@using LHA.BlazorWasm.Components.Tooltip
 @using System.ComponentModel.DataAnnotations
 
 <PageTitle>@L.L("Common.Save")</PageTitle>
@@ -521,17 +523,117 @@
                                                                                                             </p>
                                                                                                         </Section>
 
-                                                                                                        @* ── Non-collapsible (always open) ── *@
-                                                                                                        <Section Title="Static Content">
-                                                                                                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
-                                                                                                                This section is always visible. It cannot be collapsed because <code>Collapsible</code> is not set.
-                                                                                                            </p>
-                                                                                                        </Section>
-                                                                                                    </div>
+                                        @* ── Non-collapsible (always open) ── *@
+                                        <Section Title="Static Content">
+                                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
+                                                This section is always visible. It cannot be collapsed because <code>Collapsible</code> is not set.
+                                            </p>
+                                        </Section>
+                                    </div>
+
+                                    <hr />
+                                    <h2>Switch Component Examples</h2>
+
+                                    <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
+                                        @* Basic Switch *@
+                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Basic Switch</h3>
+                                                <Switch @bind-Value="switchValue1" Label="Enable notifications" />
+                                                <div style="margin-top: 0.5rem; font-size: 0.85rem;">Value: <b>@switchValue1</b></div>
+                                            </div>
+                                        </div>
+
+                                        @* Switch Sizes *@
+                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-end;">
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Small</h3>
+                                                <Switch @bind-Value="switchValue2" Size="SwitchSize.Small" Label="Small switch" />
+                                            </div>
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Medium</h3>
+                                                <Switch @bind-Value="switchValue3" Size="SwitchSize.Medium" Label="Medium switch" />
+                                            </div>
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Large</h3>
+                                                <Switch @bind-Value="switchValue4" Size="SwitchSize.Large" Label="Large switch" />
+                                            </div>
+                                        </div>
+
+                                        @* Switch with Icons *@
+                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Icons (Check/X)</h3>
+                                                <Switch @bind-Value="switchValue5" ShowIcons="true" OffIcon="fas fa-times" OnIcon="fas fa-check" />
+                                            </div>
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Icons (Sun/Moon)</h3>
+                                                <Switch @bind-Value="switchValue6" ShowIcons="true" OffIcon="fas fa-moon" OnIcon="fas fa-sun" />
+                                            </div>
+                                        </div>
+
+                                        @* Switch with Tooltip *@
+                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Tooltip</h3>
+                                                <Switch @bind-Value="switchValue7" Tooltip="Toggle feature on/off" Label="Feature toggle" />
+                                            </div>
+                                        </div>
+
+                                        @* Switch with Label Position *@
+                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Left Label</h3>
+                                                <Switch @bind-Value="switchValue8" Label="Left label" LabelPosition="SwitchLabelPosition.Left" />
+                                            </div>
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Right Label</h3>
+                                                <Switch @bind-Value="switchValue9" Label="Right label" LabelPosition="SwitchLabelPosition.Right" />
+                                            </div>
+                                        </div>
+
+                                        @* Disabled Switch *@
+                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Disabled (Off)</h3>
+                                                <Switch Disabled="true" Value="false" Label="Disabled off" />
+                                            </div>
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Disabled (On)</h3>
+                                                <Switch Disabled="true" Value="true" Label="Disabled on" />
+                                            </div>
+                                        </div>
+
+                                        @* Combined: Icons + Tooltip *@
+                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                            <div>
+                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Combined: Icons + Tooltip</h3>
+                                                <Switch @bind-Value="switchValue10" 
+                                                        ShowIcons="true" 
+                                                        OffIcon="fas fa-moon" 
+                                                        OnIcon="fas fa-sun" 
+                                                        Tooltip="Toggle dark mode"
+                                                        Size="SwitchSize.Large" />
+                                            </div>
+                                        </div>
+                                    </div>
 
 @code {
+
     private bool isLoading;
     private bool isLoadingData = true;
+
+    // Switch Component State
+    private bool switchValue1;
+    private bool switchValue2;
+    private bool switchValue3;
+    private bool switchValue4 = true;
+    private bool switchValue5;
+    private bool switchValue6 = true;
+    private bool switchValue7;
+    private bool switchValue8;
+    private bool switchValue9 = true;
+    private bool switchValue10 = true;
 
     // FormField Demo State
     private FormDemoModel _demoModel = new();

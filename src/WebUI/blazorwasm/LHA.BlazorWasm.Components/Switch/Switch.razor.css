@@ -1,0 +1,218 @@
+/* Base switch styles */
+.lha-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Label styles */
+.lha-switch-label {
+    font-size: 0.9375rem;
+    color: var(--text-color, #374151);
+    font-weight: 500;
+}
+
+/* Switch control (button) */
+.lha-switch-control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Remove default button styles */
+.lha-switch-control:focus {
+    outline: none;
+}
+
+.lha-switch-control:focus-visible {
+    outline: 2px solid var(--primary-color, #3b82f6);
+    outline-offset: 2px;
+}
+
+/* Track (background) */
+.lha-switch-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: var(--switch-track-bg, #cbd5e1);
+    transition: background-color 0.3s ease;
+}
+
+/* Thumb (circle that slides) */
+.lha-switch-thumb {
+    position: absolute;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Size: Small */
+.lha-switch.size-small .lha-switch-track {
+    width: 44px;
+    height: 24px;
+}
+
+.lha-switch.size-small .lha-switch-thumb {
+    width: 20px;
+    height: 20px;
+    left: 2px;
+    transform: translateX(0);
+}
+
+.lha-switch.size-small.is-checked .lha-switch-thumb {
+    transform: translateX(20px);
+}
+
+/* Size: Medium (default) */
+.lha-switch.size-medium .lha-switch-track {
+    width: 52px;
+    height: 28px;
+}
+
+.lha-switch.size-medium .lha-switch-thumb {
+    width: 24px;
+    height: 24px;
+    left: 2px;
+    transform: translateX(0);
+}
+
+.lha-switch.size-medium.is-checked .lha-switch-thumb {
+    transform: translateX(24px);
+}
+
+/* Size: Large */
+.lha-switch.size-large .lha-switch-track {
+    width: 64px;
+    height: 34px;
+}
+
+.lha-switch.size-large .lha-switch-thumb {
+    width: 30px;
+    height: 30px;
+    left: 2px;
+    transform: translateX(0);
+}
+
+.lha-switch.size-large.is-checked .lha-switch-thumb {
+    transform: translateX(30px);
+}
+
+/* Checked state (ON) - Primary color */
+.lha-switch.is-checked .lha-switch-track {
+    background-color: var(--primary-color, #3b82f6);
+}
+
+/* Disabled state */
+.lha-switch.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.lha-switch.is-disabled .lha-switch-control {
+    cursor: not-allowed;
+}
+
+.lha-switch.is-disabled .lha-switch-track {
+    background-color: var(--switch-track-disabled, #e2e8f0);
+}
+
+.lha-switch.is-disabled .lha-switch-thumb {
+    background-color: #f1f5f9;
+}
+
+/* Icon styles inside switch - when icons enabled */
+.lha-switch.has-icons .lha-switch-thumb {
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.lha-switch-icon {
+    position: absolute;
+    font-size: 0.65rem;
+    line-height: 1;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Small size icons */
+.lha-switch.size-small .lha-switch-icon {
+    font-size: 0.55rem;
+}
+
+/* Medium size icons */
+.lha-switch.size-medium .lha-switch-icon {
+    font-size: 0.65rem;
+}
+
+/* Large size icons */
+.lha-switch.size-large .lha-switch-icon {
+    font-size: 0.8rem;
+}
+
+/* Icon visibility states */
+.lha-switch-icon-on {
+    color: #ffffff;
+    opacity: 0;
+    transform: scale(0.3);
+}
+
+.lha-switch-icon-off {
+    color: #64748b;
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* When checked - show ON icon */
+.lha-switch.is-checked .lha-switch-icon-on {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.lha-switch.is-checked .lha-switch-icon-off {
+    opacity: 0;
+    transform: scale(0.3);
+}
+
+/* When not checked - show OFF icon */
+.lha-switch:not(.is-checked) .lha-switch-icon-on {
+    opacity: 0;
+    transform: scale(0.3);
+}
+
+.lha-switch:not(.is-checked) .lha-switch-icon-off {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Dark theme support */
+.theme-dark .lha-switch-track {
+    background-color: #475569;
+}
+
+.theme-dark .lha-switch.is-checked .lha-switch-track {
+    background-color: #3b82f6;
+}
+
+.theme-dark .lha-switch.is-disabled .lha-switch-track {
+    background-color: #334155;
+}
+
+.theme-dark .lha-switch.is-disabled .lha-switch-thumb {
+    background-color: #1e293b;
+}
