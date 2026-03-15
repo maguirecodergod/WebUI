@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class SpecialCharsPopup : ComponentBase
+public partial class SpecialCharsPopup : LhaComponentBase
 {
     [Parameter] public EventCallback<string> OnCharSelected { get; set; }
 

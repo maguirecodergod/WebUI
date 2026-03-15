@@ -3,12 +3,10 @@
 <div class="lha-emoji-category-bar">
     @foreach (var category in Enum.GetValues<EmojiCategory>().Where(c => c != EmojiCategory.Recent))
     {
-        <button type="button" 
-                class="category-btn @(ActiveCategory == category ? "active" : "")" 
-                @onclick="() => OnCategorySelected.InvokeAsync(category)"
-                title="@category.ToString()">
+        <Button Type="ButtonType.Button" Class=@($"category-btn {(ActiveCategory == category ? "active" : string.Empty)}")
+            OnClick="() => OnCategorySelected.InvokeAsync(category)" Title="@category.ToString()">
             <i class="@GetCategoryIcon(category)"></i>
-        </button>
+        </Button>
     }
 </div>
 

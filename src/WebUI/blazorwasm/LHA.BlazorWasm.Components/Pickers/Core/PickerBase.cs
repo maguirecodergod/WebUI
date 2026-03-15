@@ -1,4 +1,3 @@
-using LHA.BlazorWasm.Services.Localization;
 using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.Pickers.Core;
@@ -7,21 +6,19 @@ namespace LHA.BlazorWasm.Components.Pickers.Core;
 /// Abstract base defining robust shared UI parameters ensuring zero-configuration consistency across all Pickers.
 /// Integrates pure C# blur mechanics and custom events.
 /// </summary>
-public abstract class PickerBase<TValue> : ComponentBase, IDisposable
+public abstract class PickerBase<TValue> : LhaComponentBase, IDisposable
 {
-    [Inject] protected ILocalizationService LocalizationService { get; set; } = default!;
-
     [Parameter] public TValue? Value { get; set; }
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
 
     [Parameter] public string? Placeholder { get; set; }
-    protected string EffectivePlaceholder => string.IsNullOrEmpty(Placeholder) 
-        ? LocalizationService.L("Common.Select") 
+    protected string EffectivePlaceholder => string.IsNullOrEmpty(Placeholder)
+        ? Localizer.L("Common.Select")
         : Placeholder;
 
     protected override void OnInitialized()
     {
-        LocalizationService.OnLanguageChanged += HandleLanguageChanged;
+        Localizer.OnLanguageChanged += HandleLanguageChanged;
     }
 
     private void HandleLanguageChanged()
@@ -31,7 +28,7 @@ public abstract class PickerBase<TValue> : ComponentBase, IDisposable
 
     public virtual void Dispose()
     {
-        LocalizationService.OnLanguageChanged -= HandleLanguageChanged;
+        Localizer.OnLanguageChanged -= HandleLanguageChanged;
     }
 
     [Parameter] public bool Disabled { get; set; }
@@ -59,7 +56,7 @@ public abstract class PickerBase<TValue> : ComponentBase, IDisposable
     };
 
     [Parameter] public EventCallback<TValue?> OnChange { get; set; }
-    
+
     [Parameter] public IPickerValueConverter<TValue>? Converter { get; set; }
     protected IPickerValueConverter<TValue> EffectiveConverter => Converter ?? new DefaultPickerConverter<TValue>();
 

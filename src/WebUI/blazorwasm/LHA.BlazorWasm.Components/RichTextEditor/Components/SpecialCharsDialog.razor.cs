@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class SpecialCharsDialog : ComponentBase
+public partial class SpecialCharsDialog : LhaComponentBase
 {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<string> OnSubmit { get; set; }

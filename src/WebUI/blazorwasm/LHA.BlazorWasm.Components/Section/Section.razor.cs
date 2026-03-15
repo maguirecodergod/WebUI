@@ -13,7 +13,7 @@ namespace LHA.BlazorWasm.Components.Section;
 ///     </FormField>
 /// </Section>
 /// </summary>
-public partial class Section : ComponentBase
+public partial class Section : LhaComponentBase
 {
     /// <summary>
     /// Gets or sets the title displayed in the section header.

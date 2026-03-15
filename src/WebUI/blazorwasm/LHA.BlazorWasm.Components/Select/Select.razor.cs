@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LHA.BlazorWasm.Components.Select;
 
-public partial class Select<TValue> : ComponentBase
+public partial class Select<TValue> : LhaComponentBase
 {
     [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
     private IJSObjectReference? _jsModule;

@@ -20,6 +20,20 @@
                 "GoHome": "Return to the homepage",
                 "Menu": "Use the navigation menu to find what you need"
             }
+        },
+        "Global": {
+            "Title": "Something went wrong",
+            "Description": "An unexpected error occurred. Please try again or reload the page.",
+            "Retry": "Retry",
+            "Reload": "Reload Page",
+            "CopyDetails": "Copy Details",
+            "CopiedSuccess": "Error details copied to clipboard",
+            "ToastMessage": "An unexpected error occurred",
+            "NetworkError": "Network connection lost. Please check your internet.",
+            "TimeoutError": "The request timed out. Please try again.",
+            "UnauthorizedError": "You do not have permission to access that resource.",
+            "NullError": "The application encountered missing data. Please refresh.",
+            "ErrorId": "Error ID"
         }
     }
 }

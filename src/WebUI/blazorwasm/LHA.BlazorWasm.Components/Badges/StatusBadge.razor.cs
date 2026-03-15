@@ -4,7 +4,7 @@ using LHA.BlazorWasm.Shared.Models.StatusBadge;
 
 namespace LHA.BlazorWasm.Components.Badges;
 
-public partial class StatusBadge<TEnum> : ComponentBase where TEnum : struct, Enum
+public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct, Enum
 {
     [Inject] private IStatusBadgeService StatusBadgeService { get; set; } = default!;
 

@@ -4,18 +4,18 @@
 @typeparam TInner
 @inherits PickerBase<DateRange<TInner>>
 
-<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" 
-     @onmousedown="HandleInternalInteraction" @ontouchstart="HandleInternalInteraction">
-    
+<div class="picker-wrapper @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalInteraction"
+@ontouchstart="HandleInternalInteraction">
+
     <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "") @ValidationClass"
-         @onclick="TogglePopup">
+    @onclick="TogglePopup">
         <input type="text" class="picker-input" placeholder="@EffectivePlaceholder" value="@FormattedValue" readonly
-               disabled="@Disabled" />
-               
+            disabled="@Disabled" />
+
         <div class="picker-icon">
             <i class="fas fa-calendar-check"></i>
         </div>
-        
+
         @if (ShowClear && Value.HasStart && !Disabled && !ReadOnly)
         {
             <button type="button" class="picker-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
@@ -28,50 +28,42 @@
 
     <PickerPopup IsOpen="State.IsOpen" Class="datetime-range-popup">
         <div class="range-layout">
-            
+
             <!-- Left Panel: Start Date & Time -->
             <div class="datetime-panel">
-                <div class="panel-title">@LocalizationService.L("Common.Start")</div>
+                <div class="panel-title">@Localizer.L("Common.Start")</div>
                 <div class="datetime-split">
-                    <CalendarView State="StartState" 
-                                  SelectedDate="RangeConverter.MapRange(_tempValue).Start" 
-                                  Range="ConvertToLegacyRange(_tempValue)"
-                                  OnDateSelected="(d) => HandleDateSelected(d, true)"
-                                  Min="Min"
-                                  Max="Max"
-                                  DisabledDateFunc="DisabledDateFunc" />
-                                  
+                    <CalendarView State="StartState" SelectedDate="RangeConverter.MapRange(_tempValue).Start"
+                        Range="ConvertToLegacyRange(_tempValue)" OnDateSelected="(d) => HandleDateSelected(d, true)"
+                        Min="Min" Max="Max" DisabledDateFunc="DisabledDateFunc" />
+
                     <div class="split-divider"></div>
-                    
+
                     <TimeView State="StartState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
                 </div>
             </div>
-            
+
             <div class="panel-divider"></div>
-            
+
             <!-- Right Panel: End Date & Time -->
             <div class="datetime-panel">
-                <div class="panel-title">@LocalizationService.L("Common.End")</div>
+                <div class="panel-title">@Localizer.L("Common.End")</div>
                 <div class="datetime-split">
-                    <CalendarView State="EndState" 
-                                  SelectedDate="RangeConverter.MapRange(_tempValue).End" 
-                                  Range="ConvertToLegacyRange(_tempValue)"
-                                  OnDateSelected="(d) => HandleDateSelected(d, false)"
-                                  Min="Min"
-                                  Max="Max"
-                                  DisabledDateFunc="DisabledDateFunc" />
-                                  
+                    <CalendarView State="EndState" SelectedDate="RangeConverter.MapRange(_tempValue).End"
+                        Range="ConvertToLegacyRange(_tempValue)" OnDateSelected="(d) => HandleDateSelected(d, false)"
+                        Min="Min" Max="Max" DisabledDateFunc="DisabledDateFunc" />
+
                     <div class="split-divider"></div>
-                    
+
                     <TimeView State="EndState" Is24Hour="Is24Hour" OnInteraction="HandleTimeChanged" />
                 </div>
             </div>
-            
+
         </div>
-        
+
         <div class="range-actions">
             <Button Type="ButtonType.Button" Class="btn-confirm" Disabled="@(!_tempValue.IsComplete)"
-                    OnClick="ConfirmSelection">
+                OnClick="ConfirmSelection">
                 @ComputedConfirmText
             </Button>
         </div>

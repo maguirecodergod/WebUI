@@ -10,7 +10,7 @@ public partial class DateRangePicker<TInner> : PickerBase<DateRange<TInner>>
 {
     [Parameter] public string Separator { get; set; } = " ~ ";
     [Parameter] public string? ConfirmText { get; set; }
-    protected string ComputedConfirmText => ConfirmText ?? LocalizationService.L("Common.Apply");
+    protected string ComputedConfirmText => ConfirmText ?? Localizer.L("Common.Apply");
 
     protected PickerState LeftState { get; } = new();
     protected PickerState RightState { get; } = new();
@@ -34,12 +34,12 @@ public partial class DateRangePicker<TInner> : PickerBase<DateRange<TInner>>
         if (!State.IsOpen)
         {
             _tempValue = Value;
-            
+
             var (start, end) = RangeConverter.MapRange(_tempValue);
             if (start.HasValue)
             {
                 LeftState.CurrentMonth = new DateTime(start.Value.Year, start.Value.Month, 1);
-                
+
                 if (end.HasValue && (end.Value.Month != start.Value.Month || end.Value.Year != start.Value.Year))
                 {
                     RightState.CurrentMonth = new DateTime(end.Value.Year, end.Value.Month, 1);
@@ -62,11 +62,11 @@ public partial class DateRangePicker<TInner> : PickerBase<DateRange<TInner>>
         {
             var (start, end) = RangeConverter.MapRange(Value);
             if (!start.HasValue) return string.Empty;
-            
+
             var culture = System.Globalization.CultureInfo.CurrentCulture;
             var startStr = start.Value.ToString(Format, culture);
             var endStr = end.HasValue ? end.Value.ToString(Format, culture) : "";
-            
+
             return $"{startStr}{Separator}{endStr}";
         }
     }
@@ -109,7 +109,7 @@ public partial class DateRangePicker<TInner> : PickerBase<DateRange<TInner>>
         }
         ClosePopup();
     }
-    
+
     protected override Task ClearAsync()
     {
         _tempValue = default;
@@ -119,7 +119,7 @@ public partial class DateRangePicker<TInner> : PickerBase<DateRange<TInner>>
 
     private DateRange ConvertToLegacyRange(DateRange<TInner> range)
     {
-         var (s, e) = RangeConverter.MapRange(range);
-         return new DateRange(s, e);
+        var (s, e) = RangeConverter.MapRange(range);
+        return new DateRange(s, e);
     }
 }

@@ -1,4 +1,3 @@
-using LHA.BlazorWasm.Services.Localization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -8,12 +7,8 @@ namespace LHA.BlazorWasm.Components.Errors;
 /// A reusable enterprise-grade NotFound (404) Page component.
 /// Designed for SaaS applications with premium aesthetics and localization support.
 /// </summary>
-public partial class NotFoundPage : ComponentBase, IDisposable
+public partial class NotFoundPage : LhaComponentBase, IDisposable
 {
-    [Inject] private ILocalizationService L { get; set; } = default!;
-    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
-    [Inject] private IJSRuntime JS { get; set; } = default!;
-
     /// <summary>
     /// Gets or sets the title of the error page.
     /// Default: Localized "Errors.NotFound.Title"
@@ -64,14 +59,14 @@ public partial class NotFoundPage : ComponentBase, IDisposable
     /// </summary>
     [Parameter] public RenderFragment? SearchSlot { get; set; }
 
-    private string DisplayTitle => Title ?? L.L("Errors.NotFound.Title");
-    private string DisplayMessage => Message ?? L.L("Errors.NotFound.Description");
-    private string GoHomeText => L.L("Errors.NotFound.GoHome");
-    private string GoBackText => L.L("Errors.NotFound.GoBack");
+    private string DisplayTitle => Title ?? Localizer.L("Errors.NotFound.Title");
+    private string DisplayMessage => Message ?? Localizer.L("Errors.NotFound.Description");
+    private string GoHomeText => Localizer.L("Errors.NotFound.GoHome");
+    private string GoBackText => Localizer.L("Errors.NotFound.GoBack");
 
     protected override void OnInitialized()
     {
-        L.OnLanguageChanged += HandleLanguageChanged;
+        Localizer.OnLanguageChanged += HandleLanguageChanged;
     }
 
     private void HandleLanguageChanged()
@@ -81,7 +76,7 @@ public partial class NotFoundPage : ComponentBase, IDisposable
 
     public void Dispose()
     {
-        L.OnLanguageChanged -= HandleLanguageChanged;
+        Localizer.OnLanguageChanged -= HandleLanguageChanged;
     }
 
     private async Task HandleBackAsync()
@@ -98,6 +93,6 @@ public partial class NotFoundPage : ComponentBase, IDisposable
 
     private void HandleHome()
     {
-        NavigationManager.NavigateTo(HomeUrl);
+        Navigation.NavigateTo(HomeUrl);
     }
 }

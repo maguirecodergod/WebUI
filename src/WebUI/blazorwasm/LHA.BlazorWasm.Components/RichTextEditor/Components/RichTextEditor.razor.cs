@@ -14,7 +14,7 @@ namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 /// &lt;RichTextEditor @bind-Value="htmlContent" /&gt;
 /// </code>
 /// </summary>
-public partial class RichTextEditor : ComponentBase, IAsyncDisposable
+public partial class RichTextEditor : LhaComponentBase, IAsyncDisposable
 {
     [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
 

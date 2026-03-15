@@ -33,9 +33,9 @@
     @if (ShowLabel)
     {
         <span class="theme-label ms-2">
-            @(CurrentTheme == LHA.BlazorWasm.Services.Theme.ThemeMode.Light 
-                ? LocalizationService.L("Theme.LightMode") 
-                : LocalizationService.L("Theme.DarkMode"))
+            @(CurrentTheme == LHA.BlazorWasm.Services.Theme.ThemeMode.Light
+                ? Localizer.L("Theme.LightMode")
+                : Localizer.L("Theme.DarkMode"))
         </span>
     }
 </div>

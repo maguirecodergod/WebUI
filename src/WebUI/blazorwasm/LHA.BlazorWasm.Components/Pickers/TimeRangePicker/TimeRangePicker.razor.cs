@@ -12,7 +12,7 @@ public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
 {
     [Parameter] public string Separator { get; set; } = " ~ ";
     [Parameter] public string? ConfirmText { get; set; }
-    protected string ComputedConfirmText => ConfirmText ?? LocalizationService.L("Common.Apply");
+    protected string ComputedConfirmText => ConfirmText ?? Localizer.L("Common.Apply");
     [Parameter] public bool Is24Hour { get; set; } = false;
 
     protected PickerState StartState { get; } = new();
@@ -38,7 +38,7 @@ public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
             SyncStateWithInternalValue();
         }
     }
-    
+
     private void SyncStateWithInternalValue()
     {
         var (start, end) = RangeConverter.MapRange(_tempValue);
@@ -50,17 +50,17 @@ public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
         {
             SetStateFromTime(StartState, DateTime.Today.AddHours(9));
         }
-        
+
         if (end.HasValue)
         {
             SetStateFromTime(EndState, end.Value);
         }
         else
         {
-             SetStateFromTime(EndState, DateTime.Today.AddHours(17));
+            SetStateFromTime(EndState, DateTime.Today.AddHours(17));
         }
     }
-    
+
     private void SetStateFromTime(PickerState state, DateTime time)
     {
         var h = time.Hour;
@@ -93,7 +93,7 @@ public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
         StateHasChanged();
         return Task.CompletedTask;
     }
-    
+
     private DateTime GetTimeFromState(PickerState state)
     {
         var h = state.SelectedHour;
@@ -109,7 +109,7 @@ public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
     {
         var start = GetTimeFromState(StartState);
         var end = GetTimeFromState(EndState);
-        
+
         if (start > end)
         {
             _tempValue = RangeConverter.CreateRange(end, start);
@@ -119,11 +119,11 @@ public partial class TimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
         {
             _tempValue = RangeConverter.CreateRange(start, end);
         }
-        
+
         await UpdateValueAsync(_tempValue);
         ClosePopup();
     }
-    
+
     protected override Task ClearAsync()
     {
         _tempValue = default;

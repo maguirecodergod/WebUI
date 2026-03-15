@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Services.Localization;
-using Microsoft.JSInterop;
 using LHA.BlazorWasm.Components.Select;
 
 namespace LHA.BlazorWasm.Components.LanguageSelector;
@@ -17,11 +16,8 @@ namespace LHA.BlazorWasm.Components.LanguageSelector;
 /// Inline:
 /// <LanguageSelector Mode="LanguageSelectorMode.Inline" />
 /// </summary>
-public partial class LanguageSelector : ComponentBase, IDisposable
+public partial class LanguageSelector : LhaComponentBase, IDisposable
 {
-    [Inject] private ILocalizationService LocalizationService { get; set; } = default!;
-    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
-
     /// <summary>
     /// Gets or sets the visual variant mode of the selector (Dropdown or Inline).
     /// </summary>
@@ -56,7 +52,7 @@ public partial class LanguageSelector : ComponentBase, IDisposable
 
     private string? CurrentCulture
     {
-        get => LocalizationService.State.CurrentCulture;
+        get => Localizer.State.CurrentCulture;
         set { if (value != null) _ = SelectLanguageAsync(value); }
     }
 
@@ -76,13 +72,13 @@ public partial class LanguageSelector : ComponentBase, IDisposable
 
     private LanguageOption? CurrentLanguage =>
         SupportedOptions.FirstOrDefault(l =>
-            l.Culture.Equals(LocalizationService.State.CurrentCulture, StringComparison.OrdinalIgnoreCase))
+            l.Culture.Equals(Localizer.State.CurrentCulture, StringComparison.OrdinalIgnoreCase))
         ?? SupportedOptions.FirstOrDefault();
 
     protected override void OnInitialized()
     {
         // Subscribe to localization service to trigger re-renders dynamically when language changes
-        LocalizationService.OnLanguageChanged += RefreshUI;
+        Localizer.OnLanguageChanged += RefreshUI;
     }
 
     private void RefreshUI()
@@ -92,14 +88,14 @@ public partial class LanguageSelector : ComponentBase, IDisposable
 
     private async Task SelectLanguageAsync(string culture)
     {
-        if (LocalizationService.State.CurrentCulture != culture)
+        if (Localizer.State.CurrentCulture != culture)
         {
-            await LocalizationService.SetLanguageAsync(culture);
+            await Localizer.SetLanguageAsync(culture);
         }
     }
 
     public void Dispose()
     {
-        LocalizationService.OnLanguageChanged -= RefreshUI;
+        Localizer.OnLanguageChanged -= RefreshUI;
     }
 }

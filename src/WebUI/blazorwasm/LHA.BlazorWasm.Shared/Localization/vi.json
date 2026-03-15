@@ -20,6 +20,20 @@
                 "GoHome": "Quay lại trang chủ",
                 "Menu": "Sử dụng menu điều hướng để tìm trang bạn cần"
             }
+        },
+        "Global": {
+            "Title": "Đã xảy ra lỗi",
+            "Description": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại hoặc tải lại trang.",
+            "Retry": "Thử lại",
+            "Reload": "Tải lại trang",
+            "CopyDetails": "Sao chép chi tiết",
+            "CopiedSuccess": "Đã sao chép chi tiết lỗi vào bộ nhớ tạm",
+            "ToastMessage": "Đã xảy ra lỗi không mong muốn",
+            "NetworkError": "Mất kết nối mạng. Vui lòng kiểm tra lại đường truyền.",
+            "TimeoutError": "Yêu cầu đã hết thời gian chờ. Vui lòng thử lại.",
+            "UnauthorizedError": "Bạn không có quyền truy cập vào tài nguyên này.",
+            "NullError": "Ứng dụng gặp sự cố về dữ liệu (thiếu thông tin). Vui lòng tải lại trang.",
+            "ErrorId": "Mã lỗi"
         }
     }
 }

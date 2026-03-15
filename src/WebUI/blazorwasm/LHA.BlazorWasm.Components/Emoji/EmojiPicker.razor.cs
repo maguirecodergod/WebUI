@@ -1,15 +1,9 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
-using LHA.BlazorWasm.Services.Localization;
 
 namespace LHA.BlazorWasm.Components.Emoji;
 
-public partial class EmojiPicker : ComponentBase
+public partial class EmojiPicker : LhaComponentBase
 {
-    [Inject] private ILocalizationService L { get; set; } = default!;
-    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
-
     [Parameter] public bool IsOpen { get; set; }
     [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
     [Parameter] public EventCallback<EmojiModel> OnEmojiSelected { get; set; }

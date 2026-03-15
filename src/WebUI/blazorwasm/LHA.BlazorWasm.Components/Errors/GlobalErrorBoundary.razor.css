@@ -1,0 +1,145 @@
+/* ═══════════════════════════════════════════
+   GlobalErrorBoundary — Scoped CSS
+   Premium error fallback UI with dark mode support
+   ═══════════════════════════════════════════ */
+
+.global-error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 2rem 1rem;
+    animation: errorFadeIn 0.5s ease-out;
+}
+
+.global-error-card {
+    max-width: 480px;
+    width: 100%;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.04),
+        0 6px 16px rgba(0, 0, 0, 0.06),
+        0 12px 32px rgba(0, 0, 0, 0.04);
+}
+
+/* Icon */
+.error-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.error-icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #d97706;
+    animation: iconPulse 2.5s ease-in-out infinite;
+}
+
+/* Typography */
+.error-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-color, #111827);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.025em;
+    line-height: 1.3;
+}
+
+.error-description {
+    font-size: 0.9375rem;
+    color: var(--text-muted, #6b7280);
+    margin: 0 0 1.5rem 0;
+    line-height: 1.6;
+}
+
+/* Error ID Badge */
+.error-id-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--hover-bg, #f3f4f6);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    margin-bottom: 1.75rem;
+    font-size: 0.8125rem;
+}
+
+.error-id-label {
+    color: var(--text-muted, #9ca3af);
+    font-weight: 500;
+}
+
+.error-id-value {
+    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+    font-weight: 600;
+    color: var(--text-color, #374151);
+    background: transparent;
+    letter-spacing: 0.05em;
+}
+
+/* Action Buttons */
+.error-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.error-secondary-actions {
+    display: flex;
+    justify-content: center;
+}
+
+/* Animations */
+@keyframes errorFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.15);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 12px rgba(217, 119, 6, 0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .global-error-card {
+        padding: 2rem 1.25rem;
+        border-radius: 12px;
+    }
+
+    .error-title {
+        font-size: 1.25rem;
+    }
+
+    .error-actions {
+        flex-direction: column;
+    }
+
+    .error-actions ::deep .base-btn {
+        width: 100%;
+    }
+}

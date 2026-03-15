@@ -29,7 +29,7 @@ namespace LHA.BlazorWasm.Components.Skeleton;
 ///     <UserCard />
 /// </Skeleton>
 /// </summary>
-public partial class Skeleton : ComponentBase
+public partial class Skeleton : LhaComponentBase
 {
     /// <summary>
     /// Gets or sets the visual variant of the skeleton. Default is Text.

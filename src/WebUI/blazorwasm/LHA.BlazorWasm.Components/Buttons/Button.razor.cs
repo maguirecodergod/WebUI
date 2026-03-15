@@ -14,7 +14,7 @@ namespace LHA.BlazorWasm.Components.Buttons;
 ///     Save
 /// </Button>
 /// </summary>
-public partial class Button : ComponentBase
+public partial class Button : LhaComponentBase
 {
     /// <summary>
     /// Gets or sets the text content of the button.

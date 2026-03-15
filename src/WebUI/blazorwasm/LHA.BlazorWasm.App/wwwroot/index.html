@@ -18,7 +18,7 @@
     <script src="_content/LHA.BlazorWasm.Components/RichTextEditor/lib/highlight/highlight.min.js"></script>
     <script src="_content/LHA.BlazorWasm.Components/js/emojiPicker.js"></script>
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="alternate icon" type="image/png" href="favicon.png" />
+    <link rel="alternate icon" type="image/svg+xml" href="favicon.svg" />
     <link href="LHA.BlazorWasm.App.styles.css" rel="stylesheet" />
     <script type="importmap"></script>
 
@@ -34,18 +34,18 @@
 
         /* ─── Root Variables ────────────────────────────────────────────── */
         :root {
-            --bl-bg-from:        #0a0f1e;
-            --bl-bg-to:          #0d1b38;
-            --bl-accent:         #3b82f6;
-            --bl-accent-2:       #6366f1;
-            --bl-accent-glow:    rgba(99, 102, 241, 0.25);
-            --bl-surface:        rgba(255, 255, 255, 0.04);
+            --bl-bg-from: #0a0f1e;
+            --bl-bg-to: #0d1b38;
+            --bl-accent: #3b82f6;
+            --bl-accent-2: #6366f1;
+            --bl-accent-glow: rgba(99, 102, 241, 0.25);
+            --bl-surface: rgba(255, 255, 255, 0.04);
             --bl-surface-border: rgba(255, 255, 255, 0.08);
-            --bl-text-primary:   #f0f4ff;
+            --bl-text-primary: #f0f4ff;
             --bl-text-secondary: rgba(240, 244, 255, 0.55);
-            --bl-ring-size:      88px;
-            --bl-ring-stroke:    3px;
-            --bl-radius:         20px;
+            --bl-ring-size: 88px;
+            --bl-ring-stroke: 3px;
+            --bl-radius: 20px;
         }
 
         /* ─── Full-screen overlay ───────────────────────────────────────── */
@@ -56,7 +56,7 @@
             align-items: center;
             justify-content: center;
             background: radial-gradient(ellipse at 60% 20%, #111c40 0%, var(--bl-bg-from) 60%),
-                        linear-gradient(160deg, var(--bl-bg-from) 0%, var(--bl-bg-to) 100%);
+                linear-gradient(160deg, var(--bl-bg-from) 0%, var(--bl-bg-to) 100%);
             z-index: 9999;
             font-family: 'Outfit', 'Inter', system-ui, sans-serif;
             -webkit-font-smoothing: antialiased;
@@ -78,22 +78,33 @@
             pointer-events: none;
             will-change: transform;
         }
+
         .bl-orb-1 {
-            width: 480px; height: 480px;
-            background: radial-gradient(circle, rgba(99,102,241,.18) 0%, transparent 70%);
-            top: -120px; left: -100px;
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, rgba(99, 102, 241, .18) 0%, transparent 70%);
+            top: -120px;
+            left: -100px;
             animation: bl-orb-drift 14s ease-in-out infinite alternate;
         }
+
         .bl-orb-2 {
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(59,130,246,.14) 0%, transparent 70%);
-            bottom: -100px; right: -80px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, .14) 0%, transparent 70%);
+            bottom: -100px;
+            right: -80px;
             animation: bl-orb-drift 18s ease-in-out infinite alternate-reverse;
         }
 
         @keyframes bl-orb-drift {
-            from { transform: translate(0, 0) scale(1); }
-            to   { transform: translate(30px, -30px) scale(1.08); }
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(30px, -30px) scale(1.08);
+            }
         }
 
         /* ─── Dot grid background ───────────────────────────────────────── */
@@ -101,7 +112,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+            background-image: radial-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px);
             background-size: 32px 32px;
             pointer-events: none;
         }
@@ -120,8 +131,8 @@
             backdrop-filter: blur(20px) saturate(160%);
             -webkit-backdrop-filter: blur(20px) saturate(160%);
             box-shadow:
-                0 0 0 1px rgba(255,255,255,.05) inset,
-                0 24px 64px rgba(0,0,0,.5),
+                0 0 0 1px rgba(255, 255, 255, .05) inset,
+                0 24px 64px rgba(0, 0, 0, .5),
                 0 0 80px var(--bl-accent-glow);
             animation: bl-card-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
             max-width: 380px;
@@ -129,15 +140,24 @@
         }
 
         @keyframes bl-card-in {
-            from { opacity: 0; transform: translateY(24px) scale(.97); }
-            to   { opacity: 1; transform: translateY(0)    scale(1);   }
+            from {
+                opacity: 0;
+                transform: translateY(24px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         /* ─── Top accent line ───────────────────────────────────────────── */
         .bl-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 20%; right: 20%;
+            top: 0;
+            left: 20%;
+            right: 20%;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--bl-accent), var(--bl-accent-2), transparent);
             border-radius: 9999px;
@@ -159,13 +179,11 @@
             inset: 0;
             border-radius: 50%;
             padding: var(--bl-ring-stroke);
-            background: conic-gradient(
-                from 0deg,
-                transparent 0%,
-                var(--bl-accent) 40%,
-                var(--bl-accent-2) 60%,
-                transparent 100%
-            );
+            background: conic-gradient(from 0deg,
+                    transparent 0%,
+                    var(--bl-accent) 40%,
+                    var(--bl-accent-2) 60%,
+                    transparent 100%);
             -webkit-mask:
                 linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
@@ -178,7 +196,9 @@
         }
 
         @keyframes bl-ring-spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Static inner ring (creates track look) */
@@ -186,7 +206,7 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            border: var(--bl-ring-stroke) solid rgba(255,255,255,.07);
+            border: var(--bl-ring-stroke) solid rgba(255, 255, 255, .07);
         }
 
         /* Logo icon */
@@ -199,13 +219,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(99,102,241,.45);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, .45);
             animation: bl-logo-pulse 2.8s ease-in-out infinite;
         }
 
         @keyframes bl-logo-pulse {
-            0%, 100% { box-shadow: 0 4px 20px rgba(99,102,241,.45); }
-            50%       { box-shadow: 0 4px 32px rgba(99,102,241,.75), 0 0 0 6px rgba(99,102,241,.1); }
+
+            0%,
+            100% {
+                box-shadow: 0 4px 20px rgba(99, 102, 241, .45);
+            }
+
+            50% {
+                box-shadow: 0 4px 32px rgba(99, 102, 241, .75), 0 0 0 6px rgba(99, 102, 241, .1);
+            }
         }
 
         .bl-logo-icon svg {
@@ -252,7 +279,7 @@
         .bl-progress-track {
             position: relative;
             height: 4px;
-            background: rgba(255,255,255,.08);
+            background: rgba(255, 255, 255, .08);
             border-radius: 9999px;
             overflow: hidden;
         }
@@ -271,15 +298,22 @@
         .bl-progress-fill::after {
             content: '';
             position: absolute;
-            top: 0; right: 0; bottom: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
             width: 40%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .35), transparent);
             animation: bl-shimmer 1.4s ease-in-out infinite;
         }
 
         @keyframes bl-shimmer {
-            0%   { transform: translateX(-200%); }
-            100% { transform: translateX(400%); }
+            0% {
+                transform: translateX(-200%);
+            }
+
+            100% {
+                transform: translateX(400%);
+            }
         }
 
         /* Hidden Blazor elements — we use our own DOM */
@@ -304,31 +338,55 @@
         }
 
         @keyframes bl-phase-in {
-            from { opacity: 0; transform: translateY(4px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Pulsing dots */
         .bl-dots span {
             display: inline-block;
-            width: 4px; height: 4px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
             background: var(--bl-accent);
             margin: 0 2px;
             animation: bl-dot-bounce .9s ease-in-out infinite;
         }
-        .bl-dots span:nth-child(2) { animation-delay: .15s; }
-        .bl-dots span:nth-child(3) { animation-delay: .30s; }
+
+        .bl-dots span:nth-child(2) {
+            animation-delay: .15s;
+        }
+
+        .bl-dots span:nth-child(3) {
+            animation-delay: .30s;
+        }
 
         @keyframes bl-dot-bounce {
-            0%, 80%, 100% { transform: translateY(0);   opacity: .4; }
-            40%            { transform: translateY(-5px); opacity: 1;  }
+
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+                opacity: .4;
+            }
+
+            40% {
+                transform: translateY(-5px);
+                opacity: 1;
+            }
         }
 
         /* ─── Footer ────────────────────────────────────────────────────── */
         .bl-footer {
             font-size: .7rem;
-            color: rgba(240,244,255,.25);
+            color: rgba(240, 244, 255, .25);
             letter-spacing: .3px;
         }
 
@@ -339,7 +397,10 @@
                 gap: 22px;
                 border-radius: 16px;
             }
-            .bl-app-name { font-size: 1.25rem; }
+
+            .bl-app-name {
+                font-size: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -369,18 +430,20 @@
                     <div class="bl-ring-track"></div>
                     <div class="bl-ring"></div>
                     <div class="bl-logo-icon">
-                        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
-                             width="28" height="28" fill="none" aria-hidden="true">
+                        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none"
+                            aria-hidden="true">
                             <defs>
                                 <linearGradient id="bl-lg" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%"   stop-color="#fff" stop-opacity="0.98"/>
-                                    <stop offset="100%" stop-color="#c7d2fe" stop-opacity="0.9"/>
+                                    <stop offset="0%" stop-color="#fff" stop-opacity="0.98" />
+                                    <stop offset="100%" stop-color="#c7d2fe" stop-opacity="0.9" />
                                 </linearGradient>
                             </defs>
-                            <rect x="27" y="14" width="10" height="36" rx="3" fill="url(#bl-lg)"/>
-                            <rect x="27" y="14" width="10" height="36" rx="3" fill="url(#bl-lg)" transform="rotate(60 32 32)"/>
-                            <rect x="27" y="14" width="10" height="36" rx="3" fill="url(#bl-lg)" transform="rotate(120 32 32)"/>
-                            <circle cx="32" cy="32" r="6" fill="#fff"/>
+                            <rect x="27" y="14" width="10" height="36" rx="3" fill="url(#bl-lg)" />
+                            <rect x="27" y="14" width="10" height="36" rx="3" fill="url(#bl-lg)"
+                                transform="rotate(60 32 32)" />
+                            <rect x="27" y="14" width="10" height="36" rx="3" fill="url(#bl-lg)"
+                                transform="rotate(120 32 32)" />
+                            <circle cx="32" cy="32" r="6" fill="#fff" />
                         </svg>
                     </div>
                 </div>
@@ -410,27 +473,23 @@
         </div>
     </div>
 
-    <div id="blazor-error-ui" role="alert">
-        An unhandled error has occurred.
-        <a href="." class="reload">Reload</a>
-        <span class="dismiss">🗙</span>
-    </div>
+
 
     <script>
         // ── Boot-loader controller ──────────────────────────────────────
         (function () {
             'use strict';
 
-            const fill    = document.getElementById('bl-fill');
+            const fill = document.getElementById('bl-fill');
             const phaseEl = document.getElementById('bl-phase');
-            const loader  = document.getElementById('boot-loader');
+            const loader = document.getElementById('boot-loader');
 
             const phases = [
-                { at:  0, label: 'Initializing'       },
-                { at: 20, label: 'Loading modules'     },
-                { at: 55, label: 'Starting application'},
-                { at: 85, label: 'Almost ready'        },
-                { at: 99, label: 'Ready'               },
+                { at: 0, label: 'Initializing' },
+                { at: 20, label: 'Loading modules' },
+                { at: 55, label: 'Starting application' },
+                { at: 85, label: 'Almost ready' },
+                { at: 99, label: 'Ready' },
             ];
 
             let currentPhaseIdx = 0;
@@ -465,7 +524,7 @@
                 if (circles.length < 2) return 0;
 
                 const style = window.getComputedStyle(circles[1]);
-                const sda   = style.getPropertyValue('stroke-dasharray') || '';
+                const sda = style.getPropertyValue('stroke-dasharray') || '';
                 // Format Blazor uses: "XX% 100%"
                 const match = sda.match(/^([\d.]+)%/);
                 return match ? parseFloat(match[1]) : 0;
@@ -498,4 +557,4 @@
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
 </body>
 
-</html>
+</html>

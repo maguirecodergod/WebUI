@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class LinkDialog : ComponentBase
+public partial class LinkDialog : LhaComponentBase
 {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<LinkDialogResult?> OnSubmit { get; set; }

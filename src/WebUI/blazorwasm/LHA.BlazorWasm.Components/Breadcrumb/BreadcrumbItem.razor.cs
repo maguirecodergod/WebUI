@@ -16,7 +16,7 @@ namespace LHA.BlazorWasm.Components.Breadcrumb;
 /// &lt;BreadcrumbItem Text="Details" /&gt;
 /// </code>
 /// </summary>
-public partial class BreadcrumbItem : ComponentBase, IDisposable
+public partial class BreadcrumbItem : LhaComponentBase, IDisposable
 {
     // ──────────────────────────────────────────────
     // Parameters

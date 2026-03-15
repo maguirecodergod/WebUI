@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class ColorPickerPopup : ComponentBase
+public partial class ColorPickerPopup : LhaComponentBase
 {
     [Parameter] public string SelectedColor { get; set; } = "#000000";
     [Parameter] public EventCallback<string> OnColorSelected { get; set; }

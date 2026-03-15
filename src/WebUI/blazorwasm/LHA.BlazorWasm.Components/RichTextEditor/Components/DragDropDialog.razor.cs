@@ -4,7 +4,7 @@ using LHA.BlazorWasm.Components.RichTextEditor.Models;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class DragDropDialog : ComponentBase
+public partial class DragDropDialog : LhaComponentBase
 {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<ImageDialogResult> OnSubmit { get; set; }

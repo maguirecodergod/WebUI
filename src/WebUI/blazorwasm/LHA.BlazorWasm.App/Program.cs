@@ -5,6 +5,7 @@ using LHA.BlazorWasm.Services.Storage;
 using LHA.BlazorWasm.Services.Localization;
 using LHA.BlazorWasm.Services.Theme;
 using LHA.BlazorWasm.Services.Toast;
+using LHA.BlazorWasm.Services.ErrorHandling;
 using LHA.BlazorWasm.Components;
 using LHA.BlazorWasm.Services.StatusBadge;
 
@@ -28,6 +29,7 @@ builder.Services.AddAppLocalization(options =>
 
 builder.Services.AddThemeService();
 builder.Services.AddToastService();
+builder.Services.AddErrorReporting();
 builder.Services.AddStatusBadgeServices();
 builder.Services.AddBlazorWasmComponents();
 

@@ -1,36 +1,27 @@
 @namespace LHA.BlazorWasm.Components.Pickers.Core
-@inject LHA.BlazorWasm.Services.Localization.ILocalizationService LocalizationService
 
 <div class="time-view">
     <div class="time-selectors">
         <div class="time-unit">
-            <Select TValue="int"
-                    Value="@State.SelectedHour"
-                    ValueChanged="OnHourChanged"
-                    Options="@HourOptions"
-                    ShowClear="false"
-                    Class="time-select" />
+            <Select TValue="int" Value="@State.SelectedHour" ValueChanged="OnHourChanged" Options="@HourOptions"
+                ShowClear="false" Class="time-select" />
         </div>
-        
+
         <span class="time-separator">:</span>
-        
+
         <div class="time-unit">
-            <Select TValue="int"
-                    Value="@State.SelectedMinute"
-                    ValueChanged="OnMinuteChanged"
-                    Options="@MinuteOptions"
-                    ShowClear="false"
-                    Class="time-select" />
+            <Select TValue="int" Value="@State.SelectedMinute" ValueChanged="OnMinuteChanged" Options="@MinuteOptions"
+                ShowClear="false" Class="time-select" />
         </div>
 
         @if (!Is24Hour)
         {
             <div class="ampm-toggle">
                 <button type="button" class="@(State.AmPm == "AM" ? "active" : "")" @onclick="@(() => SetAmPm("AM"))">
-                    @LocalizationService.L("Time.AM")
+                    @Localizer.L("Time.AM")
                 </button>
                 <button type="button" class="@(State.AmPm == "PM" ? "active" : "")" @onclick="@(() => SetAmPm("PM"))">
-                    @LocalizationService.L("Time.PM")
+                    @Localizer.L("Time.PM")
                 </button>
             </div>
         }
@@ -39,13 +30,14 @@
 
 @code {
     private List<SelectOption<int>> HourOptions => Enumerable.Range(0, Is24Hour ? 24 : 12)
-        .Select(i => {
-            var val = !Is24Hour && i == 0 ? 12 : i;
-            return new SelectOption<int> { Value = i, Label = val.ToString("00") };
-        }).ToList();
+    .Select(i =>
+    {
+        var val = !Is24Hour && i == 0 ? 12 : i;
+        return new SelectOption<int> { Value = i, Label = val.ToString("00") };
+    }).ToList();
 
     private List<SelectOption<int>> MinuteOptions => Enumerable.Range(0, 60)
-        .Select(i => new SelectOption<int> { Value = i, Label = i.ToString("00") }).ToList();
+    .Select(i => new SelectOption<int> { Value = i, Label = i.ToString("00") }).ToList();
 
     private async Task OnHourChanged(int hour)
     {

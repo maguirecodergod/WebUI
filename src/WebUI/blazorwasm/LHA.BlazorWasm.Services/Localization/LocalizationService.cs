@@ -9,7 +9,7 @@ namespace LHA.BlazorWasm.Services.Localization;
 /// Implementation of the Localization Service responsible for pulling from wwwroot, 
 /// merging module keys natively, and storing in local storage cache.
 /// </summary>
-public class LocalizationService : ILocalizationService
+internal sealed class LocalizationService : ILocalizationService
 {
     private readonly HttpClient _httpClient;
     private readonly ILocalStorageService _localStorage;
@@ -45,7 +45,7 @@ public class LocalizationService : ILocalizationService
         var savedCulture = await _localStorage.GetAsync<string>(_options.LocalStorageKey);
 
         // 2. Fallback to default if not present or unsupported natively
-        var targetCulture = !string.IsNullOrEmpty(savedCulture) && 
+        var targetCulture = !string.IsNullOrEmpty(savedCulture) &&
                             LanguageProvider.GetOptions(_options.SupportedCultures).Any(x => x.Culture == savedCulture)
             ? savedCulture
             : LanguageProvider.GetOption(_options.DefaultCulture).Culture;
@@ -102,7 +102,7 @@ public class LocalizationService : ILocalizationService
         State.Translations = translations;
 
         var cultureInfo = (System.Globalization.CultureInfo)new System.Globalization.CultureInfo(culture).Clone();
-        
+
         // Ensure AM/PM designators are mapped from translations if available
         if (translations.TryGetValue("Time.AM", out var am)) cultureInfo.DateTimeFormat.AMDesignator = am;
         if (translations.TryGetValue("Time.PM", out var pm)) cultureInfo.DateTimeFormat.PMDesignator = pm;

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class TableDialog : ComponentBase
+public partial class TableDialog : LhaComponentBase
 {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<(int rows, int cols)> OnSubmit { get; set; }

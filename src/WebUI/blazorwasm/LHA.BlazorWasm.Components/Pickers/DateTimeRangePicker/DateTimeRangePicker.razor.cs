@@ -12,7 +12,7 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
 {
     [Parameter] public string Separator { get; set; } = " ~ ";
     [Parameter] public string? ConfirmText { get; set; }
-    private string ComputedConfirmText => ConfirmText ?? LocalizationService.L("Common.Apply");
+    private string ComputedConfirmText => ConfirmText ?? Localizer.L("Common.Apply");
 
     [Parameter] public bool Is24Hour { get; set; } = false;
 
@@ -117,7 +117,7 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
 
         var startTime = GetTime(StartState);
         var endTime = GetTime(EndState);
-        
+
         var (currentStart, currentEnd) = RangeConverter.MapRange(_tempValue);
 
         if (_clickCount == 0 || _tempValue.IsComplete)

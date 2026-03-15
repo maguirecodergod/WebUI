@@ -1,11 +1,10 @@
 @namespace LHA.BlazorWasm.Components.Emoji
-@inject LHA.BlazorWasm.Services.Localization.ILocalizationService L
 
 <div class="lha-emoji-search">
     <div class="search-input-wrapper">
         <i class="fas fa-search search-icon"></i>
         <input type="text" 
-               placeholder="@L.L("Emoji.SearchPlaceholder")" 
+               placeholder="@Localizer.L("Emoji.SearchPlaceholder")" 
                value="@Value"
                @oninput="OnInput" 
                class="search-input" />

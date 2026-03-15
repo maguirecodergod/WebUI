@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.ThemeSwitch;
 
-public class ThemeSwitchBase : ComponentBase, IDisposable
+public class ThemeSwitchBase : LhaComponentBase, IDisposable
 {
     [Inject] protected IThemeService ThemeService { get; set; } = default!;
     [Inject] protected ThemeState ThemeState { get; set; } = default!;
-    [Inject] protected ILocalizationService LocalizationService { get; set; } = default!;
 
     [Parameter] public ThemeSwitchVariant Variant { get; set; } = ThemeSwitchVariant.Toggle;
     [Parameter] public string Class { get; set; } = string.Empty;
@@ -24,7 +23,7 @@ public class ThemeSwitchBase : ComponentBase, IDisposable
     protected override void OnInitialized()
     {
         ThemeState.OnThemeChanged += OnStateChanged;
-        LocalizationService.OnLanguageChanged += RefreshUI;
+        Localizer.OnLanguageChanged += RefreshUI;
     }
 
     private void OnStateChanged(ThemeMode newTheme)
@@ -46,6 +45,6 @@ public class ThemeSwitchBase : ComponentBase, IDisposable
     public void Dispose()
     {
         ThemeState.OnThemeChanged -= OnStateChanged;
-        LocalizationService.OnLanguageChanged -= RefreshUI;
+        Localizer.OnLanguageChanged -= RefreshUI;
     }
 }

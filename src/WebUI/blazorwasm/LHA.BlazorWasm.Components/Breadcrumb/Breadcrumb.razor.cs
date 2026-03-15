@@ -21,7 +21,7 @@ namespace LHA.BlazorWasm.Components.Breadcrumb;
 /// &lt;Breadcrumb Items="@breadcrumbItems" /&gt;
 /// </code>
 /// </summary>
-public partial class Breadcrumb : ComponentBase
+public partial class Breadcrumb : LhaComponentBase
 {
     // ──────────────────────────────────────────────
     // Parameters

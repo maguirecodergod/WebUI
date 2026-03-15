@@ -1,6 +1,5 @@
 @namespace LHA.BlazorWasm.Components.Pickers.Core
 @using System.Globalization
-@inject LHA.BlazorWasm.Services.Localization.ILocalizationService LocalizationService
 
 <div class="calendar">
     <div class="calendar-header">
@@ -8,19 +7,11 @@
             <i class="fas fa-chevron-left"></i>
         </button>
         <div class="current-month-selects">
-            <Select TValue="int" 
-                    Value="@CurrentMonthVal"
-                    ValueChanged="OnMonthChanged"
-                    Options="@MonthOptions"
-                    ShowClear="false"
-                    Class="header-select month-select" />
-            
-            <Select TValue="int" 
-                    Value="@CurrentYearVal"
-                    ValueChanged="OnYearChanged"
-                    Options="@YearOptions"
-                    ShowClear="false"
-                    Class="header-select year-select" />
+            <Select TValue="int" Value="@CurrentMonthVal" ValueChanged="OnMonthChanged" Options="@MonthOptions"
+                ShowClear="false" Class="header-select month-select" />
+
+            <Select TValue="int" Value="@CurrentYearVal" ValueChanged="OnYearChanged" Options="@YearOptions"
+                ShowClear="false" Class="header-select year-select" />
         </div>
         <button type="button" class="nav-btn" @onclick="NextMonth">
             <i class="fas fa-chevron-right"></i>
@@ -41,18 +32,18 @@
             var isInRange = Range.HasValue && DateUtils.IsBetween(date, Range.Value.Start, Range.Value.End);
             var isRangeStart = Range.HasValue && DateUtils.IsSameDay(date, Range.Value.Start);
             var isRangeEnd = Range.HasValue && DateUtils.IsSameDay(date, Range.Value.End);
-            
-            var isDisabled = (Min.HasValue && date.Date < Min.Value.Date) || 
-                             (Max.HasValue && date.Date > Max.Value.Date) || 
-                             (DisabledDateFunc?.Invoke(date) ?? false);
+
+            var isDisabled = (Min.HasValue && date.Date < Min.Value.Date) ||
+            (Max.HasValue && date.Date > Max.Value.Date) ||
+            (DisabledDateFunc?.Invoke(date) ?? false);
 
             var dayClass = $"calendar-day {(isCurrentMonth ? "" : "other-month")} " +
-                           $"{(isSelected ? "selected" : "")} " +
-                           $"{(isToday ? "today" : "")} " +
-                           $"{(isInRange ? "in-range" : "")} " +
-                           $"{(isRangeStart ? "range-start" : "")} " +
-                           $"{(isRangeEnd ? "range-end" : "")} " +
-                           $"{(isDisabled ? "disabled" : "")}";
+            $"{(isSelected ? "selected" : "")} " +
+            $"{(isToday ? "today" : "")} " +
+            $"{(isInRange ? "in-range" : "")} " +
+            $"{(isRangeStart ? "range-start" : "")} " +
+            $"{(isRangeEnd ? "range-end" : "")} " +
+            $"{(isDisabled ? "disabled" : "")}";
 
             <button type="button" class="@dayClass" @onclick="() => SelectDate(date)" disabled="@isDisabled">
                 @date.Day
@@ -76,12 +67,12 @@
     private int CurrentYearVal => State.CurrentMonth.Year;
 
     private List<SelectOption<int>> MonthOptions => Enumerable.Range(1, 12)
-        .Select(i => new SelectOption<int> { Value = i, Label = LocalizationService.L($"Months.{i}") })
-        .ToList();
+    .Select(i => new SelectOption<int> { Value = i, Label = Localizer.L($"Months.{i}") })
+    .ToList();
 
     private List<SelectOption<int>> YearOptions => Enumerable.Range(DateTime.Today.Year - 100, 151)
-        .Select(year => new SelectOption<int> { Value = year, Label = year.ToString() })
-        .ToList();
+    .Select(year => new SelectOption<int> { Value = year, Label = year.ToString() })
+    .ToList();
 
     private void OnMonthChanged(int month)
     {
@@ -125,14 +116,14 @@
     private string[] GetShortDaysOfWeek()
     {
         // Sunday first sequence
-        return new[] { 
-            LocalizationService.L("Calendar.Sun"), 
-            LocalizationService.L("Calendar.Mon"), 
-            LocalizationService.L("Calendar.Tue"), 
-            LocalizationService.L("Calendar.Wed"), 
-            LocalizationService.L("Calendar.Thu"), 
-            LocalizationService.L("Calendar.Fri"), 
-            LocalizationService.L("Calendar.Sat") 
+        return new[] {
+            Localizer.L("Calendar.Sun"),
+            Localizer.L("Calendar.Mon"),
+            Localizer.L("Calendar.Tue"),
+            Localizer.L("Calendar.Wed"),
+            Localizer.L("Calendar.Thu"),
+            Localizer.L("Calendar.Fri"),
+            Localizer.L("Calendar.Sat")
         };
     }
 }
