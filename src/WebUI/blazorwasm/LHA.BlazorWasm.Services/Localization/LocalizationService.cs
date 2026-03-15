@@ -2,6 +2,8 @@ using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Text.Json;
 using LHA.BlazorWasm.Services.Storage;
+using LHA.BlazorWasm.Shared.Models.Localization;
+using LHA.BlazorWasm.Shared.Abstractions.Localization;
 
 namespace LHA.BlazorWasm.Services.Localization;
 

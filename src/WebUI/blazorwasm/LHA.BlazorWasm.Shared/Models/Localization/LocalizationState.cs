@@ -1,4 +1,4 @@
-namespace LHA.BlazorWasm.Services.Localization;
+namespace LHA.BlazorWasm.Shared.Models.Localization;
 
 /// <summary>
 /// Container holding the active Localization state (Culture and active Translations).

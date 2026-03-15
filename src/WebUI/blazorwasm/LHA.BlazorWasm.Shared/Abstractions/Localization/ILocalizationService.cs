@@ -1,4 +1,6 @@
-namespace LHA.BlazorWasm.Services.Localization;
+using LHA.BlazorWasm.Shared.Models.Localization;
+
+namespace LHA.BlazorWasm.Shared.Abstractions.Localization;
 
 /// <summary>
 /// Interface for the enterprise Localization service.

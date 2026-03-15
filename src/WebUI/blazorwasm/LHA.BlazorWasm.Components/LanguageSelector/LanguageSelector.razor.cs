@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Services.Localization;
+using LHA.BlazorWasm.Shared.Abstractions.Localization;
+using LHA.BlazorWasm.Shared.Models.Localization;
 using LHA.BlazorWasm.Components.Select;
 
 namespace LHA.BlazorWasm.Components.LanguageSelector;

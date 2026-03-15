@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using LHA.BlazorWasm.Shared.Abstractions.Localization;
 
 namespace LHA.BlazorWasm.Services.Localization;
 

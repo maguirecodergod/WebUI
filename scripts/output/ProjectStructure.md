@@ -1,17 +1,11 @@
 ﻿# Project Structure
 
-_Generated automatically on 2026-03-14 22:07:39_
+_Generated automatically on 2026-03-15 12:11:07_
 
 ```
 .
-+-- .github
-|   \-- workflows
 +-- .vscode
 |   \-- settings.json
-+-- deploy
-|   \-- charts
-|       \-- lha-webui
-|           \-- templates
 +-- src
 |   \-- WebUI
 |       \-- blazorwasm
@@ -27,15 +21,12 @@ _Generated automatically on 2026-03-14 22:07:39_
 |           |   |   +-- Home.razor
 |           |   |   +-- NotFound.razor
 |           |   |   \-- Weather.razor
-|           |   +-- Properties
-|           |   |   \-- launchSettings.json
 |           |   +-- App.razor
 |           |   +-- LHA.BlazorWasm.App.csproj
 |           |   +-- Program.cs
 |           |   +-- StatusBadgeModuleRegistration.cs
 |           |   \-- _Imports.razor
 |           +-- LHA.BlazorWasm.Components
-|           |   +-- Badges
 |           |   |   +-- StatusBadge.razor
 |           |   |   +-- StatusBadge.razor.cs
 |           |   |   \-- StatusBadge.razor.css
@@ -65,11 +56,14 @@ _Generated automatically on 2026-03-14 22:07:39_
 |           |   |   +-- EmojiPicker.razor.css
 |           |   |   \-- EmojiSearch.razor
 |           |   +-- Errors
+|           |   |   +-- GlobalErrorBoundary.razor
+|           |   |   +-- GlobalErrorBoundary.razor.cs
+|           |   |   +-- GlobalErrorBoundary.razor.css
+|           |   |   +-- LhaErrorBoundaryBase.cs
 |           |   |   +-- NotFoundPage.razor
 |           |   |   +-- NotFoundPage.razor.cs
 |           |   |   \-- NotFoundPage.razor.css
 |           |   +-- Form
-|           |   |   +-- Internal
 |           |   |   +-- FormField.razor
 |           |   |   +-- FormField.razor.cs
 |           |   |   +-- FormField.razor.css
@@ -126,8 +120,6 @@ _Generated automatically on 2026-03-14 22:07:39_
 |           |   |   |   +-- ColorPickerPopup.razor.cs
 |           |   |   |   +-- DragDropDialog.razor
 |           |   |   |   +-- DragDropDialog.razor.cs
-|           |   |   |   +-- EditorContent.razor
-|           |   |   |   +-- EditorStatusBar.razor
 |           |   |   |   +-- EditorToolbar.razor
 |           |   |   |   +-- EditorToolbar.razor.cs
 |           |   |   |   +-- Icons.cs
@@ -199,22 +191,50 @@ _Generated automatically on 2026-03-14 22:07:39_
 |           |   |   \-- TooltipTrigger.cs
 |           |   +-- ComponentExtensions.cs
 |           |   +-- LHA.BlazorWasm.Components.csproj
+|           |   +-- LhaComponentBase.cs
 |           |   \-- _Imports.razor
 |           +-- LHA.BlazorWasm.HttpApi.Client
+|           |   +-- Abstractions
+|           |   |   +-- IAccessTokenProvider.cs
+|           |   |   +-- IApiClient.cs
+|           |   |   +-- IApiErrorHandler.cs
+|           |   |   \-- IClientContextProvider.cs
+|           |   +-- Clients
+|           |   |   \-- ExampleApiClient.cs
+|           |   +-- Core
+|           |   |   +-- ApiClientBase.cs
+|           |   |   +-- ApiError.cs
+|           |   |   +-- ApiException.cs
+|           |   |   +-- ApiResponse.cs
+|           |   |   +-- DefaultApiErrorHandler.cs
+|           |   |   \-- DefaultClientContextProvider.cs
+|           |   +-- Extensions
+|           |   |   \-- HttpApiClientExtensions.cs
+|           |   +-- Handlers
+|           |   |   +-- AuthMessageHandler.cs
+|           |   |   +-- ContextMessageHandler.cs
+|           |   |   +-- LoggingMessageHandler.cs
+|           |   |   \-- RetryMessageHandler.cs
+|           |   +-- Options
+|           |   |   \-- HttpApiClientOptions.cs
+|           |   +-- Serialization
+|           |   |   \-- JsonOptionsProvider.cs
 |           |   \-- LHA.BlazorWasm.HttpApi.Client.csproj
 |           +-- LHA.BlazorWasm.Modules
 |           |   \-- LHA.BlazorWasm.Modules.csproj
 |           +-- LHA.BlazorWasm.Services
+|           |   +-- ErrorHandling
+|           |   |   +-- ErrorReporter.cs
+|           |   |   +-- ErrorReportingExtensions.cs
+|           |   |   \-- IErrorReporter.cs
 |           |   +-- Localization
-|           |   |   +-- ILocalizationService.cs
 |           |   |   +-- LanguageCode.cs
 |           |   |   +-- LanguageOption.cs
 |           |   |   +-- LanguageProvider.cs
 |           |   |   +-- LanguageSelectorMode.cs
 |           |   |   +-- LocalizationExtensions.cs
 |           |   |   +-- LocalizationOptions.cs
-|           |   |   +-- LocalizationService.cs
-|           |   |   \-- LocalizationState.cs
+|           |   |   \-- LocalizationService.cs
 |           |   +-- StatusBadge
 |           |   |   +-- IStatusBadgeService.cs
 |           |   |   +-- StatusBadgeConfiguration.cs
@@ -239,13 +259,19 @@ _Generated automatically on 2026-03-14 22:07:39_
 |           |   |   \-- ToastState.cs
 |           |   \-- LHA.BlazorWasm.Services.csproj
 |           \-- LHA.BlazorWasm.Shared
+|               +-- Abstractions
+|               |   \-- Localization
+|               |       \-- ILocalizationService.cs
 |               +-- Constants
-|               |   \-- Formatters
-|               |       \-- DateTimeFormatter.cs
+|               |   +-- Formatters
+|               |   |   \-- DateTimeFormatter.cs
+|               |   \-- CustomHttpHeaderNames.cs
 |               +-- Localization
 |               |   +-- en.json
 |               |   \-- vi.json
 |               +-- Models
+|               |   +-- Localization
+|               |   |   \-- LocalizationState.cs
 |               |   +-- StatusBadge
 |               |   |   \-- StatusBadgeModels.cs
 |               |   \-- ExampleEnums.cs
