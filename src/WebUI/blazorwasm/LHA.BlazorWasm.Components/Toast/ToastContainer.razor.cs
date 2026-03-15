@@ -1,7 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Components;
-using LHA.BlazorWasm.Services.Toast;
-
 namespace LHA.BlazorWasm.Components.Toast;
 
 /// <summary>
@@ -10,15 +6,13 @@ namespace LHA.BlazorWasm.Components.Toast;
 /// </summary>
 public partial class ToastContainer : IDisposable
 {
-    [Inject] private IToastService ToastService { get; set; } = default!;
-
     protected override void OnInitialized()
     {
-        ToastService.State.OnChange += StateHasChanged;
+        ToastNotification.State.OnChange += StateHasChanged;
     }
 
     public void Dispose()
     {
-        ToastService.State.OnChange -= StateHasChanged;
+        ToastNotification.State.OnChange -= StateHasChanged;
     }
 }

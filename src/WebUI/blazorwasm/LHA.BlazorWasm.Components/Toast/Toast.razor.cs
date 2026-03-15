@@ -10,8 +10,6 @@ namespace LHA.BlazorWasm.Components.Toast;
 /// </summary>
 public partial class Toast : IDisposable
 {
-    [Inject] private IToastService ToastService { get; set; } = default!;
-
     [Parameter, EditorRequired] public ToastMessage Message { get; set; } = default!;
 
     private bool _isClosing;
@@ -41,18 +39,18 @@ public partial class Toast : IDisposable
     private async Task CloseToast()
     {
         if (_isClosing) return;
-        
+
         _isClosing = true;
-        
+
         // Push DOM update requesting outgoing slide animation
         StateHasChanged();
-        
+
         // Wait strictly for the CSS transition length before killing object entirely via Service
         await Task.Delay(400); // Maps 1:1 strictly to the 0.4s CSS ruleset
-        
+
         if (Message != null)
         {
-            ToastService.Remove(Message.Id);
+            ToastNotification.Remove(Message.Id);
         }
     }
 

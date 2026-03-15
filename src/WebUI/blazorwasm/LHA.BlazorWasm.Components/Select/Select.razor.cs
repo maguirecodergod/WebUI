@@ -2,16 +2,11 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LHA.BlazorWasm.Components.Select;
 
 public partial class Select<TValue> : LhaComponentBase
 {
-    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
     private IJSObjectReference? _jsModule;
     private ElementReference _selectRef;
 
@@ -125,7 +120,7 @@ public partial class Select<TValue> : LhaComponentBase
     {
         if (Disabled || ReadOnly) return;
         HandleInternalInteraction();
-        
+
         if (!State.IsOpen)
         {
             if (Placement == SelectPlacement.Top)
@@ -138,7 +133,7 @@ public partial class Select<TValue> : LhaComponentBase
             }
             else // Auto
             {
-                _jsModule ??= await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/Select/Select.razor.js");
+                _jsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/Select/Select.razor.js");
                 _isOpeningUpwards = await _jsModule.InvokeAsync<bool>("shouldOpenUpwards", _selectRef);
             }
         }
@@ -274,7 +269,7 @@ public partial class Select<TValue> : LhaComponentBase
     protected async Task OnFocusOut()
     {
         await Task.Delay(300);
-        
+
         if ((DateTime.Now - _lastInteractionTime).TotalMilliseconds < 500)
         {
             return;

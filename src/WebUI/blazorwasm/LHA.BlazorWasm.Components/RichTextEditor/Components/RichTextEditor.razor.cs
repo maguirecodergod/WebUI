@@ -1,7 +1,6 @@
 using LHA.BlazorWasm.Components.RichTextEditor.Interop;
 using LHA.BlazorWasm.Components.RichTextEditor.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
@@ -16,8 +15,6 @@ namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 /// </summary>
 public partial class RichTextEditor : LhaComponentBase, IAsyncDisposable
 {
-    [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
-
     /// <summary>
     /// HTML content of the editor (two-way bindable).
     /// </summary>
@@ -68,7 +65,7 @@ public partial class RichTextEditor : LhaComponentBase, IAsyncDisposable
     {
         if (firstRender)
         {
-            _interop = new RichTextEditorInterop(JsRuntime);
+            _interop = new RichTextEditorInterop(JS);
 
             // Subscribe to JS callbacks
             _interop.OnContentChanged += OnContentChangedFromJs;

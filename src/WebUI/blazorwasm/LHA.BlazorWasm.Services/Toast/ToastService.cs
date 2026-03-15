@@ -4,7 +4,7 @@ namespace LHA.BlazorWasm.Services.Toast;
 /// Service managing real-time pub/sub interactions pushing Toast UI components utilizing memory queues. 
 /// Efficient polling timer auto-dismissal mechanics included.
 /// </summary>
-public class ToastService : IToastService
+internal sealed class ToastService : IToastService
 {
     private const int MaxVisibleToasts = 5;
 

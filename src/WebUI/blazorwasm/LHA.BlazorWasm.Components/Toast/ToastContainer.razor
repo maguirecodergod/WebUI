@@ -2,7 +2,7 @@
 @using LHA.BlazorWasm.Services.Toast
 
 <div class="toast-container" aria-live="polite" aria-atomic="true">
-    @foreach (var toast in ToastService.State.Toasts)
+    @foreach (var toast in ToastNotification.State.Toasts)
     {
         <Toast @key="toast.Id" Message="toast" />
     }

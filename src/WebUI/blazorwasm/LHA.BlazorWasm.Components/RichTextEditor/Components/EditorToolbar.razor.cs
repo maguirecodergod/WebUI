@@ -16,8 +16,6 @@ public partial class EditorToolbar : LhaComponentBase
     [Parameter] public EventCallback<(int rows, int cols)> OnInsertTable { get; set; }
     [Parameter] public EventCallback<CodeBlockResult> OnInsertCodeBlock { get; set; }
 
-    [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
-
     [Parameter] public EventCallback OnImageGalleryRequest { get; set; }
 
     private ToolbarDropdown? _foreColorDropdown;
@@ -40,10 +38,10 @@ public partial class EditorToolbar : LhaComponentBase
     private async Task OnInsertVideoClick()
     {
         if (string.IsNullOrWhiteSpace(_videoUrl)) return;
-        
+
         var url = _videoUrl.Trim();
         _videoDropdown?.Close();
-        
+
         // Convert Youtube watch URL to embed URL if necessary
         if (url.Contains("youtube.com/watch"))
         {
@@ -61,7 +59,7 @@ public partial class EditorToolbar : LhaComponentBase
         }
 
         var iframeHtml = $"<iframe width=\"560\" height=\"315\" src=\"{url}\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
-        
+
         await ExecuteCommand("insertHTML", iframeHtml);
         _videoUrl = string.Empty;
     }
@@ -69,13 +67,13 @@ public partial class EditorToolbar : LhaComponentBase
     private async Task OnUploadClick()
     {
         _imageDropdown?.Close();
-        await JsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{_uploadInputId}').click()");
+        await JS.InvokeVoidAsync("eval", $"document.getElementById('{_uploadInputId}').click()");
     }
 
     private async Task OnCameraClick()
     {
         _imageDropdown?.Close();
-        await JsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{_cameraInputId}').click()");
+        await JS.InvokeVoidAsync("eval", $"document.getElementById('{_cameraInputId}').click()");
     }
 
     private void OnDragDropClick()
@@ -106,7 +104,7 @@ public partial class EditorToolbar : LhaComponentBase
                 var buffer = memoryStream.ToArray();
                 var base64 = Convert.ToBase64String(buffer);
                 var url = $"data:{file.ContentType};base64,{base64}";
-                
+
                 await OnImageSubmit(new ImageDialogResult { Url = url });
             }
             catch (Exception ex)
