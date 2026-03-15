@@ -8,6 +8,10 @@ using LHA.BlazorWasm.Services.Toast;
 using LHA.BlazorWasm.Services.ErrorHandling;
 using LHA.BlazorWasm.Components;
 using LHA.BlazorWasm.Services.StatusBadge;
+using LHA.BlazorWasm.HttpApi.Client.Extensions;
+using LHA.BlazorWasm.HttpApi.Client.Options;
+using LHA.BlazorWasm.HttpApi.Client.Abstractions;
+using LHA.BlazorWasm.App.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -32,6 +36,20 @@ builder.Services.AddToastService();
 builder.Services.AddErrorReporting();
 builder.Services.AddStatusBadgeServices();
 builder.Services.AddBlazorWasmComponents();
+
+builder.Services.AddLhaHttpApiClient(options =>
+{
+    // Point to the local or mock API server
+    options.BaseAddress = "http://localhost:5088/";
+    options.Timeout = TimeSpan.FromSeconds(30);
+    options.MaxRetries = 3;
+});
+
+// Mock service for testing authentication in API Client
+builder.Services.AddSingleton<IAccessTokenProvider, MockAccessTokenProvider>();
+
+// Integrate IToastService into API error handling
+builder.Services.AddTransient<IApiErrorHandler, ToastApiErrorHandler>();
 
 var host = builder.Build();
 

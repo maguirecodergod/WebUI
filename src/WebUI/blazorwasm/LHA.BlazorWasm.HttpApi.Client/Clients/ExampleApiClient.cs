@@ -30,9 +30,36 @@ public class ExampleApiClient : ApiClientBase
     {
         return PostAsync<CreateUserRequest, UserDto>("api/users", request, cancellationToken: cancellationToken);
     }
+
+    public Task<ApiResponse<UserDto>> UpdateUserAsync(int id, UpdateUserRequest request, CancellationToken cancellationToken = default)
+    {
+        return PutAsync<UpdateUserRequest, UserDto>($"api/users/{id}", request, cancellationToken: cancellationToken);
+    }
+
+    public Task<ApiResponse<string>> DeleteUserAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return DeleteAsync<string>($"api/users/{id}", cancellationToken: cancellationToken);
+    }
+
+    // Explicit error case tests
+    public Task<ApiResponse<object>> Test404NotFoundAsync(CancellationToken cancellationToken = default)
+    {
+        return GetAsync<object>("api/test/not-found", cancellationToken: cancellationToken);
+    }
+
+    public Task<ApiResponse<object>> Test500InternalErrorAsync(CancellationToken cancellationToken = default)
+    {
+        return GetAsync<object>("api/test/server-error", cancellationToken: cancellationToken);
+    }
+
+    public Task<ApiResponse<object>> Test401UnauthorizedAsync(CancellationToken cancellationToken = default)
+    {
+        return GetAsync<object>("api/test/unauthorized", cancellationToken: cancellationToken);
+    }
 }
 
 // Dummy models used only for demonstration purposes
 public record WeatherForecast(DateTime Date, int TemperatureC, string? Summary);
 public record UserDto(int Id, string Name, string Email);
 public record CreateUserRequest(string Name, string Email);
+public record UpdateUserRequest(string Name);

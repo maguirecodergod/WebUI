@@ -21,7 +21,18 @@ public class ContextMessageHandler : DelegatingHandler
         TryAddHeader(request, CustomHttpHeaderNames.DeviceId, _contextProvider.GetDeviceId());
         TryAddHeader(request, CustomHttpHeaderNames.ClientVersion, _contextProvider.GetClientVersion());
         TryAddHeader(request, CustomHttpHeaderNames.ApiKey, _contextProvider.GetApiKey());
-        TryAddHeader(request, CustomHttpHeaderNames.AcceptLanguage, _contextProvider.GetAcceptLanguage());
+
+        var locale = _contextProvider.GetAcceptLanguage();
+        if (!string.IsNullOrWhiteSpace(locale))
+        {
+            try
+            {
+                request.Headers.AcceptLanguage.Clear();
+                request.Headers.AcceptLanguage.ParseAdd(locale);
+                request.Headers.TryAddWithoutValidation("X-App-Locale", locale);
+            }
+            catch { /* Ignore invalid language formats */ }
+        }
 
         return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }

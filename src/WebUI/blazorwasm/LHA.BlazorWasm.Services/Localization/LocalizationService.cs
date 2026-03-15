@@ -20,18 +20,20 @@ internal sealed class LocalizationService : ILocalizationService
     // In-memory cache holding Culture -> (Module -> Translations dict) to avoid re-fetching JSONs.
     private readonly Dictionary<string, Dictionary<string, string>> _translationCache = new();
 
-    public LocalizationState State { get; } = new();
+    public LocalizationState State { get; }
 
     public event Action? OnLanguageChanged;
 
     public LocalizationService(
         HttpClient httpClient,
         ILocalStorageService localStorage,
-        IOptions<LocalizationOptions> options)
+        IOptions<LocalizationOptions> options,
+        LocalizationState state)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _localStorage = localStorage ?? throw new ArgumentNullException(nameof(localStorage));
         _options = options?.Value ?? new LocalizationOptions();
+        State = state ?? throw new ArgumentNullException(nameof(state));
     }
 
     public string L(string key)

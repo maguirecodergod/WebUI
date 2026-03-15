@@ -55,8 +55,16 @@ public abstract class ApiClientBase : IApiClient
 
     protected virtual async Task<ApiResponse<T>> SendAsync<T>(HttpRequestMessage request, CancellationToken cancellationToken = default)
     {
-        using var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        return await HandleResponseAsync<T>(response, cancellationToken).ConfigureAwait(false);
+        try
+        {
+            using var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            return await HandleResponseAsync<T>(response, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is not ApiException)
+        {
+            await ErrorHandler.HandleExceptionAsync(ex, request, cancellationToken).ConfigureAwait(false);
+            throw;
+        }
     }
 
     protected virtual async Task<ApiResponse<T>> HandleResponseAsync<T>(HttpResponseMessage response, CancellationToken cancellationToken)

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using LHA.BlazorWasm.Shared.Abstractions.Localization;
+using LHA.BlazorWasm.Shared.Models.Localization;
 
 namespace LHA.BlazorWasm.Services.Localization;
 
@@ -29,6 +30,7 @@ public static class LocalizationExtensions
             services.Configure<LocalizationOptions>(options => { });
         }
 
+        services.AddSingleton<LocalizationState>();
         services.AddScoped<ILocalizationService, LocalizationService>();
 
         return services;

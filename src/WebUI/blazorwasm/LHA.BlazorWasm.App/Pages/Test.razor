@@ -1,0 +1,222 @@
+@page "/test"
+@using LHA.BlazorWasm.HttpApi.Client.Clients
+@using LHA.BlazorWasm.HttpApi.Client.Abstractions
+@using LHA.BlazorWasm.HttpApi.Client.Core
+@using System.Text.Json
+@inject ExampleApiClient ApiClient
+
+<PageTitle>API Client Test</PageTitle>
+
+<div class="test-container p-4">
+    <h1 class="mb-4">HTTP API Client Test Page</h1>
+    <p class="text-muted">Test all scenarios for the <code>LHA.BlazorWasm.HttpApi.Client</code> library.</p>
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card mb-4 shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Standard Operations</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary text-start" @onclick="TestGetWeather" disabled="@_isBusy">
+                            <i class="bi bi-cloud-sun"></i> GET Weather (Collection)
+                        </button>
+                        <button class="btn btn-outline-primary text-start" @onclick="() => TestGetUser(1)" disabled="@_isBusy">
+                            <i class="bi bi-person"></i> GET User (Single - ID: 1)
+                        </button>
+                        <button class="btn btn-outline-success text-start" @onclick="TestCreateUser" disabled="@_isBusy">
+                            <i class="bi bi-person-plus"></i> POST Create User
+                        </button>
+                        <button class="btn btn-outline-warning text-start" @onclick="TestUpdateUser" disabled="@_isBusy">
+                            <i class="bi bi-pencil"></i> PUT Update User
+                        </button>
+                        <button class="btn btn-outline-danger text-start" @onclick="TestDeleteUser" disabled="@_isBusy">
+                            <i class="bi bi-trash"></i> DELETE User
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="card mb-4 shadow-sm h-100">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">Error & Edge Cases</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <button class="btn btn-danger w-100 mb-2" @onclick="Test404" disabled="@_isBusy">404 Not Found</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-danger w-100 mb-2" @onclick="Test500" disabled="@_isBusy">500 Server Error</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-secondary w-100" @onclick="Test401" disabled="@_isBusy">401 Unauthorized</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-dark w-100" @onclick="TestAll" disabled="@_isBusy">Run All Tests</button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="mt-2">
+                        <button class="btn btn-outline-secondary w-100" @onclick="ClearLogs">Clear Output Logs</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (_isBusy)
+    {
+        <div class="progress my-4" style="height: 10px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 100%"></div>
+        </div>
+    }
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Execution Results</h5>
+            <span class="badge bg-light text-dark">@_testResults.Count Entries</span>
+        </div>
+        <div class="card-body p-0" style="max-height: 600px; overflow-y: auto; background-color: #f8f9fa;">
+            @if (_testResults.Count == 0)
+            {
+                <div class="p-5 text-center text-muted">
+                    <i class="bi bi-terminal fs-1 d-block mb-3"></i>
+                    Ready to start testing. Choose an operation above.
+                </div>
+            }
+            else
+            {
+                <div class="list-group list-group-flush">
+                    @foreach (var result in _testResults)
+                    {
+                        <div class="list-group-item border-start border-4 @(result.Success ? "border-success" : "border-danger") bg-white mb-2 shadow-sm mx-2 mt-2 rounded">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <h6 class="mb-1 fw-bold @(result.Success ? "text-success" : "text-danger")">@result.Action</h6>
+                                <span class="text-muted small">@result.Timestamp.ToString("HH:mm:ss.fff")</span>
+                            </div>
+                            <div class="my-2">
+                                <span class="badge @(result.Success ? "bg-success" : "bg-danger")">@(result.Success ? "PASSED" : "FAILED")</span>
+                                @if (result.StatusCode != null)
+                                {
+                                    <span class="badge bg-secondary ms-1">HTTP @((int)result.StatusCode) (@result.StatusCode)</span>
+                                }
+                            </div>
+                            <div class="position-relative">
+                                <pre class="mt-2 mb-0 p-3 bg-light border rounded small" style="max-height: 200px; overflow: auto;"><code>@result.Content</code></pre>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .test-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    pre { 
+        white-space: pre-wrap; 
+        word-break: break-all;
+        font-family: 'Cascadia Code', 'Courier New', Courier, monospace;
+        color: #212529;
+    }
+</style>
+
+@code {
+    private bool _isBusy;
+    private List<TestResult> _testResults = new();
+
+    private async Task TestGetWeather() => await ExecuteTest("GET Weather", () => ApiClient.GetWeatherAsync());
+    private async Task TestGetUser(int id) => await ExecuteTest($"GET User (ID: {id})", () => ApiClient.GetUserAsync(id));
+    private async Task TestCreateUser() => await ExecuteTest("POST Create User", () => ApiClient.CreateUserAsync(new CreateUserRequest("New User", "new@example.com")));
+    private async Task TestUpdateUser() => await ExecuteTest("PUT Update User", () => ApiClient.UpdateUserAsync(1, new UpdateUserRequest("Updated Name")));
+    private async Task TestDeleteUser() => await ExecuteTest("DELETE User", () => ApiClient.DeleteUserAsync(1));
+    private async Task Test404() => await ExecuteTest("404 Not Found Test", () => ApiClient.Test404NotFoundAsync());
+    private async Task Test500() => await ExecuteTest("500 Server Error Test", () => ApiClient.Test500InternalErrorAsync());
+    private async Task Test401() => await ExecuteTest("401 Unauthorized Test", () => ApiClient.Test401UnauthorizedAsync());
+
+    private async Task TestAll()
+    {
+        _isBusy = true;
+        _testResults.Clear();
+        
+        await TestGetWeather();
+        await TestGetUser(1);
+        await TestCreateUser();
+        await TestUpdateUser();
+        await TestDeleteUser();
+        await Test404();
+        await Test500();
+        await Test401();
+        
+        _isBusy = false;
+    }
+
+    private async Task ExecuteTest<T>(string actionName, Func<Task<ApiResponse<T>>> action)
+    {
+        _isBusy = true;
+        try
+        {
+            var response = await action();
+            
+            // For the purpose of "Passed", we consider successful status code (2xx)
+            bool isSuccess = (int)response.StatusCode >= 200 && (int)response.StatusCode <= 299;
+            
+            string content;
+            if (response.Data != null)
+            {
+                content = JsonSerializer.Serialize(response.Data, new JsonSerializerOptions { WriteIndented = true });
+            }
+            else if (response.Error != null)
+            {
+                content = $"Error Message: {response.Error.Message}\nDetails: {JsonSerializer.Serialize(response.Error, new JsonSerializerOptions { WriteIndented = true })}";
+            }
+            else
+            {
+                content = "Response contains no data and no error object.";
+            }
+
+            _testResults.Insert(0, new TestResult
+            {
+                Action = actionName,
+                Success = isSuccess,
+                StatusCode = response.StatusCode,
+                Content = content,
+                Timestamp = DateTime.Now
+            });
+        }
+        catch (Exception ex)
+        {
+            _testResults.Insert(0, new TestResult
+            {
+                Action = actionName,
+                Success = false,
+                Content = $"Exception: {ex.Message}\n\nStackTrace:\n{ex.StackTrace}",
+                Timestamp = DateTime.Now
+            });
+        }
+        finally
+        {
+            _isBusy = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ClearLogs() => _testResults.Clear();
+
+    private class TestResult
+    {
+        public string Action { get; set; } = "";
+        public bool Success { get; set; }
+        public System.Net.HttpStatusCode? StatusCode { get; set; }
+        public string Content { get; set; } = "";
+        public DateTime Timestamp { get; set; }
+    }
+}

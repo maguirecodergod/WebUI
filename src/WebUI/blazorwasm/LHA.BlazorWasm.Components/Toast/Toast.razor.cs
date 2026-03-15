@@ -8,7 +8,7 @@ namespace LHA.BlazorWasm.Components.Toast;
 /// <summary>
 /// Core code-behind binding rendering loops and CSS animation timings natively.
 /// </summary>
-public partial class Toast : IDisposable
+public partial class Toast : LhaComponentBase, IDisposable
 {
     [Parameter, EditorRequired] public ToastMessage Message { get; set; } = default!;
 

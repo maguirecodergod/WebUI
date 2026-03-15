@@ -9,7 +9,7 @@ namespace LHA.BlazorWasm.HttpApi.Client.Core;
 /// </summary>
 public class DefaultApiErrorHandler : IApiErrorHandler
 {
-    public async Task HandleErrorAsync(HttpResponseMessage responseMessage, CancellationToken cancellationToken = default)
+    public virtual async Task HandleErrorAsync(HttpResponseMessage responseMessage, CancellationToken cancellationToken = default)
     {
         var requestPath = responseMessage.RequestMessage?.RequestUri?.ToString();
         string rawResponse = string.Empty;
@@ -52,5 +52,13 @@ public class DefaultApiErrorHandler : IApiErrorHandler
             requestPath,
             apiError,
             rawResponse);
+    }
+
+    public virtual Task HandleExceptionAsync(Exception exception, HttpRequestMessage request, CancellationToken cancellationToken = default)
+    {
+        // Default implementation just rethrows or wraps the exception
+        // Usually, logging happens in handlers, so we don't need to do much here
+        // if we want to preserve the standard flow.
+        return Task.CompletedTask;
     }
 }
