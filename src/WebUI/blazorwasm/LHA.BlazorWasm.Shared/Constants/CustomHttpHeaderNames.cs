@@ -74,4 +74,10 @@ public static class CustomHttpHeaderNames
     public const string Vary = "Vary";
     public const string WWWAuthenticate = "WWW-Authenticate";
     public const string XFrameOptions = "X-Frame-Options";
+
+    // Secure Communication Headers
+    public const string RequestNonce = "X-Request-Nonce";
+    public const string RequestSignature = "X-Request-Signature";
+    public const string RequestKey = "X-Request-Key";
+    public const string RequestEncrypted = "X-Request-Encrypted";
 }

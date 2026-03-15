@@ -6,6 +6,10 @@ using LHA.BlazorWasm.HttpApi.Client.Core;
 using LHA.BlazorWasm.HttpApi.Client.Handlers;
 using LHA.BlazorWasm.HttpApi.Client.Options;
 using LHA.BlazorWasm.HttpApi.Client.Clients;
+using LHA.Security.Encryption;
+using LHA.Security.Keys;
+using LHA.Security.Signing;
+using LHA.Security.Device;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Extensions;
 
@@ -24,6 +28,12 @@ public static class HttpApiClientExtensions
         // 2. Register Shared Services
         services.AddTransient<IApiErrorHandler, DefaultApiErrorHandler>();
         services.AddTransient<IClientContextProvider, DefaultClientContextProvider>();
+        
+        // Security primitives
+        services.AddSingleton<IAesEncryptionService, AesEncryptionService>();
+        services.AddSingleton<IKeyRotationService, KeyRotationService>();
+        services.AddSingleton<IRequestSigner, RequestSigner>();
+        services.AddSingleton<IDeviceFingerprintService, DeviceFingerprintService>();
 
         // 3. Register Pipeline Handlers
         services.AddTransient<LoggingMessageHandler>();
@@ -35,6 +45,7 @@ public static class HttpApiClientExtensions
             return new RetryMessageHandler(logger, options.MaxRetries);
         });
 
+        services.AddTransient<SecureHttpHandler>();
         services.AddTransient<ContextMessageHandler>();
         services.AddTransient<AuthMessageHandler>();
 
