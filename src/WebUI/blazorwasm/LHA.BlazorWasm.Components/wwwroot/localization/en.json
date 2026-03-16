@@ -137,7 +137,8 @@
         "Insert Code Block": "Insert Code Block",
         "Language": "Language",
         "Paste your code here...": "Paste your code here...",
-        "Insert Code": "Insert Code"
+        "Insert Code": "Insert Code",
+        "Emoji": "Emoji"
     },
     "Emoji": {
         "SearchPlaceholder": "Search emoji..."

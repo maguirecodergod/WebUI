@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using LHA.BlazorWasm.Components.RichTextEditor.Models;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
@@ -8,6 +9,7 @@ public partial class ToolbarDropdown : LhaComponentBase
     [Parameter] public string? Tooltip { get; set; }
     [Parameter] public bool IsActive { get; set; }
     [Parameter] public bool Disabled { get; set; }
+    [Parameter] public DropdownAlignment Alignment { get; set; } = DropdownAlignment.Left;
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private bool IsOpen { get; set; }

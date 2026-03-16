@@ -4,7 +4,8 @@
         type="@Type.ToString().ToLowerInvariant()"
         disabled="@IsDisabled" 
         @onclick="OnClick" 
-        @onclick:stopPropagation>
+        @onclick:stopPropagation
+        @attributes="AdditionalAttributes">
     @if (IsLoading)
     {
         <span class="btn-spinner" aria-hidden="true"></span>

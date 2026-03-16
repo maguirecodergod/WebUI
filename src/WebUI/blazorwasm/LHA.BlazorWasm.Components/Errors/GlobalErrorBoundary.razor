@@ -2,4 +2,38 @@
 @namespace LHA.BlazorWasm.Components.Errors
 @inherits LhaErrorBoundaryBase
 
-@ChildContent
+@if (ActiveException == null)
+{
+    @ChildContent
+}
+else
+{
+    <div class="error-boundary-container">
+        <div class="error-card">
+            <div class="error-icon">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <h2 class="error-title">@Localizer.L("Errors.Global.OopsTitle")</h2>
+            <p class="error-message">@Localizer.L("Errors.Global.OopsMessage")</p>
+            
+            <div class="error-actions">
+                <Button Style="ButtonStyle.Primary" OnClick="Recover" Class="btn-recover">
+                    <i class="bi bi-arrow-clockwise"></i> @Localizer.L("Errors.Global.TryAgain")
+                </Button>
+                <Button Style="ButtonStyle.Secondary" OnClick="GoHome" Class="btn-home">
+                    <i class="bi bi-house"></i> @Localizer.L("Errors.Global.BackHome")
+                </Button>
+            </div>
+
+            @if (!IsProduction)
+            {
+                <div class="error-details">
+                    <pre>@ActiveException.Message</pre>
+                    <div class="error-stack">
+                        <code>@ActiveException.StackTrace?.Split('\n').FirstOrDefault()?.Trim()</code>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

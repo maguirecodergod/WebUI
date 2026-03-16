@@ -113,7 +113,8 @@
                              @ref="_specialCharsDropdown">
                 <SpecialCharsPopup OnCharSelected="OnSpecialCharsSubmit" />
             </ToolbarDropdown>
-            <ToolbarDropdown SvgIcon="@Icons.Emoji" Tooltip='@Localizer.L("Editor.Emoji")' @ref="_emojiDropdown">
+            <ToolbarDropdown SvgIcon="@Icons.Emoji" Tooltip='@Localizer.L("Editor.Emoji")' @ref="_emojiDropdown"
+                             Alignment="DropdownAlignment.Right">
                 <LHA.BlazorWasm.Components.Emoji.EmojiPicker IsOpen="true" OnEmojiSelected="OnEmojiSubmit"
                                                              Placement="relative" />
             </ToolbarDropdown>
@@ -153,7 +154,8 @@
                     </Button>
                 </div>
             </ToolbarDropdown>
-            <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip='@Localizer.L("Editor.Insert Video")' @ref="_videoDropdown">
+            <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip='@Localizer.L("Editor.Insert Video")' @ref="_videoDropdown"
+                             Alignment="DropdownAlignment.Right">
                 <div style="padding: 16px; width: 300px;">
                     <div class="rte-form-group" style="margin-bottom: 12px;">
                         <input type="text" class="rte-input" placeholder='@Localizer.L("Editor.Url")' @bind="_videoUrl"
@@ -162,7 +164,7 @@
                     </div>
                     <div style="text-align: right;">
                         <Button Style="ButtonStyle.Primary" OnClick="OnInsertVideoClick"
-                                Disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</Button>
+                                 Disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</Button>
                     </div>
                 </div>
             </ToolbarDropdown>

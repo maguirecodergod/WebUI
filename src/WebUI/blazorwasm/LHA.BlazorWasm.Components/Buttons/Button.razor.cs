@@ -80,6 +80,12 @@ public partial class Button : LhaComponentBase
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
+    /// Gets or sets a collection of additional attributes that will be applied to the button element.
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    /// <summary>
     /// Determines if the button should be disabled in the DOM.
     /// </summary>
     private bool IsDisabled => Disabled || IsLoading;

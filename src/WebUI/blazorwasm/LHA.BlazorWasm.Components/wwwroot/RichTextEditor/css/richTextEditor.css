@@ -266,6 +266,16 @@ body.rte-fullscreen-active {
     animation: rte-dropdown-in 0.15s ease;
 }
 
+.rte-dropdown-popup.right {
+    left: auto;
+    right: 0;
+}
+
+.rte-dropdown-popup.center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 @keyframes rte-dropdown-in {
     from {
         opacity: 0;

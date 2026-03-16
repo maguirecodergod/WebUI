@@ -36,7 +36,7 @@
 
     @if (IsOpen)
     {
-        <div class="rte-dropdown-popup open" @onclick:stopPropagation>
+        <div class="rte-dropdown-popup @(Alignment.ToString().ToLowerInvariant()) open" @onclick:stopPropagation>
             @ChildContent
         </div>
     }

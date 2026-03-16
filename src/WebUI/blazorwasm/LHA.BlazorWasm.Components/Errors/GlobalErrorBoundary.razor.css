@@ -3,143 +3,121 @@
    Premium error fallback UI with dark mode support
    ═══════════════════════════════════════════ */
 
-.global-error-container {
+.error-boundary-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60vh;
-    padding: 2rem 1rem;
-    animation: errorFadeIn 0.5s ease-out;
+    min-height: 80vh;
+    padding: 2rem;
+    background: radial-gradient(circle at top right, rgba(67, 97, 238, 0.05), transparent),
+                radial-gradient(circle at bottom left, rgba(239, 35, 60, 0.05), transparent);
+    animation: fadeIn 0.8s ease-out;
 }
 
-.global-error-card {
-    max-width: 480px;
+.error-card {
+    max-width: 500px;
     width: 100%;
-    background: var(--card-bg, #ffffff);
-    border: 1px solid var(--border-color, #e5e7eb);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
     text-align: center;
-    box-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.04),
-        0 6px 16px rgba(0, 0, 0, 0.06),
-        0 12px 32px rgba(0, 0, 0, 0.04);
-}
-
-/* Icon */
-.error-icon-wrapper {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
+    flex-direction: column;
+    align-items: center;
 }
 
-.error-icon-circle {
+.error-icon {
+    width: 80px;
+    height: 80px;
+    background: #fff0f0;
+    color: #ef233c;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-    color: #d97706;
-    animation: iconPulse 2.5s ease-in-out infinite;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 20px rgba(239, 35, 60, 0.1);
+    animation: iconShake 4s ease-in-out infinite;
 }
 
-/* Typography */
 .error-title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 800;
-    color: var(--text-color, #111827);
-    margin: 0 0 0.5rem 0;
-    letter-spacing: -0.025em;
-    line-height: 1.3;
+    color: #2b2d42;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
 }
 
-.error-description {
-    font-size: 0.9375rem;
-    color: var(--text-muted, #6b7280);
-    margin: 0 0 1.5rem 0;
+.error-message {
+    font-size: 1.05rem;
+    color: #8d99ae;
     line-height: 1.6;
+    margin-bottom: 2.5rem;
 }
 
-/* Error ID Badge */
-.error-id-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--hover-bg, #f3f4f6);
-    border: 1px solid var(--border-color, #e5e7eb);
-    border-radius: 8px;
-    padding: 0.4rem 0.75rem;
-    margin-bottom: 1.75rem;
-    font-size: 0.8125rem;
-}
-
-.error-id-label {
-    color: var(--text-muted, #9ca3af);
-    font-weight: 500;
-}
-
-.error-id-value {
-    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
-    font-weight: 600;
-    color: var(--text-color, #374151);
-    background: transparent;
-    letter-spacing: 0.05em;
-}
-
-/* Action Buttons */
 .error-actions {
     display: flex;
+    gap: 1rem;
+    width: 100%;
     justify-content: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
-.error-secondary-actions {
-    display: flex;
-    justify-content: center;
+::deep .btn-recover {
+    flex: 1;
 }
 
-/* Animations */
-@keyframes errorFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+::deep .btn-home {
+    flex: 1;
 }
 
-@keyframes iconPulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.15);
-    }
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 0 12px rgba(217, 119, 6, 0);
-    }
+.error-details {
+    width: 100%;
+    text-align: left;
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 1.25rem;
+    color: #dcdcdc;
+    font-family: 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
-    .global-error-card {
-        padding: 2rem 1.25rem;
-        border-radius: 12px;
-    }
+.error-details pre {
+    margin: 0 0 0.5rem 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    color: #ce9178;
+}
 
-    .error-title {
-        font-size: 1.25rem;
-    }
+.error-stack {
+    color: #9cdcfe;
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes iconShake {
+    0%, 100% { transform: rotate(0) scale(1); }
+    5%, 15% { transform: rotate(-10deg) scale(1.05); }
+    10% { transform: rotate(10deg) scale(1.05); }
+    20% { transform: rotate(0) scale(1); }
+}
+
+@media (max-width: 600px) {
+    .error-card {
+        padding: 2rem 1.5rem;
+    }
+    
     .error-actions {
         flex-direction: column;
-    }
-
-    .error-actions ::deep .base-btn {
-        width: 100%;
     }
 }

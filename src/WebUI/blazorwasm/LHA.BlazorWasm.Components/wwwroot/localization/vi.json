@@ -137,7 +137,8 @@
         "Insert Code Block": "Chèn khối mã",
         "Language": "Ngôn ngữ",
         "Paste your code here...": "Dán mã của bạn vào đây...",
-        "Insert Code": "Chèn mã"
+        "Insert Code": "Chèn mã",
+        "Emoji": "Emoji"
     },
     "Emoji": {
         "SearchPlaceholder": "Tìm kiếm emoji..."

@@ -1,91 +1,595 @@
 @page "/editor-example"
 @using LHA.BlazorWasm.Components.RichTextEditor.Models
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Rich Text Editor Example</h1>
-        <div class="d-flex gap-2">
-            <button class="btn btn-outline-primary" @onclick="SetDemoContent">Load Demo Content</button>
-            <button class="btn btn-outline-secondary" @onclick="ClearContent">Clear</button>
-        </div>
+<PageTitle>Rich Text Editor | LHA Enterprise</PageTitle>
+
+<HeadContent>
+    <meta name="description" content="Experience the high-performance, premium Rich Text Editor for Blazor WebAssembly applications." />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</HeadContent>
+
+<div class="premium-dashboard @(_isFullscreen ? "editor-fullscreen-mode" : "")">
+    <div class="dashboard-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-12 mb-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-0">
-                    <RichTextEditor @bind-Value="_htmlContent" 
-                                   @ref="_editor"
-                                   Options="_options" />
+    <div class="dashboard-content">
+        <!-- Header Section -->
+        <header class="dashboard-header animate-fade-in">
+            <div class="header-main">
+                <div class="brand-badge">PRO</div>
+                <div class="title-group">
+                    <h1 class="premium-title">Rich Text Editor</h1>
+                    <p class="premium-subtitle">Experience the next generation of content creation</p>
                 </div>
             </div>
-        </div>
-    </div>
+            
+            <div class="header-actions">
+                <div class="status-indicator">
+                    <span class="status-dot pulse"></span>
+                    <span class="status-text">Cloud Sync Active</span>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-action btn-secondary" @onclick="SetDemoContent" title="Load Demo Data">
+                        <i class="bi bi-stars"></i>
+                        <span>Load Demo</span>
+                    </button>
+                    <button class="btn-action btn-danger" @onclick="ClearContent" title="Reset Editor">
+                        <i class="bi bi-eraser-fill"></i>
+                        <span>Clear</span>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white font-weight-bold">
-                    HTML Output
-                </div>
-                <div class="card-body">
-                    <pre class="bg-light p-3 rounded" style="max-height: 300px; overflow-y: auto;"><code>@_htmlContent</code></pre>
-                </div>
-            </div>
+        <!-- Mobile Tab Switcher (Visible only on mobile) -->
+        <div class="mobile-nav-pills d-md-none">
+            <button class="@(GetActiveTabClass("editor"))" @onclick='() => SetActiveTab("editor")'>Editor</button>
+            <button class="@(GetActiveTabClass("preview"))" @onclick='() => SetActiveTab("preview")'>Preview</button>
+            <button class="@(GetActiveTabClass("source"))" @onclick='() => SetActiveTab("source")'>Source</button>
         </div>
-        <div class="col-lg-6">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white font-weight-bold">
-                    Rendered Preview
+
+        <main class="main-grid">
+            <!-- Main Editor Area -->
+            <section class="editor-area @(GetTabVisibilityClass("editor"))">
+                <div class="glass-card editor-card shadow-premium @(_isFullscreen ? "no-filter" : "")">
+                    <div class="card-top-bar">
+                        <div class="bar-left">
+                            <i class="bi bi-pencil-square"></i>
+                            <span>EDITOR WORKSPACE</span>
+                        </div>
+                        <div class="bar-right">
+                            <span class="badge-count">@_htmlContent.Length chars</span>
+                        </div>
+                    </div>
+                    <div class="editor-container-inner">
+                        <RichTextEditor @bind-Value="_htmlContent" 
+                                       @ref="_editor"
+                                       OnFullscreenChanged="OnFullscreenToggle"
+                                       Options="_options" />
+                    </div>
                 </div>
-                <div class="card-body overflow-auto" style="max-height: 300px;">
-                    @((MarkupString)_htmlContent)
+            </section>
+
+            <!-- Side/Bottom Output Area -->
+            <aside class="output-area">
+                <!-- Preview Section -->
+                <div class="glass-card output-card preview-card shadow-premium @(GetTabVisibilityClass("preview"))">
+                    <div class="card-top-bar color-blue">
+                        <div class="bar-left">
+                            <i class="bi bi-eye"></i>
+                            <span>LIVE PREVIEW</span>
+                        </div>
+                    </div>
+                    <div class="card-content-scroll">
+                        <div class="preview-render">
+                            @((MarkupString)_htmlContent)
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+
+                <!-- Source Section -->
+                <div class="glass-card output-card source-card shadow-premium @(GetTabVisibilityClass("source"))">
+                    <div class="card-top-bar color-purple">
+                        <div class="bar-left">
+                            <i class="bi bi-code-slash"></i>
+                            <span>HTML SOURCE</span>
+                        </div>
+                        <div class="bar-right">
+                            <button class="btn-copy" @onclick="CopySource">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content-scroll source-bg">
+                        <pre class="source-view"><code>@_htmlContent</code></pre>
+                    </div>
+                </div>
+            </aside>
+        </main>
     </div>
 </div>
 
 <style>
-    .card { border-radius: 12px; }
-    .card-header { border-top-left-radius: 12px !important; border-top-right-radius: 12px !important; }
-    pre { font-size: 13px; color: #d63384; }
+    :root {
+        --p-primary: #6366f1;
+        --p-primary-light: #818cf8;
+        --p-secondary: #0ea5e9;
+        --p-bg: #f8fafc;
+        --p-surface: rgba(255, 255, 255, 0.7);
+        --p-border: rgba(226, 232, 240, 0.8);
+        --p-text: #1e293b;
+        --p-text-muted: #64748b;
+        --p-danger: #f43f5e;
+        --p-success: #10b981;
+        --p-accent: #f59e0b;
+        --p-radius: 20px;
+        --p-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+        --p-font: 'Outfit', sans-serif;
+    }
+
+    .premium-dashboard {
+        min-height: 100vh;
+        background: var(--p-bg);
+        font-family: var(--p-font);
+        color: var(--p-text);
+        position: relative;
+        overflow-x: hidden;
+        padding: 1.5rem;
+    }
+
+    /* Background Blobs */
+    .dashboard-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .blob {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        filter: blur(80px);
+        opacity: 0.15;
+        border-radius: 50%;
+        animation: move 20s infinite alternate;
+    }
+
+    .blob-1 { background: var(--p-primary); top: -100px; right: -100px; }
+    .blob-2 { background: var(--p-secondary); bottom: -100px; left: -100px; animation-duration: 25s; }
+
+    @@keyframes move {
+        from { transform: translate(0, 0) scale(1); }
+        to { transform: translate(50px, 100px) scale(1.1); }
+    }
+
+    .dashboard-content {
+        position: relative;
+        z-index: 1;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    /* Header */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .header-main {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
+
+    .brand-badge {
+        background: var(--p-primary);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        margin-top: 8px;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .premium-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin: 0;
+        background: linear-gradient(135deg, #1e293b 0%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.04em;
+    }
+
+    .premium-subtitle {
+        color: var(--p-text-muted);
+        font-size: 1.1rem;
+        margin: 4px 0 0 0;
+    }
+
+    /* Actions */
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        padding: 6px 12px;
+        border-radius: 100px;
+        border: 1px solid var(--p-border);
+        font-size: 0.85rem;
+        color: var(--p-text-muted);
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--p-success);
+        border-radius: 50%;
+    }
+
+    .pulse {
+        animation: pulse-animation 2s infinite;
+    }
+
+    @@keyframes pulse-animation {
+        0% { box-shadow: 0 0 0 0px rgba(16, 185, 129, 0.4); }
+        100% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .btn-action {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--p-text);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        border: 1px solid var(--p-border);
+    }
+
+    .btn-secondary:hover {
+        background: var(--p-bg);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .btn-danger {
+        background: #fee2e2;
+        color: var(--p-danger);
+    }
+
+    .btn-danger:hover {
+        background: var(--p-danger);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+    }
+
+    /* Main Grid */
+    .main-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 450px;
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    /* Cards */
+    .glass-card {
+        background: var(--p-surface);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--p-border);
+        border-radius: var(--p-radius);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .glass-card.no-filter {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        overflow: visible !important;
+        z-index: 99999;
+    }
+
+    .editor-fullscreen-mode {
+        overflow: visible !important;
+    }
+
+    .shadow-premium {
+        box-shadow: var(--p-shadow);
+    }
+
+    .card-top-bar {
+        padding: 14px 20px;
+        background: rgba(255, 255, 255, 0.5);
+        border-bottom: 1px solid var(--p-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .bar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+        color: var(--p-text-muted);
+    }
+
+    .bar-left i {
+        font-size: 1.1rem;
+        color: var(--p-primary);
+    }
+
+    .color-blue .bar-left i { color: var(--p-secondary); }
+    .color-purple .bar-left i { color: #a855f7; }
+
+    .badge-count {
+        background: #f1f5f9;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .editor-card:focus-within {
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), var(--p-shadow);
+    }
+
+    .editor-container-inner {
+        padding: 5px;
+        min-height: 650px;
+    }
+
+    /* Output Area */
+    .output-area {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .output-card {
+        height: 380px;
+    }
+
+    .card-content-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: white;
+    }
+
+    .preview-render {
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+
+    .source-bg {
+        background: #0f172a !important;
+        padding: 0;
+    }
+
+    .source-view {
+        margin: 0;
+        padding: 20px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85rem;
+        color: #e2e8f0;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    .btn-copy {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #94a3b8;
+        padding: 4px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn-copy:hover {
+        background: rgba(255,255,255,0.2);
+        color: white;
+    }
+
+    /* Mobile Nav Pills */
+    .mobile-nav-pills {
+        display: flex;
+        background: #e2e8f0;
+        padding: 4px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        gap: 4px;
+    }
+
+    .mobile-nav-pills button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--p-text-muted);
+        background: transparent;
+        transition: all 0.2s;
+    }
+
+    .mobile-nav-pills button.active {
+        background: white;
+        color: var(--p-primary);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* RESPONSIVE MASTER RULES */
+    
+    /* XL Screens */
+    @@media (min-width: 1400px) {
+        .main-grid {
+            grid-template-columns: minmax(0, 1fr) 500px;
+        }
+    }
+
+    /* Laptop / Small Desktop */
+    @@media (max-width: 1200px) {
+        .main-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+        
+        .output-area {
+            flex-direction: row;
+        }
+        
+        .output-card {
+            flex: 1;
+            height: 450px;
+        }
+    }
+
+    /* Tablet */
+    @@media (max-width: 992px) {
+        .premium-title {
+            font-size: 2rem;
+        }
+        
+        .output-area {
+            flex-direction: column;
+        }
+    }
+
+    /* Mobile Logic */
+    @@media (max-width: 768px) {
+        .premium-dashboard {
+            padding: 1rem;
+        }
+        
+        .dashboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+        
+        .header-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .btn-action span {
+            display: none;
+        }
+        
+        .btn-action {
+            padding: 10px 15px;
+        }
+        
+        .editor-container-inner {
+            min-height: 500px;
+        }
+        
+        /* Hide non-active tabs on mobile */
+        .mobile-hidden {
+            display: none !important;
+        }
+    }
+
+    /* Animations */
+    .animate-fade-in {
+        animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 </style>
 
 @code {
     private string _htmlContent = "<h3>Welcome to the LHA Rich Text Editor!</h3><p>This is a <b>full-featured</b> replacement for your standard textareas.</p><ul><li>Enterprise-grade architecture</li><li>30+ formatting tools</li><li>JS-optimized engine</li></ul>";
     
     private RichTextEditor _editor = default!;
+    private string _activeTab = "editor";
+    private bool _isFullscreen = false;
     
     private EditorOptions _options = new()
     {
-        Height = "450px",
+        Height = "600px",
         Placeholder = "Nhập nội dung tại đây...",
         ShowStatusBar = true,
-        Width="500px"
+        Width = "100%"
     };
+
+    private void SetActiveTab(string tab) => _activeTab = tab;
+
+    private string GetActiveTabClass(string tab) => _activeTab == tab ? "active" : "";
+    
+    private string GetTabVisibilityClass(string tab) 
+    {
+        // On mobile (< 768px), only show the active tab
+        return _activeTab == tab ? "" : "mobile-hidden";
+    }
+
+    private void OnFullscreenToggle(bool isFullscreen)
+    {
+        _isFullscreen = isFullscreen;
+        StateHasChanged();
+    }
 
     private void SetDemoContent()
     {
         _htmlContent = @"
-            <h2 style='color: #1a73e8'>Premium Rich Text Experience</h2>
+            <h2 style='color: #4361ee'>Premium Rich Text Experience</h2>
             <p>Xây dựng với <b>hơn 15 năm kinh nghiệm</b> trong lĩnh vực Blazor WebAssembly.</p>
             <table class='rte-table' style='border-collapse:collapse;width:100%'>
                 <tr>
-                    <th style='border:1px solid #ccc;padding:8px;background:#f8f9fa'>Feature</th>
-                    <th style='border:1px solid #ccc;padding:8px;background:#f8f9fa'>Support</th>
+                    <th style='border:1px solid #ccc;padding:12px;background:#f8f9fa'>Feature</th>
+                    <th style='border:1px solid #ccc;padding:12px;background:#f8f9fa'>Support</th>
                 </tr>
                 <tr>
-                    <td style='border:1px solid #ccc;padding:8px'>Blazor WASM 10.0</td>
-                    <td style='border:1px solid #ccc;padding:8px'>✅ Fully Supported</td>
+                    <td style='border:1px solid #ccc;padding:12px'>Blazor WASM 10.0</td>
+                    <td style='border:1px solid #ccc;padding:12px'>✅ Fully Supported</td>
                 </tr>
                 <tr>
-                    <td style='border:1px solid #ccc;padding:8px'>Custom Dialogs</td>
-                    <td style='border:1px solid #ccc;padding:8px'>✅ Included</td>
+                    <td style='border:1px solid #ccc;padding:12px'>Custom Dialogs</td>
+                    <td style='border:1px solid #ccc;padding:12px'>✅ Included</td>
                 </tr>
             </table>
             <p><br></p>
-            <blockquote style='border-left: 4px solid #1a73e8; padding-left: 15px; background: #f0f7ff; padding: 10px;'>
+            <blockquote style='border-left: 5px solid #4361ee; padding-left: 20px; background: #f0f7ff; padding: 15px; border-radius: 0 8px 8px 0;'>
                 ""This editor is designed to be the most performant and beautiful rich text component for the LHA ecosystem.""
             </blockquote>
         ";
@@ -94,5 +598,10 @@
     private void ClearContent()
     {
         _htmlContent = "";
+    }
+
+    private void CopySource()
+    {
+        // Just a placeholder for demo, in real app would use JS Interop
     }
 }

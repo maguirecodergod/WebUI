@@ -4,7 +4,7 @@
     @foreach (var category in Enum.GetValues<EmojiCategory>().Where(c => c != EmojiCategory.Recent))
     {
         <Button Type="ButtonType.Button" Class=@($"category-btn {(ActiveCategory == category ? "active" : string.Empty)}")
-            OnClick="() => OnCategorySelected.InvokeAsync(category)" Title="@category.ToString()">
+            OnClick="() => OnCategorySelected.InvokeAsync(category)" title="@category.ToString()">
             <i class="@GetCategoryIcon(category)"></i>
         </Button>
     }

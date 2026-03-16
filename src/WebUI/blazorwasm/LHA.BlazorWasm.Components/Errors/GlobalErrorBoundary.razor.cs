@@ -13,9 +13,15 @@ public partial class GlobalErrorBoundary : LhaErrorBoundaryBase, IDisposable
 {
     [Inject] private IErrorReporter ErrorReporter { get; set; } = default!;
 
+    protected Exception? ActiveException { get; set; }
+    protected bool IsProduction { get; set; } = false; // Set this based on your environment logic
+
     protected override void OnInitialized()
     {
         Localizer.OnLanguageChanged += HandleLanguageChanged;
+        
+        // In a real app, you'd inject IWebAssemblyHostEnvironment
+        // For now, let's assume Development if we're here
     }
 
     /// <summary>
@@ -24,6 +30,7 @@ public partial class GlobalErrorBoundary : LhaErrorBoundaryBase, IDisposable
     /// </summary>
     protected override Task OnErrorAsync(Exception exception)
     {
+        ActiveException = exception;
         var report = ErrorReporter.ReportError(exception, Navigation.Uri);
 
         try
@@ -39,11 +46,24 @@ public partial class GlobalErrorBoundary : LhaErrorBoundaryBase, IDisposable
             // Swallow any toast failures
         }
 
-        // Always auto-recover without replacing the screen! 
-        // This discards the corrupted component state and re-renders the app boundary cleanly.
-        Recover();
+        // We DON'T auto-recover here anymore so the ErrorContent can be shown if needed.
+        // The user can trigger Recover() manually from the UI.
+        StateHasChanged();
 
         return Task.CompletedTask;
+    }
+
+    protected new void Recover()
+    {
+        ActiveException = null;
+        base.Recover();
+    }
+
+    protected void GoHome()
+    {
+        ActiveException = null;
+        base.Recover();
+        Navigation.NavigateTo("/");
     }
 
     /// <summary>

@@ -36,6 +36,11 @@ public partial class RichTextEditor : LhaComponentBase, IAsyncDisposable
     [Parameter] public EventCallback<string> OnContentChanged { get; set; }
 
     /// <summary>
+    /// Fires when the fullscreen state changes.
+    /// </summary>
+    [Parameter] public EventCallback<bool> OnFullscreenChanged { get; set; }
+
+    /// <summary>
     /// Unique editor instance identifier.
     /// </summary>
     private string EditorId { get; } = $"rte-{Guid.NewGuid():N}";
@@ -129,6 +134,12 @@ public partial class RichTextEditor : LhaComponentBase, IAsyncDisposable
         if (_interop == null || !_initialized) return;
         var isFullscreen = await _interop.ToggleFullscreenAsync(EditorId);
         State.IsFullscreen = isFullscreen;
+
+        if (OnFullscreenChanged.HasDelegate)
+        {
+            await OnFullscreenChanged.InvokeAsync(isFullscreen);
+        }
+
         StateHasChanged();
     }
 
