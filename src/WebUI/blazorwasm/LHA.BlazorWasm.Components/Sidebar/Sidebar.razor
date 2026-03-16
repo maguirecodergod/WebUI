@@ -1,0 +1,66 @@
+@namespace LHA.BlazorWasm.Components.Sidebar
+@using LHA.BlazorWasm.Components.Sidebar.Models
+@implements IAsyncDisposable
+
+<div @ref="_sidebarRef"
+     class="lha-sidebar @StateClass @HoverExpandClass @(_isDragging ? "lha-sidebar--dragging" : "")"
+     style="@SidebarStyle"
+     @onmouseenter="HandleMouseEnter"
+     @onmouseleave="HandleMouseLeave">
+
+    @* ── Mobile Overlay Backdrop ── *@
+    @if (State == SidebarState.Hidden && _mobileOpen)
+    {
+        <div class="lha-sidebar__overlay lha-sidebar__overlay--visible"
+             @onclick="CloseMobileDrawer"></div>
+    }
+
+    <nav class="lha-sidebar__nav @(_mobileOpen ? "lha-sidebar__nav--open" : "")"
+         role="navigation"
+         aria-label="@Localizer.L("Sidebar.AriaLabel")">
+
+        @* ── Header / Brand Area ── *@
+        @if (HeaderTemplate != null)
+        {
+            <div class="lha-sidebar__header">
+                @HeaderTemplate
+            </div>
+        }
+
+        @* ── Scrollable Navigation Items ── *@
+        <div class="lha-sidebar__content">
+            @if (Items != null)
+            {
+                @foreach (var item in Items.Where(i => i.IsVisible).OrderBy(i => i.Order))
+                {
+                    <SidebarItem Item="@item"
+                                 Depth="0"
+                                 CurrentState="@EffectiveState"
+                                 ExpandedIds="@_expandedIds"
+                                 ActiveItemId="@_activeItemId"
+                                 OnToggleExpand="@HandleToggleExpand"
+                                 OnItemClicked="@HandleItemClick" />
+                }
+            }
+        </div>
+
+        @* ── Footer Area ── *@
+        @if (FooterTemplate != null)
+        {
+            <div class="lha-sidebar__footer">
+                @FooterTemplate
+            </div>
+        }
+    </nav>
+
+    @* ── Resize Handle (Desktop only, Expanded state) ── *@
+    @if (Resizable && EffectiveState == SidebarState.Expanded)
+    {
+        <div class="lha-sidebar__resize-handle"
+             @onmousedown="StartResize"
+             @onmousedown:preventDefault
+             title="@Localizer.L("Sidebar.ResizeTooltip")">
+            <div class="lha-sidebar__resize-indicator"></div>
+        </div>
+    }
+</div>

@@ -1,0 +1,81 @@
+@namespace LHA.BlazorWasm.Components.Sidebar
+@using LHA.BlazorWasm.Components.Sidebar.Models
+
+@if (Item.IsDivider)
+{
+    <div class="lha-sidebar-item__divider" role="separator"></div>
+}
+else
+{
+    <div class="lha-sidebar-item @DepthClass @ActiveClass @DisabledClass @(Item.CssClass ?? "")"
+         style="--item-depth: @Depth">
+
+        @* ── Clickable Row ── *@
+        <div class="lha-sidebar-item__row"
+             @onclick="HandleClick"
+             title="@GetTooltip()"
+             role="@(Item.HasChildren ? "treeitem" : "menuitem")"
+             aria-expanded="@(Item.HasChildren ? IsExpanded.ToString().ToLower() : null)"
+             tabindex="@(Item.IsDisabled ? -1 : 0)">
+
+            @* Indent Spacer *@
+            @if (Depth > 0 && CurrentState != SidebarState.Mini)
+            {
+                <span class="lha-sidebar-item__indent"
+                      style="width: calc(var(--sidebar-indent, 16px) * @Depth)"></span>
+            }
+
+            @* Icon *@
+            @if (!string.IsNullOrEmpty(Item.Icon))
+            {
+                <span class="lha-sidebar-item__icon" aria-hidden="true">
+                    @((MarkupString)Item.Icon)
+                </span>
+            }
+
+            @* Label (hidden in Mini mode) *@
+            <span class="lha-sidebar-item__label @(CurrentState == SidebarState.Mini ? "lha-sidebar-item__label--hidden" : "")">
+                @Localizer.L(Item.TitleKey)
+            </span>
+
+            @* Badge *@
+            @if (!string.IsNullOrEmpty(Item.Badge) && CurrentState != SidebarState.Mini)
+            {
+                <span class="lha-sidebar-item__badge @(Item.BadgeCssClass ?? "")">
+                    @Item.Badge
+                </span>
+            }
+
+            @* Expand/Collapse Chevron *@
+            @if (Item.HasChildren && CurrentState != SidebarState.Mini)
+            {
+                <span class="lha-sidebar-item__chevron @(IsExpanded ? "lha-sidebar-item__chevron--open" : "")"
+                      aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </span>
+            }
+        </div>
+
+        @* ── Children (Collapsible) ── *@
+        @if (Item.HasChildren)
+        {
+            <div class="lha-sidebar-item__children @(IsExpanded && CurrentState != SidebarState.Mini ? "lha-sidebar-item__children--open" : "")">
+                <div class="lha-sidebar-item__children-inner">
+                    @foreach (var child in Item.Children.Where(c => c.IsVisible).OrderBy(c => c.Order))
+                    {
+                        <SidebarItem Item="@child"
+                                     Depth="@(Depth + 1)"
+                                     CurrentState="@CurrentState"
+                                     ExpandedIds="@ExpandedIds"
+                                     ActiveItemId="@ActiveItemId"
+                                     OnToggleExpand="@OnToggleExpand"
+                                     OnItemClicked="@OnItemClicked" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
