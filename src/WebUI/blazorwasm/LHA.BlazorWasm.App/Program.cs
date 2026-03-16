@@ -29,6 +29,7 @@ builder.Services.AddAppLocalization(options =>
 {
     options.DefaultCulture = CLanguageCode.EN;
     options.SupportedCultures = new List<CLanguageCode> { CLanguageCode.EN, CLanguageCode.VI, CLanguageCode.FR, CLanguageCode.JA, CLanguageCode.ES };
+    options.ResourcePaths.Add("_content/LHA.BlazorWasm.Shared/localization/{0}.json");
 });
 
 builder.Services.AddThemeService();

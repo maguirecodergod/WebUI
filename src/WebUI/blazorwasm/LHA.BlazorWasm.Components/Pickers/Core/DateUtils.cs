@@ -12,7 +12,6 @@ public static class DateUtils
     public static List<DateTime> GenerateCalendarGrid(DateTime monthDate)
     {
         var firstDayOfMonth = new DateTime(monthDate.Year, monthDate.Month, 1);
-        var daysInMonth = DateTime.DaysInMonth(monthDate.Year, monthDate.Month);
 
         // Find offset indicating Monday vs Sunday start
         var firstDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
