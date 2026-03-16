@@ -3,7 +3,7 @@
 @implements IAsyncDisposable
 
 <div @ref="_sidebarRef"
-     class="lha-sidebar @StateClass @HoverExpandClass @(_isDragging ? "lha-sidebar--dragging" : "")"
+     class="lha-sidebar @StateClass @HoverExpandClass @ThemeService.ThemeClass @(_isDragging ? "lha-sidebar--dragging" : "")"
      style="@SidebarStyle"
      @onmouseenter="HandleMouseEnter"
      @onmouseleave="HandleMouseLeave">
@@ -62,5 +62,25 @@
              title="@Localizer.L("Sidebar.ResizeTooltip")">
             <div class="lha-sidebar__resize-indicator"></div>
         </div>
+    }
+
+    @* ── Internal Toggle Button (Desktop only) ── *@
+    @if (ShowToggle && State != SidebarState.Hidden)
+    {
+        <button type="button" class="lha-sidebar__internal-toggle"
+                @onclick="HandleInternalToggle"
+                aria-label="Toggle Sidebar"
+                title="Toggle Sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                @if (State == SidebarState.Expanded)
+                {
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                }
+                else
+                {
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                }
+            </svg>
+        </button>
     }
 </div>

@@ -98,7 +98,7 @@ main {
 /* ── Mobile Toggle Button ── */
 
 .sidebar-toggle-btn {
-    display: none;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 36px;
@@ -114,13 +114,6 @@ main {
 
 .sidebar-toggle-btn:hover {
     background-color: var(--sidebar-bg-hover, rgba(0, 0, 0, 0.04));
-}
-
-/* Show toggle button on tablet/mobile */
-@media (max-width: 1024px) {
-    .sidebar-toggle-btn {
-        display: inline-flex;
-    }
 }
 
 /* ── Responsive Content Padding ── */

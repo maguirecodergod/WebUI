@@ -16,6 +16,7 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
 
     [Inject] private ILocalStorageService LocalStorage { get; set; } = default!;
     [Inject] private IThemeService ThemeService { get; set; } = default!;
+    [Inject] private ThemeState ThemeState { get; set; } = default!;
 
     #endregion
 
@@ -71,6 +72,12 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     /// Optional header template rendered at the top of the sidebar (e.g., branding/logo).
     /// </summary>
     [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+
+    /// <summary>
+    /// Whether to show a built-in toggle button on the side border to switch between Expanded and Mini.
+    /// Default is true.
+    /// </summary>
+    [Parameter] public bool ShowToggle { get; set; } = true;
 
     /// <summary>
     /// Optional footer template rendered at the bottom of the sidebar (e.g., user profile).
@@ -129,6 +136,8 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     private string? _previousItemsJson;
     private SidebarState _previousState;
     private int _previousWidth;
+    private ThemeMode _previousTheme;
+    private string? _previousCulture;
 
     private const string WidthStorageKey = "lha:sidebar:width";
     private const string ExpandedIdsStorageKey = "lha:sidebar:expanded";
@@ -211,6 +220,7 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
 
         // Subscribe to localization changes
         Localizer.OnLanguageChanged += OnLanguageChanged;
+        ThemeState.OnThemeChanged += OnThemeChanged;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -228,6 +238,20 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
 
     protected override bool ShouldRender()
     {
+        // Theme changes
+        if (_previousTheme != ThemeState.CurrentTheme)
+        {
+            _previousTheme = ThemeState.CurrentTheme;
+            return true;
+        }
+
+        // Localization changes
+        if (_previousCulture != Localizer.State.CurrentCulture)
+        {
+            _previousCulture = Localizer.State.CurrentCulture;
+            return true;
+        }
+
         // Quick state checks for trivial changes
         if (_previousState != State || _previousWidth != _currentWidth)
         {
@@ -273,6 +297,19 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     {
         _mobileOpen = !_mobileOpen;
         StateHasChanged();
+    }
+
+    /// <summary>
+    /// Handles the click on the built-in side-border toggle button.
+    /// </summary>
+    private async Task HandleInternalToggle()
+    {
+        var newState = State == SidebarState.Expanded ? SidebarState.Mini : SidebarState.Expanded;
+        await SetStateAsync(newState);
+
+        // Clear hover expansion if we're programmatically turning into Mini mode
+        if (newState == SidebarState.Mini)
+            _hoverExpanded = false;
     }
 
     /// <summary>
@@ -418,6 +455,11 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
         InvokeAsync(StateHasChanged);
     }
 
+    private void OnThemeChanged(ThemeMode mode)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
     #endregion
 
     #region ── Helpers ──
@@ -506,6 +548,7 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
 
         Navigation.LocationChanged -= OnLocationChanged;
         Localizer.OnLanguageChanged -= OnLanguageChanged;
+        ThemeState.OnThemeChanged -= OnThemeChanged;
 
         if (_jsModule != null)
         {

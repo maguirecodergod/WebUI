@@ -9,6 +9,26 @@
         "Title": "Users",
         "Create": "Create User"
     },
+    "Sidebar": {
+        "AriaLabel": "Main Navigation",
+        "ResizeTooltip": "Drag to resize",
+        "Home": "Home",
+        "Counter": "Counter",
+        "Weather": "Weather",
+        "Content": "Content",
+        "RichEditor": "Rich Editor",
+        "Media": "Media",
+        "Images": "Images",
+        "Videos": "Videos",
+        "Documents": "Documents",
+        "Settings": "Settings",
+        "General": "General",
+        "Security": "Security",
+        "Advanced": "Advanced",
+        "Logs": "Logs",
+        "Config": "Configuration",
+        "ApiTest": "API Test"
+    },
     "Errors": {
         "NotFound": {
             "Title": "Page not found",

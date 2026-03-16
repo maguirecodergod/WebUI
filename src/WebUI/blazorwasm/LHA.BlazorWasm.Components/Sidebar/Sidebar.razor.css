@@ -30,7 +30,7 @@
 }
 
 /* ── Dark Theme Overrides ── */
-:global(.theme-dark) {
+.theme-dark.lha-sidebar {
     --sidebar-bg: #0f172a;
     --sidebar-bg-hover: rgba(255, 255, 255, 0.06);
     --sidebar-bg-active: rgba(96, 165, 250, 0.12);
@@ -47,7 +47,8 @@
 /* ═══════════════════ Root Container ═══════════════════ */
 
 .lha-sidebar {
-    position: relative;
+    position: sticky;
+    top: 0;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -57,9 +58,9 @@
     border-right: 1px solid var(--sidebar-border);
     box-shadow: var(--sidebar-shadow);
     transition:
-        width var(--sidebar-transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
-        min-width var(--sidebar-transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
-        transform var(--sidebar-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+        width var(--sidebar-transition-speed) ease-in-out,
+        min-width var(--sidebar-transition-speed) ease-in-out,
+        transform var(--sidebar-transition-speed) ease-in-out;
     z-index: 100;
     user-select: none;
     flex-shrink: 0;
@@ -89,18 +90,7 @@
     padding-right: 8px;
 }
 
-/* ── Hover Expand (extends over content, doesn't push layout) ── */
-.lha-sidebar--hover-expanded {
-    width: var(--sidebar-default-width);
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 150;
-    box-shadow:
-        4px 0 24px rgba(0, 0, 0, 0.12),
-        1px 0 4px rgba(0, 0, 0, 0.08);
-}
+/* ── Hover Expand logic removed (we exclusively use the toggle button now) ── */
 
 /* ── Hidden State ── */
 .lha-sidebar--hidden {
@@ -160,7 +150,7 @@
     background-color: var(--sidebar-bg);
     z-index: 200;
     transform: translateX(-100%);
-    transition: transform var(--sidebar-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--sidebar-transition-speed) ease-in-out;
     box-shadow: 4px 0 32px rgba(0, 0, 0, 0.2);
     border-right: 1px solid var(--sidebar-border);
 }
@@ -252,22 +242,45 @@
     height: 48px;
 }
 
-/* ═══════════════════ Responsive Media Queries ═══════════════════ */
+/* ═══════════════════ Internal Toggle ═══════════════════ */
 
-@media (max-width: 1024px) {
-    .lha-sidebar:not(.lha-sidebar--drawer-open):not(.lha-sidebar--hidden) {
-        width: var(--sidebar-mini-width);
-    }
+.lha-sidebar__internal-toggle {
+    position: absolute;
+    top: 24px;
+    right: -14px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: var(--sidebar-bg);
+    border: 1px solid var(--sidebar-border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sidebar-text-muted);
+    cursor: pointer;
+    z-index: 160;
+    transition: transform 0.2s, background-color 0.2s, color 0.2s, opacity 0.2s;
+    padding: 0;
 }
 
-@media (max-width: 768px) {
-    .lha-sidebar:not(.lha-sidebar--drawer-open) {
-        width: 0;
-        min-width: 0;
-        border-right: none;
-        overflow: hidden;
-    }
+.lha-sidebar__internal-toggle svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
 }
+
+.lha-sidebar__internal-toggle:hover {
+    color: var(--sidebar-text-active);
+    background-color: var(--sidebar-bg-hover);
+}
+
+/* Toggle button stays visible on hover now! */
+
+/* Note: Responsive breakpoints are handled by JS (matchMedia) calling
+   OnBreakpointChanged, which sets the State to Mini/Hidden.
+   No CSS media queries needed here — they would conflict with
+   the programmatic state management. */
 
 /* ═══════════════════ Reduced Motion ═══════════════════ */
 

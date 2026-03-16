@@ -9,6 +9,26 @@
         "Title": "Người dùng",
         "Create": "Tạo người dùng"
     },
+    "Sidebar": {
+        "AriaLabel": "Điều hướng chính",
+        "ResizeTooltip": "Kéo để thay đổi kích thước",
+        "Home": "Trang chủ",
+        "Counter": "Bộ đếm",
+        "Weather": "Thời tiết",
+        "Content": "Nội dung",
+        "RichEditor": "Trình soạn thảo",
+        "Media": "Phương tiện",
+        "Images": "Hình ảnh",
+        "Videos": "Video",
+        "Documents": "Tài liệu",
+        "Settings": "Cài đặt",
+        "General": "Chung",
+        "Security": "Bảo mật",
+        "Advanced": "Nâng cao",
+        "Logs": "Nhật ký",
+        "Config": "Cấu hình",
+        "ApiTest": "Kiểm thử API"
+    },
     "Errors": {
         "NotFound": {
             "Title": "Không tìm thấy trang",
