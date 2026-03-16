@@ -1,0 +1,34 @@
+@inherits LayoutComponentBase
+@inject UiStateStore UiState
+@implements IDisposable
+
+<div class="ds-layout ds-layout--client @(UiState.IsSidebarExpanded ? "" : "ds-layout--mini")">
+    <AppSidebar Section="main" />
+
+    <div class="ds-layout__main">
+        <TopBar />
+
+        <main class="ds-layout__content">
+            <div class="ds-layout__container">
+                @Body
+            </div>
+        </main>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        UiState.OnStateChanged += OnStateChanged;
+    }
+
+    private void OnStateChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        UiState.OnStateChanged -= OnStateChanged;
+    }
+}

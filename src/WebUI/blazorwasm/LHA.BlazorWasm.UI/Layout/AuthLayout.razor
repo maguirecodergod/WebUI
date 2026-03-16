@@ -1,0 +1,16 @@
+@inherits LayoutComponentBase
+
+<div class="ds-layout ds-layout--auth">
+    <div class="ds-auth__bg">
+        <div class="ds-auth__orb ds-auth__orb--1"></div>
+        <div class="ds-auth__orb ds-auth__orb--2"></div>
+    </div>
+
+    <main class="ds-auth__content">
+        @Body
+    </main>
+
+    <footer class="ds-auth__footer">
+        <span>© @DateTime.Now.Year LHA Platform. All rights reserved.</span>
+    </footer>
+</div>

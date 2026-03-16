@@ -1,0 +1,99 @@
+@inject NavigationManager NavigationManager
+
+<div class="ds-sidebar-item @ActiveClass @(HasChildren ? "ds-sidebar-item--parent" : "")">
+    @if (Item.Route is not null)
+    {
+        <a href="@Item.Route" class="ds-sidebar-item__link" @onclick="HandleClick" @onclick:preventDefault="@HasChildren">
+            @RenderItemContent
+        </a>
+    }
+    else
+    {
+        <button class="ds-sidebar-item__link" @onclick="ToggleChildren">
+            @RenderItemContent
+        </button>
+    }
+
+    @if (HasChildren && _isExpanded)
+    {
+        <div class="ds-sidebar-item__children">
+            @foreach (var child in Item.Children)
+            {
+                <AppSidebarItem Item="@child" IsMini="@IsMini" Depth="@(Depth + 1)" />
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public MenuItemDefinition Item { get; set; } = new();
+    [Parameter] public bool IsMini { get; set; }
+    [Parameter] public int Depth { get; set; }
+
+    private bool _isExpanded;
+    private bool HasChildren => Item.Children.Count > 0;
+
+    private string ActiveClass
+    {
+        get
+        {
+            if (Item.Route is null) return "";
+            var currentUri = "/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+            return currentUri.Equals(Item.Route, StringComparison.OrdinalIgnoreCase) 
+                ? "ds-sidebar-item--active" 
+                : "";
+        }
+    }
+
+    private RenderFragment RenderItemContent => builder =>
+    {
+        var seq = 0;
+
+        if (!string.IsNullOrEmpty(Item.Icon))
+        {
+            builder.OpenComponent<Icon>(seq++);
+            builder.AddAttribute(seq++, "Name", Item.Icon);
+            builder.AddAttribute(seq++, "Size", "18");
+            builder.AddAttribute(seq++, "CssClass", "ds-sidebar-item__icon");
+            builder.CloseComponent();
+        }
+
+        if (!IsMini || Depth > 0)
+        {
+            builder.OpenElement(seq++, "span");
+            builder.AddAttribute(seq++, "class", "ds-sidebar-item__text");
+            builder.AddContent(seq++, Item.Title);
+            builder.CloseElement();
+
+            if (!string.IsNullOrEmpty(Item.Badge))
+            {
+                builder.OpenElement(seq++, "span");
+                builder.AddAttribute(seq++, "class", $"ds-sidebar-item__badge {Item.BadgeStyle ?? ""}");
+                builder.AddContent(seq++, Item.Badge);
+                builder.CloseElement();
+            }
+
+            if (HasChildren)
+            {
+                builder.OpenComponent<Icon>(seq++);
+                builder.AddAttribute(seq++, "Name", IconNames.ChevronDown);
+                builder.AddAttribute(seq++, "Size", "14");
+                builder.AddAttribute(seq++, "CssClass", $"ds-sidebar-item__chevron {(_isExpanded ? "ds-sidebar-item__chevron--open" : "")}");
+                builder.CloseComponent();
+            }
+        }
+    };
+
+    private void HandleClick()
+    {
+        if (HasChildren)
+        {
+            ToggleChildren();
+        }
+    }
+
+    private void ToggleChildren()
+    {
+        _isExpanded = !_isExpanded;
+    }
+}

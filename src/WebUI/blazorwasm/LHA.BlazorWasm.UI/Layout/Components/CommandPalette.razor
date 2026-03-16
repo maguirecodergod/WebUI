@@ -1,0 +1,174 @@
+@inject UiStateStore UiState
+@inject ICommandPaletteService CommandPaletteService
+@inject NavigationManager NavigationManager
+@inject IPermissionService PermissionService
+@implements IDisposable
+
+@if (UiState.IsCommandPaletteOpen)
+{
+    <div class="ds-cmd-backdrop" @onclick="Close" @onkeydown="HandleKeyDown" tabindex="-1">
+        <div class="ds-cmd" @onclick:stopPropagation="true">
+            <div class="ds-cmd__search">
+                <Icon Name="@IconNames.Search" Size="18" CssClass="ds-cmd__search-icon" />
+                <input class="ds-cmd__input"
+                       @ref="_searchInput"
+                       type="text"
+                       placeholder="Type a command or search..."
+                       @bind="_searchQuery"
+                       @bind:event="oninput"
+                       @onkeydown="HandleInputKeyDown"
+                       autofocus />
+                <kbd class="ds-cmd__esc">ESC</kbd>
+            </div>
+
+            <div class="ds-cmd__results">
+                @if (_filteredCommands.Count == 0)
+                {
+                    <div class="ds-cmd__empty">
+                        <Icon Name="@IconNames.Search" Size="32" CssClass="ds-cmd__empty-icon" />
+                        <p>No commands found</p>
+                    </div>
+                }
+                else
+                {
+                    var currentCategory = "";
+                    @foreach (var command in _filteredCommands)
+                    {
+                        if (command.Category != currentCategory)
+                        {
+                            currentCategory = command.Category;
+                            <div class="ds-cmd__category">@currentCategory</div>
+                        }
+                        <button class="ds-cmd__item @(_selectedIndex == _filteredCommands.IndexOf(command) ? "ds-cmd__item--selected" : "")"
+                                @onclick="() => ExecuteCommand(command)">
+                            @if (!string.IsNullOrEmpty(command.Icon))
+                            {
+                                <Icon Name="@command.Icon" Size="16" CssClass="ds-cmd__item-icon" />
+                            }
+                            <div class="ds-cmd__item-text">
+                                <span class="ds-cmd__item-title">@command.Title</span>
+                                @if (!string.IsNullOrEmpty(command.Description))
+                                {
+                                    <span class="ds-cmd__item-desc">@command.Description</span>
+                                }
+                            </div>
+                            @if (!string.IsNullOrEmpty(command.Shortcut))
+                            {
+                                <kbd class="ds-cmd__shortcut">@command.Shortcut</kbd>
+                            }
+                        </button>
+                    }
+                }
+            </div>
+
+            <div class="ds-cmd__footer">
+                <span><kbd>↑↓</kbd> Navigate</span>
+                <span><kbd>↵</kbd> Select</span>
+                <span><kbd>ESC</kbd> Close</span>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private ElementReference _searchInput;
+    private string _searchQuery = "";
+    private int _selectedIndex;
+    private List<CommandDefinition> _filteredCommands = [];
+
+    protected override void OnInitialized()
+    {
+        UiState.OnStateChanged += OnStateChanged;
+        UpdateFilteredCommands();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (UiState.IsCommandPaletteOpen)
+        {
+            try
+            {
+                await _searchInput.FocusAsync();
+            }
+            catch
+            {
+                // Element may not be rendered yet
+            }
+        }
+    }
+
+    private void OnStateChanged()
+    {
+        if (UiState.IsCommandPaletteOpen)
+        {
+            _searchQuery = "";
+            _selectedIndex = 0;
+            UpdateFilteredCommands();
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void UpdateFilteredCommands()
+    {
+        _filteredCommands = CommandPaletteService.GetCommands(_searchQuery).ToList();
+        _selectedIndex = Math.Min(_selectedIndex, Math.Max(0, _filteredCommands.Count - 1));
+    }
+
+    private void Close()
+    {
+        UiState.CloseCommandPalette();
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            Close();
+        }
+    }
+
+    private void HandleInputKeyDown(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "ArrowDown":
+                _selectedIndex = Math.Min(_selectedIndex + 1, _filteredCommands.Count - 1);
+                break;
+            case "ArrowUp":
+                _selectedIndex = Math.Max(_selectedIndex - 1, 0);
+                break;
+            case "Enter":
+                if (_selectedIndex >= 0 && _selectedIndex < _filteredCommands.Count)
+                {
+                    ExecuteCommand(_filteredCommands[_selectedIndex]);
+                }
+                break;
+            case "Escape":
+                Close();
+                break;
+            default:
+                // Trigger filter on next render
+                UpdateFilteredCommands();
+                break;
+        }
+    }
+
+    private async void ExecuteCommand(CommandDefinition command)
+    {
+        Close();
+
+        if (!string.IsNullOrEmpty(command.NavigateTo))
+        {
+            NavigationManager.NavigateTo(command.NavigateTo);
+        }
+        else if (command.Handler is not null)
+        {
+            await command.Handler();
+        }
+    }
+
+    public void Dispose()
+    {
+        UiState.OnStateChanged -= OnStateChanged;
+    }
+}

@@ -1,0 +1,408 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   LHA Design System — CSS Custom Properties
+   Generated from C# design tokens.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Invariant Tokens (all themes) ──────────────────────────────────── */
+:root {
+    /* Typography */
+    --ds-font-sans: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --ds-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
+    --ds-text-xxs: 0.625rem;
+    --ds-text-xs: 0.75rem;
+    --ds-text-sm: 0.8125rem;
+    --ds-text-base: 0.875rem;
+    --ds-text-md: 0.9375rem;
+    --ds-text-lg: 1rem;
+    --ds-text-xl: 1.125rem;
+    --ds-text-2xl: 1.25rem;
+    --ds-text-3xl: 1.5rem;
+    --ds-text-4xl: 1.875rem;
+    --ds-text-5xl: 2.25rem;
+    --ds-weight-normal: 400;
+    --ds-weight-medium: 500;
+    --ds-weight-semibold: 600;
+    --ds-weight-bold: 700;
+    --ds-weight-extrabold: 800;
+    --ds-leading-tight: 1.25;
+    --ds-leading-snug: 1.375;
+    --ds-leading-normal: 1.5;
+    --ds-leading-relaxed: 1.625;
+    --ds-tracking-tight: -0.025em;
+    --ds-tracking-normal: 0em;
+    --ds-tracking-wide: 0.025em;
+
+    /* Spacing */
+    --ds-space-px: 1px;
+    --ds-space-xxs: 2px;
+    --ds-space-xs: 4px;
+    --ds-space-sm: 8px;
+    --ds-space-md: 12px;
+    --ds-space-base: 16px;
+    --ds-space-lg: 20px;
+    --ds-space-xl: 24px;
+    --ds-space-2xl: 32px;
+    --ds-space-3xl: 40px;
+    --ds-space-4xl: 48px;
+    --ds-space-section: 64px;
+    --ds-space-page: 80px;
+
+    /* Layout */
+    --ds-sidebar-width: 260px;
+    --ds-sidebar-mini-width: 68px;
+    --ds-topbar-height: 56px;
+    --ds-page-max-width: 1280px;
+    --ds-content-px: 32px;
+    --ds-content-py: 24px;
+    --ds-card-padding: 24px;
+
+    /* Radius */
+    --ds-radius-none: 0;
+    --ds-radius-xs: 2px;
+    --ds-radius-sm: 4px;
+    --ds-radius-md: 6px;
+    --ds-radius-base: 8px;
+    --ds-radius-lg: 10px;
+    --ds-radius-xl: 12px;
+    --ds-radius-2xl: 16px;
+    --ds-radius-3xl: 24px;
+    --ds-radius-full: 9999px;
+
+    /* Motion */
+    --ds-duration-instant: 50ms;
+    --ds-duration-fast: 100ms;
+    --ds-duration-normal: 150ms;
+    --ds-duration-moderate: 200ms;
+    --ds-duration-slow: 300ms;
+    --ds-duration-slower: 400ms;
+    --ds-duration-slowest: 500ms;
+    --ds-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+    --ds-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ds-ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ds-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ds-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ds-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Primary palette (constant across themes) */
+    --ds-color-primary-50: hsl(225, 100%, 97%);
+    --ds-color-primary-100: hsl(225, 95%, 93%);
+    --ds-color-primary-200: hsl(225, 93%, 86%);
+    --ds-color-primary-300: hsl(225, 90%, 76%);
+    --ds-color-primary-400: hsl(225, 88%, 66%);
+    --ds-color-primary-500: hsl(225, 85%, 55%);
+    --ds-color-primary-600: hsl(225, 80%, 47%);
+    --ds-color-primary-700: hsl(225, 78%, 39%);
+    --ds-color-primary-800: hsl(225, 75%, 32%);
+    --ds-color-primary-900: hsl(225, 72%, 25%);
+
+    /* Accent palette */
+    --ds-color-accent-50: hsl(245, 100%, 97%);
+    --ds-color-accent-500: hsl(245, 78%, 56%);
+    --ds-color-accent-600: hsl(245, 72%, 47%);
+}
+
+/* ── Light Theme (default) ──────────────────────────────────────────── */
+:root,
+[data-theme="light"],
+.theme-light {
+    color-scheme: light;
+
+    /* Surface */
+    --ds-color-bg: hsl(0, 0%, 100%);
+    --ds-color-bg-subtle: hsl(210, 20%, 98%);
+    --ds-color-surface: hsl(0, 0%, 100%);
+    --ds-color-surface-raised: hsl(0, 0%, 100%);
+    --ds-color-surface-overlay: rgba(255, 255, 255, 0.95);
+
+    /* Border */
+    --ds-color-border: hsl(210, 13%, 89%);
+    --ds-color-border-subtle: hsl(210, 14%, 93%);
+    --ds-color-border-strong: hsl(210, 11%, 80%);
+
+    /* Text */
+    --ds-color-text: hsl(210, 18%, 10%);
+    --ds-color-text-secondary: hsl(210, 10%, 38%);
+    --ds-color-text-tertiary: hsl(210, 9%, 65%);
+    --ds-color-text-disabled: hsl(210, 11%, 80%);
+    --ds-color-text-on-primary: hsl(0, 0%, 100%);
+    --ds-color-text-on-danger: hsl(0, 0%, 100%);
+
+    /* Primary (theme-semantic) */
+    --ds-color-primary: hsl(225, 85%, 55%);
+    --ds-color-primary-hover: hsl(225, 80%, 47%);
+    --ds-color-primary-active: hsl(225, 78%, 39%);
+    --ds-color-primary-soft: hsl(225, 100%, 97%);
+    --ds-color-primary-soft-hover: hsl(225, 95%, 93%);
+
+    /* Semantic */
+    --ds-color-success: hsl(150, 60%, 42%);
+    --ds-color-success-soft: hsl(150, 80%, 96%);
+    --ds-color-warning: hsl(40, 85%, 50%);
+    --ds-color-warning-soft: hsl(40, 100%, 96%);
+    --ds-color-danger: hsl(0, 72%, 51%);
+    --ds-color-danger-soft: hsl(0, 90%, 97%);
+    --ds-color-info: hsl(195, 70%, 46%);
+    --ds-color-info-soft: hsl(195, 90%, 96%);
+
+    /* Sidebar */
+    --ds-sidebar-bg: hsl(210, 20%, 98%);
+    --ds-sidebar-border: hsl(210, 13%, 89%);
+    --ds-sidebar-text: hsl(210, 12%, 28%);
+    --ds-sidebar-text-muted: hsl(210, 9%, 65%);
+    --ds-sidebar-text-active: hsl(225, 80%, 47%);
+    --ds-sidebar-hover: hsl(210, 16%, 96%);
+    --ds-sidebar-active-indicator: hsl(225, 85%, 55%);
+
+    /* Shadows */
+    --ds-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --ds-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --ds-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --ds-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --ds-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+    /* Input */
+    --ds-input-bg: hsl(0, 0%, 100%);
+    --ds-input-border: hsl(210, 13%, 89%);
+    --ds-input-border-focus: hsl(225, 85%, 55%);
+    --ds-input-placeholder: hsl(210, 9%, 65%);
+
+    /* Misc */
+    --ds-focus-ring: 0 0 0 2px hsl(0, 0%, 100%), 0 0 0 4px hsl(225, 85%, 55%);
+    --ds-divider: hsl(210, 14%, 93%);
+    --ds-skeleton-base: hsl(210, 14%, 93%);
+    --ds-skeleton-shimmer: hsl(210, 16%, 96%);
+    --ds-scrollbar-track: transparent;
+    --ds-scrollbar-thumb: hsl(210, 11%, 80%);
+    --ds-backdrop: rgba(0, 0, 0, 0.5);
+}
+
+/* ── Dark Theme ─────────────────────────────────────────────────────── */
+[data-theme="dark"],
+.theme-dark {
+    color-scheme: dark;
+
+    /* Surface */
+    --ds-color-bg: hsl(210, 20%, 7%);
+    --ds-color-bg-subtle: hsl(210, 18%, 10%);
+    --ds-color-surface: hsl(210, 18%, 10%);
+    --ds-color-surface-raised: hsl(210, 16%, 14%);
+    --ds-color-surface-overlay: rgba(10, 15, 30, 0.95);
+
+    /* Border */
+    --ds-color-border: hsla(210, 14%, 22%, 0.8);
+    --ds-color-border-subtle: hsla(210, 14%, 18%, 0.6);
+    --ds-color-border-strong: hsl(210, 10%, 38%);
+
+    /* Text */
+    --ds-color-text: hsl(210, 20%, 93%);
+    --ds-color-text-secondary: hsl(210, 9%, 65%);
+    --ds-color-text-tertiary: hsl(210, 8%, 50%);
+    --ds-color-text-disabled: hsl(210, 10%, 38%);
+    --ds-color-text-on-primary: hsl(0, 0%, 100%);
+    --ds-color-text-on-danger: hsl(0, 0%, 100%);
+
+    /* Primary */
+    --ds-color-primary: hsl(225, 88%, 66%);
+    --ds-color-primary-hover: hsl(225, 90%, 76%);
+    --ds-color-primary-active: hsl(225, 85%, 55%);
+    --ds-color-primary-soft: hsla(225, 85%, 55%, 0.12);
+    --ds-color-primary-soft-hover: hsla(225, 85%, 55%, 0.2);
+
+    /* Semantic */
+    --ds-color-success: hsl(150, 60%, 42%);
+    --ds-color-success-soft: hsla(150, 60%, 42%, 0.12);
+    --ds-color-warning: hsl(40, 85%, 50%);
+    --ds-color-warning-soft: hsla(40, 85%, 50%, 0.12);
+    --ds-color-danger: hsl(0, 72%, 51%);
+    --ds-color-danger-soft: hsla(0, 72%, 51%, 0.12);
+    --ds-color-info: hsl(195, 70%, 46%);
+    --ds-color-info-soft: hsla(195, 70%, 46%, 0.12);
+
+    /* Sidebar */
+    --ds-sidebar-bg: hsl(210, 20%, 7%);
+    --ds-sidebar-border: hsla(210, 14%, 22%, 0.6);
+    --ds-sidebar-text: hsl(210, 11%, 80%);
+    --ds-sidebar-text-muted: hsl(210, 8%, 50%);
+    --ds-sidebar-text-active: hsl(225, 88%, 66%);
+    --ds-sidebar-hover: hsla(210, 14%, 22%, 0.5);
+    --ds-sidebar-active-indicator: hsl(225, 88%, 66%);
+
+    /* Shadows */
+    --ds-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+    --ds-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+    --ds-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+    --ds-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.35);
+    --ds-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+
+    /* Input */
+    --ds-input-bg: hsl(210, 18%, 10%);
+    --ds-input-border: hsla(210, 14%, 22%, 0.8);
+    --ds-input-border-focus: hsl(225, 88%, 66%);
+    --ds-input-placeholder: hsl(210, 8%, 50%);
+
+    /* Misc */
+    --ds-focus-ring: 0 0 0 2px hsl(210, 20%, 7%), 0 0 0 4px hsl(225, 88%, 66%);
+    --ds-divider: hsla(210, 14%, 20%, 0.5);
+    --ds-skeleton-base: hsl(210, 16%, 14%);
+    --ds-skeleton-shimmer: hsl(210, 14%, 18%);
+    --ds-scrollbar-track: transparent;
+    --ds-scrollbar-thumb: hsl(210, 12%, 28%);
+    --ds-backdrop: rgba(0, 0, 0, 0.7);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Base Styles Reset
+   ═══════════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: var(--ds-font-sans);
+    font-size: 16px;
+    line-height: var(--ds-leading-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    color: var(--ds-color-text);
+    background-color: var(--ds-color-bg);
+    tab-size: 4;
+}
+
+body {
+    min-height: 100vh;
+    font-size: var(--ds-text-base);
+}
+
+/* ── Scrollbar Styling ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--ds-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ds-scrollbar-thumb);
+    border-radius: var(--ds-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ds-color-text-tertiary);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-scrollbar-thumb) var(--ds-scrollbar-track);
+}
+
+/* ── Selection ──────────────────────────────────────────────────────── */
+::selection {
+    background-color: var(--ds-color-primary-soft);
+    color: var(--ds-color-primary);
+}
+
+/* ── Focus Visible ──────────────────────────────────────────────────── */
+:focus-visible {
+    outline: 2px solid var(--ds-color-primary);
+    outline-offset: 2px;
+}
+
+/* ── Smooth Transitions for Theme Switching ─────────────────────────── */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Utility Classes
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Text ──────────────────────────────────────────────────────────── */
+.ds-text-primary { color: var(--ds-color-text); }
+.ds-text-secondary { color: var(--ds-color-text-secondary); }
+.ds-text-tertiary { color: var(--ds-color-text-tertiary); }
+.ds-text-disabled { color: var(--ds-color-text-disabled); }
+.ds-text-success { color: var(--ds-color-success); }
+.ds-text-warning { color: var(--ds-color-warning); }
+.ds-text-danger { color: var(--ds-color-danger); }
+.ds-text-info { color: var(--ds-color-info); }
+
+/* ── Surface ───────────────────────────────────────────────────────── */
+.ds-bg { background-color: var(--ds-color-bg); }
+.ds-bg-subtle { background-color: var(--ds-color-bg-subtle); }
+.ds-surface { background-color: var(--ds-color-surface); }
+.ds-surface-raised {
+    background-color: var(--ds-color-surface-raised);
+    border: 1px solid var(--ds-color-border-subtle);
+    border-radius: var(--ds-radius-xl);
+    box-shadow: var(--ds-shadow-sm);
+}
+
+/* ── Truncation ────────────────────────────────────────────────────── */
+.ds-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Flex Utilities ────────────────────────────────────────────────── */
+.ds-flex { display: flex; }
+.ds-flex-center { display: flex; align-items: center; justify-content: center; }
+.ds-flex-between { display: flex; align-items: center; justify-content: space-between; }
+.ds-flex-col { display: flex; flex-direction: column; }
+.ds-gap-xs { gap: var(--ds-space-xs); }
+.ds-gap-sm { gap: var(--ds-space-sm); }
+.ds-gap-md { gap: var(--ds-space-md); }
+.ds-gap-base { gap: var(--ds-space-base); }
+.ds-gap-lg { gap: var(--ds-space-lg); }
+.ds-gap-xl { gap: var(--ds-space-xl); }
+
+/* ── Animations ────────────────────────────────────────────────────── */
+@keyframes ds-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes ds-slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ds-slide-down {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ds-scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ds-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes ds-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.ds-animate-fade-in { animation: ds-fade-in var(--ds-duration-normal) var(--ds-ease-out); }
+.ds-animate-slide-up { animation: ds-slide-up var(--ds-duration-slow) var(--ds-ease-out); }
+.ds-animate-slide-down { animation: ds-slide-down var(--ds-duration-slow) var(--ds-ease-out); }
+.ds-animate-scale-in { animation: ds-scale-in var(--ds-duration-moderate) var(--ds-ease-spring); }
+.ds-animate-spin { animation: ds-spin 1s linear infinite; }

@@ -1,0 +1,65 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   AuthLayout — Centered auth pages with decorative background
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-layout--auth {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--ds-color-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.ds-auth__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.ds-auth__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+}
+
+.ds-auth__orb--1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, hsla(225, 85%, 55%, 0.15) 0%, transparent 70%);
+    top: -150px;
+    left: -100px;
+    animation: ds-auth-drift 16s ease-in-out infinite alternate;
+}
+
+.ds-auth__orb--2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, hsla(245, 78%, 56%, 0.12) 0%, transparent 70%);
+    bottom: -120px;
+    right: -80px;
+    animation: ds-auth-drift 20s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes ds-auth-drift {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(30px, -20px) scale(1.05); }
+}
+
+.ds-auth__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    padding: var(--ds-space-xl);
+}
+
+.ds-auth__footer {
+    position: relative;
+    z-index: 1;
+    padding: var(--ds-space-xl);
+    font-size: var(--ds-text-xs);
+    color: var(--ds-color-text-tertiary);
+}

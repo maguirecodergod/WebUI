@@ -1,0 +1,18 @@
+@inject IExtensionRegistry ExtensionRegistry
+
+@foreach (var componentType in _extensions)
+{
+    <DynamicComponent Type="@componentType" Parameters="@Parameters" />
+}
+
+@code {
+    [Parameter] public string SlotName { get; set; } = string.Empty;
+    [Parameter] public IDictionary<string, object>? Parameters { get; set; }
+
+    private IReadOnlyList<Type> _extensions = Array.Empty<Type>();
+
+    protected override void OnParametersSet()
+    {
+        _extensions = ExtensionRegistry.GetExtensions(SlotName);
+    }
+}

@@ -1,0 +1,106 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   AppSidebarItem — Scoped Styles
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-sidebar-item {
+    margin-bottom: 1px;
+}
+
+.ds-sidebar-item__link {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-sm);
+    padding: var(--ds-space-sm) var(--ds-space-sm);
+    border-radius: var(--ds-radius-md);
+    color: var(--ds-sidebar-text);
+    text-decoration: none;
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-weight-medium);
+    cursor: pointer;
+    transition: all var(--ds-duration-normal) var(--ds-ease-default);
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    min-height: 36px;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.ds-sidebar-item__link:hover {
+    background-color: var(--ds-sidebar-hover);
+    color: var(--ds-color-text);
+}
+
+/* Active State */
+.ds-sidebar-item--active > .ds-sidebar-item__link {
+    background-color: var(--ds-color-primary-soft);
+    color: var(--ds-sidebar-text-active);
+    font-weight: var(--ds-weight-semibold);
+}
+
+.ds-sidebar-item--active > .ds-sidebar-item__link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: var(--ds-sidebar-active-indicator);
+    border-radius: 0 var(--ds-radius-full) var(--ds-radius-full) 0;
+}
+
+/* Icon */
+::deep .ds-sidebar-item__icon {
+    flex-shrink: 0;
+    color: inherit;
+    opacity: 0.75;
+}
+
+.ds-sidebar-item--active ::deep .ds-sidebar-item__icon {
+    opacity: 1;
+}
+
+/* Text */
+.ds-sidebar-item__text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Badge */
+.ds-sidebar-item__badge {
+    font-size: var(--ds-text-xxs);
+    font-weight: var(--ds-weight-semibold);
+    padding: 1px 6px;
+    border-radius: var(--ds-radius-full);
+    background: var(--ds-color-primary-soft);
+    color: var(--ds-color-primary);
+    flex-shrink: 0;
+    line-height: 1.4;
+}
+
+/* Chevron */
+::deep .ds-sidebar-item__chevron {
+    flex-shrink: 0;
+    transition: transform var(--ds-duration-moderate) var(--ds-ease-default);
+    color: var(--ds-sidebar-text-muted);
+}
+
+::deep .ds-sidebar-item__chevron--open {
+    transform: rotate(180deg);
+}
+
+/* Children */
+.ds-sidebar-item__children {
+    padding-left: var(--ds-space-xl);
+    animation: ds-slide-down var(--ds-duration-moderate) var(--ds-ease-out);
+}
+
+.ds-sidebar-item__children .ds-sidebar-item__link {
+    font-size: var(--ds-text-sm);
+    min-height: 32px;
+    padding: var(--ds-space-xs) var(--ds-space-sm);
+}

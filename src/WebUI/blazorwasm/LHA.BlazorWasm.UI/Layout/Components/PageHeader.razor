@@ -1,0 +1,40 @@
+<div class="ds-page-header @(Compact ? "ds-page-header--compact" : "")">
+    <div class="ds-page-header__content">
+        <div class="ds-page-header__title-area">
+            @if (!string.IsNullOrEmpty(Icon))
+            {
+                <div class="ds-page-header__icon">
+                    <Icon Name="@Icon" Size="24" />
+                </div>
+            }
+            <div class="ds-page-header__text">
+                <h1 class="ds-page-header__title">@Title</h1>
+                @if (!string.IsNullOrEmpty(Subtitle))
+                {
+                    <p class="ds-page-header__subtitle">@Subtitle</p>
+                }
+            </div>
+        </div>
+        @if (Actions is not null)
+        {
+            <div class="ds-page-header__actions">
+                @Actions
+            </div>
+        }
+    </div>
+    @if (TabContent is not null)
+    {
+        <div class="ds-page-header__tabs">
+            @TabContent
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Subtitle { get; set; }
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public bool Compact { get; set; }
+    [Parameter] public RenderFragment? Actions { get; set; }
+    [Parameter] public RenderFragment? TabContent { get; set; }
+}

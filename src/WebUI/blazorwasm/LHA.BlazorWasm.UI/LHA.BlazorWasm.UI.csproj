@@ -6,7 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
@@ -17,7 +16,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.BlazorWasm.DesignSystem\LHA.BlazorWasm.DesignSystem.csproj" />
+    <ProjectReference Include="..\LHA.BlazorWasm.Components\LHA.BlazorWasm.Components.csproj" />
     <ProjectReference Include="..\LHA.BlazorWasm.Services\LHA.BlazorWasm.Services.csproj" />
+    <ProjectReference Include="..\LHA.BlazorWasm.Shared\LHA.BlazorWasm.Shared.csproj" />
   </ItemGroup>
 
 </Project>

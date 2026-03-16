@@ -17,6 +17,8 @@
     <ProjectReference Include="..\LHA.BlazorWasm.Services\LHA.BlazorWasm.Services.csproj" />
     <ProjectReference Include="..\LHA.BlazorWasm.HttpApi.Client\LHA.BlazorWasm.HttpApi.Client.csproj" />
     <ProjectReference Include="..\LHA.BlazorWasm.Components\LHA.BlazorWasm.Components.csproj" />
+    <ProjectReference Include="..\LHA.BlazorWasm.DesignSystem\LHA.BlazorWasm.DesignSystem.csproj" />
+    <ProjectReference Include="..\LHA.BlazorWasm.UI\LHA.BlazorWasm.UI.csproj" />
     <ProjectReference Include="..\LHA.BlazorWasm.Modules\LHA.BlazorWasm.Modules.csproj" />
   </ItemGroup>
 
