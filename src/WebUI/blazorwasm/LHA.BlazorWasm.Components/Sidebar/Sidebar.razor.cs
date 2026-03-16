@@ -167,19 +167,14 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     {
         get
         {
-            var width = EffectiveState switch
-            {
-                CSidebarState.Expanded => _currentWidth > 0 ? _currentWidth : DefaultWidth,
-                CSidebarState.Mini => MiniWidth,
-                CSidebarState.Hidden => 0,
-                _ => DefaultWidth
-            };
+            var expandedWidth = _currentWidth > 0 ? _currentWidth : DefaultWidth;
 
             var styles = new List<string>
             {
-                $"--sidebar-width: {width}px",
+                $"--sidebar-width: {expandedWidth}px",
                 $"--sidebar-mini-width: {MiniWidth}px",
-                $"--sidebar-default-width: {DefaultWidth}px"
+                $"--sidebar-default-width: {DefaultWidth}px",
+                $"--sidebar-transition-speed: 300ms"
             };
 
             if (!string.IsNullOrEmpty(Style))
@@ -418,9 +413,18 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
 
     private async Task HandleToggleExpand(string itemId)
     {
-        if (!_expandedIds.Remove(itemId))
+        if (State == CSidebarState.Mini)
         {
             _expandedIds.Add(itemId);
+            // Auto expand sidebar and open this specific submenu
+            await SetStateAsync(CSidebarState.Expanded);
+        }
+        else
+        {
+            if (!_expandedIds.Remove(itemId))
+            {
+                _expandedIds.Add(itemId);
+            }
         }
 
         await PersistExpandedIdsAsync();
