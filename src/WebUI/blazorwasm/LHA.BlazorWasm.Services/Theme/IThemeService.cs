@@ -2,9 +2,9 @@ namespace LHA.BlazorWasm.Services.Theme;
 
 public interface IThemeService
 {
-    ThemeMode CurrentTheme { get; }
+    CThemeMode CurrentTheme { get; }
     string ThemeClass { get; }
     
     Task InitializeAsync();
-    Task SetThemeAsync(ThemeMode theme);
+    Task SetThemeAsync(CThemeMode theme);
 }

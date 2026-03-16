@@ -4,7 +4,7 @@
     <div class="rte-color-grid">
         @foreach (var color in PresetColors)
         {
-            <Button Style="ButtonStyle.Link" 
+            <Button Style="CButtonStyle.Link" 
                     Class='@($"rte-color-swatch {(color == SelectedColor ? "selected" : "")}")'
                     OnClick="() => SelectColor(color)">
                 <div style="background-color: @color; width: 100%; height: 100%; border-radius: inherit;"></div>

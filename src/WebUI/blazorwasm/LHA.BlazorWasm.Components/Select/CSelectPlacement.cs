@@ -1,6 +1,6 @@
 namespace LHA.BlazorWasm.Components.Select;
 
-public enum SelectPlacement
+public enum CSelectPlacement
 {
     Auto,
     Bottom,

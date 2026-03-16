@@ -92,13 +92,13 @@ public sealed class SidebarItemModel
     /// When <see cref="NavLinkMatch.All"/>, only exact matches highlight.
     /// When <see cref="NavLinkMatch.Prefix"/>, prefix matches also highlight (default).
     /// </summary>
-    public NavLinkMatchMode MatchMode { get; set; } = NavLinkMatchMode.Prefix;
+    public CNavLinkMatchMode MatchMode { get; set; } = CNavLinkMatchMode.Prefix;
 }
 
 /// <summary>
 /// Defines how the sidebar matches the current URL to determine the active item.
 /// </summary>
-public enum NavLinkMatchMode
+public enum CNavLinkMatchMode
 {
     /// <summary>Matches when the current URI starts with the item's Href.</summary>
     Prefix,

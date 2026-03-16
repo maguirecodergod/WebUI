@@ -29,7 +29,7 @@ public partial class SidebarItem : LhaComponentBase
     /// Controls whether labels are shown (Mini mode hides them).
     /// </summary>
     [Parameter]
-    public SidebarState CurrentState { get; set; }
+    public CSidebarState CurrentState { get; set; }
 
     /// <summary>
     /// The set of currently expanded item IDs, managed by the parent <see cref="Sidebar"/>.
@@ -113,7 +113,7 @@ public partial class SidebarItem : LhaComponentBase
     /// </summary>
     private string GetTooltip()
     {
-        return CurrentState == SidebarState.Mini
+        return CurrentState == CSidebarState.Mini
             ? Localizer.L(Item.TitleKey)
             : "";
     }

@@ -5,7 +5,7 @@
     {
         <LHA.BlazorWasm.Components.Tooltip.Tooltip Text="@Tooltip" Style="display: inline-flex;">
             <Button Class="@GetButtonCssClass()"
-                    Style="ButtonStyle.Link"
+                    Style="CButtonStyle.Link"
                     Disabled="@Disabled"
                     OnClick="ToggleDropdown">
                 @if (!string.IsNullOrEmpty(SvgIcon))
@@ -21,7 +21,7 @@
     else
     {
         <Button Class="@GetButtonCssClass()"
-                Style="ButtonStyle.Link"
+                Style="CButtonStyle.Link"
                 Disabled="@Disabled"
                 OnClick="ToggleDropdown">
             @if (!string.IsNullOrEmpty(SvgIcon))

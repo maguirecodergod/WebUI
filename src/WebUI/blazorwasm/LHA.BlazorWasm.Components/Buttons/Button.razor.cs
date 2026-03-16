@@ -8,8 +8,8 @@ namespace LHA.BlazorWasm.Components.Buttons;
 /// 
 /// Example usage:
 /// 
-/// <Button Style="ButtonStyle.Primary"
-///         Size="ButtonSize.Medium"
+/// <Button Style="CButtonStyle.Primary"
+///         Size="CButtonSize.Medium"
 ///         OnClick="SaveAsync">
 ///     Save
 /// </Button>
@@ -30,17 +30,17 @@ public partial class Button : LhaComponentBase
     /// <summary>
     /// Gets or sets the position of the icon.
     /// </summary>
-    [Parameter] public ButtonIconPosition IconPosition { get; set; } = ButtonIconPosition.Left;
+    [Parameter] public CButtonIconPosition IconPosition { get; set; } = CButtonIconPosition.Left;
 
     /// <summary>
     /// Gets or sets the style variant of the button.
     /// </summary>
-    [Parameter] public ButtonStyle Style { get; set; } = ButtonStyle.Primary;
+    [Parameter] public CButtonStyle Style { get; set; } = CButtonStyle.Primary;
 
     /// <summary>
     /// Gets or sets the size of the button.
     /// </summary>
-    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Medium;
+    [Parameter] public CButtonSize Size { get; set; } = CButtonSize.Medium;
 
     /// <summary>
     /// Gets or sets a value indicating whether the button is in a loading state.
@@ -61,7 +61,7 @@ public partial class Button : LhaComponentBase
     /// <summary>
     /// Gets or sets the type of the button.
     /// </summary>
-    [Parameter] public ButtonType Type { get; set; } = ButtonType.Button;
+    [Parameter] public CButtonType Type { get; set; } = CButtonType.Button;
 
     /// <summary>
     /// Gets or sets additional custom CSS classes for the button.

@@ -3,7 +3,7 @@ namespace LHA.BlazorWasm.Components.Skeleton;
 /// <summary>
 /// Defines the visual variant for the Skeleton component.
 /// </summary>
-public enum SkeletonVariant
+public enum CSkeletonVariant
 {
     /// <summary>
     /// A rectangular block representing text lines. Typically adapts to the font height.

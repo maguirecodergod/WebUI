@@ -1,6 +1,6 @@
 namespace LHA.BlazorWasm.Components.RichTextEditor.Models;
 
-public enum DropdownAlignment
+public enum CDropdownAlignment
 {
     Left,
     Center,

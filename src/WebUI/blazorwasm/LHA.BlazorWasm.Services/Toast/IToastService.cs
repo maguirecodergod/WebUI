@@ -33,7 +33,7 @@ public interface IToastService
     /// <summary>
     /// Fully robust manual override configuration to dictate precise duration and formatting limits.
     /// </summary>
-    void Show(string message, ToastLevel level, string? title = null, int duration = 3000);
+    void Show(string message, CToastLevel level, string? title = null, int duration = 3000);
     
     /// <summary>
     /// Programmatically triggers the UI removal via ToastId bypassing internal timer logic.

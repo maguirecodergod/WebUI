@@ -9,15 +9,15 @@ public class ThemeSwitchBase : LhaComponentBase, IDisposable
     [Inject] protected IThemeService ThemeService { get; set; } = default!;
     [Inject] protected ThemeState ThemeState { get; set; } = default!;
 
-    [Parameter] public ThemeSwitchVariant Variant { get; set; } = ThemeSwitchVariant.Toggle;
+    [Parameter] public CThemeSwitchVariant Variant { get; set; } = CThemeSwitchVariant.Toggle;
     [Parameter] public string Class { get; set; } = string.Empty;
     [Parameter] public string Style { get; set; } = string.Empty;
     [Parameter] public bool ShowLabel { get; set; }
     [Parameter] public string Size { get; set; } = "md"; // "sm", "md", "lg"
 
-    protected ThemeMode CurrentTheme => ThemeState.CurrentTheme;
+    protected CThemeMode CurrentTheme => ThemeState.CurrentTheme;
 
-    protected string VariantClass => Variant == ThemeSwitchVariant.Toggle ? "ts-toggle" : "ts-icon";
+    protected string VariantClass => Variant == CThemeSwitchVariant.Toggle ? "ts-toggle" : "ts-icon";
     protected string SizeClass => $"ts-{Size}";
 
     protected override void OnInitialized()
@@ -26,7 +26,7 @@ public class ThemeSwitchBase : LhaComponentBase, IDisposable
         Localizer.OnLanguageChanged += RefreshUI;
     }
 
-    private void OnStateChanged(ThemeMode newTheme)
+    private void OnStateChanged(CThemeMode newTheme)
     {
         RefreshUI();
     }
@@ -38,7 +38,7 @@ public class ThemeSwitchBase : LhaComponentBase, IDisposable
 
     protected async Task ToggleTheme()
     {
-        var nextTheme = CurrentTheme == ThemeMode.Light ? ThemeMode.Dark : ThemeMode.Light;
+        var nextTheme = CurrentTheme == CThemeMode.Light ? CThemeMode.Dark : CThemeMode.Light;
         await ThemeService.SetThemeAsync(nextTheme);
     }
 

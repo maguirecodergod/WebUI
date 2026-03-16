@@ -12,15 +12,15 @@ namespace LHA.BlazorWasm.Components.Skeleton;
 /// <Skeleton Width="200px" Height="20px" />
 /// 
 /// Text block:
-/// <Skeleton Variant="SkeletonVariant.Text" Count="4" />
+/// <Skeleton Variant="CSkeletonVariant.Text" Count="4" />
 /// 
 /// Avatar:
-/// <Skeleton Variant="SkeletonVariant.Circular"
+/// <Skeleton Variant="CSkeletonVariant.Circular"
 ///           Width="48px"
 ///           Height="48px" />
 /// 
 /// Card placeholder:
-/// <Skeleton Variant="SkeletonVariant.Rectangular"
+/// <Skeleton Variant="CSkeletonVariant.Rectangular"
 ///           Width="100%"
 ///           Height="200px" />
 ///           
@@ -34,12 +34,12 @@ public partial class Skeleton : LhaComponentBase
     /// <summary>
     /// Gets or sets the visual variant of the skeleton. Default is Text.
     /// </summary>
-    [Parameter] public SkeletonVariant Variant { get; set; } = SkeletonVariant.Text;
+    [Parameter] public CSkeletonVariant Variant { get; set; } = CSkeletonVariant.Text;
 
     /// <summary>
     /// Gets or sets the animation type. Default is Wave.
     /// </summary>
-    [Parameter] public SkeletonAnimation Animation { get; set; } = SkeletonAnimation.Wave;
+    [Parameter] public CSkeletonAnimation Animation { get; set; } = CSkeletonAnimation.Wave;
 
     /// <summary>
     /// Gets or sets the CSS width of the skeleton.

@@ -114,7 +114,7 @@
                 <SpecialCharsPopup OnCharSelected="OnSpecialCharsSubmit" />
             </ToolbarDropdown>
             <ToolbarDropdown SvgIcon="@Icons.Emoji" Tooltip='@Localizer.L("Editor.Emoji")' @ref="_emojiDropdown"
-                             Alignment="DropdownAlignment.Right">
+                             Alignment="CDropdownAlignment.Right">
                 <LHA.BlazorWasm.Components.Emoji.EmojiPicker IsOpen="true" OnEmojiSelected="OnEmojiSubmit"
                                                              Placement="relative" />
             </ToolbarDropdown>
@@ -130,32 +130,32 @@
                            OnClick="@ShowTableDialog" />
             <ToolbarDropdown SvgIcon="@Icons.Image" Tooltip='@Localizer.L("Editor.Insert Image")' @ref="_imageDropdown">
                 <div class="rte-menu-list">
-                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnUploadClick">
+                    <Button Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnUploadClick">
                         <span class="rte-menu-icon rte-menu-icon--primary">@((MarkupString)Icons.Upload)</span>
                         <span>@Localizer.L("Editor.Upload")</span>
                     </Button>
-                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnCameraClick">
+                    <Button Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnCameraClick">
                         <span class="rte-menu-icon">@((MarkupString)Icons.Camera)</span>
                         <span>@Localizer.L("Editor.Camera")</span>
                     </Button>
-                    <Button Style="ButtonStyle.Link" Class="rte-menu-item"
+                    <Button Style="CButtonStyle.Link" Class="rte-menu-item"
                             OnClick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
                         <span class="rte-menu-icon">@((MarkupString)Icons.Image)</span>
                         <span>@Localizer.L("Editor.By Url")</span>
                     </Button>
-                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnDragDropClick">
+                    <Button Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnDragDropClick">
                         <span class="rte-menu-icon">@((MarkupString)Icons.DragDrop)</span>
                         <span>@Localizer.L("Editor.Drag & Drop")</span>
                     </Button>
                     <div class="rte-menu-divider"></div>
-                    <Button Style="ButtonStyle.Link" Class="rte-menu-item" OnClick="OnImageGalleryClick">
+                    <Button Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnImageGalleryClick">
                         <span class="rte-menu-icon">@((MarkupString)Icons.Image)</span>
                         <span>@Localizer.L("Editor.Image Gallery")</span>
                     </Button>
                 </div>
             </ToolbarDropdown>
             <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip='@Localizer.L("Editor.Insert Video")' @ref="_videoDropdown"
-                             Alignment="DropdownAlignment.Right">
+                             Alignment="CDropdownAlignment.Right">
                 <div style="padding: 16px; width: 300px;">
                     <div class="rte-form-group" style="margin-bottom: 12px;">
                         <input type="text" class="rte-input" placeholder='@Localizer.L("Editor.Url")' @bind="_videoUrl"
@@ -163,7 +163,7 @@
                                @onkeydown="@(async e => { if (e.Key == "Enter") await OnInsertVideoClick(); })" />
                     </div>
                     <div style="text-align: right;">
-                        <Button Style="ButtonStyle.Primary" OnClick="OnInsertVideoClick"
+                        <Button Style="CButtonStyle.Primary" OnClick="OnInsertVideoClick"
                                  Disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</Button>
                     </div>
                 </div>

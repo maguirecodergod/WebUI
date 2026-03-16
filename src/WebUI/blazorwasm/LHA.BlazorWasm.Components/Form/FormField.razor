@@ -1,7 +1,7 @@
 @namespace LHA.BlazorWasm.Components.Form
 
 <div class="@GetCssClass()" style="@Style">
-    @if (Layout == FormFieldLayout.Horizontal)
+    @if (Layout == CFormFieldLayout.Horizontal)
     {
         <div class="form-field-label-col">
             <FormLabel Text="@Label" Required="@Required" For="@_fieldId" />

@@ -41,12 +41,12 @@ public partial class Switch : LhaComponentBase
     /// <summary>
     /// Gets or sets the size of the switch.
     /// </summary>
-    [Parameter] public SwitchSize Size { get; set; } = SwitchSize.Medium;
+    [Parameter] public CSwitchSize Size { get; set; } = CSwitchSize.Medium;
 
     /// <summary>
     /// Gets or sets the position of the label relative to the switch.
     /// </summary>
-    [Parameter] public SwitchLabelPosition LabelPosition { get; set; } = SwitchLabelPosition.Right;
+    [Parameter] public CSwitchLabelPosition LabelPosition { get; set; } = CSwitchLabelPosition.Right;
 
     /// <summary>
     /// Gets or sets additional custom CSS classes.

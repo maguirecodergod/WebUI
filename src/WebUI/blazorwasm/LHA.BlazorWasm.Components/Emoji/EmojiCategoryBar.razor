@@ -1,9 +1,9 @@
 @namespace LHA.BlazorWasm.Components.Emoji
 
 <div class="lha-emoji-category-bar">
-    @foreach (var category in Enum.GetValues<EmojiCategory>().Where(c => c != EmojiCategory.Recent))
+    @foreach (var category in Enum.GetValues<CEmojiCategory>().Where(c => c != CEmojiCategory.Recent))
     {
-        <Button Type="ButtonType.Button" Class=@($"category-btn {(ActiveCategory == category ? "active" : string.Empty)}")
+        <Button Type="CButtonType.Button" Class=@($"category-btn {(ActiveCategory == category ? "active" : string.Empty)}")
             OnClick="() => OnCategorySelected.InvokeAsync(category)" title="@category.ToString()">
             <i class="@GetCategoryIcon(category)"></i>
         </Button>
@@ -11,19 +11,19 @@
 </div>
 
 @code {
-    [Parameter] public EmojiCategory ActiveCategory { get; set; }
-    [Parameter] public EventCallback<EmojiCategory> OnCategorySelected { get; set; }
+    [Parameter] public CEmojiCategory ActiveCategory { get; set; }
+    [Parameter] public EventCallback<CEmojiCategory> OnCategorySelected { get; set; }
 
-    private string GetCategoryIcon(EmojiCategory category) => category switch
+    private string GetCategoryIcon(CEmojiCategory category) => category switch
     {
-        EmojiCategory.Smileys => "far fa-smile",
-        EmojiCategory.People => "fas fa-user",
-        EmojiCategory.Animals => "fas fa-paw",
-        EmojiCategory.Food => "fas fa-utensils",
-        EmojiCategory.Travel => "fas fa-plane",
-        EmojiCategory.Objects => "fas fa-lightbulb",
-        EmojiCategory.Symbols => "fas fa-hashtag",
-        EmojiCategory.Flags => "fas fa-flag",
+        CEmojiCategory.Smileys => "far fa-smile",
+        CEmojiCategory.People => "fas fa-user",
+        CEmojiCategory.Animals => "fas fa-paw",
+        CEmojiCategory.Food => "fas fa-utensils",
+        CEmojiCategory.Travel => "fas fa-plane",
+        CEmojiCategory.Objects => "fas fa-lightbulb",
+        CEmojiCategory.Symbols => "fas fa-hashtag",
+        CEmojiCategory.Flags => "fas fa-flag",
         _ => "fas fa-clock"
     };
 }

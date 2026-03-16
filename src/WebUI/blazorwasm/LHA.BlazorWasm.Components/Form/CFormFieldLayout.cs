@@ -3,7 +3,7 @@ namespace LHA.BlazorWasm.Components.Form;
 /// <summary>
 /// Defines the layout mode for a <see cref="FormField"/> component.
 /// </summary>
-public enum FormFieldLayout
+public enum CFormFieldLayout
 {
     /// <summary>
     /// Label above the control (default).

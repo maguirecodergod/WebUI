@@ -9,22 +9,22 @@
 }
 
 @code {
-    [Parameter] public ValidationStatus Status { get; set; } = ValidationStatus.None;
+    [Parameter] public CValidationStatus Status { get; set; } = CValidationStatus.None;
     [Parameter] public string? Message { get; set; }
 
     private string StatusClass => Status switch
     {
-        ValidationStatus.Success => "success",
-        ValidationStatus.Warning => "warning",
-        ValidationStatus.Error => "error",
+        CValidationStatus.Success => "success",
+        CValidationStatus.Warning => "warning",
+        CValidationStatus.Error => "error",
         _ => ""
     };
 
     private string IconClass => Status switch
     {
-        ValidationStatus.Success => "fas fa-check-circle",
-        ValidationStatus.Warning => "fas fa-exclamation-triangle",
-        ValidationStatus.Error => "fas fa-exclamation-circle",
+        CValidationStatus.Success => "fas fa-check-circle",
+        CValidationStatus.Warning => "fas fa-exclamation-triangle",
+        CValidationStatus.Error => "fas fa-exclamation-circle",
         _ => ""
     };
 }

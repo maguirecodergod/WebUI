@@ -12,7 +12,7 @@
     }
     else
     {
-        @if (!string.IsNullOrEmpty(Icon) && IconPosition == ButtonIconPosition.Left)
+        @if (!string.IsNullOrEmpty(Icon) && IconPosition == CButtonIconPosition.Left)
         {
             <i class="@Icon btn-icon-left" aria-hidden="true"></i>
         }
@@ -26,7 +26,7 @@
             <span class="btn-content">@Text</span>
         }
 
-        @if (!string.IsNullOrEmpty(Icon) && IconPosition == ButtonIconPosition.Right)
+        @if (!string.IsNullOrEmpty(Icon) && IconPosition == CButtonIconPosition.Right)
         {
             <i class="@Icon btn-icon-right" aria-hidden="true"></i>
         }

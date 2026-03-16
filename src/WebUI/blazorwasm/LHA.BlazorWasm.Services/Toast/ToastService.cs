@@ -10,12 +10,12 @@ internal sealed class ToastService : IToastService
 
     public ToastState State { get; } = new();
 
-    public void Success(string message, string? title = null) => Show(message, ToastLevel.Success, title);
-    public void Info(string message, string? title = null) => Show(message, ToastLevel.Info, title);
-    public void Warning(string message, string? title = null) => Show(message, ToastLevel.Warning, title);
-    public void Error(string message, string? title = null) => Show(message, ToastLevel.Error, title, 5000); // Give errors longer readability duration
+    public void Success(string message, string? title = null) => Show(message, CToastLevel.Success, title);
+    public void Info(string message, string? title = null) => Show(message, CToastLevel.Info, title);
+    public void Warning(string message, string? title = null) => Show(message, CToastLevel.Warning, title);
+    public void Error(string message, string? title = null) => Show(message, CToastLevel.Error, title, 5000); // Give errors longer readability duration
 
-    public void Show(string message, ToastLevel level, string? title = null, int duration = 3000)
+    public void Show(string message, CToastLevel level, string? title = null, int duration = 3000)
     {
         var toast = new ToastMessage
         {

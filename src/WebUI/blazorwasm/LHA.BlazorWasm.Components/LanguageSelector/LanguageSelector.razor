@@ -9,7 +9,7 @@
 
 <div class="lang-selector-container @Class" style="@Style">
 
-    @if (Mode == LanguageSelectorMode.Dropdown)
+    @if (Mode == CLanguageSelectorMode.Dropdown)
     {
         <Select TValue="string"
                 @bind-Value:get="CurrentCulture"
@@ -56,7 +56,7 @@
             </OptionTemplate>
         </Select>
     }
-    else if (Mode == LanguageSelectorMode.Inline)
+    else if (Mode == CLanguageSelectorMode.Inline)
     {
         <div class="lang-inline-group">
             @foreach (var lang in SupportedOptions)

@@ -13,17 +13,17 @@ namespace LHA.BlazorWasm.Components.LanguageSelector;
 /// Example usage:
 /// 
 /// Dropdown:
-/// <LanguageSelector Mode="LanguageSelectorMode.Dropdown" />
+/// <LanguageSelector Mode="CLanguageSelectorMode.Dropdown" />
 /// 
 /// Inline:
-/// <LanguageSelector Mode="LanguageSelectorMode.Inline" />
+/// <LanguageSelector Mode="CLanguageSelectorMode.Inline" />
 /// </summary>
 public partial class LanguageSelector : LhaComponentBase, IDisposable
 {
     /// <summary>
     /// Gets or sets the visual variant mode of the selector (Dropdown or Inline).
     /// </summary>
-    [Parameter] public LanguageSelectorMode Mode { get; set; } = LanguageSelectorMode.Dropdown;
+    [Parameter] public CLanguageSelectorMode Mode { get; set; } = CLanguageSelectorMode.Dropdown;
 
     /// <summary>
     /// Defines if the flag icon should be shown.
@@ -63,10 +63,10 @@ public partial class LanguageSelector : LhaComponentBase, IDisposable
     /// By default, it will fall back to English and Vietnamese if not explicitly provided.
     /// </summary>
     [Parameter]
-    public IEnumerable<LanguageCode> SupportedLanguages { get; set; } = new[]
+    public IEnumerable<CLanguageCode> SupportedLanguages { get; set; } = new[]
     {
-        LanguageCode.EN,
-        LanguageCode.VI
+        CLanguageCode.EN,
+        CLanguageCode.VI
     };
 
     private IReadOnlyList<LanguageOption> SupportedOptions =>

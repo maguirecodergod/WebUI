@@ -6,13 +6,13 @@ internal sealed class ThemeService(ThemeState themeState, ILocalStorageService l
 {
     private const string ThemeStorageKey = "app:theme";
 
-    public ThemeMode CurrentTheme => themeState.CurrentTheme;
+    public CThemeMode CurrentTheme => themeState.CurrentTheme;
 
     public string ThemeClass => CurrentTheme switch
     {
-        ThemeMode.Light => "theme-light",
-        ThemeMode.Dark => "theme-dark",
-        ThemeMode.System => "theme-light", // Assuming default fallback, could be enhanced with media queries
+        CThemeMode.Light => "theme-light",
+        CThemeMode.Dark => "theme-dark",
+        CThemeMode.System => "theme-light", // Assuming default fallback, could be enhanced with media queries
         _ => "theme-light"
     };
 
@@ -20,17 +20,17 @@ internal sealed class ThemeService(ThemeState themeState, ILocalStorageService l
     {
         var savedThemeStr = await localStorage.GetAsync<string>(ThemeStorageKey);
 
-        if (Enum.TryParse<ThemeMode>(savedThemeStr, out var savedTheme))
+        if (Enum.TryParse<CThemeMode>(savedThemeStr, out var savedTheme))
         {
             themeState.NotifyThemeChanged(savedTheme);
         }
         else
         {
-            themeState.NotifyThemeChanged(ThemeMode.System);
+            themeState.NotifyThemeChanged(CThemeMode.System);
         }
     }
 
-    public async Task SetThemeAsync(ThemeMode theme)
+    public async Task SetThemeAsync(CThemeMode theme)
     {
         if (themeState.CurrentTheme != theme)
         {

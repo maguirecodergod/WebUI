@@ -8,23 +8,23 @@ public static class StatusBadgeModuleRegistration
 {
     public static void RegisterOrderModuleMappings(this IServiceProvider serviceProvider)
     {
-        serviceProvider.RegisterBadgeMappings<OrderStatus>(builder =>
+        serviceProvider.RegisterBadgeMappings<COrderStatus>(builder =>
         {
-            builder.Map(OrderStatus.Pending, m => { m.Style = BadgeStyle.Warning; m.Variant = BadgeVariant.Soft; m.Icon = "bi bi-clock"; });
-            builder.Map(OrderStatus.Processing, m => { m.Style = BadgeStyle.Primary; m.Variant = BadgeVariant.Soft; m.Icon = "bi bi-gear-fill"; m.IsPulse = true; });
-            builder.Map(OrderStatus.Completed, m => { m.Style = BadgeStyle.Success; m.Variant = BadgeVariant.Soft; m.Icon = "bi bi-check-circle-fill"; });
-            builder.Map(OrderStatus.Cancelled, m => { m.Style = BadgeStyle.Danger; m.Variant = BadgeVariant.Soft; m.Icon = "bi bi-x-circle-fill"; });
+            builder.Map(COrderStatus.Pending, m => { m.Style = CBadgeStyle.Warning; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-clock"; });
+            builder.Map(COrderStatus.Processing, m => { m.Style = CBadgeStyle.Primary; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-gear-fill"; m.IsPulse = true; });
+            builder.Map(COrderStatus.Completed, m => { m.Style = CBadgeStyle.Success; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-check-circle-fill"; });
+            builder.Map(COrderStatus.Cancelled, m => { m.Style = CBadgeStyle.Danger; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-x-circle-fill"; });
         });
     }
 
     public static void RegisterPaymentModuleMappings(this IServiceProvider serviceProvider)
     {
-        serviceProvider.RegisterBadgeMappings<PaymentStatus>(builder =>
+        serviceProvider.RegisterBadgeMappings<CPaymentStatus>(builder =>
         {
-            builder.Map(PaymentStatus.Unpaid, m => { m.Style = BadgeStyle.Secondary; m.Variant = BadgeVariant.Soft; m.Icon = "bi bi-cash"; m.Tooltip = "Awaiting payment"; });
-            builder.Map(PaymentStatus.Paid, m => { m.Style = BadgeStyle.Success; m.Variant = BadgeVariant.Soft; m.Icon = "bi bi-currency-dollar"; m.Tooltip = "Payment confirmed"; });
-            builder.Map(PaymentStatus.Failed, m => { m.Style = BadgeStyle.Danger; m.Variant = BadgeVariant.Soft; m.Icon = "bi bi-exclamation-triangle-fill"; m.Tooltip = "Transaction failed"; });
-            builder.Map(PaymentStatus.Refunded, m => { m.Style = BadgeStyle.Info; m.Variant = BadgeVariant.Soft; m.Icon = "bi bi-arrow-counterclockwise"; m.Tooltip = "Amount returned to customer"; });
+            builder.Map(CPaymentStatus.Unpaid, m => { m.Style = CBadgeStyle.Secondary; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-cash"; m.Tooltip = "Awaiting payment"; });
+            builder.Map(CPaymentStatus.Paid, m => { m.Style = CBadgeStyle.Success; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-currency-dollar"; m.Tooltip = "Payment confirmed"; });
+            builder.Map(CPaymentStatus.Failed, m => { m.Style = CBadgeStyle.Danger; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-exclamation-triangle-fill"; m.Tooltip = "Transaction failed"; });
+            builder.Map(CPaymentStatus.Refunded, m => { m.Style = CBadgeStyle.Info; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-arrow-counterclockwise"; m.Tooltip = "Amount returned to customer"; });
         });
     }
 }

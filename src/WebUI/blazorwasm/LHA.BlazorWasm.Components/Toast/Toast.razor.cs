@@ -23,10 +23,10 @@ public partial class Toast : LhaComponentBase, IDisposable
     {
         return Message?.Level switch
         {
-            ToastLevel.Success => "toast-success",
-            ToastLevel.Info => "toast-info",
-            ToastLevel.Warning => "toast-warning",
-            ToastLevel.Error => "toast-error",
+            CToastLevel.Success => "toast-success",
+            CToastLevel.Info => "toast-info",
+            CToastLevel.Warning => "toast-warning",
+            CToastLevel.Error => "toast-error",
             _ => "toast-info"
         };
     }

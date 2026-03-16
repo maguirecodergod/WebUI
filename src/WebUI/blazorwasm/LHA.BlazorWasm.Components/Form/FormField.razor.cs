@@ -33,7 +33,7 @@ public partial class FormField : LhaComponentBase
     /// <summary>
     /// Gets or sets the layout mode (Vertical or Horizontal).
     /// </summary>
-    [Parameter] public FormFieldLayout Layout { get; set; } = FormFieldLayout.Vertical;
+    [Parameter] public CFormFieldLayout Layout { get; set; } = CFormFieldLayout.Vertical;
 
     /// <summary>
     /// Gets or sets additional custom CSS classes.
@@ -66,7 +66,7 @@ public partial class FormField : LhaComponentBase
     {
         var classes = new List<string> { "form-field" };
 
-        if (Layout == FormFieldLayout.Horizontal)
+        if (Layout == CFormFieldLayout.Horizontal)
         {
             classes.Add("form-field-horizontal");
         }

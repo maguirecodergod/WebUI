@@ -76,7 +76,7 @@ internal sealed class StatusBadgeService : IStatusBadgeService
         }
 
         // 4. Default Fallback
-        return ApplyDefaults(value, new StatusBadgeMetadata { Style = BadgeStyle.Secondary });
+        return ApplyDefaults(value, new StatusBadgeMetadata { Style = CBadgeStyle.Secondary });
     }
 
     private StatusBadgeMetadata ApplyDefaults<TEnum>(TEnum value, StatusBadgeMetadata metadata) where TEnum : struct, Enum
@@ -92,13 +92,13 @@ internal sealed class StatusBadgeService : IStatusBadgeService
     {
         name = name.ToLower();
         if (name.Contains("success") || name.Contains("paid") || name.Contains("completed") || name.Contains("active"))
-            return new StatusBadgeMetadata { Style = BadgeStyle.Success, Variant = BadgeVariant.Soft };
+            return new StatusBadgeMetadata { Style = CBadgeStyle.Success, Variant = CBadgeVariant.Soft };
 
         if (name.Contains("error") || name.Contains("fail") || name.Contains("cancel") || name.Contains("deleted"))
-            return new StatusBadgeMetadata { Style = BadgeStyle.Danger, Variant = BadgeVariant.Soft };
+            return new StatusBadgeMetadata { Style = CBadgeStyle.Danger, Variant = CBadgeVariant.Soft };
 
         if (name.Contains("pending") || name.Contains("warning") || name.Contains("processing"))
-            return new StatusBadgeMetadata { Style = BadgeStyle.Warning, Variant = BadgeVariant.Soft };
+            return new StatusBadgeMetadata { Style = CBadgeStyle.Warning, Variant = CBadgeVariant.Soft };
 
         return null;
     }

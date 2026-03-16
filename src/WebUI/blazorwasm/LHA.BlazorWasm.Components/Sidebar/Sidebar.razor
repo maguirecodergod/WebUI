@@ -9,7 +9,7 @@
      @onmouseleave="HandleMouseLeave">
 
     @* ── Mobile Overlay Backdrop ── *@
-    @if (State == SidebarState.Hidden && _mobileOpen)
+    @if (State == CSidebarState.Hidden && _mobileOpen)
     {
         <div class="lha-sidebar__overlay lha-sidebar__overlay--visible"
              @onclick="CloseMobileDrawer"></div>
@@ -54,7 +54,7 @@
     </nav>
 
     @* ── Resize Handle (Desktop only, Expanded state) ── *@
-    @if (Resizable && EffectiveState == SidebarState.Expanded)
+    @if (Resizable && EffectiveState == CSidebarState.Expanded)
     {
         <div class="lha-sidebar__resize-handle"
              @onmousedown="StartResize"
@@ -65,14 +65,14 @@
     }
 
     @* ── Internal Toggle Button (Desktop only) ── *@
-    @if (ShowToggle && State != SidebarState.Hidden)
+    @if (ShowToggle && State != CSidebarState.Hidden)
     {
         <button type="button" class="lha-sidebar__internal-toggle"
                 @onclick="HandleInternalToggle"
                 aria-label="Toggle Sidebar"
                 title="Toggle Sidebar">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                @if (State == SidebarState.Expanded)
+                @if (State == CSidebarState.Expanded)
                 {
                     <polyline points="15 18 9 12 15 6"></polyline>
                 }

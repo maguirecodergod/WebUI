@@ -3,7 +3,7 @@ namespace LHA.BlazorWasm.Components.Section;
 /// <summary>
 /// Defines the visual variant for a <see cref="Section"/> component.
 /// </summary>
-public enum SectionVariant
+public enum CSectionVariant
 {
     /// <summary>
     /// Default bordered card style.

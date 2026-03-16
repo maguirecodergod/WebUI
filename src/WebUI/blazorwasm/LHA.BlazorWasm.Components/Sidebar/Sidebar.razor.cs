@@ -31,12 +31,12 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     /// <summary>
     /// The current visual state of the sidebar. Bind two-way with <see cref="StateChanged"/>.
     /// </summary>
-    [Parameter] public SidebarState State { get; set; } = SidebarState.Expanded;
+    [Parameter] public CSidebarState State { get; set; } = CSidebarState.Expanded;
 
     /// <summary>
     /// Two-way binding callback for <see cref="State"/>.
     /// </summary>
-    [Parameter] public EventCallback<SidebarState> StateChanged { get; set; }
+    [Parameter] public EventCallback<CSidebarState> StateChanged { get; set; }
 
     /// <summary>
     /// Whether the sidebar edge can be dragged to resize width. Desktop only.
@@ -134,9 +134,9 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
 
     // Snapshot for ShouldRender optimization
     private string? _previousItemsJson;
-    private SidebarState _previousState;
+    private CSidebarState _previousState;
     private int _previousWidth;
-    private ThemeMode _previousTheme;
+    private CThemeMode _previousTheme;
     private string? _previousCulture;
 
     private const string WidthStorageKey = "lha:sidebar:width";
@@ -149,19 +149,19 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     /// <summary>
     /// The effective display state: if hover-expanding a mini sidebar, treat as Expanded.
     /// </summary>
-    private SidebarState EffectiveState =>
-        State == SidebarState.Mini && _hoverExpanded ? SidebarState.Expanded : State;
+    private CSidebarState EffectiveState =>
+        State == CSidebarState.Mini && _hoverExpanded ? CSidebarState.Expanded : State;
 
     private string StateClass => State switch
     {
-        SidebarState.Expanded => "lha-sidebar--expanded",
-        SidebarState.Mini => "lha-sidebar--mini",
-        SidebarState.Hidden => _mobileOpen ? "lha-sidebar--drawer-open" : "lha-sidebar--hidden",
+        CSidebarState.Expanded => "lha-sidebar--expanded",
+        CSidebarState.Mini => "lha-sidebar--mini",
+        CSidebarState.Hidden => _mobileOpen ? "lha-sidebar--drawer-open" : "lha-sidebar--hidden",
         _ => "lha-sidebar--expanded"
     };
 
     private string HoverExpandClass =>
-        _hoverExpanded && State == SidebarState.Mini ? "lha-sidebar--hover-expanded" : "";
+        _hoverExpanded && State == CSidebarState.Mini ? "lha-sidebar--hover-expanded" : "";
 
     private string SidebarStyle
     {
@@ -169,9 +169,9 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
         {
             var width = EffectiveState switch
             {
-                SidebarState.Expanded => _currentWidth > 0 ? _currentWidth : DefaultWidth,
-                SidebarState.Mini => MiniWidth,
-                SidebarState.Hidden => 0,
+                CSidebarState.Expanded => _currentWidth > 0 ? _currentWidth : DefaultWidth,
+                CSidebarState.Mini => MiniWidth,
+                CSidebarState.Hidden => 0,
                 _ => DefaultWidth
             };
 
@@ -280,7 +280,7 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     /// <summary>
     /// Sets the sidebar state programmatically.
     /// </summary>
-    public async Task SetStateAsync(SidebarState newState)
+    public async Task SetStateAsync(CSidebarState newState)
     {
         if (State != newState)
         {
@@ -304,11 +304,11 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     /// </summary>
     private async Task HandleInternalToggle()
     {
-        var newState = State == SidebarState.Expanded ? SidebarState.Mini : SidebarState.Expanded;
+        var newState = State == CSidebarState.Expanded ? CSidebarState.Mini : CSidebarState.Expanded;
         await SetStateAsync(newState);
 
         // Clear hover expansion if we're programmatically turning into Mini mode
-        if (newState == SidebarState.Mini)
+        if (newState == CSidebarState.Mini)
             _hoverExpanded = false;
     }
 
@@ -345,9 +345,9 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     {
         var newState = breakpoint switch
         {
-            "mobile" => SidebarState.Hidden,
-            "tablet" => SidebarState.Mini,
-            _ => SidebarState.Expanded
+            "mobile" => CSidebarState.Hidden,
+            "tablet" => CSidebarState.Mini,
+            _ => CSidebarState.Expanded
         };
 
         if (State != newState)
@@ -394,7 +394,7 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
 
     private async Task StartResize()
     {
-        if (_jsModule == null || !Resizable || EffectiveState != SidebarState.Expanded) return;
+        if (_jsModule == null || !Resizable || EffectiveState != CSidebarState.Expanded) return;
 
         _isDragging = true;
         await _jsModule.InvokeVoidAsync("startResize", _sidebarRef, _dotNetRef, MinWidth, MaxWidth);
@@ -402,7 +402,7 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
 
     private void HandleMouseEnter()
     {
-        if (State == SidebarState.Mini && ExpandOnHover)
+        if (State == CSidebarState.Mini && ExpandOnHover)
         {
             _hoverExpanded = true;
         }
@@ -455,7 +455,7 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
         InvokeAsync(StateHasChanged);
     }
 
-    private void OnThemeChanged(ThemeMode mode)
+    private void OnThemeChanged(CThemeMode mode)
     {
         InvokeAsync(StateHasChanged);
     }
@@ -498,7 +498,7 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
                 var href = item.Href.TrimEnd('/');
                 var uri = currentUri.TrimEnd('/');
 
-                var isMatch = item.MatchMode == NavLinkMatchMode.Exact
+                var isMatch = item.MatchMode == CNavLinkMatchMode.Exact
                     ? string.Equals(uri, href, StringComparison.OrdinalIgnoreCase)
                     : uri.StartsWith(href, StringComparison.OrdinalIgnoreCase);
 

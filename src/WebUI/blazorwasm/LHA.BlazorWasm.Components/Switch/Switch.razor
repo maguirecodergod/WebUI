@@ -2,7 +2,7 @@
 @using LHA.BlazorWasm.Components.Tooltip
 
 <div class="@GetCssClass()">
-    @if (LabelPosition == SwitchLabelPosition.Left && !string.IsNullOrEmpty(Label))
+    @if (LabelPosition == CSwitchLabelPosition.Left && !string.IsNullOrEmpty(Label))
     {
         <span class="lha-switch-label">@Label</span>
     }
@@ -66,7 +66,7 @@
         </button>
     }
 
-    @if (LabelPosition == SwitchLabelPosition.Right && !string.IsNullOrEmpty(Label))
+    @if (LabelPosition == CSwitchLabelPosition.Right && !string.IsNullOrEmpty(Label))
     {
         <span class="lha-switch-label">@Label</span>
     }

@@ -35,10 +35,10 @@
 
     [Parameter] public IEnumerable<EmojiModel> Emojis { get; set; } = Enumerable.Empty<EmojiModel>();
     [Parameter] public string SearchQuery { get; set; } = string.Empty;
-    [Parameter] public EmojiCategory? ActiveCategory { get; set; }
+    [Parameter] public CEmojiCategory? ActiveCategory { get; set; }
     [Parameter] public EventCallback<EmojiModel> OnEmojiSelected { get; set; }
 
-    private IEnumerable<IGrouping<EmojiCategory, EmojiModel>> GroupedEmojis => 
+    private IEnumerable<IGrouping<CEmojiCategory, EmojiModel>> GroupedEmojis => 
         Emojis.Where(e => !ActiveCategory.HasValue || e.Category == ActiveCategory.Value)
               .OrderBy(e => e.Category)
               .GroupBy(e => e.Category);

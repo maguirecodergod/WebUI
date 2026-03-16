@@ -2,7 +2,7 @@ using System;
 
 namespace LHA.BlazorWasm.Shared.Models.StatusBadge;
 
-public enum BadgeStyle
+public enum CBadgeStyle
 {
     Primary,
     Secondary,
@@ -14,7 +14,7 @@ public enum BadgeStyle
     Dark
 }
 
-public enum BadgeVariant
+public enum CBadgeVariant
 {
     Solid,
     Soft,
@@ -24,8 +24,8 @@ public enum BadgeVariant
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Enum)]
 public class StatusBadgeAttribute : Attribute
 {
-    public BadgeStyle Style { get; set; } = BadgeStyle.Secondary;
-    public BadgeVariant Variant { get; set; } = BadgeVariant.Solid;
+    public CBadgeStyle Style { get; set; } = CBadgeStyle.Secondary;
+    public CBadgeVariant Variant { get; set; } = CBadgeVariant.Solid;
     public string? Icon { get; set; }
     public bool IsPulse { get; set; }
     public bool IsPill { get; set; }
@@ -33,7 +33,7 @@ public class StatusBadgeAttribute : Attribute
 
     public StatusBadgeAttribute() { }
     
-    public StatusBadgeAttribute(BadgeStyle style)
+    public StatusBadgeAttribute(CBadgeStyle style)
     {
         Style = style;
     }
@@ -42,8 +42,8 @@ public class StatusBadgeAttribute : Attribute
 public class StatusBadgeMetadata
 {
     public string? Text { get; set; }
-    public BadgeStyle Style { get; set; } = BadgeStyle.Secondary;
-    public BadgeVariant Variant { get; set; } = BadgeVariant.Solid;
+    public CBadgeStyle Style { get; set; } = CBadgeStyle.Secondary;
+    public CBadgeVariant Variant { get; set; } = CBadgeVariant.Solid;
     public bool IsPill { get; set; }
     public bool IsPulse { get; set; }
     public string? Icon { get; set; }

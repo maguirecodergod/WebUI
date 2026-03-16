@@ -13,8 +13,8 @@
     <h1>@L.L("User.Title")</h1>
     
     <div style="display: flex; gap: 1rem; align-items: center;">
-        <LanguageSelector Mode="LanguageSelectorMode.Dropdown"
-                          SupportedLanguages="new[] { LanguageCode.EN, LanguageCode.VI, LanguageCode.FR, LanguageCode.ES, LanguageCode.JA }" />
+        <LanguageSelector Mode="CLanguageSelectorMode.Dropdown"
+                          SupportedLanguages="new[] { CLanguageCode.EN, CLanguageCode.VI, CLanguageCode.FR, CLanguageCode.ES, CLanguageCode.JA }" />
     </div>
 </div>
 
@@ -42,19 +42,19 @@
 <hr />
 <h2>Button Examples</h2>
 
-<Button Style="ButtonStyle.Secondary" Icon="fas fa-arrow-right" IconPosition="ButtonIconPosition.Right">
+<Button Style="CButtonStyle.Secondary" Icon="fas fa-arrow-right" IconPosition="CButtonIconPosition.Right">
     Secondary w/ Icon
 </Button>
 
-<Button Style="ButtonStyle.Success" IsLoading="@isLoading" OnClick="SimulateLoadAsync">
+<Button Style="CButtonStyle.Success" IsLoading="@isLoading" OnClick="SimulateLoadAsync">
     Save Changes (Async)
 </Button>
 
-<Button Style="ButtonStyle.Danger" Disabled="true">
+<Button Style="CButtonStyle.Danger" Disabled="true">
     Disabled Button
 </Button>
 
-<Button Style="ButtonStyle.Link" FullWidth="true" OnClick="OnLinkClick">
+<Button Style="CButtonStyle.Link" FullWidth="true" OnClick="OnLinkClick">
     Full Width Link
 </Button>
 
@@ -62,24 +62,24 @@
 <h2>Toast Notification Examples</h2>
 
 <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem; flex-wrap: wrap;">
-    <Button Style="ButtonStyle.Success"
+    <Button Style="CButtonStyle.Success"
             OnClick="@(() => ToastService.Success("<b>All changes</b> have been saved <br/> successfully to the server.", "Success"))">
         Show Success
     </Button>
-    <Button Style="ButtonStyle.Primary"
+    <Button Style="CButtonStyle.Primary"
             OnClick="@(() => ToastService.Info("A new system update is available for download a sdoiya oidy aoi dysoai ydosiay doisaydo isay oidsya oidyaoidysoaiyd oisay doiay doisay doiasy odisayodi yaoid yaoiy doisaydoisay doisaydoiyas oidysaoi ydsoiay doisay doiay odisy aoidysoai ydoisay doisay odiysaoi dysaoi dyaoi dyasoiy doisay doisay odisay oidyaoi dysoai ydosia ydoasiy doasiy dosiay doiasy oisay doisay oisayo diyaoid ysoaiy odisay.", "Update Available"))">
         Show Info
     </Button>
-    <Button Style="ButtonStyle.Secondary"
+    <Button Style="CButtonStyle.Secondary"
             OnClick="@(() => ToastService.Warning("Your storage is almost full (92% used).", "Storage Warning"))">
         Show Warning
     </Button>
-    <Button Style="ButtonStyle.Danger"
+    <Button Style="CButtonStyle.Danger"
             OnClick="@(() => ToastService.Error("Unexpected disconnection while fetching data.", "Connection Error"))">
         Show Error
     </Button>
-    <Button Style="ButtonStyle.Secondary"
-            OnClick="@(() => ToastService.Show("This notification will stay for 10 seconds.", ToastLevel.Info, "Persistent Info", 10000))">
+    <Button Style="CButtonStyle.Secondary"
+            OnClick="@(() => ToastService.Show("This notification will stay for 10 seconds.", CToastLevel.Info, "Persistent Info", 10000))">
         Show Custom (10s)
     </Button>
 </div>
@@ -146,28 +146,28 @@
                                         <label
                                             style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Error
                                             State</label>
-                                            <DatePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Error"
+                                            <DatePicker TValue="DateTime?" CValidationStatus="CValidationStatus.Error"
                                                         ValidationMessage="@L.L("Validation.DateInPast")" />
                                         </div>
                                         <div>
                                             <label
                                                 style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Warning
                                                 State</label>
-                                                <TimePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Warning"
+                                                <TimePicker TValue="DateTime?" CValidationStatus="CValidationStatus.Warning"
                                                             ValidationMessage="@L.L("Validation.LimitedAvailability")" />
                                             </div>
                                             <div>
                                                 <label
                                                     style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Success
                                                     State</label>
-                                                    <DateTimePicker TValue="DateTime?" ValidationStatus="ValidationStatus.Success"
+                                                    <DateTimePicker TValue="DateTime?" CValidationStatus="CValidationStatus.Success"
                                                                     ValidationMessage="@L.L("Validation.LooksGood")" />
                                                 </div>
                                                 <div style="width: 100%;">
                                                     <label
                                                         style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
                                                         Error</label>
-                                                        <DateRangePicker TInner="DateTime?" ValidationStatus="ValidationStatus.Error"
+                                                        <DateRangePicker TInner="DateTime?" CValidationStatus="CValidationStatus.Error"
                                                                          ValidationMessage="@L.L("Validation.OverlapBooking")" />
                                                     </div>
                                                 </div>
@@ -234,33 +234,33 @@
                                                                         <h2>Tooltip Component Examples</h2>
 
                                                                         <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">
-                                                                            <Tooltip Text="Top tooltip" Placement="TooltipPlacement.Top">
+                                                                            <Tooltip Text="Top tooltip" Placement="CTooltipPlacement.Top">
                                                                                 <Button>Top Placement</Button>
                                                                             </Tooltip>
 
-                                                                            <Tooltip Text="Bottom tooltip" Placement="TooltipPlacement.Bottom">
+                                                                            <Tooltip Text="Bottom tooltip" Placement="CTooltipPlacement.Bottom">
                                                                                 <Button>Bottom Placement</Button>
                                                                             </Tooltip>
 
-                                                                            <Tooltip Text="Left tooltip" Placement="TooltipPlacement.Left">
+                                                                            <Tooltip Text="Left tooltip" Placement="CTooltipPlacement.Left">
                                                                                 <Button>Left Placement</Button>
                                                                             </Tooltip>
 
-                                                                            <Tooltip Text="Right tooltip" Placement="TooltipPlacement.Right">
+                                                                            <Tooltip Text="Right tooltip" Placement="CTooltipPlacement.Right">
                                                                                 <Button>Right Placement</Button>
                                                                             </Tooltip>
                                                                         </div>
 
                                                                         <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 4rem;">
-                                                                            <Tooltip Text="Requires a click" Trigger="TooltipTrigger.Click">
-                                                                                <Button Style="ButtonStyle.Primary">Click me</Button>
+                                                                            <Tooltip Text="Requires a click" Trigger="CTooltipTrigger.Click">
+                                                                                <Button Style="CButtonStyle.Primary">Click me</Button>
                                                                             </Tooltip>
 
-                                                                            <Tooltip Text="Appears on focus" Trigger="TooltipTrigger.Focus">
+                                                                            <Tooltip Text="Appears on focus" Trigger="CTooltipTrigger.Focus">
                                                                                 <input type="text" placeholder="Focus me" class="form-control" style="width: 200px;" />
                                                                             </Tooltip>
 
-                                                                            <Tooltip Placement="TooltipPlacement.Right">
+                                                                            <Tooltip Placement="CTooltipPlacement.Right">
                                                                                 <TooltipContent>
                                                                                     <strong>Advanced Content!</strong><br />
                                                                                     With <em>HTML</em> support.
@@ -279,16 +279,16 @@
                                                                             <div>
                                                                                 <h3>Basic & Text Variants (Wave Animation)</h3>
                                                                                 <Skeleton Width="30%" Height="1.5rem" Style="margin-bottom: 1rem;" /> <!-- Title placeholder -->
-                                                                                <Skeleton Variant="SkeletonVariant.Text" Count="4" /> <!-- Paragraph placeholder -->
+                                                                                <Skeleton Variant="CSkeletonVariant.Text" Count="4" /> <!-- Paragraph placeholder -->
                                                                             </div>
 
                                                                             <div>
                                                                                 <h3>Avatar & Card Combo (Pulse Animation)</h3>
                                                                                 <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                                                                                    <Skeleton Variant="SkeletonVariant.Circular" Width="60px" Height="60px"
-                                                                                              Animation="SkeletonAnimation.Pulse" />
+                                                                                    <Skeleton Variant="CSkeletonVariant.Circular" Width="60px" Height="60px"
+                                                                                              Animation="CSkeletonAnimation.Pulse" />
                                                                                     <div style="flex: 1;">
-                                                                                        <Skeleton Variant="SkeletonVariant.Rectangular" Height="150px" Animation="SkeletonAnimation.Pulse" />
+                                                                                        <Skeleton Variant="CSkeletonVariant.Rectangular" Height="150px" Animation="CSkeletonAnimation.Pulse" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -310,7 +310,7 @@
                                                                                     </Skeleton>
             
                                                                                     <div style="margin-top: 1rem;">
-                                                                                        <Button Style="ButtonStyle.Primary" Size="ButtonSize.Small" OnClick="ToggleDataLoadingAsync">
+                                                                                        <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="ToggleDataLoadingAsync">
                                                                                             Toggle Loading State
                                                                                         </Button>
                                                                                     </div>
@@ -325,20 +325,20 @@
                                                                             <div>
                                                                                 <h3>Order Statuses</h3>
                                                                                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                                                                    <StatusBadge Status="OrderStatus.Pending" />
-                                                                                    <StatusBadge Status="OrderStatus.Processing" />
-                                                                                    <StatusBadge Status="OrderStatus.Completed" />
-                                                                                    <StatusBadge Status="OrderStatus.Cancelled" />
+                                                                                    <StatusBadge Status="COrderStatus.Pending" />
+                                                                                    <StatusBadge Status="COrderStatus.Processing" />
+                                                                                    <StatusBadge Status="COrderStatus.Completed" />
+                                                                                    <StatusBadge Status="COrderStatus.Cancelled" />
                                                                                 </div>
                                                                             </div>
 
                                                                             <div>
                                                                                 <h3>Payment Statuses (Soft Variant - Matching requested style)</h3>
                                                                                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                                                                    <StatusBadge Status="PaymentStatus.Unpaid" />
-                                                                                    <StatusBadge Status="PaymentStatus.Paid" />
-                                                                                    <StatusBadge Status="PaymentStatus.Failed" />
-                                                                                    <StatusBadge Status="PaymentStatus.Refunded" />
+                                                                                    <StatusBadge Status="CPaymentStatus.Unpaid" />
+                                                                                    <StatusBadge Status="CPaymentStatus.Paid" />
+                                                                                    <StatusBadge Status="CPaymentStatus.Failed" />
+                                                                                    <StatusBadge Status="CPaymentStatus.Refunded" />
                                                                                 </div>
                                                                             </div>
 
@@ -346,10 +346,10 @@
                                                                                 <h3>Variant Comparison</h3>
                                                                                 <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
                                                                                     <span>Solid:
-                                                                                        <StatusBadge Status="OrderStatus.Completed" />
+                                                                                        <StatusBadge Status="COrderStatus.Completed" />
                                                                                     </span>
                                                                                     <span>Soft:
-                                                                                        <StatusBadge Status="PaymentStatus.Paid" />
+                                                                                        <StatusBadge Status="CPaymentStatus.Paid" />
                                                                                     </span>
                                                                                 </div>
                                                                             </div>
@@ -357,11 +357,11 @@
                                                                             <div>
                                                                                 <h3>Custom Overrides</h3>
                                                                                 <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                                                                    <StatusBadge Status="OrderStatus.Completed">
+                                                                                    <StatusBadge Status="COrderStatus.Completed">
                                                                                         <i class="fas fa-star me-1"></i> Special Order
                                                                                     </StatusBadge>
             
-                                                                                    <StatusBadge Status="PaymentStatus.Paid" Class="p-3 shadow-sm rounded-pill" />
+                                                                                    <StatusBadge Status="CPaymentStatus.Paid" Class="p-3 shadow-sm rounded-pill" />
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -395,7 +395,7 @@
                                                                                             <label
                                                                                                 style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Multi
                                                                                                 Select (Tags)</label>
-                                                                                                <Select TValue="string" Options="tagOptions" Mode="SelectMode.Multiple" @bind-Values="selectedTags"
+                                                                                                <Select TValue="string" Options="tagOptions" Mode="CSelectMode.Multiple" @bind-Values="selectedTags"
                                                                                                         Placeholder="Select tags..." />
                                                                                             </div>
 
@@ -458,10 +458,10 @@
                                                                                                                 </FormField>
 
                                                                                                                 <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
-                                                                                                                    <Button Type="ButtonType.Submit" Style="ButtonStyle.Primary">
+                                                                                                                    <Button Type="CButtonType.Submit" Style="CButtonStyle.Primary">
                                                                                                                         @L.L("FormField.DemoSubmit")
                                                                                                                     </Button>
-                                                                                                                    <Button Style="ButtonStyle.Secondary" OnClick="ResetForm">
+                                                                                                                    <Button Style="CButtonStyle.Secondary" OnClick="ResetForm">
                                                                                                                         @L.L("FormField.DemoReset")
                                                                                                                     </Button>
                                                                                                                 </div>
@@ -481,12 +481,12 @@
                                                                                                             style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
                                                                                                             <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Horizontal Layout</h3>
                                                                                                             <div style="max-width: 600px;">
-                                                                                                                <FormField Label="@L.L("FormField.DemoCountry")" Layout="FormFieldLayout.Horizontal">
+                                                                                                                <FormField Label="@L.L("FormField.DemoCountry")" Layout="CFormFieldLayout.Horizontal">
                                                                                                                     <Select TValue="string" Options="countryOptions" @bind-Value="selectedCountry"
                                                                                                                             Placeholder="Choose a country..." />
                                                                                                                 </FormField>
 
-                                                                                                                <FormField Label="@L.L("FormField.DemoEmail")" Layout="FormFieldLayout.Horizontal"
+                                                                                                                <FormField Label="@L.L("FormField.DemoEmail")" Layout="CFormFieldLayout.Horizontal"
                                                                                                                            Help="@L.L("FormField.DemoEmailHelp")">
                                                                                                                     <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
                                                                                                                 </FormField>
@@ -517,7 +517,7 @@
                                                                                                         </Section>
 
                                                                                                         @* ── Subtle Variant ── *@
-                                                                                                        <Section Title="@L.L("Section.Notifications")" Icon="🔔" Collapsible="true" Variant="SectionVariant.Subtle">
+                                                                                                        <Section Title="@L.L("Section.Notifications")" Icon="🔔" Collapsible="true" Variant="CSectionVariant.Subtle">
                                                                                                             <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
                                                                                                                 @L.L("Section.NotificationNote")
                                                                                                             </p>
@@ -548,15 +548,15 @@
                                         <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-end;">
                                             <div>
                                                 <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Small</h3>
-                                                <Switch @bind-Value="switchValue2" Size="SwitchSize.Small" Label="Small switch" />
+                                                <Switch @bind-Value="switchValue2" Size="CSwitchSize.Small" Label="Small switch" />
                                             </div>
                                             <div>
                                                 <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Medium</h3>
-                                                <Switch @bind-Value="switchValue3" Size="SwitchSize.Medium" Label="Medium switch" />
+                                                <Switch @bind-Value="switchValue3" Size="CSwitchSize.Medium" Label="Medium switch" />
                                             </div>
                                             <div>
                                                 <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Large</h3>
-                                                <Switch @bind-Value="switchValue4" Size="SwitchSize.Large" Label="Large switch" />
+                                                <Switch @bind-Value="switchValue4" Size="CSwitchSize.Large" Label="Large switch" />
                                             </div>
                                         </div>
 
@@ -584,11 +584,11 @@
                                         <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
                                             <div>
                                                 <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Left Label</h3>
-                                                <Switch @bind-Value="switchValue8" Label="Left label" LabelPosition="SwitchLabelPosition.Left" />
+                                                <Switch @bind-Value="switchValue8" Label="Left label" LabelPosition="CSwitchLabelPosition.Left" />
                                             </div>
                                             <div>
                                                 <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Right Label</h3>
-                                                <Switch @bind-Value="switchValue9" Label="Right label" LabelPosition="SwitchLabelPosition.Right" />
+                                                <Switch @bind-Value="switchValue9" Label="Right label" LabelPosition="CSwitchLabelPosition.Right" />
                                             </div>
                                         </div>
 
@@ -613,7 +613,7 @@
                                                         OffIcon="fas fa-moon" 
                                                         OnIcon="fas fa-sun" 
                                                         Tooltip="Toggle dark mode"
-                                                        Size="SwitchSize.Large" />
+                                                        Size="CSwitchSize.Large" />
                                             </div>
                                         </div>
                                     </div>

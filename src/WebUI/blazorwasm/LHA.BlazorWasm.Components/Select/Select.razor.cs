@@ -20,7 +20,7 @@ public partial class Select<TValue> : LhaComponentBase
     [Parameter] public string Placeholder { get; set; } = "Select...";
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool ReadOnly { get; set; }
-    [Parameter] public SelectMode Mode { get; set; } = SelectMode.Single;
+    [Parameter] public CSelectMode Mode { get; set; } = CSelectMode.Single;
 
     [Parameter] public bool Searchable { get; set; }
     [Parameter] public bool AsyncSearch { get; set; }
@@ -39,7 +39,7 @@ public partial class Select<TValue> : LhaComponentBase
     [Parameter] public RenderFragment<SelectOption<TValue>>? OptionTemplate { get; set; }
     [Parameter] public RenderFragment<TValue?>? ValueTemplate { get; set; }
     [Parameter] public EventCallback OnChange { get; set; }
-    [Parameter] public SelectPlacement Placement { get; set; } = SelectPlacement.Auto;
+    [Parameter] public CSelectPlacement Placement { get; set; } = CSelectPlacement.Auto;
 
     protected SelectState<TValue> State { get; } = new();
     private bool _isOpeningUpwards;
@@ -65,7 +65,7 @@ public partial class Select<TValue> : LhaComponentBase
         }
     }
 
-    private bool IsSingleMode => Mode == SelectMode.Single;
+    private bool IsSingleMode => Mode == CSelectMode.Single;
     private bool HasValue => Value != null;
     private bool HasAnyValue => IsSingleMode ? HasValue : (Values?.Any() ?? false);
 
@@ -123,11 +123,11 @@ public partial class Select<TValue> : LhaComponentBase
 
         if (!State.IsOpen)
         {
-            if (Placement == SelectPlacement.Top)
+            if (Placement == CSelectPlacement.Top)
             {
                 _isOpeningUpwards = true;
             }
-            else if (Placement == SelectPlacement.Bottom)
+            else if (Placement == CSelectPlacement.Bottom)
             {
                 _isOpeningUpwards = false;
             }

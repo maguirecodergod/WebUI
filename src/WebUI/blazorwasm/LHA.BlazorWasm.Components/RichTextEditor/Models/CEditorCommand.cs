@@ -3,7 +3,7 @@ namespace LHA.BlazorWasm.Components.RichTextEditor.Models;
 /// <summary>
 /// All supported rich text editor commands mapped to document.execCommand names.
 /// </summary>
-public enum EditorCommand
+public enum CEditorCommand
 {
     Bold,
     Italic,

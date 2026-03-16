@@ -9,8 +9,8 @@ namespace LHA.BlazorWasm.Components.Tooltip;
 public partial class Tooltip : IDisposable
 {
     [Parameter] public string? Text { get; set; }
-    [Parameter] public TooltipPlacement Placement { get; set; } = TooltipPlacement.Top;
-    [Parameter] public TooltipTrigger Trigger { get; set; } = TooltipTrigger.Hover;
+    [Parameter] public CTooltipPlacement Placement { get; set; } = CTooltipPlacement.Top;
+    [Parameter] public CTooltipTrigger Trigger { get; set; } = CTooltipTrigger.Hover;
     [Parameter] public int Delay { get; set; } = 200;
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public string? Class { get; set; }
@@ -71,7 +71,7 @@ public partial class Tooltip : IDisposable
 
     private async Task OnMouseEnter()
     {
-        if (Trigger == TooltipTrigger.Hover)
+        if (Trigger == CTooltipTrigger.Hover)
         {
             await ShowAsync();
         }
@@ -79,7 +79,7 @@ public partial class Tooltip : IDisposable
 
     private void OnMouseLeave()
     {
-        if (Trigger == TooltipTrigger.Hover)
+        if (Trigger == CTooltipTrigger.Hover)
         {
             Hide();
         }
@@ -87,7 +87,7 @@ public partial class Tooltip : IDisposable
 
     private async Task OnFocusIn()
     {
-        if (Trigger == TooltipTrigger.Focus)
+        if (Trigger == CTooltipTrigger.Focus)
         {
             await ShowAsync();
         }
@@ -95,7 +95,7 @@ public partial class Tooltip : IDisposable
 
     private void OnFocusOut()
     {
-        if (Trigger == TooltipTrigger.Focus)
+        if (Trigger == CTooltipTrigger.Focus)
         {
             Hide();
         }
@@ -103,7 +103,7 @@ public partial class Tooltip : IDisposable
 
     private async Task OnClick()
     {
-        if (Trigger == TooltipTrigger.Click)
+        if (Trigger == CTooltipTrigger.Click)
         {
             if (_isVisible)
             {

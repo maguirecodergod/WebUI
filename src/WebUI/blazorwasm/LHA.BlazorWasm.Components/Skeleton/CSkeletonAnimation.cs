@@ -3,7 +3,7 @@ namespace LHA.BlazorWasm.Components.Skeleton;
 /// <summary>
 /// Defines the animation type for the Skeleton component.
 /// </summary>
-public enum SkeletonAnimation
+public enum CSkeletonAnimation
 {
     /// <summary>
     /// A smooth fading opacity pulse effect.

@@ -24,7 +24,7 @@
         }
     </div>
 
-    <ValidationMessage Status="ValidationStatus" Message="@ValidationMessage" />
+    <ValidationMessage Status="CValidationStatus" Message="@ValidationMessage" />
 
     <PickerPopup IsOpen="State.IsOpen" Class="datetime-range-popup">
         <div class="range-layout">
@@ -62,7 +62,7 @@
         </div>
 
         <div class="range-actions">
-            <Button Type="ButtonType.Button" Class="btn-confirm" Disabled="@(!_tempValue.IsComplete)"
+            <Button Type="CButtonType.Button" Class="btn-confirm" Disabled="@(!_tempValue.IsComplete)"
                 OnClick="ConfirmSelection">
                 @ComputedConfirmText
             </Button>

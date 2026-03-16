@@ -2,11 +2,11 @@ namespace LHA.BlazorWasm.Services.Theme;
 
 public class ThemeState
 {
-    public ThemeMode CurrentTheme { get; set; } = ThemeMode.System;
+    public CThemeMode CurrentTheme { get; set; } = CThemeMode.System;
 
-    public event Action<ThemeMode>? OnThemeChanged;
+    public event Action<CThemeMode>? OnThemeChanged;
 
-    public void NotifyThemeChanged(ThemeMode newTheme)
+    public void NotifyThemeChanged(CThemeMode newTheme)
     {
         CurrentTheme = newTheme;
         OnThemeChanged?.Invoke(newTheme);

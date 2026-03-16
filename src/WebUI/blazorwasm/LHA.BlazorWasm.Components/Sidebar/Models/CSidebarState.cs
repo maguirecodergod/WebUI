@@ -3,7 +3,7 @@ namespace LHA.BlazorWasm.Components.Sidebar.Models;
 /// <summary>
 /// Represents the visual display state of the sidebar component.
 /// </summary>
-public enum SidebarState
+public enum CSidebarState
 {
     /// <summary>
     /// The sidebar is fully expanded showing icons and text labels.

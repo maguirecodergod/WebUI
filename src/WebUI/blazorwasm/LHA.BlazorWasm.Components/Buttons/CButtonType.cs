@@ -3,7 +3,7 @@ namespace LHA.BlazorWasm.Components.Buttons;
 /// <summary>
 /// Specifies the type of the button.
 /// </summary>
-public enum ButtonType
+public enum CButtonType
 {
     /// <summary>
     /// A clickable button.

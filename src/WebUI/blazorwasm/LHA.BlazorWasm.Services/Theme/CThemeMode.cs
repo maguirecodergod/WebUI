@@ -1,6 +1,6 @@
 namespace LHA.BlazorWasm.Services.Theme;
 
-public enum ThemeMode
+public enum CThemeMode
 {
     Light,
     Dark,

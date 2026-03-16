@@ -44,14 +44,14 @@ public abstract class PickerBase<TValue> : LhaComponentBase, IDisposable
     [Parameter] public string? Class { get; set; }
     [Parameter] public string? Style { get; set; }
 
-    [Parameter] public ValidationStatus ValidationStatus { get; set; } = ValidationStatus.None;
+    [Parameter] public CValidationStatus CValidationStatus { get; set; } = CValidationStatus.None;
     [Parameter] public string? ValidationMessage { get; set; }
 
-    protected string ValidationClass => ValidationStatus switch
+    protected string ValidationClass => CValidationStatus switch
     {
-        ValidationStatus.Success => "success",
-        ValidationStatus.Warning => "warning",
-        ValidationStatus.Error => "error",
+        CValidationStatus.Success => "success",
+        CValidationStatus.Warning => "warning",
+        CValidationStatus.Error => "error",
         _ => ""
     };
 

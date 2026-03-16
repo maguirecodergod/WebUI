@@ -4,7 +4,7 @@ namespace LHA.BlazorWasm.Services.Localization;
 /// A comprehensive enumeration of world languages (ISO 639-1 basis).
 /// Used by application modules to pick which languages to display in the selector.
 /// </summary>
-public enum LanguageCode
+public enum CLanguageCode
 {
     EN, // English
     VI, // Vietnamese

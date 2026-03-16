@@ -34,14 +34,14 @@
         <div class="actions">
             @if (ShowHomeButton)
             {
-                <Button Style="ButtonStyle.Primary" OnClick="HandleHome" Icon="fas fa-home">
+                <Button Style="CButtonStyle.Primary" OnClick="HandleHome" Icon="fas fa-home">
                     @GoHomeText
                 </Button>
             }
 
             @if (ShowBackButton)
             {
-                <Button Style="ButtonStyle.Ghost" OnClick="HandleBackAsync" Icon="fas fa-arrow-left">
+                <Button Style="CButtonStyle.Ghost" OnClick="HandleBackAsync" Icon="fas fa-arrow-left">
                     @GoBackText
                 </Button>
             }

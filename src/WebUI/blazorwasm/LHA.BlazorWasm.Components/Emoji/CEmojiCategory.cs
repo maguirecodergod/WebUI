@@ -3,7 +3,7 @@ namespace LHA.BlazorWasm.Components.Emoji;
 /// <summary>
 /// Common emoji categories.
 /// </summary>
-public enum EmojiCategory
+public enum CEmojiCategory
 {
     Smileys,
     People,

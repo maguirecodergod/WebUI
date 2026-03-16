@@ -4,7 +4,7 @@
 {
     <LHA.BlazorWasm.Components.Tooltip.Tooltip Text="@Tooltip" Style="display: inline-flex;">
         <Button Class="@GetCssClass()"
-                Style="ButtonStyle.Link"
+                Style="CButtonStyle.Link"
                 Disabled="@Disabled"
                 OnClick="HandleClick">
             @if (ChildContent != null)
@@ -21,7 +21,7 @@
 else
 {
     <Button Class="@GetCssClass()"
-            Style="ButtonStyle.Link"
+            Style="CButtonStyle.Link"
             Disabled="@Disabled"
             OnClick="HandleClick">
         @if (ChildContent != null)

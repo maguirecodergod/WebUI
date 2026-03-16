@@ -28,7 +28,7 @@ public partial class Section : LhaComponentBase
     /// <summary>
     /// Gets or sets the visual variant of the section.
     /// </summary>
-    [Parameter] public SectionVariant Variant { get; set; } = SectionVariant.Default;
+    [Parameter] public CSectionVariant Variant { get; set; } = CSectionVariant.Default;
 
     /// <summary>
     /// Gets or sets whether the section can be collapsed/expanded by clicking the header.

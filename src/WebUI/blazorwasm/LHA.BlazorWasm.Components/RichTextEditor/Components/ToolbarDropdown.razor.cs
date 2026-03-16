@@ -9,7 +9,7 @@ public partial class ToolbarDropdown : LhaComponentBase
     [Parameter] public string? Tooltip { get; set; }
     [Parameter] public bool IsActive { get; set; }
     [Parameter] public bool Disabled { get; set; }
-    [Parameter] public DropdownAlignment Alignment { get; set; } = DropdownAlignment.Left;
+    [Parameter] public CDropdownAlignment Alignment { get; set; } = CDropdownAlignment.Left;
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private bool IsOpen { get; set; }

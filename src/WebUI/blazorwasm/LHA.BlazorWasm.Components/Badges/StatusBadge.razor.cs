@@ -32,9 +32,9 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
         var styleName = _metadata.Style.ToString().ToLower();
         var variantClass = _metadata.Variant switch
         {
-            BadgeVariant.Solid => GetSolidClass(_metadata.Style),
-            BadgeVariant.Soft => $"badge-soft-{styleName}",
-            BadgeVariant.Outline => $"badge-outline-{styleName}",
+            CBadgeVariant.Solid => GetSolidClass(_metadata.Style),
+            CBadgeVariant.Soft => $"badge-soft-{styleName}",
+            CBadgeVariant.Outline => $"badge-outline-{styleName}",
             _ => GetSolidClass(_metadata.Style)
         };
 
@@ -44,18 +44,18 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
         return $"badge {variantClass} {pillClass} {pulseClass} {_metadata.CustomClass} {Class}".Trim();
     }
 
-    private string GetSolidClass(BadgeStyle style)
+    private string GetSolidClass(CBadgeStyle style)
     {
         return style switch
         {
-            BadgeStyle.Primary => "bg-primary",
-            BadgeStyle.Secondary => "bg-secondary",
-            BadgeStyle.Success => "bg-success",
-            BadgeStyle.Danger => "bg-danger",
-            BadgeStyle.Warning => "bg-warning text-dark",
-            BadgeStyle.Info => "bg-info text-dark",
-            BadgeStyle.Light => "bg-light text-dark",
-            BadgeStyle.Dark => "bg-dark",
+            CBadgeStyle.Primary => "bg-primary",
+            CBadgeStyle.Secondary => "bg-secondary",
+            CBadgeStyle.Success => "bg-success",
+            CBadgeStyle.Danger => "bg-danger",
+            CBadgeStyle.Warning => "bg-warning text-dark",
+            CBadgeStyle.Info => "bg-info text-dark",
+            CBadgeStyle.Light => "bg-light text-dark",
+            CBadgeStyle.Dark => "bg-dark",
             _ => "bg-secondary"
         };
     }

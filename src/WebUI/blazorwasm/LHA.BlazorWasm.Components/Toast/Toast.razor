@@ -3,19 +3,19 @@
 
 <div class="toast-wrapper @GetToastClass() @GetAnimationClass()" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-icon">
-        @if (Message?.Level == ToastLevel.Success)
+        @if (Message?.Level == CToastLevel.Success)
         {
             <i class="fas fa-check-circle"></i>
         }
-        else if (Message?.Level == ToastLevel.Info)
+        else if (Message?.Level == CToastLevel.Info)
         {
             <i class="fas fa-info-circle"></i>
         }
-        else if (Message?.Level == ToastLevel.Warning)
+        else if (Message?.Level == CToastLevel.Warning)
         {
             <i class="fas fa-exclamation-triangle"></i>
         }
-        else if (Message?.Level == ToastLevel.Error)
+        else if (Message?.Level == CToastLevel.Error)
         {
             <i class="fas fa-times-circle"></i>
         }

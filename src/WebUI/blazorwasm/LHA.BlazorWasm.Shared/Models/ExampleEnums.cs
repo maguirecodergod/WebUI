@@ -2,18 +2,18 @@ using LHA.BlazorWasm.Shared.Models.StatusBadge;
 
 namespace LHA.BlazorWasm.Shared.Models;
 
-public enum OrderStatus
+public enum COrderStatus
 {
-    [StatusBadge(BadgeStyle.Warning, Variant = BadgeVariant.Soft, Icon = "bi bi-clock")]
+    [StatusBadge(CBadgeStyle.Warning, Variant = CBadgeVariant.Soft, Icon = "bi bi-clock")]
     Pending,
 
-    [StatusBadge(BadgeStyle.Primary, Variant = BadgeVariant.Soft, Icon = "bi bi-gear-fill", IsPulse = true)]
+    [StatusBadge(CBadgeStyle.Primary, Variant = CBadgeVariant.Soft, Icon = "bi bi-gear-fill", IsPulse = true)]
     Processing,
 
-    [StatusBadge(BadgeStyle.Success, Variant = BadgeVariant.Soft, Icon = "bi bi-check-circle-fill")]
+    [StatusBadge(CBadgeStyle.Success, Variant = CBadgeVariant.Soft, Icon = "bi bi-check-circle-fill")]
     Completed,
 
-    [StatusBadge(BadgeStyle.Danger, Variant = BadgeVariant.Soft, Icon = "bi bi-x-circle-fill")]
+    [StatusBadge(CBadgeStyle.Danger, Variant = CBadgeVariant.Soft, Icon = "bi bi-x-circle-fill")]
     Cancelled
 }
 
@@ -21,7 +21,7 @@ public enum OrderStatus
 /// Demonstrating Convention-Based resolution. 
 /// Even without attributes, "Paid" will be Success and "Failed" will be Danger.
 /// </summary>
-public enum PaymentStatus
+public enum CPaymentStatus
 {
     Unpaid,
     Paid,

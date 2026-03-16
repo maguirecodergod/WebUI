@@ -1,6 +1,6 @@
 namespace LHA.BlazorWasm.Components.ThemeSwitch;
 
-public enum ThemeSwitchVariant
+public enum CThemeSwitchVariant
 {
     Toggle,
     Icon
