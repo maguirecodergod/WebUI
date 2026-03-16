@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.BackgroundWorker\LHA.BackgroundWorker.csproj" />
+    <ProjectReference Include="..\..\Scheduling\LHA.Scheduling.Hangfire\LHA.Scheduling.Hangfire.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

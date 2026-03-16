@@ -1,0 +1,13 @@
+# Buf configuration for proto linting and breaking change detection.
+# Install: https://buf.build/docs/installation
+# Lint:    buf lint
+# Break:   buf breaking --against .git#branch=main
+version: v2
+modules:
+  - path: .
+lint:
+  use:
+    - STANDARD
+breaking:
+  use:
+    - FILE

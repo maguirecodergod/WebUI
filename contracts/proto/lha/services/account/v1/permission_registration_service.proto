@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package lha.services.account.v1;
+
+option csharp_namespace = "LHA.Grpc.Contracts.Services.Account.V1";
+option go_package       = "github.com/lienhoaapp/contracts/gen/go/lha/services/account/v1;accountv1";
+option java_package     = "com.lienhoaapp.contracts.services.account.v1";
+
+// ─── Permission Registration ─────────────────────────────────────
+// Called by external microservices during migration / startup
+// to self-register their permissions with the Account (IAM) service.
+service PermissionRegistrationService {
+  // Unary – register a batch of permissions + groups for a service
+  rpc RegisterPermissions(RegisterPermissionsRequest) returns (RegisterPermissionsResponse);
+}
+
+// ─── Messages ────────────────────────────────────────────────────
+
+message RegisterPermissionsRequest {
+  string                          service_name            = 1;
+  repeated PermissionDefinitionDto permissions             = 2;
+  repeated PermissionGroupDto      groups                  = 3;
+  bool                            grant_all_to_admin_role = 4;
+}
+
+message PermissionDefinitionDto {
+  string name         = 1;
+  string display_name = 2;
+  string group_name   = 3;
+}
+
+message PermissionGroupDto {
+  string name         = 1;
+  string display_name = 2;
+}
+
+message RegisterPermissionsResponse {
+  bool   success = 1;
+  string message = 2;
+}

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Account.Application\LHA.Account.Application.csproj" />
+    <ProjectReference Include="..\LHA.Account.EntityFrameworkCore\LHA.Account.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\LHA.Account.HttpApi\LHA.Account.HttpApi.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Swagger\LHA.Swagger\LHA.Swagger.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.3" />
+  </ItemGroup>
+
+</Project>

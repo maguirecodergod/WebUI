@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Account.Domain.Shared\LHA.Account.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\modules\identity\LHA.Identity.Domain\LHA.Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\..\modules\tenant-management\LHA.TenantManagement.Domain\LHA.TenantManagement.Domain.csproj" />
+    <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.Domain\LHA.AuditLog.Domain.csproj" />
+    <ProjectReference Include="..\..\..\modules\permission-management\LHA.PermissionManagement.Domain\LHA.PermissionManagement.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

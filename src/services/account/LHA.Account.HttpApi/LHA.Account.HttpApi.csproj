@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Account.Application.Contracts\LHA.Account.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Grpc\LHA.Grpc.Server\LHA.Grpc.Server.csproj" />
+    <ProjectReference Include="..\..\..\modules\identity\LHA.Identity.HttpApi\LHA.Identity.HttpApi.csproj" />
+    <ProjectReference Include="..\..\..\modules\tenant-management\LHA.TenantManagement.HttpApi\LHA.TenantManagement.HttpApi.csproj" />
+    <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.HttpApi\LHA.AuditLog.HttpApi.csproj" />
+    <ProjectReference Include="..\..\..\modules\permission-management\LHA.PermissionManagement.HttpApi\LHA.PermissionManagement.HttpApi.csproj" />
+  </ItemGroup>
+
+</Project>

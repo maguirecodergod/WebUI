@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Application\LHA.Ddd.Application.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
+    <ProjectReference Include="..\LHA.TenantManagement.Application.Contracts\LHA.TenantManagement.Application.Contracts.csproj" />
+    <ProjectReference Include="..\LHA.TenantManagement.Domain\LHA.TenantManagement.Domain.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

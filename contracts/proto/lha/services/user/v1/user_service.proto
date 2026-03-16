@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package lha.services.user.v1;
+
+option csharp_namespace = "LHA.Grpc.Contracts.Services.User.V1";
+option go_package       = "github.com/lienhoaapp/contracts/gen/go/lha/services/user/v1;userv1";
+option java_package     = "com.lienhoaapp.contracts.services.user.v1";
+
+import "lha/common/v1/common.proto";
+import "google/protobuf/timestamp.proto";
+
+// ─── Example Service ─────────────────────────────────────────────
+// Demonstrates all four gRPC call patterns.
+service UserService {
+  // Unary – single request / single response
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+
+  // Server streaming – single request / stream of responses
+  rpc StreamUsers(StreamUsersRequest) returns (stream UserDto);
+
+  // Client streaming – stream of requests / single response
+  rpc UploadUsers(stream UploadUserRequest) returns (UploadUsersResponse);
+
+  // Bidirectional streaming – stream ↔ stream
+  rpc SyncUsers(stream SyncUserMessage) returns (stream SyncUserMessage);
+}
+
+// ─── Messages ────────────────────────────────────────────────────
+
+message UserDto {
+  string                    id         = 1;
+  string                    user_name  = 2;
+  string                    email      = 3;
+  string                    name       = 4;
+  string                    surname    = 5;
+  bool                      is_active  = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+message GetUserRequest  { string id = 1; }
+message GetUserResponse { UserDto user = 1; }
+
+message StreamUsersRequest {
+  lha.common.v1.PageRequest page        = 1;
+  string                    filter      = 2;
+  bool                      active_only = 3;
+}
+
+message UploadUserRequest { UserDto user = 1; }
+
+message UploadUsersResponse {
+  int64           total_processed = 1;
+  int64           total_created   = 2;
+  int64           total_updated   = 3;
+  int64           total_failed    = 4;
+  repeated string failed_ids      = 5;
+}
+
+message SyncUserMessage {
+  oneof payload {
+    UserDto      user     = 1;
+    SyncAck      ack      = 2;
+    SyncComplete complete = 3;
+  }
+}
+
+message SyncAck {
+  string id            = 1;
+  bool   success       = 2;
+  string error_message = 3;
+}
+
+message SyncComplete {
+  int64 total_synced = 1;
+  int64 total_failed = 2;
+}

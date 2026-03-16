@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-LHA.Identity.Consumer-b6e3c1a5-4d92-49f0-a318-7c8f2c0b5e1a</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
+    <ProjectReference Include="..\LHA.Identity.Application\LHA.Identity.Application.csproj" />
+    <ProjectReference Include="..\LHA.Identity.EntityFrameworkCore\LHA.Identity.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>

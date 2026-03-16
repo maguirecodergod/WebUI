@@ -1,0 +1,6 @@
+{
+    "Identity_ClaimType_Cannot_Modify_Static_Error_Message_Entry": "Không thể sửa đổi loại claim tĩnh '{0}'.",
+    "Identity_User_UserName_Duplicate_Error_Message_Entry": "Một người dùng với tên người dùng '{0}' đã tồn tại.",
+    "Identity_User_Email_Duplicate_Error_Message_Entry": "Một người dùng với email '{0}' đã tồn tại.",
+    "Identity_Role_Duplicate_Name_Error_Message_Entry": "Một vai trò với tên '{0}' đã tồn tại."
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package lha.common.v1;
+
+option csharp_namespace = "LHA.Grpc.Contracts.Common.V1";
+option go_package       = "github.com/lienhoaapp/contracts/gen/go/lha/common/v1;commonv1";
+option java_package     = "com.lienhoaapp.contracts.common.v1";
+
+// ─── Chunked Binary Streaming ────────────────────────────────────
+// Used for transferring large payloads (files, exports, bulk data)
+// via server-streaming or client-streaming RPCs.
+
+message DataChunk {
+  bytes  data       = 1; // chunk payload
+  int64  offset     = 2; // byte offset within the full payload
+  int64  total_size = 3; // total payload size (set on first chunk, 0 if unknown)
+  bool   is_last    = 4; // true on the final chunk
+  string checksum   = 5; // optional per-chunk integrity hash (e.g. SHA-256)
+}
+
+// ─── Stream Progress ─────────────────────────────────────────────
+// Sent periodically during long-running stream operations.
+
+message StreamProgress {
+  int64  processed_count = 1;
+  int64  failed_count    = 2;
+  int64  total_count     = 3; // 0 if unknown
+  string message         = 4;
+}

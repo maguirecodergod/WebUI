@@ -1,0 +1,165 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/WebUI/" />
+  <Folder Name="/src/WebUI/blazorwasm/">
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.App/LHA.BlazorWasm.App.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.Components/LHA.BlazorWasm.Components.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.DesignSystem/LHA.BlazorWasm.DesignSystem.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.HttpApi.Client/LHA.BlazorWasm.HttpApi.Client.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.Modules/LHA.BlazorWasm.Modules.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.Services/LHA.BlazorWasm.Services.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.Shared/LHA.BlazorWasm.Shared.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.UI/LHA.BlazorWasm.UI.csproj" />
+    <Project Path="src/WebUI/blazorwasm/LHA.Security/LHA.Security.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/" />
+  <Folder Name="/src/frameworks/Auditing/">
+    <Project Path="src/frameworks/Auditing/LHA.Auditing.Contracts/LHA.Auditing.Contracts.csproj" />
+    <Project Path="src/frameworks/Auditing/LHA.Auditing/LHA.Auditing.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/Core/">
+    <Project Path="src/frameworks/Core/LHA.Core/LHA.Core.csproj" />
+    <Project Path="src/frameworks/Core/LHA.AspNetCore/LHA.AspNetCore.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/DistributedLocking/">
+    <Project Path="src/frameworks/DistributedLocking/LHA.DistributedLocking.Abstraction/LHA.DistributedLocking.Abstraction.csproj" />
+    <Project Path="src/frameworks/DistributedLocking/LHA.DistributedLocking/LHA.DistributedLocking.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/Ddd/">
+    <Project Path="src/frameworks/Ddd/LHA.Ddd.Application.Contracts/LHA.Ddd.Application.Contracts.csproj" />
+    <Project Path="src/frameworks/Ddd/LHA.Ddd.Application/LHA.Ddd.Application.csproj" />
+    <Project Path="src/frameworks/Ddd/LHA.Ddd.Domain/LHA.Ddd.Domain.csproj" />
+    <Project Path="src/frameworks/Ddd/LHA.Ddd.Domain.Shared/LHA.Ddd.Domain.Shared.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/Localization/">
+    <Project Path="src/frameworks/Localization/LHA.Localization.Abstraction/LHA.Localization.Abstraction.csproj" />
+    <Project Path="src/frameworks/Localization/LHA.Localization/LHA.Localization.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/MessageBroker/">
+    <Project Path="src/frameworks/MessageBroker/LHA.MessageBroker.Abstraction/LHA.MessageBroker.Abstraction.csproj" />
+    <Project Path="src/frameworks/MessageBroker/LHA.MessageBroker.Kafka/LHA.MessageBroker.Kafka.csproj" />
+    <Project Path="src/frameworks/MessageBroker/LHA.MessageBroker.RabbitMQ/LHA.MessageBroker.RabbitMQ.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/BackgroundWorker/">
+    <Project Path="src/frameworks/BackgroundWorker/LHA.BackgroundWorker.Abstraction/LHA.BackgroundWorker.Abstraction.csproj" />
+    <Project Path="src/frameworks/BackgroundWorker/LHA.BackgroundWorker/LHA.BackgroundWorker.csproj" />
+    <Project Path="src/frameworks/BackgroundWorker/LHA.BackgroundWorker.Quartz/LHA.BackgroundWorker.Quartz.csproj" />
+    <Project Path="src/frameworks/BackgroundWorker/LHA.BackgroundWorker.Hangfire/LHA.BackgroundWorker.Hangfire.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/Caching/">
+    <Project Path="src/frameworks/Caching/LHA.Caching/LHA.Caching.csproj" />
+    <Project Path="src/frameworks/Caching/LHA.Caching.StackExchangeRedis/LHA.Caching.StackExchangeRedis.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/BackgroundJob/">
+    <Project Path="src/frameworks/BackgroundJob/LHA.BackgroundJob.Abstraction/LHA.BackgroundJob.Abstraction.csproj" />
+    <Project Path="src/frameworks/BackgroundJob/LHA.BackgroundJob/LHA.BackgroundJob.csproj" />
+    <Project Path="src/frameworks/BackgroundJob/LHA.BackgroundJob.Hangfire/LHA.BackgroundJob.Hangfire.csproj" />
+    <Project Path="src/frameworks/BackgroundJob/LHA.BackgroundJob.Quartz/LHA.BackgroundJob.Quartz.csproj" />
+    <Project Path="src/frameworks/BackgroundJob/LHA.BackgroundJob.RabbitMQ/LHA.BackgroundJob.RabbitMQ.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/EventBus/">
+    <Project Path="src/frameworks/EventBus/LHA.EventBus.Abstraction/LHA.EventBus.Abstraction.csproj" />
+    <Project Path="src/frameworks/EventBus/LHA.EventBus/LHA.EventBus.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/MultiTenancy/">
+    <Project Path="src/frameworks/MultiTenancy/LHA.MultiTenancy.Abstraction/LHA.MultiTenancy.Abstraction.csproj" />
+    <Project Path="src/frameworks/MultiTenancy/LHA.MultiTenancy/LHA.MultiTenancy.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/Scheduling/">
+    <Project Path="src/frameworks/Scheduling/LHA.Scheduling.Abstraction/LHA.Scheduling.Abstraction.csproj" />
+    <Project Path="src/frameworks/Scheduling/LHA.Scheduling.Hangfire/LHA.Scheduling.Hangfire.csproj" />
+    <Project Path="src/frameworks/Scheduling/LHA.Scheduling.Quartz/LHA.Scheduling.Quartz.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/EntityFrameworkCore/">
+    <Project Path="src/frameworks/EntityFrameworkCore/LHA.EntityFrameworkCore/LHA.EntityFrameworkCore.csproj" />
+    <Project Path="src/frameworks/EntityFrameworkCore/LHA.EntityFrameworkCore.PostgreSQL/LHA.EntityFrameworkCore.PostgreSQL.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/UnitOfWork/">
+    <Project Path="src/frameworks/UnitOfWork/LHA.UnitOfWork/LHA.UnitOfWork.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/Swagger/">
+    <Project Path="src/frameworks/Swagger/LHA.Swagger/LHA.Swagger.csproj" />
+  </Folder>
+  <Folder Name="/src/frameworks/Grpc/">
+    <Project Path="src/frameworks/Grpc/LHA.Grpc.Contracts/LHA.Grpc.Contracts.csproj" />
+    <Project Path="src/frameworks/Grpc/LHA.Grpc.Server/LHA.Grpc.Server.csproj" />
+    <Project Path="src/frameworks/Grpc/LHA.Grpc.Client/LHA.Grpc.Client.csproj" />
+  </Folder>
+  <Folder Name="/src/modules/" />
+  <Folder Name="/src/modules/tenant-management/">
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.Application.Contracts/LHA.TenantManagement.Application.Contracts.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.Application/LHA.TenantManagement.Application.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.BackgroundWorker/LHA.TenantManagement.BackgroundWorker.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.Consumer/LHA.TenantManagement.Consumer.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.Domain.Shared/LHA.TenantManagement.Domain.Shared.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.Domain/LHA.TenantManagement.Domain.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.EntityFrameworkCore/LHA.TenantManagement.EntityFrameworkCore.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.HttpApi.Host/LHA.TenantManagement.HttpApi.Host.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.HttpApi/LHA.TenantManagement.HttpApi.csproj" />
+    <Project Path="src/modules/tenant-management/LHA.TenantManagement.Migrator/LHA.TenantManagement.Migrator.csproj" />
+  </Folder>
+  <Folder Name="/src/modules/identity/">
+    <Project Path="src/modules/identity/LHA.Identity.Application.Contracts/LHA.Identity.Application.Contracts.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.Application/LHA.Identity.Application.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.BackgroundWorker/LHA.Identity.BackgroundWorker.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.Consumer/LHA.Identity.Consumer.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.Domain.Shared/LHA.Identity.Domain.Shared.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.Domain/LHA.Identity.Domain.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.EntityFrameworkCore/LHA.Identity.EntityFrameworkCore.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.HttpApi.Host/LHA.Identity.HttpApi.Host.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.HttpApi/LHA.Identity.HttpApi.csproj" />
+    <Project Path="src/modules/identity/LHA.Identity.Migrator/LHA.Identity.Migrator.csproj" />
+  </Folder>
+  <Folder Name="/src/modules/audit-log/">
+    <Project Path="src/modules/audit-log/LHA.AuditLog.Application.Contracts/LHA.AuditLog.Application.Contracts.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.Application/LHA.AuditLog.Application.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.BackgroundWorker/LHA.AuditLog.BackgroundWorker.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.Consumer/LHA.AuditLog.Consumer.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.Domain.Shared/LHA.AuditLog.Domain.Shared.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.Domain/LHA.AuditLog.Domain.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.EntityFrameworkCore/LHA.AuditLog.EntityFrameworkCore.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.HttpApi.Host/LHA.AuditLog.HttpApi.Host.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.HttpApi/LHA.AuditLog.HttpApi.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.Migrator/LHA.AuditLog.Migrator.csproj" />
+  </Folder>
+  <Folder Name="/src/modules/permission-management/">
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.Application.Contracts/LHA.PermissionManagement.Application.Contracts.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.Application/LHA.PermissionManagement.Application.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.BackgroundWorker/LHA.PermissionManagement.BackgroundWorker.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.Consumer/LHA.PermissionManagement.Consumer.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.Domain.Shared/LHA.PermissionManagement.Domain.Shared.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.Domain/LHA.PermissionManagement.Domain.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.EntityFrameworkCore/LHA.PermissionManagement.EntityFrameworkCore.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.HttpApi.Host/LHA.PermissionManagement.HttpApi.Host.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.HttpApi/LHA.PermissionManagement.HttpApi.csproj" />
+    <Project Path="src/modules/permission-management/LHA.PermissionManagement.Migrator/LHA.PermissionManagement.Migrator.csproj" />
+  </Folder>
+  <Folder Name="/src/services/" />
+  <Folder Name="/src/services/account/">
+    <Project Path="src/services/account/LHA.Account.Application.Contracts/LHA.Account.Application.Contracts.csproj" />
+    <Project Path="src/services/account/LHA.Account.Application/LHA.Account.Application.csproj" />
+    <Project Path="src/services/account/LHA.Account.Consumer/LHA.Account.Consumer.csproj" />
+    <Project Path="src/services/account/LHA.Account.Cron/LHA.Account.Cron.csproj" />
+    <Project Path="src/services/account/LHA.Account.Domain.Shared/LHA.Account.Domain.Shared.csproj" />
+    <Project Path="src/services/account/LHA.Account.Domain/LHA.Account.Domain.csproj" />
+    <Project Path="src/services/account/LHA.Account.EntityFrameworkCore/LHA.Account.EntityFrameworkCore.csproj" />
+    <Project Path="src/services/account/LHA.Account.HttpApi.Host/LHA.Account.HttpApi.Host.csproj" />
+    <Project Path="src/services/account/LHA.Account.HttpApi/LHA.Account.HttpApi.csproj" />
+    <Project Path="src/services/account/LHA.Account.Migrator/LHA.Account.Migrator.csproj" />
+  </Folder>
+  <Folder Name="/src/services/meaga/">
+    <Project Path="src/services/meaga/LHA.Mega.Application/LHA.Mega.Application.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.Application.Contracts/LHA.Mega.Application.Contracts.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.Domain/LHA.Mega.Domain.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.Domain.Shared/LHA.Mega.Domain.Shared.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.HttpApi/LHA.Mega.HttpApi.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.EntityFrameworkCore/LHA.Mega.EntityFrameworkCore.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.Cron/LHA.Mega.Cron.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.Consumer/LHA.Mega.Consumer.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.Migrator/LHA.Mega.Migrator.csproj" />
+    <Project Path="src/services/meaga/LHA.Mega.HttpApi.Host/LHA.Mega.HttpApi.Host.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Test.API/Test.API.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.PermissionManagement.Application\LHA.PermissionManagement.Application.csproj" />
+    <ProjectReference Include="..\LHA.PermissionManagement.EntityFrameworkCore\LHA.PermissionManagement.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\LHA.PermissionManagement.HttpApi\LHA.PermissionManagement.HttpApi.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Swagger\LHA.Swagger\LHA.Swagger.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Auditing\LHA.Auditing\LHA.Auditing.csproj" />
+    <ProjectReference Include="..\..\Ddd\LHA.Ddd.Domain\LHA.Ddd.Domain.csproj" />
+    <ProjectReference Include="..\..\EventBus\LHA.EventBus.Abstraction\LHA.EventBus.Abstraction.csproj" />
+    <ProjectReference Include="..\..\MultiTenancy\LHA.MultiTenancy.Abstraction\LHA.MultiTenancy.Abstraction.csproj" />
+    <ProjectReference Include="..\..\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
+  </ItemGroup>
+
+</Project>

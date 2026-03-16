@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>Broker-agnostic abstractions for the LHA MessageBroker framework. Reference this package from application services to decouple from specific broker implementations (Kafka, RabbitMQ).</Description>
+  </PropertyGroup>
+
+</Project>

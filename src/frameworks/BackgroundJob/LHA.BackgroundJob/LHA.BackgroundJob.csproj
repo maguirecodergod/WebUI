@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.BackgroundJob.Abstraction\LHA.BackgroundJob.Abstraction.csproj" />
+    <ProjectReference Include="..\..\MultiTenancy\LHA.MultiTenancy.Abstraction\LHA.MultiTenancy.Abstraction.csproj" />
+    <ProjectReference Include="..\..\BackgroundWorker\LHA.BackgroundWorker\LHA.BackgroundWorker.csproj" />
+    <ProjectReference Include="..\..\DistributedLocking\LHA.DistributedLocking.Abstraction\LHA.DistributedLocking.Abstraction.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

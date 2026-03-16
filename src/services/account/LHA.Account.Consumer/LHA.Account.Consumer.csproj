@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Account.Application\LHA.Account.Application.csproj" />
+    <ProjectReference Include="..\LHA.Account.EntityFrameworkCore\LHA.Account.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus.Kafka\LHA.EventBus.Kafka.csproj" />
+    <ProjectReference Include="..\..\meaga\LHA.Mega.Domain.Shared\LHA.Mega.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

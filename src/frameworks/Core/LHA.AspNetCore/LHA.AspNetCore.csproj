@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\*.json" />
+    <Content Remove="Localization\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ddd\LHA.Ddd.Application.Contracts\LHA.Ddd.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\Ddd\LHA.Ddd.Domain\LHA.Ddd.Domain.csproj" />
+    <ProjectReference Include="..\..\Localization\LHA.Localization\LHA.Localization.csproj" />
+    <ProjectReference Include="..\..\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
+  </ItemGroup>
+
+</Project>

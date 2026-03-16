@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.TenantManagement.Application\LHA.TenantManagement.Application.csproj" />
+    <ProjectReference Include="..\LHA.TenantManagement.EntityFrameworkCore\LHA.TenantManagement.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\LHA.TenantManagement.HttpApi\LHA.TenantManagement.HttpApi.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Swagger\LHA.Swagger\LHA.Swagger.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

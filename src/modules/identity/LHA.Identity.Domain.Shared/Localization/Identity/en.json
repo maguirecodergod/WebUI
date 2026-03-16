@@ -1,0 +1,6 @@
+{
+    "Identity_ClaimType_Cannot_Modify_Static_Error_Message_Entry": "Cannot modify static claim type '{0}'.",
+    "Identity_User_UserName_Duplicate_Error_Message_Entry": "A user with user name '{0}' already exists.",
+    "Identity_User_Email_Duplicate_Error_Message_Entry": "A user with email '{0}' already exists.",
+    "Identity_Role_Duplicate_Name_Error_Message_Entry": "A role with name '{0}' already exists."
+}

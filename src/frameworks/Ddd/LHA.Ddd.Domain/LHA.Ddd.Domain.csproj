@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Ddd.Domain.Shared\LHA.Ddd.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\Auditing\LHA.Auditing.Contracts\LHA.Auditing.Contracts.csproj" />
+    <ProjectReference Include="..\..\Core\LHA.Core\LHA.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

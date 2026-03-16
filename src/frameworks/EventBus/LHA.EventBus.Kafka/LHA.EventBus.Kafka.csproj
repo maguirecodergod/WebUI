@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.EventBus\LHA.EventBus.csproj" />
+    <ProjectReference Include="..\..\MessageBroker\LHA.MessageBroker.Kafka\LHA.MessageBroker.Kafka.csproj" />
+    <ProjectReference Include="..\..\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

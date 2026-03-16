@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>Scheduler-agnostic abstractions for the LHA Scheduling framework. Reference this package from application services to decouple from specific scheduler implementations (Hangfire, Quartz).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\LHA.Core\LHA.Core.csproj" />
+  </ItemGroup>
+
+</Project>

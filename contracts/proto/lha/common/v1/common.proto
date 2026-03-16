@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package lha.common.v1;
+
+option csharp_namespace = "LHA.Grpc.Contracts.Common.V1";
+option go_package       = "github.com/lienhoaapp/contracts/gen/go/lha/common/v1;commonv1";
+option java_package     = "com.lienhoaapp.contracts.common.v1";
+
+// ─── Pagination ──────────────────────────────────────────────────
+
+message PageRequest {
+  int32  skip             = 1;
+  int32  max_result_count = 2;
+  string sorting          = 3; // e.g. "name asc", "created_at desc"
+}
+
+message PageResponse {
+  int64 total_count  = 1;
+  int32 current_page = 2;
+  int32 total_pages  = 3;
+  int32 page_size    = 4;
+}
+
+// ─── Request Metadata ────────────────────────────────────────────
+// Propagated via gRPC metadata headers or embedded in messages.
+
+message RequestMetadata {
+  string              correlation_id = 1;
+  string              tenant_id      = 2;
+  string              user_id        = 3;
+  map<string, string> extra          = 10;
+}

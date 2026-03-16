@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package lha.common.v1;
+
+option csharp_namespace = "LHA.Grpc.Contracts.Common.V1";
+option go_package       = "github.com/lienhoaapp/contracts/gen/go/lha/common/v1;commonv1";
+option java_package     = "com.lienhoaapp.contracts.common.v1";
+
+// ─── Error Model ─────────────────────────────────────────────────
+// Compatible with google.rpc error model.
+// Transmitted in gRPC trailing metadata as serialised bytes.
+
+message ErrorInfo {
+  string          code    = 1; // machine-readable code, e.g. "ENTITY_NOT_FOUND"
+  string          message = 2; // human-readable description
+  string          target  = 3; // target of the error (field, resource)
+  repeated ErrorInfo details = 4; // nested error details
+}
+
+// ─── Validation Errors ───────────────────────────────────────────
+
+message ValidationErrorInfo {
+  repeated FieldViolation field_violations = 1;
+}
+
+message FieldViolation {
+  string field       = 1; // field path, e.g. "user.email"
+  string description = 2;
+}

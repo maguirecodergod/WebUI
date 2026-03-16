@@ -1,0 +1,15 @@
+
+POST http://localhost:5150/api/identity/auth/register
+Content-Type: application/json
+Accept-Language: vi
+
+{
+  "userName": "TamTest",
+  "email": "tamtest@email.com",
+  "password": "Khuong@090217",
+  "phoneNumber": "0369450059",
+  "name": "Tam Test",
+  "surname": "Tam Test",
+  "lockoutEnabled": true,
+  "roleIds": []
+}
