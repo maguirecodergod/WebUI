@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LHA.BlazorWasm.DesignSystem\LHA.BlazorWasm.DesignSystem.csproj" />
     <ProjectReference Include="..\LHA.BlazorWasm.Services\LHA.BlazorWasm.Services.csproj" />
   </ItemGroup>
 

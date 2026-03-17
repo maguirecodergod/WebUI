@@ -1,14 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.BlazorWasm.Shared\LHA.BlazorWasm.Shared.csproj" />
     <ProjectReference Include="..\LHA.BlazorWasm.Services\LHA.BlazorWasm.Services.csproj" />
     <ProjectReference Include="..\LHA.BlazorWasm.Components\LHA.BlazorWasm.Components.csproj" />
-    <ProjectReference Include="..\LHA.BlazorWasm.UI\LHA.BlazorWasm.UI.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.5" />
   </ItemGroup>
 
   <PropertyGroup>

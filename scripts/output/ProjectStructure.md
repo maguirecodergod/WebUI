@@ -1,11 +1,17 @@
-# Project Structure
+﻿# Project Structure
 
-_Generated automatically on 2026-03-16 17:09:38_
+_Generated automatically on 2026-03-16 06:54:44_
 
 ```
 .
++-- .github
+|   \-- workflows
 +-- .vscode
 |   \-- settings.json
++-- deploy
+|   \-- charts
+|       \-- lha-webui
+|           \-- templates
 +-- src
 |   \-- WebUI
 |       \-- blazorwasm
@@ -22,12 +28,14 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- NotFound.razor
 |           |   |   +-- Test.razor
 |           |   |   \-- Weather.razor
-|           |   +-- _Imports.razor
+|           |   +-- Properties
+|           |   |   \-- launchSettings.json
 |           |   +-- App.razor
 |           |   +-- LHA.BlazorWasm.App.csproj
 |           |   +-- MockAccessTokenProvider.cs
 |           |   +-- Program.cs
-|           |   \-- StatusBadgeModuleRegistration.cs
+|           |   +-- StatusBadgeModuleRegistration.cs
+|           |   \-- _Imports.razor
 |           +-- LHA.BlazorWasm.Components
 |           |   +-- Badges
 |           |   |   +-- StatusBadge.razor
@@ -44,12 +52,12 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- Button.razor
 |           |   |   +-- Button.razor.cs
 |           |   |   +-- Button.razor.css
-|           |   |   +-- CButtonIconPosition.cs
-|           |   |   +-- CButtonSize.cs
-|           |   |   +-- CButtonStyle.cs
-|           |   |   \-- CButtonType.cs
+|           |   |   +-- ButtonIconPosition.cs
+|           |   |   +-- ButtonSize.cs
+|           |   |   +-- ButtonStyle.cs
+|           |   |   \-- ButtonType.cs
 |           |   +-- Emoji
-|           |   |   +-- CEmojiCategory.cs
+|           |   |   +-- EmojiCategory.cs
 |           |   |   +-- EmojiCategoryBar.razor
 |           |   |   +-- EmojiGrid.razor
 |           |   |   +-- EmojiItem.razor
@@ -59,6 +67,8 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- EmojiPicker.razor.css
 |           |   |   \-- EmojiSearch.razor
 |           |   +-- Errors
+|           |   |   +-- GlobalException
+|           |   |   +-- NotFound
 |           |   |   +-- GlobalErrorBoundary.razor
 |           |   |   +-- GlobalErrorBoundary.razor.cs
 |           |   |   +-- GlobalErrorBoundary.razor.css
@@ -67,10 +77,11 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- NotFoundPage.razor.cs
 |           |   |   \-- NotFoundPage.razor.css
 |           |   +-- Form
-|           |   |   +-- CFormFieldLayout.cs
+|           |   |   +-- Internal
 |           |   |   +-- FormField.razor
 |           |   |   +-- FormField.razor.cs
 |           |   |   +-- FormField.razor.css
+|           |   |   +-- FormFieldLayout.cs
 |           |   |   +-- FormHelp.razor
 |           |   |   +-- FormLabel.razor
 |           |   |   \-- FormMessage.razor
@@ -82,7 +93,6 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   +-- Pickers
 |           |   |   +-- Core
 |           |   |   |   +-- CalendarView.razor
-|           |   |   |   +-- CValidationStatus.cs
 |           |   |   |   +-- DateRange.cs
 |           |   |   |   +-- DateUtils.cs
 |           |   |   |   +-- IPickerValueConverter.cs
@@ -90,7 +100,8 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   |   +-- PickerPopup.razor
 |           |   |   |   +-- PickerState.cs
 |           |   |   |   +-- TimeView.razor
-|           |   |   |   \-- ValidationMessage.razor
+|           |   |   |   +-- ValidationMessage.razor
+|           |   |   |   \-- ValidationStatus.cs
 |           |   |   +-- DatePicker
 |           |   |   |   +-- DatePicker.razor
 |           |   |   |   +-- DatePicker.razor.cs
@@ -148,57 +159,45 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- Interop
 |           |   |   |   \-- RichTextEditorInterop.cs
 |           |   |   \-- Models
-|           |   |       +-- CEditorCommand.cs
-|           |   |       +-- EditorEnums.cs
+|           |   |       +-- EditorCommand.cs
 |           |   |       +-- EditorOptions.cs
 |           |   |       +-- EditorState.cs
 |           |   |       \-- ToolbarConfig.cs
 |           |   +-- Section
-|           |   |   +-- CSectionVariant.cs
 |           |   |   +-- Section.razor
 |           |   |   +-- Section.razor.cs
-|           |   |   \-- Section.razor.css
+|           |   |   +-- Section.razor.css
+|           |   |   \-- SectionVariant.cs
 |           |   +-- Select
-|           |   |   +-- CSelectMode.cs
-|           |   |   +-- CSelectPlacement.cs
 |           |   |   +-- Select.razor
 |           |   |   +-- Select.razor.cs
 |           |   |   +-- Select.razor.css
 |           |   |   +-- Select.razor.js
 |           |   |   +-- SelectItem.razor
 |           |   |   +-- SelectItem.razor.cs
+|           |   |   +-- SelectMode.cs
 |           |   |   +-- SelectOption.cs
+|           |   |   +-- SelectPlacement.cs
 |           |   |   +-- SelectSearch.razor
 |           |   |   +-- SelectState.cs
 |           |   |   \-- SelectVirtualList.razor
-|           |   +-- Sidebar
-|           |   |   +-- Models
-|           |   |   |   +-- CSidebarState.cs
-|           |   |   |   \-- SidebarItemModel.cs
-|           |   |   +-- Sidebar.razor
-|           |   |   +-- Sidebar.razor.cs
-|           |   |   +-- Sidebar.razor.css
-|           |   |   +-- Sidebar.razor.js
-|           |   |   +-- SidebarItem.razor
-|           |   |   +-- SidebarItem.razor.cs
-|           |   |   \-- SidebarItem.razor.css
 |           |   +-- Skeleton
-|           |   |   +-- CSkeletonAnimation.cs
-|           |   |   +-- CSkeletonVariant.cs
 |           |   |   +-- Skeleton.razor
 |           |   |   +-- Skeleton.razor.cs
-|           |   |   \-- Skeleton.razor.css
+|           |   |   +-- Skeleton.razor.css
+|           |   |   +-- SkeletonAnimation.cs
+|           |   |   \-- SkeletonVariant.cs
 |           |   +-- Switch
-|           |   |   +-- CSwitchLabelPosition.cs
-|           |   |   +-- CSwitchSize.cs
 |           |   |   +-- Switch.razor
 |           |   |   +-- Switch.razor.cs
-|           |   |   \-- Switch.razor.css
+|           |   |   +-- Switch.razor.css
+|           |   |   +-- SwitchLabelPosition.cs
+|           |   |   \-- SwitchSize.cs
 |           |   +-- ThemeSwitch
-|           |   |   +-- CThemeSwitchVariant.cs
 |           |   |   +-- ThemeSwitch.razor
 |           |   |   +-- ThemeSwitch.razor.cs
-|           |   |   \-- ThemeSwitch.razor.css
+|           |   |   +-- ThemeSwitch.razor.css
+|           |   |   \-- ThemeSwitchVariant.cs
 |           |   +-- Toast
 |           |   |   +-- Toast.razor
 |           |   |   +-- Toast.razor.cs
@@ -207,15 +206,15 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- ToastContainer.razor.cs
 |           |   |   \-- ToastContainer.razor.css
 |           |   +-- Tooltip
-|           |   |   +-- CTooltipPlacement.cs
-|           |   |   +-- CTooltipTrigger.cs
 |           |   |   +-- Tooltip.razor
 |           |   |   +-- Tooltip.razor.cs
-|           |   |   \-- Tooltip.razor.css
-|           |   +-- _Imports.razor
+|           |   |   +-- Tooltip.razor.css
+|           |   |   +-- TooltipPlacement.cs
+|           |   |   \-- TooltipTrigger.cs
 |           |   +-- ComponentExtensions.cs
 |           |   +-- LHA.BlazorWasm.Components.csproj
-|           |   \-- LhaComponentBase.cs
+|           |   +-- LhaComponentBase.cs
+|           |   \-- _Imports.razor
 |           +-- LHA.BlazorWasm.HttpApi.Client
 |           |   +-- Abstractions
 |           |   |   +-- IAccessTokenProvider.cs
@@ -253,10 +252,10 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- IErrorReporter.cs
 |           |   |   \-- ToastApiErrorHandler.cs
 |           |   +-- Localization
-|           |   |   +-- CLanguageCode.cs
-|           |   |   +-- CLanguageSelectorMode.cs
+|           |   |   +-- LanguageCode.cs
 |           |   |   +-- LanguageOption.cs
 |           |   |   +-- LanguageProvider.cs
+|           |   |   +-- LanguageSelectorMode.cs
 |           |   |   +-- LocalizationExtensions.cs
 |           |   |   +-- LocalizationOptions.cs
 |           |   |   \-- LocalizationService.cs
@@ -270,15 +269,15 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- StorageExtensions.cs
 |           |   |   \-- StorageOptions.cs
 |           |   +-- Theme
-|           |   |   +-- CThemeMode.cs
 |           |   |   +-- IThemeService.cs
 |           |   |   +-- ThemeExtensions.cs
+|           |   |   +-- ThemeMode.cs
 |           |   |   +-- ThemeService.cs
 |           |   |   \-- ThemeState.cs
 |           |   +-- Toast
-|           |   |   +-- CToastLevel.cs
 |           |   |   +-- IToastService.cs
 |           |   |   +-- ToastExtensions.cs
+|           |   |   +-- ToastLevel.cs
 |           |   |   +-- ToastMessage.cs
 |           |   |   +-- ToastService.cs
 |           |   |   \-- ToastState.cs
@@ -291,6 +290,9 @@ _Generated automatically on 2026-03-16 17:09:38_
 |           |   |   +-- Formatters
 |           |   |   |   \-- DateTimeFormatter.cs
 |           |   |   \-- CustomHttpHeaderNames.cs
+|           |   +-- Localization
+|           |   |   +-- en.json
+|           |   |   \-- vi.json
 |           |   +-- Models
 |           |   |   +-- Localization
 |           |   |   |   \-- LocalizationState.cs
