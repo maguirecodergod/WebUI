@@ -1,0 +1,51 @@
+<div class="notification-bell-container" @onclick:stopPropagation>
+    <button class="notification-bell" @onclick="ToggleDropdown" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        @if (Count > 0)
+        {
+            <span class="notification-badge">@(Count > 99 ? "99+" : Count)</span>
+        }
+    </button>
+
+    <div class="topbar-dropdown notification-dropdown @(_isOpen ? "show" : "")">
+        <div class="dropdown-header">
+            <h3>Notifications</h3>
+            <button @onclick="MarkAllAsRead">Mark all as read</button>
+        </div>
+        <div class="notification-list">
+            @if (!TopbarService.State.Notifications.Any())
+            {
+                <div class="empty-state">
+                    No new notifications
+                </div>
+            }
+            else
+            {
+                @foreach (var note in TopbarService.State.Notifications)
+                {
+                    <div class="notification-card @(note.IsRead ? "" : "unread")" @onclick="() => HandleClick(note)">
+                        <div class="notification-icon-wrapper @note.Severity.ToString().ToLower()">
+                            @((MarkupString)(note.Icon ?? DefaultIcon(note.Severity)))
+                        </div>
+                        <div class="notification-content">
+                            <p class="notification-title">@note.Title</p>
+                            <p class="notification-message">@note.Message</p>
+                            <span class="notification-time">@GetTimeAgo(note.CreatedAt)</span>
+                        </div>
+                        @if (!note.IsRead)
+                        {
+                            <span class="unread-dot"></span>
+                        }
+                    </div>
+                }
+            }
+        </div>
+        <div class="dropdown-footer">
+            <button @onclick='(() => Navigation.NavigateTo("/notifications"))'>See all notifications</button>
+        </div>
+    </div>
+</div>
+

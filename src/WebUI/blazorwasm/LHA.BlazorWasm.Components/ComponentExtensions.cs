@@ -21,6 +21,9 @@ public static class ComponentExtensions
             }
         });
 
+        // Topbar Service
+        services.AddScoped<Topbar.ITopbarService, Topbar.TopbarService>();
+
         return services;
     }
 }

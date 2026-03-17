@@ -10,47 +10,17 @@
     min-height: 100vh;
 }
 
+/* ── Top Bar handled by Topbar component ── */
 .page-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 0; /* Allow content to shrink below its natural width */
+    min-width: 0;
     overflow-x: hidden;
 }
 
-main {
-    flex: 1;
-}
-
-/* ── Top Bar ── */
-
-.top-row {
-    background-color: var(--sidebar-bg, #f7f7f7);
-    border-bottom: 1px solid var(--sidebar-border, #d6d5d5);
-    justify-content: flex-end;
-    height: 3.5rem;
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-
-.top-row ::deep a, .top-row ::deep .btn-link {
-    white-space: nowrap;
-    margin-left: 1.5rem;
-    text-decoration: none;
-}
-
-.top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
-    text-decoration: underline;
-}
-
-.top-row ::deep a:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
+article.content {
+    padding-top: 1.5rem;
 }
 
 /* ── Sidebar Brand (inside HeaderTemplate) ── */

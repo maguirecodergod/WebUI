@@ -1,0 +1,35 @@
+@using Microsoft.AspNetCore.Components.Web
+
+@if (Item.IsVisible)
+{
+    @if (Item.ActionType == TopbarActionType.Custom && Item.CustomContent != null)
+    {
+        @Item.CustomContent
+    }
+    else if (Item.ActionType == TopbarActionType.Link)
+    {
+        <a href="@Item.Href" class="topbar-item @Class" @onclick="OnClickInternal" title="@Item.Label">
+            @if (!string.IsNullOrEmpty(Item.Icon))
+            {
+                <span class="topbar-item-icon">@((MarkupString)Item.Icon)</span>
+            }
+            @if (ShowLabel)
+            {
+                <span class="topbar-item-label">@Item.Label</span>
+            }
+        </a>
+    }
+    else
+    {
+        <button type="button" class="topbar-item @Class" @onclick="OnClickInternal" title="@Item.Label">
+            @if (!string.IsNullOrEmpty(Item.Icon))
+            {
+                <span class="topbar-item-icon">@((MarkupString)Item.Icon)</span>
+            }
+            @if (ShowLabel)
+            {
+                <span class="topbar-item-label">@Item.Label</span>
+            }
+        </button>
+    }
+}

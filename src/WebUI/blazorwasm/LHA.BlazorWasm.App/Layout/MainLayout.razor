@@ -6,16 +6,13 @@
 @using LHA.BlazorWasm.Components.Sidebar.Models
 @inject IThemeService ThemeService
 @inject ThemeState ThemeState
-@inject ILocalizationService L
+@using LHA.BlazorWasm.Components.Topbar
+@inject ITopbarService TopbarService
 
 <div class="page @ThemeService.ThemeClass">
 
     @* ── New Enterprise Sidebar ── *@
-    <Sidebar @ref="_sidebar"
-             Items="@_sidebarItems"
-             @bind-State="_sidebarState"
-             Resizable="true"
-             ExpandOnHover="false"
+    <Sidebar @ref="_sidebar" Items="@_sidebarItems" State="@(TopbarService.State.IsSidebarCollapsed ? CSidebarState.Mini : CSidebarState.Expanded)" Resizable="true" ExpandOnHover="false"
              OnItemClick="OnSidebarItemClick">
         <HeaderTemplate>
             <div class="sidebar-brand">
@@ -38,23 +35,7 @@
     </Sidebar>
 
     <div class="page-content">
-        <div class="top-row px-4" style="justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                @* Mobile Hamburger Button *@
-                <button class="sidebar-toggle-btn" @onclick="ToggleSidebar" title="Toggle sidebar">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <ThemeSwitch Variant="CThemeSwitchVariant.Toggle" ShowLabel="true" />
-                <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-            </div>
-        </div>
+        <Topbar AppName="LHA WebUI" />
 
         <article class="content px-4">
             @Body
@@ -164,20 +145,6 @@
         }
     };
 
-    private void ToggleSidebar()
-    {
-        if (_sidebarState == CSidebarState.Hidden)
-        {
-            _sidebar?.ToggleMobileDrawer();
-        }
-        else
-        {
-            _sidebarState = _sidebarState == CSidebarState.Expanded
-                ? CSidebarState.Mini
-                : CSidebarState.Expanded;
-        }
-    }
-
     private void OnSidebarItemClick(SidebarItemModel item)
     {
         // Optional: handle additional sidebar item click logic
@@ -186,6 +153,24 @@
     protected override void OnInitialized()
     {
         ThemeState.OnThemeChanged += OnThemeChanged;
+        
+        // Initialize Topbar sample data
+        TopbarService.SetUser(new UserInfoModel 
+        { 
+            DisplayName = "John Doe", 
+            Role = "Administrator",
+            Email = "john.doe@example.com"
+        });
+
+        TopbarService.AddNotification(new NotificationModel
+        {
+            Title = "Welcome!",
+            Message = "Welcome to the enterprise LHA WebUI dashboard.",
+            Severity = NotificationSeverity.Info
+        });
+
+        // Simulate async loading finish
+        Task.Delay(2000).ContinueWith(_ => TopbarService.SetLoading(false));
     }
 
     private void OnThemeChanged(CThemeMode mode)
