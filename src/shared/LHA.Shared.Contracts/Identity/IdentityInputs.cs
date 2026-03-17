@@ -2,7 +2,7 @@ using LHA.Core;
 using LHA.Ddd.Application;
 using LHA.Identity.Domain.Shared;
 
-namespace LHA.Identity.Application.Contracts;
+namespace LHA.Shared.Contracts.Identity;
 
 // ─── User Inputs ─────────────────────────────────────────────────────
 

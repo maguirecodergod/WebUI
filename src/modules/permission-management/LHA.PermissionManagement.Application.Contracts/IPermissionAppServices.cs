@@ -1,4 +1,5 @@
 using LHA.Ddd.Application;
+using LHA.Shared.Contracts.PermissionManagement;
 
 namespace LHA.PermissionManagement.Application.Contracts;
 

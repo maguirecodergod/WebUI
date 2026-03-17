@@ -7,17 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.28.3" />
-    <PackageReference Include="Grpc.Core.Api" Version="2.67.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.67.0" PrivateAssets="All" />
+    <PackageReference Include="Google.Protobuf" Version="3.34.0" />
+    <PackageReference Include="Grpc.Core.Api" Version="2.76.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.78.0" PrivateAssets="All" />
   </ItemGroup>
 
   <!-- Proto files live in contracts/proto/ (language-neutral location).
        ProtoRoot tells protoc the base path for resolving imports. -->
   <ItemGroup>
-    <Protobuf Include="..\..\..\..\contracts\proto\lha\**\*.proto"
-              ProtoRoot="..\..\..\..\contracts\proto"
-              GrpcServices="Both" />
+    <Protobuf Include="..\..\..\..\contracts\proto\lha\**\*.proto" ProtoRoot="..\..\..\..\contracts\proto" GrpcServices="Both" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace LHA.TenantManagement.Application.Contracts;
+namespace LHA.Shared.Contracts.TenantManagement;
 
 /// <summary>
 /// Permission name constants for the Tenant Management module.

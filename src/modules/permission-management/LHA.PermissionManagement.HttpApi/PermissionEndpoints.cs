@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-using P = LHA.PermissionManagement.Application.Contracts.PermissionManagementPermissions;
+using P = LHA.Shared.Contracts.PermissionManagement.PermissionManagementPermissions;
 
 namespace LHA.PermissionManagement.HttpApi;
 

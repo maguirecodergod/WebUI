@@ -1,4 +1,5 @@
 using LHA.Ddd.Application;
+using LHA.Shared.Contracts.TenantManagement;
 
 namespace LHA.TenantManagement.Application.Contracts;
 

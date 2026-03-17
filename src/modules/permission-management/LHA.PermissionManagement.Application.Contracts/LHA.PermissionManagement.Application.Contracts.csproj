@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Application.Contracts\LHA.Ddd.Application.Contracts.csproj" />
     <ProjectReference Include="..\LHA.PermissionManagement.Domain.Shared\LHA.PermissionManagement.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Contracts\LHA.Shared.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

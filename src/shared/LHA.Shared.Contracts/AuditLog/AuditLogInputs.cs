@@ -1,6 +1,6 @@
 using LHA.Ddd.Application;
 
-namespace LHA.AuditLog.Application.Contracts;
+namespace LHA.Shared.Contracts.AuditLog;
 
 /// <summary>
 /// Input for querying audit logs with filtering and paging.

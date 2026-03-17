@@ -1,8 +1,7 @@
-namespace LHA.Identity.Application.Contracts;
+namespace LHA.Shared.Contracts.Identity;
 
 /// <summary>
 /// Permission name constants for the Identity module.
-/// These match the permission definitions seeded in the database.
 /// </summary>
 public static class IdentityPermissions
 {

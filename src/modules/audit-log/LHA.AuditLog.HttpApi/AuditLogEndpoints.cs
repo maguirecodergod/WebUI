@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-using P = LHA.AuditLog.Application.Contracts.AuditLogPermissions;
+using P = LHA.Shared.Contracts.AuditLog.AuditLogPermissions;
 
 namespace LHA.AuditLog.HttpApi;
 

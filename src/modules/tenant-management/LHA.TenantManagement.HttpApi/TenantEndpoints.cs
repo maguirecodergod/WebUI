@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-using P = LHA.TenantManagement.Application.Contracts.TenantManagementPermissions;
+using P = LHA.Shared.Contracts.TenantManagement.TenantManagementPermissions;
 
 namespace LHA.TenantManagement.HttpApi;
 

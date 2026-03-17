@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-using P = LHA.Identity.Application.Contracts.IdentityPermissions;
+using P = LHA.Shared.Contracts.Identity.IdentityPermissions;
 
 namespace LHA.Identity.HttpApi;
 

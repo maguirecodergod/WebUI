@@ -1,6 +1,6 @@
 using LHA.Auditing;
 
-namespace LHA.AuditLog.Application.Contracts;
+namespace LHA.Shared.Contracts.AuditLog;
 
 // ─── AuditLog DTOs ───────────────────────────────────────────────
 

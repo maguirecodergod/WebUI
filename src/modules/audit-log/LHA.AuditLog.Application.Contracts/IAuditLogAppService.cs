@@ -1,4 +1,5 @@
 using LHA.Ddd.Application;
+using LHA.Shared.Contracts.AuditLog;
 
 namespace LHA.AuditLog.Application.Contracts;
 

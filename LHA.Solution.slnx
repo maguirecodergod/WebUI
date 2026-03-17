@@ -1,5 +1,8 @@
 <Solution>
   <Folder Name="/src/" />
+  <Folder Name="/src/shared/">
+    <Project Path="src/shared/LHA.Shared.Contracts/LHA.Shared.Contracts.csproj" />
+  </Folder>
   <Folder Name="/src/WebUI/" />
   <Folder Name="/src/WebUI/blazorwasm/">
     <Project Path="src/WebUI/blazorwasm/LHA.BlazorWasm.App/LHA.BlazorWasm.App.csproj" />

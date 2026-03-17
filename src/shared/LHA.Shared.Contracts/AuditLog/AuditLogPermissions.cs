@@ -1,4 +1,4 @@
-namespace LHA.AuditLog.Application.Contracts;
+namespace LHA.Shared.Contracts.AuditLog;
 
 /// <summary>
 /// Permission name constants for the Audit Log module.

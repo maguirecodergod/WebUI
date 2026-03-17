@@ -1,4 +1,4 @@
-namespace LHA.PermissionManagement.Application.Contracts;
+namespace LHA.Shared.Contracts.PermissionManagement;
 
 /// <summary>
 /// Permission name constants for the Permission Management module.

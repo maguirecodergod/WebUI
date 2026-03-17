@@ -2,7 +2,7 @@ using LHA.Core;
 using LHA.Ddd.Application;
 using LHA.TenantManagement.Domain.Shared;
 
-namespace LHA.TenantManagement.Application.Contracts;
+namespace LHA.Shared.Contracts.TenantManagement;
 
 /// <summary>
 /// Full tenant DTO with audit fields and connection strings.

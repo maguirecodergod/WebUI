@@ -1,5 +1,6 @@
 using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.HttpApi.Client.Core;
+using LHA.Ddd.Application;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Clients;
 

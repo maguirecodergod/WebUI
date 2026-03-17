@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.HttpApi.Client.Serialization;
+using LHA.Ddd.Application;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Core;
 
@@ -76,18 +77,14 @@ public abstract class ApiClientBase : IApiClient
             // Expected to throw in ErrorHandler, but if left unhandled manually fallback:
             return new ApiResponse<T>
             {
-                StatusCode = response.StatusCode,
-                Error = new ApiError { Message = $"HTTP Error {response.StatusCode}" }
+                StatusCode = (int)response.StatusCode,
+                Result = new ResponseResult<T> { Success = false, Errors = [new ErrorDetailDto { Code = "HTTP_ERROR", Message = $"HTTP Error {response.StatusCode}" }] }
             };
         }
 
         if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
         {
-            return new ApiResponse<T>
-            {
-                StatusCode = response.StatusCode,
-                Data = default
-            };
+            return ApiResponse<T>.Ok(default!, (int)response.StatusCode);
         }
 
         try
@@ -96,25 +93,17 @@ public abstract class ApiClientBase : IApiClient
             if (typeof(T) == typeof(string))
             {
                 var stringContent = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                return new ApiResponse<T>
-                {
-                    StatusCode = response.StatusCode,
-                    Data = (T)(object)stringContent
-                };
+                return ApiResponse<T>.Ok((T)(object)stringContent, (int)response.StatusCode);
             }
 
             var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
             if (stream.Length == 0)
             {
-                 return new ApiResponse<T> { StatusCode = response.StatusCode, Data = default };
+                 return ApiResponse<T>.Ok(default!, (int)response.StatusCode);
             }
 
             var data = await JsonSerializer.DeserializeAsync<T>(stream, JsonOptionsProvider.Default, cancellationToken).ConfigureAwait(false);
-            return new ApiResponse<T>
-            {
-                StatusCode = response.StatusCode,
-                Data = data
-            };
+            return ApiResponse<T>.Ok(data!, (int)response.StatusCode);
         }
         catch (Exception ex)
         {

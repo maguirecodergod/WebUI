@@ -3,6 +3,7 @@
 @using LHA.BlazorWasm.HttpApi.Client.Abstractions
 @using LHA.BlazorWasm.HttpApi.Client.Core
 @using System.Text.Json
+@using LHA.Ddd.Application
 @inject ExampleApiClient ApiClient
 
 <PageTitle>API Client Test</PageTitle>
@@ -167,16 +168,17 @@
             var response = await action();
             
             // For the purpose of "Passed", we consider successful status code (2xx)
-            bool isSuccess = (int)response.StatusCode >= 200 && (int)response.StatusCode <= 299;
+            bool isSuccess = response.Result?.Success ?? false;
             
             string content;
-            if (response.Data != null)
+            if (response.Result != null && response.Result.Data is not null)
             {
-                content = JsonSerializer.Serialize(response.Data, new JsonSerializerOptions { WriteIndented = true });
+                content = JsonSerializer.Serialize(response.Result.Data, new JsonSerializerOptions { WriteIndented = true });
             }
-            else if (response.Error != null)
+            else if (response.Result?.Errors?.Count > 0)
             {
-                content = $"Error Message: {response.Error.Message}\nDetails: {JsonSerializer.Serialize(response.Error, new JsonSerializerOptions { WriteIndented = true })}";
+                var firstError = response.Result.Errors[0];
+                content = $"Error Message: {firstError.Message}\nDetails: {JsonSerializer.Serialize(response.Result.Errors, new JsonSerializerOptions { WriteIndented = true })}";
             }
             else
             {
@@ -187,7 +189,7 @@
             {
                 Action = actionName,
                 Success = isSuccess,
-                StatusCode = response.StatusCode,
+                StatusCode = (System.Net.HttpStatusCode)response.StatusCode,
                 Content = content,
                 Timestamp = DateTime.Now
             });

@@ -1,6 +1,6 @@
 using LHA.Ddd.Application;
 
-namespace LHA.PermissionManagement.Application.Contracts;
+namespace LHA.Shared.Contracts.PermissionManagement;
 
 // ──────────────────────────────────────────────────────────────────
 //  PermissionDefinition Inputs

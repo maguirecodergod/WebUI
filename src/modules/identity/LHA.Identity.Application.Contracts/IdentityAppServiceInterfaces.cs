@@ -1,4 +1,5 @@
 using LHA.Ddd.Application;
+using LHA.Shared.Contracts.Identity;
 
 namespace LHA.Identity.Application.Contracts;
 
