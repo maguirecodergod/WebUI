@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace LHA.BlazorWasm.Components.Tooltip;
 
@@ -25,6 +26,11 @@ public partial class Tooltip : IDisposable
     private bool _isVisible;
     private readonly string _tooltipId = $"tooltip-{Guid.NewGuid():N}";
     private CancellationTokenSource? _delayCts;
+
+
+    private IJSObjectReference? _jsModule;
+    private ElementReference _triggerRef;
+    private ElementReference _tooltipRef;
 
     private string WrapperClass => $"tooltip-wrapper {Class}".Trim();
     private string TooltipClass => $"tooltip tooltip-{Placement.ToString().ToLowerInvariant()}";
@@ -54,6 +60,20 @@ public partial class Tooltip : IDisposable
 
         _isVisible = true;
         StateHasChanged();
+
+        if (_jsModule != null)
+        {
+            // Call JS internally asynchronously without blocking UI render cycle
+            _ = _jsModule.InvokeVoidAsync("showTooltip", _triggerRef, _tooltipRef, new { placement = Placement.ToString().ToLowerInvariant() });
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/Tooltip/Tooltip.razor.js");
+        }
     }
 
     /// <summary>
@@ -65,6 +85,10 @@ public partial class Tooltip : IDisposable
         if (_isVisible)
         {
             _isVisible = false;
+            if (_jsModule != null)
+            {
+                _ = _jsModule.InvokeVoidAsync("hideTooltip", _tooltipRef);
+            }
             StateHasChanged();
         }
     }
@@ -120,5 +144,9 @@ public partial class Tooltip : IDisposable
     {
         _delayCts?.Cancel();
         _delayCts?.Dispose();
+        if (_jsModule != null)
+        {
+            _ = _jsModule.InvokeVoidAsync("dispose", _tooltipRef);
+        }
     }
 }

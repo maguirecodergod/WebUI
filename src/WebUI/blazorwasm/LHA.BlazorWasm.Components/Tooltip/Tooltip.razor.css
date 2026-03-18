@@ -11,6 +11,9 @@
 /* Base style defining absolute positioning out of standard container flow natively */
 .tooltip {
     position: absolute;
+    top: 0;
+    left: 0;
+    width: max-content; /* Ensure text doesn't arbitrarily wrap */
     background-color: var(--bs-dark, #212529);
     color: var(--bs-light, #ffffff);
     padding: 0.5rem 0.75rem;
@@ -25,7 +28,8 @@
     /* Baseline fade state */
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    /* Do NOT transition transform. Floating UI alters coordinates dynamically */
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out; 
 }
 
 /* Visibility triggers controlled by code-behind CSS append operations */
@@ -33,51 +37,6 @@
     opacity: 1;
     visibility: visible;
 }
-
-/* Top Placement mapping resolving from Y-Axis offset baseline */
-.tooltip-top {
-    bottom: 100%;
-    left: 50%;
-    transform: translate(-50%, 10px);
-    margin-bottom: 8px; 
-}
-.tooltip-top.visible {
-    transform: translate(-50%, 0);
-}
-
-/* Bottom Placement */
-.tooltip-bottom {
-    top: 100%;
-    left: 50%;
-    transform: translate(-50%, -10px);
-    margin-top: 8px;
-}
-.tooltip-bottom.visible {
-    transform: translate(-50%, 0);
-}
-
-/* Left Placement */
-.tooltip-left {
-    top: 50%;
-    right: 100%;
-    transform: translate(10px, -50%);
-    margin-right: 8px;
-}
-.tooltip-left.visible {
-    transform: translate(0, -50%);
-}
-
-/* Right Placement */
-.tooltip-right {
-    top: 50%;
-    left: 100%;
-    transform: translate(-10px, -50%);
-    margin-left: 8px;
-}
-.tooltip-right.visible {
-    transform: translate(0, -50%);
-}
-
 
 /* Native CSS Arrow Indicator pseudo-elements generated directly out of CSS borders */
 .tooltip-arrow {
@@ -87,34 +46,22 @@
     border-style: solid;
 }
 
-.tooltip-top .tooltip-arrow {
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
+[data-placement^="top"] .tooltip-arrow {
     border-width: 6px 6px 0 6px;
     border-color: var(--bs-dark, #212529) transparent transparent transparent;
 }
 
-.tooltip-bottom .tooltip-arrow {
-    top: -6px;
-    left: 50%;
-    transform: translateX(-50%);
+[data-placement^="bottom"] .tooltip-arrow {
     border-width: 0 6px 6px 6px;
     border-color: transparent transparent var(--bs-dark, #212529) transparent;
 }
 
-.tooltip-left .tooltip-arrow {
-    right: -6px;
-    top: 50%;
-    transform: translateY(-50%);
+[data-placement^="left"] .tooltip-arrow {
     border-width: 6px 0 6px 6px;
     border-color: transparent transparent transparent var(--bs-dark, #212529);
 }
 
-.tooltip-right .tooltip-arrow {
-    left: -6px;
-    top: 50%;
-    transform: translateY(-50%);
+[data-placement^="right"] .tooltip-arrow {
     border-width: 6px 6px 6px 0;
     border-color: transparent var(--bs-dark, #212529) transparent transparent;
 }

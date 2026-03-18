@@ -251,9 +251,6 @@
 /* ═══════════════════ Internal Toggle ═══════════════════ */
 
 ::deep .lha-sidebar__internal-toggle {
-    position: absolute !important;
-    top: 24px;
-    right: -14px;
     width: 28px !important;
     height: 28px !important;
     min-width: 28px !important;
@@ -287,6 +284,18 @@
 ::deep .lha-sidebar__internal-toggle:hover {
     color: var(--sidebar-text-active) !important;
     background-color: var(--sidebar-bg-hover) !important;
+}
+
+::deep .lha-sidebar-internal-toggle-tooltip {
+    display: block;
+    position: absolute !important;
+    top: 24px;
+    right: -14px;
+    z-index: 160;
+}
+
+::deep .lha-sidebar-internal-toggle-tooltip .tooltip-trigger {
+    display: block;
 }
 
 /* Toggle button stays visible on hover now! */

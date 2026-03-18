@@ -4,19 +4,15 @@
 
 <div @ref="_sidebarRef"
      class="lha-sidebar @StateClass @HoverExpandClass @ThemeService.ThemeClass @(_isDragging ? "lha-sidebar--dragging" : "")"
-     style="@SidebarStyle"
-     @onmouseenter="HandleMouseEnter"
-     @onmouseleave="HandleMouseLeave">
+     style="@SidebarStyle" @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave">
 
     @* ── Mobile Overlay Backdrop ── *@
     @if (State == CSidebarState.Hidden && _mobileOpen)
     {
-        <div class="lha-sidebar__overlay lha-sidebar__overlay--visible"
-             @onclick="CloseMobileDrawer"></div>
+        <div class="lha-sidebar__overlay lha-sidebar__overlay--visible" @onclick="CloseMobileDrawer"></div>
     }
 
-    <nav class="lha-sidebar__nav @(_mobileOpen ? "lha-sidebar__nav--open" : "")"
-         role="navigation"
+    <nav class="lha-sidebar__nav @(_mobileOpen ? "lha-sidebar__nav--open" : "")" role="navigation"
          aria-label="@Localizer.L("Sidebar.AriaLabel")">
 
         @* ── Header / Brand Area ── *@
@@ -33,13 +29,8 @@
             {
                 @foreach (var item in Items.Where(i => i.IsVisible).OrderBy(i => i.Order))
                 {
-                    <SidebarItem Item="@item"
-                                 Depth="0"
-                                 CurrentState="@EffectiveState"
-                                 ExpandedIds="@_expandedIds"
-                                 ActiveItemId="@_activeItemId"
-                                 OnToggleExpand="@HandleToggleExpand"
-                                 OnItemClicked="@HandleItemClick" />
+                    <SidebarItem Item="@item" Depth="0" CurrentState="@EffectiveState" ExpandedIds="@_expandedIds"
+                                 ActiveItemId="@_activeItemId" OnToggleExpand="@HandleToggleExpand" OnItemClicked="@HandleItemClick" />
                 }
             }
         </div>
@@ -56,9 +47,7 @@
     @* ── Resize Handle (Desktop only, Expanded state) ── *@
     @if (Resizable && EffectiveState == CSidebarState.Expanded)
     {
-        <div class="lha-sidebar__resize-handle"
-             @onmousedown="StartResize"
-             @onmousedown:preventDefault
+        <div class="lha-sidebar__resize-handle" @onmousedown="StartResize" @onmousedown:preventDefault
              title="@Localizer.L("Sidebar.ResizeTooltip")">
             <div class="lha-sidebar__resize-indicator"></div>
         </div>
@@ -67,22 +56,22 @@
     @* ── Internal Toggle Button (Desktop only) ── *@
     @if (ShowToggle && State != CSidebarState.Hidden)
     {
-        <Button Type="CButtonType.Button"
-                Class="lha-sidebar__internal-toggle"
-                OnClick="HandleInternalToggle"
-                Style="CButtonStyle.Ghost"
-                aria-label="Toggle Sidebar"
-                title="Toggle Sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                @if (State == CSidebarState.Expanded)
-                {
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                }
-                else
-                {
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                }
-            </svg>
-        </Button>
+        <Tooltip Text="@Localizer.L("Sidebar.ResizeTooltip")" Placement="CTooltipPlacement.Left"
+                 Class="lha-sidebar-internal-toggle-tooltip">
+            <Button Type="CButtonType.Button" Class="lha-sidebar__internal-toggle" OnClick="HandleInternalToggle"
+                    Style="CButtonStyle.Ghost" aria-label="Toggle Sidebar" title="Toggle Sidebar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round">
+                    @if (State == CSidebarState.Expanded)
+                    {
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    }
+                    else
+                    {
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    }
+                </svg>
+            </Button>
+        </Tooltip>
     }
 </div>

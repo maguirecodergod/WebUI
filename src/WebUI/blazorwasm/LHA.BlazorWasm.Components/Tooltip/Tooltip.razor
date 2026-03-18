@@ -8,11 +8,11 @@
      @onclick="OnClick"
      style="@Style">
 
-    <div class="tooltip-trigger" aria-describedby="@(_isVisible ? _tooltipId : null)">
+    <div @ref="_triggerRef" class="tooltip-trigger" aria-describedby="@(_isVisible ? _tooltipId : null)">
         @ChildContent
     </div>
 
-    <div class="@TooltipClass @(_isVisible ? "visible" : "")" role="tooltip" id="@_tooltipId" aria-hidden="@(!_isVisible)">
+    <div @ref="_tooltipRef" class="@TooltipClass @(_isVisible ? "visible" : "")" role="tooltip" id="@_tooltipId" aria-hidden="@(!_isVisible)">
         @if (TooltipContent != null)
         {
             @TooltipContent
