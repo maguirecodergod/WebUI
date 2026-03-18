@@ -67,8 +67,10 @@
     @* ── Internal Toggle Button (Desktop only) ── *@
     @if (ShowToggle && State != CSidebarState.Hidden)
     {
-        <button type="button" class="lha-sidebar__internal-toggle"
-                @onclick="HandleInternalToggle"
+        <Button Type="CButtonType.Button"
+                Class="lha-sidebar__internal-toggle"
+                OnClick="HandleInternalToggle"
+                Style="CButtonStyle.Ghost"
                 aria-label="Toggle Sidebar"
                 title="Toggle Sidebar">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -81,6 +83,6 @@
                     <polyline points="9 18 15 12 9 6"></polyline>
                 }
             </svg>
-        </button>
+        </Button>
     }
 </div>

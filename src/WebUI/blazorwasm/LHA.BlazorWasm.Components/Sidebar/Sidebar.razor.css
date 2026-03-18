@@ -250,35 +250,43 @@
 
 /* ═══════════════════ Internal Toggle ═══════════════════ */
 
-.lha-sidebar__internal-toggle {
-    position: absolute;
+::deep .lha-sidebar__internal-toggle {
+    position: absolute !important;
     top: 24px;
     right: -14px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: var(--sidebar-bg);
-    border: 1px solid var(--sidebar-border);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--sidebar-text-muted);
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    border-radius: 50% !important;
+    background-color: var(--sidebar-bg) !important;
+    border: 1px solid var(--sidebar-border) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--sidebar-text-muted) !important;
     cursor: pointer;
     z-index: 160;
     transition: transform 0.2s, background-color 0.2s, color 0.2s, opacity 0.2s;
-    padding: 0;
+    padding: 0 !important;
 }
 
-.lha-sidebar__internal-toggle svg {
+::deep .lha-sidebar__internal-toggle .btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+::deep .lha-sidebar__internal-toggle svg {
     width: 16px;
     height: 16px;
     transition: transform 0.3s ease;
 }
 
-.lha-sidebar__internal-toggle:hover {
-    color: var(--sidebar-text-active);
-    background-color: var(--sidebar-bg-hover);
+::deep .lha-sidebar__internal-toggle:hover {
+    color: var(--sidebar-text-active) !important;
+    background-color: var(--sidebar-bg-hover) !important;
 }
 
 /* Toggle button stays visible on hover now! */
