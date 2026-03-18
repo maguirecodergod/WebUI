@@ -53,13 +53,13 @@
 
 /* ── Active State ── */
 
-.lha-sidebar-item--active > .lha-sidebar-item__row {
+.lha-sidebar-item--active > .lha-sidebar-tooltip-wrapper .lha-sidebar-item__row {
     background-color: var(--sidebar-bg-active, rgba(59, 130, 246, 0.08));
     color: var(--sidebar-text-active, #2563eb);
     font-weight: 600;
 }
 
-.lha-sidebar-item--active > .lha-sidebar-item__row::before {
+.lha-sidebar-item--active > .lha-sidebar-tooltip-wrapper .lha-sidebar-item__row::before {
     content: '';
     position: absolute;
     left: 0;
@@ -105,7 +105,7 @@
     height: 100%;
 }
 
-.lha-sidebar-item--active > .lha-sidebar-item__row .lha-sidebar-item__icon {
+.lha-sidebar-item--active > .lha-sidebar-tooltip-wrapper .lha-sidebar-item__row .lha-sidebar-item__icon {
     color: var(--sidebar-text-active, #2563eb);
 }
 
@@ -189,14 +189,14 @@
 
 /* ── Depth-based visual indicators ── */
 
-.lha-sidebar-item--depth-1 > .lha-sidebar-item__row {
+.lha-sidebar-item--depth-1 > .lha-sidebar-tooltip-wrapper .lha-sidebar-item__row {
     font-size: 13.5px;
 }
 
-.lha-sidebar-item--depth-2 > .lha-sidebar-item__row,
-.lha-sidebar-item--depth-3 > .lha-sidebar-item__row,
-.lha-sidebar-item--depth-4 > .lha-sidebar-item__row,
-.lha-sidebar-item--depth-5 > .lha-sidebar-item__row {
+.lha-sidebar-item--depth-2 > .lha-sidebar-tooltip-wrapper .lha-sidebar-item__row,
+.lha-sidebar-item--depth-3 > .lha-sidebar-tooltip-wrapper .lha-sidebar-item__row,
+.lha-sidebar-item--depth-4 > .lha-sidebar-tooltip-wrapper .lha-sidebar-item__row,
+.lha-sidebar-item--depth-5 > .lha-sidebar-tooltip-wrapper .lha-sidebar-item__row {
     font-size: 13px;
 }
 
@@ -217,4 +217,16 @@
     .lha-sidebar-item__label {
         transition-duration: 0ms !important;
     }
+}
+
+/* ═══════════════════ Tooltip Overrides ═══════════════════ */
+/* Ensure the wrapper doesn't break the flex layout of sidebar items */
+::deep .lha-sidebar-tooltip-wrapper {
+    display: block !important;
+    width: 100%;
+}
+
+::deep .lha-sidebar-tooltip-wrapper .tooltip-trigger {
+    display: block !important;
+    width: 100%;
 }

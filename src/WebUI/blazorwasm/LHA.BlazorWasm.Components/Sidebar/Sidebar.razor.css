@@ -90,6 +90,12 @@
     padding-right: 8px;
 }
 
+/* Allow Tooltips and flyouts to overflow the sidebar normally */
+.lha-sidebar--mini .lha-sidebar__nav,
+.lha-sidebar--mini .lha-sidebar__content {
+    overflow: visible !important;
+}
+
 /* ── Hover Expand logic removed (we exclusively use the toggle button now) ── */
 
 /* ── Hidden State ── */

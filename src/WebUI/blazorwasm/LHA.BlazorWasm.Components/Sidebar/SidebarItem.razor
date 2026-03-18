@@ -11,53 +11,57 @@ else
          style="--item-depth: @Depth">
 
         @* ── Clickable Row ── *@
-        <div class="lha-sidebar-item__row"
-             @onclick="HandleClick"
-             title="@GetTooltip()"
-             role="@(Item.HasChildren ? "treeitem" : "menuitem")"
-             aria-expanded="@(Item.HasChildren ? IsExpanded.ToString().ToLower() : null)"
-             tabindex="@(Item.IsDisabled ? -1 : 0)">
+        <Tooltip Text="@GetTooltip()"
+                 Placement="CTooltipPlacement.Right"
+                 Disabled="@(string.IsNullOrEmpty(GetTooltip()))"
+                 Class="lha-sidebar-tooltip-wrapper">
+            <div class="lha-sidebar-item__row"
+                 @onclick="HandleClick"
+                 role="@(Item.HasChildren ? "treeitem" : "menuitem")"
+                 aria-expanded="@(Item.HasChildren ? IsExpanded.ToString().ToLower() : null)"
+                 tabindex="@(Item.IsDisabled ? -1 : 0)">
 
-            @* Indent Spacer *@
-            @if (Depth > 0 && CurrentState != CSidebarState.Mini)
-            {
-                <span class="lha-sidebar-item__indent"
-                      style="width: calc(var(--sidebar-indent, 16px) * @Depth)"></span>
-            }
+                @* Indent Spacer *@
+                @if (Depth > 0 && CurrentState != CSidebarState.Mini)
+                {
+                    <span class="lha-sidebar-item__indent"
+                          style="width: calc(var(--sidebar-indent, 16px) * @Depth)"></span>
+                }
 
-            @* Icon *@
-            @if (!string.IsNullOrEmpty(Item.Icon))
-            {
-                <span class="lha-sidebar-item__icon" aria-hidden="true">
-                    @((MarkupString)Item.Icon)
+                @* Icon *@
+                @if (!string.IsNullOrEmpty(Item.Icon))
+                {
+                    <span class="lha-sidebar-item__icon" aria-hidden="true">
+                        @((MarkupString)Item.Icon)
+                    </span>
+                }
+
+                @* Label (hidden in Mini mode) *@
+                <span class="lha-sidebar-item__label @(CurrentState == CSidebarState.Mini ? "lha-sidebar-item__label--hidden" : "")">
+                    @Localizer.L(Item.TitleKey)
                 </span>
-            }
 
-            @* Label (hidden in Mini mode) *@
-            <span class="lha-sidebar-item__label @(CurrentState == CSidebarState.Mini ? "lha-sidebar-item__label--hidden" : "")">
-                @Localizer.L(Item.TitleKey)
-            </span>
+                @* Badge *@
+                @if (!string.IsNullOrEmpty(Item.Badge) && CurrentState != CSidebarState.Mini)
+                {
+                    <span class="lha-sidebar-item__badge @(Item.BadgeCssClass ?? "")">
+                        @Item.Badge
+                    </span>
+                }
 
-            @* Badge *@
-            @if (!string.IsNullOrEmpty(Item.Badge) && CurrentState != CSidebarState.Mini)
-            {
-                <span class="lha-sidebar-item__badge @(Item.BadgeCssClass ?? "")">
-                    @Item.Badge
-                </span>
-            }
-
-            @* Expand/Collapse Chevron *@
-            @if (Item.HasChildren && CurrentState != CSidebarState.Mini)
-            {
-                <span class="lha-sidebar-item__chevron @(IsExpanded ? "lha-sidebar-item__chevron--open" : "")"
-                      aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </span>
-            }
-        </div>
+                @* Expand/Collapse Chevron *@
+                @if (Item.HasChildren && CurrentState != CSidebarState.Mini)
+                {
+                    <span class="lha-sidebar-item__chevron @(IsExpanded ? "lha-sidebar-item__chevron--open" : "")"
+                          aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </span>
+                }
+            </div>
+        </Tooltip>
 
         @* ── Children (Collapsible) ── *@
         @if (Item.HasChildren)
