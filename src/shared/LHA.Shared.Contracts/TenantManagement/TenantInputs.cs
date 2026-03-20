@@ -12,8 +12,8 @@ public sealed class CreateTenantInput
     /// <summary>Display name (must be unique).</summary>
     public required string Name { get; init; }
 
-    /// <summary>Database isolation strategy. Defaults to <see cref="MultiTenancyDatabaseStyle.Shared"/>.</summary>
-    public MultiTenancyDatabaseStyle DatabaseStyle { get; init; } = MultiTenancyDatabaseStyle.Shared;
+    /// <summary>Database isolation strategy. Defaults to <see cref="CMultiTenancyDatabaseStyle.Shared"/>.</summary>
+    public CMultiTenancyDatabaseStyle DatabaseStyle { get; init; } = CMultiTenancyDatabaseStyle.Shared;
 
     /// <summary>
     /// Initial connection strings keyed by logical name (e.g., "Default").

@@ -80,7 +80,7 @@ public sealed class CreateOrUpdateClaimTypeInput
 {
     public required string Name { get; init; }
     public bool Required { get; init; }
-    public IdentityClaimValueType ValueType { get; init; } = IdentityClaimValueType.String;
+    public CIdentityClaimValueType ValueType { get; init; } = CIdentityClaimValueType.String;
     public string? Regex { get; init; }
     public string? RegexDescription { get; init; }
     public string? Description { get; init; }

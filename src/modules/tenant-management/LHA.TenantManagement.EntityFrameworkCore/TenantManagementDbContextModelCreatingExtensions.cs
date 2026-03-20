@@ -42,8 +42,8 @@ public static class TenantManagementDbContextModelCreatingExtensions
 
             b.Property(t => t.DatabaseStyle)
                 .IsRequired()
-                .HasDefaultValue(MultiTenancyDatabaseStyle.Shared)
-                .HasSentinel((MultiTenancyDatabaseStyle)0);
+                .HasDefaultValue(CMultiTenancyDatabaseStyle.Shared)
+                .HasSentinel((CMultiTenancyDatabaseStyle)0);
 
             b.HasIndex(t => t.NormalizedName).IsUnique();
 

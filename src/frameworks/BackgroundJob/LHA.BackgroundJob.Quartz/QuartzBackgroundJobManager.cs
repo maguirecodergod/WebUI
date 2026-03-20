@@ -34,7 +34,7 @@ public sealed class QuartzBackgroundJobManager : IBackgroundJobManager
     /// <inheritdoc />
     public async Task<string> EnqueueAsync<TArgs>(
         TArgs args,
-        BackgroundJobPriority priority = BackgroundJobPriority.Normal,
+        CBackgroundJobPriority priority = CBackgroundJobPriority.Normal,
         TimeSpan? delay = null)
     {
         ArgumentNullException.ThrowIfNull(args);
@@ -80,16 +80,16 @@ public sealed class QuartzBackgroundJobManager : IBackgroundJobManager
     }
 
     /// <summary>
-    /// Maps <see cref="BackgroundJobPriority"/> to a Quartz trigger priority (int).
+    /// Maps <see cref="CBackgroundJobPriority"/> to a Quartz trigger priority (int).
     /// Default Quartz priority is 5.
     /// </summary>
-    private static int MapPriority(BackgroundJobPriority priority) => priority switch
+    private static int MapPriority(CBackgroundJobPriority priority) => priority switch
     {
-        BackgroundJobPriority.High => 10,
-        BackgroundJobPriority.AboveNormal => 8,
-        BackgroundJobPriority.Normal => 5,
-        BackgroundJobPriority.BelowNormal => 3,
-        BackgroundJobPriority.Low => 1,
+        CBackgroundJobPriority.High => 10,
+        CBackgroundJobPriority.AboveNormal => 8,
+        CBackgroundJobPriority.Normal => 5,
+        CBackgroundJobPriority.BelowNormal => 3,
+        CBackgroundJobPriority.Low => 1,
         _ => 5
     };
 }

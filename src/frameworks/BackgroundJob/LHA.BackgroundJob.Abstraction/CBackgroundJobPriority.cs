@@ -4,7 +4,7 @@ namespace LHA.BackgroundJob;
 /// Priority of a background job.
 /// Higher values indicate higher priority.
 /// </summary>
-public enum BackgroundJobPriority : byte
+public enum CBackgroundJobPriority : byte
 {
     /// <summary>Low priority.</summary>
     Low = 5,

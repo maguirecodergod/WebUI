@@ -12,7 +12,7 @@ public sealed class NullBackgroundJobManager : IBackgroundJobManager
     /// <inheritdoc />
     public Task<string> EnqueueAsync<TArgs>(
         TArgs args,
-        BackgroundJobPriority priority = BackgroundJobPriority.Normal,
+        CBackgroundJobPriority priority = CBackgroundJobPriority.Normal,
         TimeSpan? delay = null)
     {
         throw new InvalidOperationException(

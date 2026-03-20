@@ -3,7 +3,7 @@ namespace LHA.Identity.Domain.Shared;
 /// <summary>
 /// Represents the result of a login attempt.
 /// </summary>
-public enum LoginResultType
+public enum CLoginResultType
 {
     /// <summary>Login succeeded.</summary>
     Success = 1,
@@ -32,7 +32,7 @@ public enum LoginResultType
 /// <summary>
 /// Value types for <c>IdentityClaimType</c>.
 /// </summary>
-public enum IdentityClaimValueType
+public enum CIdentityClaimValueType
 {
     /// <summary>Free-form string.</summary>
     String = 0,

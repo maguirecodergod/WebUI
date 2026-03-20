@@ -11,7 +11,7 @@ public sealed class TenantDto : FullAuditedEntityDto<Guid>
 {
     public required string Name { get; init; }
     public CMasterStatus Status { get; init; }
-    public MultiTenancyDatabaseStyle DatabaseStyle { get; init; }
+    public CMultiTenancyDatabaseStyle DatabaseStyle { get; init; }
     public string ConcurrencyStamp { get; init; } = string.Empty;
     public List<TenantConnectionStringDto> ConnectionStrings { get; init; } = [];
 }

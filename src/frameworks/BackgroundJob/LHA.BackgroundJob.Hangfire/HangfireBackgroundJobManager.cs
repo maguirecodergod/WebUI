@@ -28,7 +28,7 @@ public sealed class HangfireBackgroundJobManager : IBackgroundJobManager
     /// <inheritdoc />
     public Task<string> EnqueueAsync<TArgs>(
         TArgs args,
-        BackgroundJobPriority priority = BackgroundJobPriority.Normal,
+        CBackgroundJobPriority priority = CBackgroundJobPriority.Normal,
         TimeSpan? delay = null)
     {
         ArgumentNullException.ThrowIfNull(args);
@@ -66,16 +66,16 @@ public sealed class HangfireBackgroundJobManager : IBackgroundJobManager
     }
 
     /// <summary>
-    /// Maps <see cref="BackgroundJobPriority"/> to a Hangfire queue name.
+    /// Maps <see cref="CBackgroundJobPriority"/> to a Hangfire queue name.
     /// Higher priority jobs go to "critical" / "high" queues.
     /// </summary>
-    private static string MapPriorityToQueue(BackgroundJobPriority priority) => priority switch
+    private static string MapPriorityToQueue(CBackgroundJobPriority priority) => priority switch
     {
-        BackgroundJobPriority.High => "critical",
-        BackgroundJobPriority.AboveNormal => "high",
-        BackgroundJobPriority.Normal => "default",
-        BackgroundJobPriority.BelowNormal => "low",
-        BackgroundJobPriority.Low => "low",
+        CBackgroundJobPriority.High => "critical",
+        CBackgroundJobPriority.AboveNormal => "high",
+        CBackgroundJobPriority.Normal => "default",
+        CBackgroundJobPriority.BelowNormal => "low",
+        CBackgroundJobPriority.Low => "low",
         _ => "default"
     };
 }

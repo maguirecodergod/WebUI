@@ -19,7 +19,7 @@ public sealed class IdentityClaimType : FullAuditedAggregateRoot<Guid>
     public bool IsStatic { get; private set; }
 
     /// <summary>Expected value type.</summary>
-    public IdentityClaimValueType ValueType { get; private set; }
+    public CIdentityClaimValueType ValueType { get; private set; }
 
     /// <summary>Regex pattern for value validation.</summary>
     public string? Regex { get; private set; }
@@ -39,7 +39,7 @@ public sealed class IdentityClaimType : FullAuditedAggregateRoot<Guid>
         string name,
         bool required = false,
         bool isStatic = false,
-        IdentityClaimValueType valueType = IdentityClaimValueType.String,
+        CIdentityClaimValueType valueType = CIdentityClaimValueType.String,
         string? regex = null,
         string? regexDescription = null,
         string? description = null)
@@ -58,7 +58,7 @@ public sealed class IdentityClaimType : FullAuditedAggregateRoot<Guid>
     public IdentityClaimType Update(
         string name,
         bool required,
-        IdentityClaimValueType valueType,
+        CIdentityClaimValueType valueType,
         string? regex,
         string? regexDescription,
         string? description)

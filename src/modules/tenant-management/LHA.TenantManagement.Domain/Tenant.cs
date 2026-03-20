@@ -26,7 +26,7 @@ public sealed class TenantEntity : FullAuditedAggregateRoot<Guid>
     public CMasterStatus Status { get; private set; }
 
     /// <summary>Database isolation strategy for this tenant.</summary>
-    public MultiTenancyDatabaseStyle DatabaseStyle { get; private set; }
+    public CMultiTenancyDatabaseStyle DatabaseStyle { get; private set; }
 
     /// <summary>Connection strings owned by this tenant.</summary>
     public IReadOnlyCollection<TenantConnectionString> ConnectionStrings
@@ -43,7 +43,7 @@ public sealed class TenantEntity : FullAuditedAggregateRoot<Guid>
     internal TenantEntity(
         Guid id,
         string name,
-        MultiTenancyDatabaseStyle databaseStyle = MultiTenancyDatabaseStyle.Shared)
+        CMultiTenancyDatabaseStyle databaseStyle = CMultiTenancyDatabaseStyle.Shared)
     {
         Id = id;
         SetNameInternal(name);
@@ -96,7 +96,7 @@ public sealed class TenantEntity : FullAuditedAggregateRoot<Guid>
     // ─── Database Style ──────────────────────────────────────────────
 
     /// <summary>Changes the database isolation strategy.</summary>
-    public TenantEntity SetDatabaseStyle(MultiTenancyDatabaseStyle style)
+    public TenantEntity SetDatabaseStyle(CMultiTenancyDatabaseStyle style)
     {
         DatabaseStyle = style;
         return this;

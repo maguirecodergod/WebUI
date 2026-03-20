@@ -3,7 +3,8 @@
 basePath="/workspaces/WebUI/src"
 
 enums=(
-    "EntityChangeType"
+    "LoginResultType",
+    "IdentityClaimValueType"
 )
 
 echo "Updating references in files..."

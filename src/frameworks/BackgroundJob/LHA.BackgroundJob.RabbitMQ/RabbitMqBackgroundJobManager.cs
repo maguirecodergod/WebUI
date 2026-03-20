@@ -39,7 +39,7 @@ public sealed class RabbitMqBackgroundJobManager : IBackgroundJobManager
     /// <inheritdoc />
     public async Task<string> EnqueueAsync<TArgs>(
         TArgs args,
-        BackgroundJobPriority priority = BackgroundJobPriority.Normal,
+        CBackgroundJobPriority priority = CBackgroundJobPriority.Normal,
         TimeSpan? delay = null)
     {
         ArgumentNullException.ThrowIfNull(args);

@@ -49,7 +49,7 @@ public sealed class IdentityClaimTypeDto : FullAuditedEntityDto<Guid>
     public required string Name { get; init; }
     public bool Required { get; init; }
     public bool IsStatic { get; init; }
-    public IdentityClaimValueType ValueType { get; init; }
+    public CIdentityClaimValueType ValueType { get; init; }
     public string? Regex { get; init; }
     public string? RegexDescription { get; init; }
     public string? Description { get; init; }

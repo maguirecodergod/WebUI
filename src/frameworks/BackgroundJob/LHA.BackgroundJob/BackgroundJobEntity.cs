@@ -18,7 +18,7 @@ public sealed class BackgroundJobEntity
     public required string JobArgs { get; set; }
 
     /// <summary>Job priority (higher = more important).</summary>
-    public BackgroundJobPriority Priority { get; set; } = BackgroundJobPriority.Normal;
+    public CBackgroundJobPriority Priority { get; set; } = CBackgroundJobPriority.Normal;
 
     /// <summary>Number of execution attempts.</summary>
     public short TryCount { get; set; }

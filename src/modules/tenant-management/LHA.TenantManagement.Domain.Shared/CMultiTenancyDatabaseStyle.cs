@@ -4,7 +4,7 @@ namespace LHA.TenantManagement.Domain.Shared;
 /// Determines how a tenant's data is isolated at the database level.
 /// </summary>
 [Flags]
-public enum MultiTenancyDatabaseStyle
+public enum CMultiTenancyDatabaseStyle
 {
     /// <summary>All tenants share a single database, isolated by TenantId column.</summary>
     Shared = 1,

@@ -15,6 +15,6 @@ public interface IBackgroundJobManager
     /// <returns>A unique job identifier.</returns>
     Task<string> EnqueueAsync<TArgs>(
         TArgs args,
-        BackgroundJobPriority priority = BackgroundJobPriority.Normal,
+        CBackgroundJobPriority priority = CBackgroundJobPriority.Normal,
         TimeSpan? delay = null);
 }

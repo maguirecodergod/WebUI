@@ -25,7 +25,7 @@ public sealed class TenantManager : DomainService
     /// <exception cref="InvalidOperationException">When a tenant with the same name already exists.</exception>
     public async Task<TenantEntity> CreateAsync(
         string name,
-        MultiTenancyDatabaseStyle databaseStyle = MultiTenancyDatabaseStyle.Shared,
+        CMultiTenancyDatabaseStyle databaseStyle = CMultiTenancyDatabaseStyle.Shared,
         CancellationToken cancellationToken = default)
     {
         await ValidateNameAsync(name, existingTenantId: null, cancellationToken);
