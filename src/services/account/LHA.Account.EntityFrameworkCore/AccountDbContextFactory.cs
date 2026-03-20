@@ -15,7 +15,7 @@ public sealed class AccountDbContextFactory
     {
         var optionsBuilder = new DbContextOptionsBuilder<AccountDbContext>();
         optionsBuilder.UseNpgsql(
-            "Host=localhost;Port=5433;Database=LienHoaApp_Account;Username=postgres;Password=Khuong@090217");
+            "Host=localhost;Port=5432;Database=LienHoaApp_Account;Username=postgres;Password=Khuong@090217");
 
         return new AccountDbContext(optionsBuilder.Options);
     }

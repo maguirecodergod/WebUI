@@ -15,7 +15,7 @@ namespace LHA.Mega.EntityFrameworkCore
         {
             var optionsBuilder = new DbContextOptionsBuilder<MegaDbContext>();
             optionsBuilder.UseNpgsql(
-                "Host=localhost;Port=5433;Database=LienHoaApp_Mega;Username=postgres;Password=Khuong@090217");
+                "Host=localhost;Port=5432;Database=LienHoaApp_Mega;Username=postgres;Password=Khuong@090217");
 
             return new MegaDbContext(optionsBuilder.Options);
         }

@@ -55,7 +55,7 @@ public sealed class EntityChangeDto
     public Guid Id { get; init; }
     public Guid AuditLogId { get; init; }
     public DateTimeOffset ChangeTime { get; init; }
-    public EntityChangeType ChangeType { get; init; }
+    public CEntityChangeType ChangeType { get; init; }
     public Guid? EntityTenantId { get; init; }
     public string? EntityId { get; init; }
     public string? EntityTypeFullName { get; init; }

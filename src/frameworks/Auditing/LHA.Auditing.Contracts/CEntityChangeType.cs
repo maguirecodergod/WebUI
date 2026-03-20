@@ -3,7 +3,7 @@ namespace LHA.Auditing;
 /// <summary>
 /// Type of entity change tracked in audit logs.
 /// </summary>
-public enum EntityChangeType : byte
+public enum CEntityChangeType : byte
 {
     /// <summary>Entity was created.</summary>
     Created = 0,

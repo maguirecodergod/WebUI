@@ -78,7 +78,7 @@ public sealed class AuditLogEntry
     public void MergeEntityChanges()
     {
         var groups = EntityChanges
-            .Where(e => e.ChangeType == EntityChangeType.Updated)
+            .Where(e => e.ChangeType == CEntityChangeType.Updated)
             .GroupBy(e => (e.EntityTypeFullName, e.EntityId))
             .Where(g => g.Count() > 1)
             .ToList();

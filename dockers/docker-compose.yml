@@ -70,9 +70,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: app_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Khuong@090217
+      # POSTGRES_DB: app_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

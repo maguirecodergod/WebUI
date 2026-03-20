@@ -21,7 +21,7 @@ public sealed class EntityChangeEntity : Entity<Guid>, IMultiTenant
     public DateTimeOffset ChangeTime { get; private init; }
 
     /// <summary>Type of change.</summary>
-    public EntityChangeType ChangeType { get; private init; }
+    public CEntityChangeType ChangeType { get; private init; }
 
     /// <summary>Tenant identifier of the changed entity (may differ from log tenant).</summary>
     public Guid? EntityTenantId { get; private init; }
@@ -43,7 +43,7 @@ public sealed class EntityChangeEntity : Entity<Guid>, IMultiTenant
         Guid auditLogId,
         Guid? tenantId,
         DateTimeOffset changeTime,
-        EntityChangeType changeType,
+        CEntityChangeType changeType,
         Guid? entityTenantId,
         string? entityId,
         string? entityTypeFullName)

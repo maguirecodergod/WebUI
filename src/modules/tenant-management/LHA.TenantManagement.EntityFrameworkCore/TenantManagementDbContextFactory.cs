@@ -15,7 +15,7 @@ public sealed class TenantManagementDbContextFactory
     {
         var optionsBuilder = new DbContextOptionsBuilder<TenantManagementDbContext>();
         optionsBuilder.UseNpgsql(
-            "Host=localhost;Port=5433;Database=LienHoaApp_TenantManagement;Username=postgres;Password=Khuong@090217");
+            "Host=localhost;Port=5432;Database=LienHoaApp_TenantManagement;Username=postgres;Password=Khuong@090217");
 
         return new TenantManagementDbContext(optionsBuilder.Options);
     }

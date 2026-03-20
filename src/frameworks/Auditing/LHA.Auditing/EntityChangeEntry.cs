@@ -9,7 +9,7 @@ public sealed class EntityChangeEntry
     public required DateTime ChangeTime { get; init; }
 
     /// <summary>Type of change.</summary>
-    public required EntityChangeType ChangeType { get; init; }
+    public required CEntityChangeType ChangeType { get; init; }
 
     /// <summary>
     /// Tenant identifier of the changed entity.

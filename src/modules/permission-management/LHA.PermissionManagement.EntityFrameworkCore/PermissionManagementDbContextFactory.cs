@@ -10,7 +10,7 @@ public sealed class PermissionManagementDbContextFactory
     {
         var optionsBuilder = new DbContextOptionsBuilder<PermissionManagementDbContext>();
         optionsBuilder.UseNpgsql(
-            "Host=localhost;Port=5433;Database=LienHoaApp_PermissionManagement;Username=postgres;Password=Khuong@090217");
+            "Host=localhost;Port=5432;Database=LienHoaApp_PermissionManagement;Username=postgres;Password=Khuong@090217");
 
         return new PermissionManagementDbContext(optionsBuilder.Options);
     }
