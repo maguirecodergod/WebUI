@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\frameworks\Caching\LHA.Caching\LHA.Caching.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Application\LHA.Ddd.Application.csproj" />
     <ProjectReference Include="..\..\..\frameworks\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
     <ProjectReference Include="..\LHA.Identity.Application.Contracts\LHA.Identity.Application.Contracts.csproj" />

@@ -12,5 +12,6 @@
     <ProjectReference Include="..\..\frameworks\Auditing\LHA.Auditing.Contracts\LHA.Auditing.Contracts.csproj" />
     <ProjectReference Include="..\..\modules\identity\LHA.Identity.Domain.Shared\LHA.Identity.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\modules\tenant-management\LHA.TenantManagement.Domain.Shared\LHA.TenantManagement.Domain.Shared.csproj" />
+    <ProjectReference Include="..\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
   </ItemGroup>
 </Project>

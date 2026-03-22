@@ -1,5 +1,7 @@
 using LHA.AspNetCore.Authorization;
+using LHA.AspNetCore.Security;
 using LHA.Auditing;
+using LHA.Core.Users;
 using LHA.Localization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +35,7 @@ public static class LhaAspNetCoreServiceCollectionExtensions
         params Type[] resources)
     {
         services.AddLHAExceptionHandler();
+        services.AddLHACurrentUserContext();
 
         services.AddLHALocalization(opts =>
         {
@@ -98,6 +101,38 @@ public static class LhaAspNetCoreServiceCollectionExtensions
         services.AddAuthorization();
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers the current-user context for ASP.NET Core hosts:
+    /// <list type="bullet">
+    ///   <item><see cref="ICurrentUser"/> → <see cref="HttpContextCurrentUser"/> (reads from ClaimsPrincipal)</item>
+    ///   <item><see cref="IAuditUserProvider"/> → <see cref="HttpContextAuditUserProvider"/> (bridges to auditing)</item>
+    ///   <item><see cref="RuntimeCurrentContext"/> → unified user + tenant context</item>
+    /// </list>
+    /// <para>
+    /// This is called automatically by <see cref="AddLHAAspNetCore"/>.
+    /// Call it explicitly only if you need user context without full ASP.NET Core setup.
+    /// </para>
+    /// </summary>
+    public static IServiceCollection AddLHACurrentUserContext(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        // Core infrastructure (AsyncLocal accessor, used as fallback)
+        services.AddLHACurrentUser();
+
+        // Override NullCurrentUser with HttpContext-backed implementation
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUser, HttpContextCurrentUser>();
+
+        // Bridge ICurrentUser → IAuditUserProvider (replaces NullAuditUserProvider)
+        services.AddScoped<IAuditUserProvider, HttpContextAuditUserProvider>();
+
+        // Unified context for application layer
+        services.TryAddScoped<RuntimeCurrentContext>();
+
         return services;
     }
 }

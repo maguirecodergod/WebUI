@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Auditing\LHA.Auditing\LHA.Auditing.csproj" />
     <ProjectReference Include="..\..\Ddd\LHA.Ddd.Application.Contracts\LHA.Ddd.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\Ddd\LHA.Ddd.Domain\LHA.Ddd.Domain.csproj" />
     <ProjectReference Include="..\..\Localization\LHA.Localization\LHA.Localization.csproj" />

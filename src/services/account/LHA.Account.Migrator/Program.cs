@@ -2,6 +2,7 @@ using LHA.Account.Application;
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Account.EntityFrameworkCore;
 using LHA.Auditing;
+using LHA.Core.Users;
 using LHA.Identity.Domain;
 using LHA.MultiTenancy;
 using LHA.PermissionManagement.Domain;
@@ -69,17 +70,19 @@ using (var scope = host.Services.CreateScope())
 
     using (var uow = uowManager.Begin(isTransactional: true))
     {
-        var adminRoleName = "admin";
         var existingRole = await roleRepository.FindByNormalizedNameAsync(
-            adminRoleName.ToUpperInvariant());
+            CurrentUserDefaults.AdminRoleName.ToUpperInvariant());
 
         IdentityRole adminRole;
         if (existingRole is null)
         {
-            adminRole = await roleManager.CreateAsync(adminRoleName);
+            adminRole = await roleManager.CreateAsync(
+                CurrentUserDefaults.AdminRoleName,
+                CurrentUserDefaults.AdminRoleId);
             adminRole.SetIsDefault(false);
             await roleRepository.InsertAsync(adminRole);
-            logger.LogInformation("Admin role '{RoleName}' created.", adminRole.Name);
+            logger.LogInformation("Admin role '{RoleName}' created (ID: {RoleId}).",
+                adminRole.Name, adminRole.Id);
         }
         else
         {
@@ -89,17 +92,20 @@ using (var scope = host.Services.CreateScope())
 
         adminRoleId = adminRole.Id;
 
-        var adminUserName = "admin";
         var existingUser = await userRepository.FindByNormalizedUserNameAsync(
-            adminUserName.ToUpperInvariant());
+            CurrentUserDefaults.AdminUserName.ToUpperInvariant());
 
         if (existingUser is null)
         {
             var adminUser = await userManager.CreateAsync(
-                adminUserName, "admin@lienhoaapp.com", "Admin@123456");
+                CurrentUserDefaults.AdminUserName,
+                CurrentUserDefaults.AdminUserEmail,
+                CurrentUserDefaults.AdminUserDefaultPassword,
+                CurrentUserDefaults.AdminUserId);
             adminUser.AddRole(adminRole.Id);
             await userRepository.InsertAsync(adminUser);
-            logger.LogInformation("Admin user '{UserName}' created.", adminUser.UserName);
+            logger.LogInformation("Admin user '{UserName}' created (ID: {UserId}).",
+                adminUser.UserName, adminUser.Id);
         }
         else
         {
@@ -115,13 +121,17 @@ using (var scope = host.Services.CreateScope())
 
     using (var uow = uowManager.Begin(isTransactional: true))
     {
-        var existing = await tenantRepo.FindByNameAsync("DEFAULT");
+        var existing = await tenantRepo.FindByNameAsync(
+            CurrentUserDefaults.DefaultTenantName.ToUpperInvariant());
 
         if (existing is null)
         {
-            var tenant = await tenantManager.CreateAsync("Default");
+            var tenant = await tenantManager.CreateAsync(
+                CurrentUserDefaults.DefaultTenantName,
+                CurrentUserDefaults.DefaultTenantId);
             await tenantRepo.InsertAsync(tenant);
-            logger.LogInformation("Default tenant '{TenantName}' created.", tenant.Name);
+            logger.LogInformation("Default tenant '{TenantName}' created (ID: {TenantId}).",
+                tenant.Name, tenant.Id);
         }
         else
         {

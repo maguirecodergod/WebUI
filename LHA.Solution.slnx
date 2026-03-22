@@ -2,6 +2,7 @@
   <Folder Name="/src/" />
   <Folder Name="/src/shared/">
     <Project Path="src/shared/LHA.Shared.Contracts/LHA.Shared.Contracts.csproj" />
+    <Project Path="src/shared/LHA.Shared.Domain/LHA.Shared.Domain.csproj" />
   </Folder>
   <Folder Name="/src/WebUI/" />
   <Folder Name="/src/WebUI/blazorwasm/">
@@ -160,6 +161,19 @@
     <Project Path="src/services/meaga/LHA.Mega.Migrator/LHA.Mega.Migrator.csproj" />
     <Project Path="src/services/meaga/LHA.Mega.HttpApi.Host/LHA.Mega.HttpApi.Host.csproj" />
   </Folder>
+  <Folder Name="/src/services/movie/">
+    <Project Path="src/services/movie/LHA.Movie.Application/LHA.Movie.Application.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.Application.Contracts/LHA.Movie.Application.Contracts.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.Domain/LHA.Movie.Domain.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.Domain.Shared/LHA.Movie.Domain.Shared.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.HttpApi/LHA.Movie.HttpApi.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.EntityFrameworkCore/LHA.Movie.EntityFrameworkCore.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.Cron/LHA.Movie.Cron.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.Consumer/LHA.Movie.Consumer.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.Migrator/LHA.Movie.Migrator.csproj" />
+    <Project Path="src/services/movie/LHA.Movie.HttpApi.Host/LHA.Movie.HttpApi.Host.csproj" />
+  </Folder>
+
   <Folder Name="/test/">
     <Project Path="test/Test.API/Test.API.csproj" />
   </Folder>

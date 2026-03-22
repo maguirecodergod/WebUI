@@ -28,9 +28,22 @@ public sealed class TenantManager : DomainService
         CMultiTenancyDatabaseStyle databaseStyle = CMultiTenancyDatabaseStyle.Shared,
         CancellationToken cancellationToken = default)
     {
+        return await CreateAsync(name, Guid.CreateVersion7(), databaseStyle, cancellationToken);
+    }
+
+    /// <summary>
+    /// Creates a new tenant with a predetermined ID and unique name validation.
+    /// Use this overload for seeding well-known tenants (e.g., Default) with deterministic IDs.
+    /// </summary>
+    public async Task<TenantEntity> CreateAsync(
+        string name,
+        Guid id,
+        CMultiTenancyDatabaseStyle databaseStyle = CMultiTenancyDatabaseStyle.Shared,
+        CancellationToken cancellationToken = default)
+    {
         await ValidateNameAsync(name, existingTenantId: null, cancellationToken);
 
-        return new TenantEntity(Guid.CreateVersion7(), name, databaseStyle);
+        return new TenantEntity(id, name, databaseStyle);
     }
 
     /// <summary>

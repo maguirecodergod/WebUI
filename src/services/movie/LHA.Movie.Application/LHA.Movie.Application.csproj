@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Movie.Application.Contracts\LHA.Movie.Application.Contracts.csproj" />
+    <ProjectReference Include="..\LHA.Movie.Domain\LHA.Movie.Domain.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Application\LHA.Ddd.Application.csproj" />
+  </ItemGroup>
+
+</Project>

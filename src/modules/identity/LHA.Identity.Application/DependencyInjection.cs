@@ -33,6 +33,36 @@ public static class DependencyInjection
         services.TryAddScoped<IIdentityClaimTypeAppService, IdentityClaimTypeAppService>();
         services.TryAddScoped<IIdentitySecurityLogAppService, IdentitySecurityLogAppService>();
 
+        // Cache User Lookup Factory
+        services.AddSingleton<Func<Guid, CancellationToken, Task<LHA.Caching.CachedUserItem?>>>(sp =>
+        {
+            var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+            return async (userId, ct) =>
+            {
+                using var scope = scopeFactory.CreateScope();
+                var userRepository = scope.ServiceProvider.GetRequiredService<LHA.Identity.Domain.IIdentityUserRepository>();
+                var roleRepository = scope.ServiceProvider.GetRequiredService<LHA.Identity.Domain.IIdentityRoleRepository>();
+
+                var user = await userRepository.FindAsync(userId, ct);
+                if (user is null) return null;
+
+                var roleIds = user.Roles.Select(r => r.RoleId).ToList();
+                var roles = await roleRepository.GetListAsync(ct);
+                var userRoles = roles.Where(r => roleIds.Contains(r.Id)).Select(r => r.Name).ToArray();
+
+                return new LHA.Caching.CachedUserItem
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    Email = user.Email,
+                    TenantId = user.TenantId,
+                    Roles = userRoles
+                };
+            };
+        });
+
         return services;
     }
 }

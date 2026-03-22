@@ -33,11 +33,26 @@ public sealed class IdentityRoleManager : DomainService
         bool isPublic = false,
         CancellationToken cancellationToken = default)
     {
+        return await CreateAsync(
+            name, id: Guid.CreateVersion7(), tenantId, isDefault, isStatic, isPublic, cancellationToken);
+    }
+
+    /// <summary>
+    /// Creates a new role with a predetermined ID and uniqueness validation.
+    /// Use this overload for seeding well-known roles (e.g., admin) with deterministic IDs.
+    /// </summary>
+    public async Task<IdentityRole> CreateAsync(
+        string name,
+        Guid id,
+        Guid? tenantId = null,
+        bool isDefault = false,
+        bool isStatic = false,
+        bool isPublic = false,
+        CancellationToken cancellationToken = default)
+    {
         await ValidateNameAsync(name, existingRoleId: null, cancellationToken);
 
-        var role = new IdentityRole(
-            Guid.CreateVersion7(), name, tenantId, isDefault, isStatic, isPublic);
-
+        var role = new IdentityRole(id, name, tenantId, isDefault, isStatic, isPublic);
         role.SetNormalizedName(_lookupNormalizer.NormalizeName(name));
         return role;
     }

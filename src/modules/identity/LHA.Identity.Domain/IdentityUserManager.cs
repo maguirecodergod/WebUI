@@ -40,10 +40,25 @@ public sealed class IdentityUserManager : DomainService
         Guid? tenantId = null,
         CancellationToken cancellationToken = default)
     {
+        return await CreateAsync(userName, email, password, Guid.CreateVersion7(), tenantId, cancellationToken);
+    }
+
+    /// <summary>
+    /// Creates a new user with a predetermined ID.
+    /// Use this overload for seeding well-known users (e.g., admin, system) with deterministic IDs.
+    /// </summary>
+    public async Task<IdentityUser> CreateAsync(
+        string userName,
+        string email,
+        string password,
+        Guid id,
+        Guid? tenantId = null,
+        CancellationToken cancellationToken = default)
+    {
         await ValidateUserNameAsync(userName, existingUserId: null, cancellationToken);
         await ValidateEmailAsync(email, existingUserId: null, cancellationToken);
 
-        var user = new IdentityUser(Guid.CreateVersion7(), userName, email, tenantId);
+        var user = new IdentityUser(id, userName, email, tenantId);
 
         // Normalize
         user.SetNormalizedUserName(_lookupNormalizer.NormalizeName(userName));

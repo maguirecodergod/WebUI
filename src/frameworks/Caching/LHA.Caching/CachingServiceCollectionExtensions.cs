@@ -47,6 +47,9 @@ public static class CachingServiceCollectionExtensions
         services.TryAddSingleton(typeof(ITypedHybridCache<>), typeof(TypedHybridCache<>));
         services.TryAddSingleton(typeof(ITypedHybridCache<,>), typeof(TypedHybridCache<,>));
 
+        // User/Tenant lookup caches
+        services.TryAddSingleton<CachedUserLookupService>();
+
         return services;
     }
 }
