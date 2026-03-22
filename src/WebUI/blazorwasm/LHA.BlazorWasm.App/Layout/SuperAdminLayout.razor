@@ -1,0 +1,142 @@
+@inherits LayoutComponentBase
+@implements IDisposable
+@using LHA.BlazorWasm.Services.Theme
+@using LHA.BlazorWasm.Components.ThemeSwitch
+@using LHA.BlazorWasm.Components.Sidebar
+@using LHA.BlazorWasm.Components.Sidebar.Models
+@using LHA.BlazorWasm.Components.Topbar
+@inject IThemeService ThemeService
+@inject ThemeState ThemeState
+@inject ITopbarService TopbarService
+
+<div class="page @ThemeService.ThemeClass layout-super-admin">
+
+    @* Super Admin Dark-mode / High Contrast Sidebar *@
+    <Sidebar @ref="_sidebar" Items="@_sidebarItems" State="@(TopbarService.State.IsSidebarCollapsed ? CSidebarState.Mini : CSidebarState.Expanded)"
+             Resizable="true" ExpandOnHover="false" OnItemClick="OnSidebarItemClick">
+        <HeaderTemplate>
+            <div class="sidebar-brand brand-glow">
+                <svg class="sidebar-brand__logo" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <div class="brand-titles">
+                    <span class="sidebar-brand__text">LHA CORE</span>
+                    <span class="sidebar-brand__sub">Super Admin</span>
+                </div>
+            </div>
+        </HeaderTemplate>
+        <FooterTemplate>
+            <div class="sidebar-footer-info user-card">
+                <div class="avatar-sa">SA</div>
+                <div class="user-details">
+                    <span class="user-name">System Admin</span>
+                    <span class="user-role">Host Access</span>
+                </div>
+            </div>
+        </FooterTemplate>
+    </Sidebar>
+
+    <div class="page-content">
+        <Topbar AppName="Global Dashboard" />
+
+        <main class="content-wrapper">
+            <article class="content-box">
+                @Body
+            </article>
+        </main>
+    </div>
+
+    <LHA.BlazorWasm.Components.Toast.ToastContainer />
+</div>
+
+@code {
+    private Sidebar? _sidebar;
+
+    private List<SidebarItemModel> _sidebarItems = new()
+    {
+        new()
+        {
+            Id = "sa-dashboard",
+            TitleKey = "Sidebar.Dashboard",
+            Href = "/sa",
+            MatchMode = CNavLinkMatchMode.Exact,
+            Icon = """<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>"""
+        },
+        new() { IsDivider = true, TitleKey = "Platform" },
+        new()
+        {
+            Id = "sa-tenants",
+            TitleKey = "Sidebar.Tenants",
+            Href = "/sa/tenants",
+            Icon = """<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>""",
+            Badge = "300+"
+        },
+        new()
+        {
+            Id = "sa-database",
+            TitleKey = "Sidebar.Databases",
+            Href = "/sa/databases",
+            Icon = """<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>"""
+        },
+        new() { IsDivider = true, TitleKey = "Identity & Security" },
+        new()
+        {
+            Id = "sa-users",
+            TitleKey = "Sidebar.GlobalUsers",
+            Href = "/sa/users",
+            Icon = """<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>"""
+        },
+        new()
+        {
+            Id = "sa-audit",
+            TitleKey = "Sidebar.AuditLogs",
+            Href = "/sa/audit-logs",
+            Icon = """<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>"""
+        },
+        new() { IsDivider = true, TitleKey = "System" },
+        new()
+        {
+            Id = "sa-settings",
+            TitleKey = "Sidebar.Settings",
+            Href = "/sa/settings",
+            Icon = """<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>"""
+        }
+    };
+
+    private void OnSidebarItemClick(SidebarItemModel item)
+    {
+    }
+
+    protected override void OnInitialized()
+    {
+        ThemeState.OnThemeChanged += OnThemeChanged;
+        
+        TopbarService.SetUser(new UserInfoModel 
+        { 
+            DisplayName = "System Admin", 
+            Role = "Host Access",
+            Email = "admin@lha.core"
+        });
+
+        TopbarService.AddNotification(new NotificationModel
+        {
+            Title = "System Health",
+            Message = "All 324 tenant databases are operating normally.",
+            Severity = NotificationSeverity.Success
+        });
+
+        Task.Delay(1000).ContinueWith(_ => TopbarService.SetLoading(false));
+    }
+
+    private void OnThemeChanged(CThemeMode mode)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        ThemeState.OnThemeChanged -= OnThemeChanged;
+    }
+}

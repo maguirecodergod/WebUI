@@ -1,0 +1,294 @@
+@page "/register-tenant"
+@layout EmptyLayout
+@using LHA.TenantManagement.Domain.Shared
+@inject NavigationManager NavManager
+
+<div class="register-container">
+    @* Background elements for glassmorphism ambient glow *@
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <div class="register-glass-panel">
+        <div class="register-header">
+            <h1 class="brand-title">LHA<span class="brand-accent">App</span></h1>
+            <p class="subtitle">Join the Enterprise Ecosystem</p>
+        </div>
+
+        <div class="wizard-steps">
+            <div class="step @(CurrentStep == 1 ? "active" : (CurrentStep > 1 ? "completed" : ""))">
+                <div class="step-circle">1</div>
+                <div class="step-text">Plan</div>
+            </div>
+            <div class="step-line @(CurrentStep > 1 ? "completed" : "")"></div>
+            <div class="step @(CurrentStep == 2 ? "active" : (CurrentStep > 2 ? "completed" : ""))">
+                <div class="step-circle">2</div>
+                <div class="step-text">Details</div>
+            </div>
+            <div class="step-line @(CurrentStep > 2 ? "completed" : "")"></div>
+            <div class="step @(CurrentStep == 3 ? "active" : "")">
+                <div class="step-circle">3</div>
+                <div class="step-text">Launch</div>
+            </div>
+        </div>
+
+        <div class="wizard-content">
+            @if (CurrentStep == 1)
+            {
+                <div class="step-1-plans">
+                    <h2 class="section-title">Select Database Architecture</h2>
+                    <p class="section-desc">Choose the isolation level that fits your organization's security and budget
+                        needs.</p>
+
+                    <div class="plans-grid">
+                        @* Basic / Shared Plan *@
+                        <div class="plan-card @(SelectedStyle == CMultiTenancyDatabaseStyle.Shared ? "selected" : "")"
+                        @onclick="() => SelectedStyle = CMultiTenancyDatabaseStyle.Shared">
+                            <div class="plan-badge">Most Popular</div>
+                            <div class="plan-icon plan-icon-blue">
+                                <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <h3>Startup</h3>
+                            <div class="plan-subtitle">Shared Database</div>
+                            <p class="plan-desc">Logical isolation via TenantID. Fast provisioning, perfect for scaling
+                                startups.</p>
+                            <div class="plan-price">$29<span>/mo</span></div>
+                            <ul class="plan-features">
+                                <li>Shared SQL resources</li>
+                                <li>Logical row-level security</li>
+                                <li>Up to 50 users</li>
+                            </ul>
+                        </div>
+
+                        @* Hybrid Plan *@
+                        <div class="plan-card @(SelectedStyle == CMultiTenancyDatabaseStyle.Hybrid ? "selected" : "")"
+                        @onclick="() => SelectedStyle = CMultiTenancyDatabaseStyle.Hybrid">
+                            <div class="plan-icon plan-icon-purple">
+                                <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                </svg>
+                            </div>
+                            <h3>Business</h3>
+                            <div class="plan-subtitle">Hybrid Architecture</div>
+                            <p class="plan-desc">Balancing isolation and cost. Shared metadata, dedicated data schema.</p>
+                            <div class="plan-price">$99<span>/mo</span></div>
+                            <ul class="plan-features">
+                                <li>Schema-level isolation</li>
+                                <li>Dedicated IO quotas</li>
+                                <li>Up to 500 users</li>
+                            </ul>
+                        </div>
+
+                        @* Dedicated Plan *@
+                        <div class="plan-card @(SelectedStyle == CMultiTenancyDatabaseStyle.PerTenant ? "selected" : "")"
+                        @onclick="() => SelectedStyle = CMultiTenancyDatabaseStyle.PerTenant">
+                            <div class="plan-icon plan-icon-gold">
+                                <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <h3>Enterprise</h3>
+                            <div class="plan-subtitle">Dedicated Database</div>
+                            <p class="plan-desc">Physical isolation for maximum security and compliance requirements.</p>
+                            <div class="plan-price">$299<span>/mo</span></div>
+                            <ul class="plan-features">
+                                <li>Physical database isolation</li>
+                                <li>BYOK Encryption</li>
+                                <li>Unlimited users</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="wizard-actions right-align">
+                        <button class="btn-primary-neon" @onclick="NextStep">Continue to Details <span
+                                class="arrow">→</span></button>
+                    </div>
+                </div>
+            }
+            else if (CurrentStep == 2)
+            {
+                <div class="step-2-details form-animate">
+                    <h2 class="section-title">Organization Details</h2>
+                    <p class="section-desc">Set up your workspace and admin account for the <strong>@SelectedStyle</strong>
+                        plan.</p>
+
+                    <EditForm Model="@Model" OnValidSubmit="NextStep">
+                        <DataAnnotationsValidator />
+
+                        <div class="form-grid">
+                            <div class="input-group full-width">
+                                <label>Organization Name</label>
+                                <input @bind="Model.TenantName" type="text" class="glass-input"
+                                    placeholder="e.g., Acme Corp." />
+                                <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(() => Model.TenantName)"
+                                    class="validation-error" />
+                            </div>
+
+                            <div class="input-group">
+                                <label>Admin Username</label>
+                                <input @bind="Model.AdminUsername" type="text" class="glass-input" placeholder="admin" />
+                                <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(() => Model.AdminUsername)"
+                                    class="validation-error" />
+                            </div>
+
+                            <div class="input-group">
+                                <label>Admin Email</label>
+                                <input @bind="Model.AdminEmail" type="email" class="glass-input"
+                                    placeholder="admin@acme.com" />
+                                <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(() => Model.AdminEmail)"
+                                    class="validation-error" />
+                            </div>
+
+                            <div class="input-group full-width">
+                                <label>Admin Password</label>
+                                <input @bind="Model.AdminPassword" type="password" class="glass-input"
+                                    placeholder="••••••••" />
+                                <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(() => Model.AdminPassword)"
+                                    class="validation-error" />
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions space-between mt-8">
+                            <button type="button" class="btn-secondary-ghost" @onclick="PrevStep"><span
+                                    class="arrow">←</span> Back to Plans</button>
+                            <button type="submit" class="btn-primary-neon">Finalize Setup <span
+                                    class="arrow">→</span></button>
+                        </div>
+                    </EditForm>
+                </div>
+            }
+            else if (CurrentStep == 3)
+            {
+                <div class="step-3-success form-animate">
+                    <div class="success-icon-wrapper">
+                        <svg class="success-icon checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                        </svg>
+                    </div>
+                    <h2 class="section-title text-center">Environment Provisioning</h2>
+                    <p class="section-desc text-center">Your tenant <strong>@Model.TenantName</strong> (@SelectedStyle) is
+                        being spun up.<br />We will redirect you to your dashboard shortly.</p>
+
+                    <div class="launch-loader">
+                        <div class="progress-bar-neon"></div>
+                    </div>
+
+                    <div class="wizard-actions center-align mt-8">
+                        <button type="button" class="btn-primary-neon" @onclick="GoToDashboard">Launch Dashboard</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private int CurrentStep = 1;
+
+
+
+    private CMultiTenancyDatabaseStyle SelectedStyle { get; set; } = CMultiTenancyDatabaseStyle.Shared;
+
+
+
+    private TenantRegisterModel Model { get; set; } = new();
+
+
+
+    private void NextStep()
+
+    {
+
+        if (CurrentStep < 3)
+
+        {
+
+            CurrentStep++;
+
+            if (CurrentStep == 3)
+
+            {
+
+                // Trigger actual API call here in real app
+
+                // await RegisterTenantAsync();
+
+            }
+
+            StateHasChanged();
+
+        }
+
+    }
+
+
+
+    private void PrevStep()
+
+    {
+
+        if (CurrentStep > 1)
+
+        {
+
+            CurrentStep--;
+
+            StateHasChanged();
+
+        }
+
+    }
+
+
+
+    private void GoToDashboard()
+
+    {
+
+        NavManager.NavigateTo("/");
+
+    }
+
+
+
+    public class TenantRegisterModel
+
+    {
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Organization name is required")]
+
+        [System.ComponentModel.DataAnnotations.StringLength(64, MinimumLength = 3)]
+
+        public string TenantName { get; set; } = string.Empty;
+
+
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Admin username is required")]
+
+        public string AdminUsername { get; set; } = "admin";
+
+
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Email is required")]
+
+        [System.ComponentModel.DataAnnotations.EmailAddress]
+
+        public string AdminEmail { get; set; } = string.Empty;
+
+
+
+        [System.ComponentModel.DataAnnotations.Required]
+
+        [System.ComponentModel.DataAnnotations.MinLength(6)]
+
+        public string AdminPassword { get; set; } = string.Empty;
+
+    }
+}

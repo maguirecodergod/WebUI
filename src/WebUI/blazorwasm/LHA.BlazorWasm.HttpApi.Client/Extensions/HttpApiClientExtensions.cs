@@ -19,7 +19,7 @@ public static class HttpApiClientExtensions
     /// Registers the HTTP API client infrastructure, configuring standard pipeline handlers.
     /// </summary>
     public static IServiceCollection AddLhaHttpApiClient(
-        this IServiceCollection services, 
+        this IServiceCollection services,
         Action<HttpApiClientOptions> configureOptions)
     {
         // 1. Configure Options
@@ -28,7 +28,7 @@ public static class HttpApiClientExtensions
         // 2. Register Shared Services
         services.AddTransient<IApiErrorHandler, DefaultApiErrorHandler>();
         services.AddTransient<IClientContextProvider, DefaultClientContextProvider>();
-        
+
         // Security primitives
         services.AddSingleton<IAesEncryptionService, AesEncryptionService>();
         services.AddSingleton<IKeyRotationService, KeyRotationService>();
@@ -37,8 +37,8 @@ public static class HttpApiClientExtensions
 
         // 3. Register Pipeline Handlers
         services.AddTransient<LoggingMessageHandler>();
-        
-        services.AddTransient(sp => 
+
+        services.AddTransient(sp =>
         {
             var options = sp.GetRequiredService<IOptions<HttpApiClientOptions>>().Value;
             var logger = sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<RetryMessageHandler>>();
@@ -55,7 +55,7 @@ public static class HttpApiClientExtensions
         return services;
     }
 
-    private static IHttpClientBuilder RegisterTypedClient<TClient>(IServiceCollection services) 
+    private static IHttpClientBuilder RegisterTypedClient<TClient>(IServiceCollection services)
         where TClient : class, IApiClient
     {
         return services.AddHttpClient<TClient>((sp, client) =>
@@ -65,7 +65,7 @@ public static class HttpApiClientExtensions
                 {
                     client.BaseAddress = new Uri(options.BaseAddress);
                 }
-                
+
                 client.Timeout = options.Timeout;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             })
