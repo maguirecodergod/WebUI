@@ -1,4 +1,5 @@
-﻿using LHA.Account.Application;
+using LHA.Account.Application;
+using LHA.Account.Application.Contracts.Permissions;
 using LHA.Account.EntityFrameworkCore;
 using LHA.Auditing;
 using LHA.Identity.Domain;
@@ -143,38 +144,38 @@ using (var scope = host.Services.CreateScope())
         var allPermissions = new (string Name, string DisplayName, string Service, string GroupName)[]
         {
             // Identity — Users
-            ("identity.users.read",         "View Users",         "Identity", "UserManagement"),
-            ("identity.users.create",       "Create Users",       "Identity", "UserManagement"),
-            ("identity.users.update",       "Update Users",       "Identity", "UserManagement"),
-            ("identity.users.delete",       "Delete Users",       "Identity", "UserManagement"),
+            (AccountPermissions.UserManagement.Read,         AccountPermissions.UserManagement.L.Read,         "Identity", AccountPermissions.UserManagement.GroupName),
+            (AccountPermissions.UserManagement.Create,       AccountPermissions.UserManagement.L.Create,       "Identity", AccountPermissions.UserManagement.GroupName),
+            (AccountPermissions.UserManagement.Update,       AccountPermissions.UserManagement.L.Update,       "Identity", AccountPermissions.UserManagement.GroupName),
+            (AccountPermissions.UserManagement.Delete,       AccountPermissions.UserManagement.L.Delete,       "Identity", AccountPermissions.UserManagement.GroupName),
             // Identity — Roles
-            ("identity.roles.read",         "View Roles",         "Identity", "RoleManagement"),
-            ("identity.roles.create",       "Create Roles",       "Identity", "RoleManagement"),
-            ("identity.roles.update",       "Update Roles",       "Identity", "RoleManagement"),
-            ("identity.roles.delete",       "Delete Roles",       "Identity", "RoleManagement"),
+            (AccountPermissions.RoleManagement.Read,         AccountPermissions.RoleManagement.L.Read,         "Identity", AccountPermissions.RoleManagement.GroupName),
+            (AccountPermissions.RoleManagement.Create,       AccountPermissions.RoleManagement.L.Create,       "Identity", AccountPermissions.RoleManagement.GroupName),
+            (AccountPermissions.RoleManagement.Update,       AccountPermissions.RoleManagement.L.Update,       "Identity", AccountPermissions.RoleManagement.GroupName),
+            (AccountPermissions.RoleManagement.Delete,       AccountPermissions.RoleManagement.L.Delete,       "Identity", AccountPermissions.RoleManagement.GroupName),
             // Identity — Claim Types
-            ("identity.claim-types.read",   "View Claim Types",   "Identity", "ClaimTypeManagement"),
-            ("identity.claim-types.create", "Create Claim Types", "Identity", "ClaimTypeManagement"),
-            ("identity.claim-types.update", "Update Claim Types", "Identity", "ClaimTypeManagement"),
-            ("identity.claim-types.delete", "Delete Claim Types", "Identity", "ClaimTypeManagement"),
+            (AccountPermissions.ClaimTypeManagement.Read,   AccountPermissions.ClaimTypeManagement.L.Read,   "Identity", AccountPermissions.ClaimTypeManagement.GroupName),
+            (AccountPermissions.ClaimTypeManagement.Create, AccountPermissions.ClaimTypeManagement.L.Create, "Identity", AccountPermissions.ClaimTypeManagement.GroupName),
+            (AccountPermissions.ClaimTypeManagement.Update, AccountPermissions.ClaimTypeManagement.L.Update, "Identity", AccountPermissions.ClaimTypeManagement.GroupName),
+            (AccountPermissions.ClaimTypeManagement.Delete, AccountPermissions.ClaimTypeManagement.L.Delete, "Identity", AccountPermissions.ClaimTypeManagement.GroupName),
             // Identity — Security Logs
-            ("identity.security-logs.read", "View Security Logs", "Identity", "SecurityLogManagement"),
+            (AccountPermissions.SecurityLogManagement.Read, AccountPermissions.SecurityLogManagement.L.Read, "Identity", AccountPermissions.SecurityLogManagement.GroupName),
             // Tenant Management
-            ("tenants.read",                "View Tenants",       "TenantManagement", "TenantManagement"),
-            ("tenants.create",              "Create Tenants",     "TenantManagement", "TenantManagement"),
-            ("tenants.update",              "Update Tenants",     "TenantManagement", "TenantManagement"),
-            ("tenants.delete",              "Delete Tenants",     "TenantManagement", "TenantManagement"),
+            (AccountPermissions.TenantManagement.Read,                AccountPermissions.TenantManagement.L.Read,       "TenantManagement", AccountPermissions.TenantManagement.GroupName),
+            (AccountPermissions.TenantManagement.Create,              AccountPermissions.TenantManagement.L.Create,     "TenantManagement", AccountPermissions.TenantManagement.GroupName),
+            (AccountPermissions.TenantManagement.Update,              AccountPermissions.TenantManagement.L.Update,     "TenantManagement", AccountPermissions.TenantManagement.GroupName),
+            (AccountPermissions.TenantManagement.Delete,              AccountPermissions.TenantManagement.L.Delete,     "TenantManagement", AccountPermissions.TenantManagement.GroupName),
             // Audit Logs
-            ("audit-logs.read",             "View Audit Logs",    "AuditLog", "AuditLogManagement"),
+            (AccountPermissions.AuditLogManagement.Read,             AccountPermissions.AuditLogManagement.L.Read,    "AuditLog", AccountPermissions.AuditLogManagement.GroupName),
             // Permission Management
-            ("permissions.definitions.read",   "View Permission Definitions",   "PermissionManagement", "PermissionMgmt"),
-            ("permissions.definitions.manage", "Manage Permission Definitions", "PermissionManagement", "PermissionMgmt"),
-            ("permissions.groups.read",        "View Permission Groups",        "PermissionManagement", "PermissionMgmt"),
-            ("permissions.groups.manage",      "Manage Permission Groups",      "PermissionManagement", "PermissionMgmt"),
-            ("permissions.templates.read",     "View Permission Templates",     "PermissionManagement", "PermissionMgmt"),
-            ("permissions.templates.manage",   "Manage Permission Templates",   "PermissionManagement", "PermissionMgmt"),
-            ("permissions.grants.read",        "View Permission Grants",        "PermissionManagement", "PermissionMgmt"),
-            ("permissions.grants.manage",      "Manage Permission Grants",      "PermissionManagement", "PermissionMgmt"),
+            (AccountPermissions.PermissionMgmt.DefinitionsRead,   AccountPermissions.PermissionMgmt.L.DefinitionsRead,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
+            (AccountPermissions.PermissionMgmt.DefinitionsManage, AccountPermissions.PermissionMgmt.L.DefinitionsManage, "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
+            (AccountPermissions.PermissionMgmt.GroupsRead,        AccountPermissions.PermissionMgmt.L.GroupsRead,        "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
+            (AccountPermissions.PermissionMgmt.GroupsManage,      AccountPermissions.PermissionMgmt.L.GroupsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
+            (AccountPermissions.PermissionMgmt.TemplatesRead,     AccountPermissions.PermissionMgmt.L.TemplatesRead,     "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
+            (AccountPermissions.PermissionMgmt.TemplatesManage,   AccountPermissions.PermissionMgmt.L.TemplatesManage,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
+            (AccountPermissions.PermissionMgmt.GrantsRead,        AccountPermissions.PermissionMgmt.L.GrantsRead,        "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
+            (AccountPermissions.PermissionMgmt.GrantsManage,      AccountPermissions.PermissionMgmt.L.GrantsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
         };
 
         var defEntities = new List<PermissionDefinition>();
@@ -194,13 +195,13 @@ using (var scope = host.Services.CreateScope())
         // ── Permission groups ────────────────────────────────────
         var groupDefs = new (string Name, string DisplayName, string Service)[]
         {
-            ("UserManagement",       "User Management",        "Identity"),
-            ("RoleManagement",       "Role Management",        "Identity"),
-            ("ClaimTypeManagement",  "Claim Type Management",  "Identity"),
-            ("SecurityLogManagement","Security Log Management", "Identity"),
-            ("TenantManagement",     "Tenant Management",      "TenantManagement"),
-            ("AuditLogManagement",   "Audit Log Management",   "AuditLog"),
-            ("PermissionMgmt",       "Permission Management",  "PermissionManagement"),
+            (AccountPermissions.UserManagement.GroupName,       AccountPermissions.UserManagement.L.Group,        "Identity"),
+            (AccountPermissions.RoleManagement.GroupName,       AccountPermissions.RoleManagement.L.Group,        "Identity"),
+            (AccountPermissions.ClaimTypeManagement.GroupName,  AccountPermissions.ClaimTypeManagement.L.Group,  "Identity"),
+            (AccountPermissions.SecurityLogManagement.GroupName,AccountPermissions.SecurityLogManagement.L.Group, "Identity"),
+            (AccountPermissions.TenantManagement.GroupName,     AccountPermissions.TenantManagement.L.Group,      "TenantManagement"),
+            (AccountPermissions.AuditLogManagement.GroupName,   AccountPermissions.AuditLogManagement.L.Group,   "AuditLog"),
+            (AccountPermissions.PermissionMgmt.GroupName,       AccountPermissions.PermissionMgmt.L.Group,       "PermissionManagement"),
         };
 
         var groupEntities = new List<PermissionGroup>();
@@ -219,12 +220,13 @@ using (var scope = host.Services.CreateScope())
         }
 
         // ── Permission template: TenantAdmin (full access) ──────
-        var adminTemplate = await templateRepo.FindByNameAsync("TenantAdmin");
+        var adminTemplate = await templateRepo.FindByNameAsync(AccountPermissions.Templates.TenantAdmin.Name);
         if (adminTemplate is null)
         {
             adminTemplate = new PermissionTemplate(
-                Guid.NewGuid(), "TenantAdmin", "Tenant Administrator",
-                "Full access to all management features.");
+                Guid.NewGuid(), AccountPermissions.Templates.TenantAdmin.Name, 
+                AccountPermissions.Templates.TenantAdmin.L_Name,
+                AccountPermissions.Templates.TenantAdmin.L_Description);
             foreach (var grp in groupEntities)
                 adminTemplate.AddGroup(grp.Id);
             await templateRepo.InsertAsync(adminTemplate);

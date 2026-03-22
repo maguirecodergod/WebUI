@@ -55,5 +55,60 @@
             "NullError": "The application encountered missing data. Please refresh.",
             "ErrorId": "Error ID"
         }
+    },
+    "Permissions": {
+        "UserManagement": {
+            "Group": "User Management",
+            "Read": "View Users",
+            "Create": "Create User",
+            "Update": "Update User",
+            "Delete": "Delete User"
+        },
+        "RoleManagement": {
+            "Group": "Role Management",
+            "Read": "View Roles",
+            "Create": "Create Role",
+            "Update": "Update Role",
+            "Delete": "Delete Role"
+        },
+        "ClaimTypeManagement": {
+            "Group": "Claim Type Management",
+            "Read": "View Claim Types",
+            "Create": "Create Claim Type",
+            "Update": "Update Claim Type",
+            "Delete": "Delete Claim Type"
+        },
+        "SecurityLogManagement": {
+            "Group": "Security Log Management",
+            "Read": "View Security Logs"
+        },
+        "TenantManagement": {
+            "Group": "Tenant Management",
+            "Read": "View Tenants",
+            "Create": "Create Tenant",
+            "Update": "Update Tenant",
+            "Delete": "Delete Tenant"
+        },
+        "AuditLogManagement": {
+            "Group": "Audit Log Management",
+            "Read": "View Audit Logs"
+        },
+        "PermissionMgmt": {
+            "Group": "Permission Management",
+            "DefinitionsRead": "View Permission Definitions",
+            "DefinitionsManage": "Manage Permission Definitions",
+            "GroupsRead": "View Permission Groups",
+            "GroupsManage": "Manage Permission Groups",
+            "TemplatesRead": "View Permission Templates",
+            "TemplatesManage": "Manage Permission Templates",
+            "GrantsRead": "View Permission Grants",
+            "GrantsManage": "Manage Permission Grants"
+        },
+        "Templates": {
+            "TenantAdmin": {
+                "Name": "Tenant Administrator",
+                "Description": "Full access to all management features."
+            }
+        }
     }
 }

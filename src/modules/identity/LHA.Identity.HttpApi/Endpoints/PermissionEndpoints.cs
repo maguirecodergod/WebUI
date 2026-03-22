@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
+using P = LHA.Shared.Contracts.PermissionManagement.PermissionManagementPermissions;
+
 namespace LHA.Identity.HttpApi;
 
 /// <summary>
@@ -25,7 +27,7 @@ public static class PermissionEndpoints
             var result = await service.GetAsync(input);
             return Results.Ok(ApiResponse<List<PermissionGrantDto>>.Ok(result));
         })
-        .RequireAuthorization("permissions.grants.read")
+        .RequireAuthorization(P.Grants.Read)
         .WithName("GetPermissions")
         .WithSummary("Gets permission grants for a provider (role or user).");
 
@@ -37,7 +39,7 @@ public static class PermissionEndpoints
             await service.UpdateAsync(input);
             return Results.NoContent();
         })
-        .RequireAuthorization("permissions.grants.manage")
+        .RequireAuthorization(P.Grants.Manage)
         .WithName("UpdatePermissions")
         .WithSummary("Batch grants/revokes permissions for a provider.");
 

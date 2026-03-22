@@ -31,7 +31,7 @@ artifacts/
 *.jfm
 *.pfx
 *.publishsettings
-launchSettings.json
+# launchSettings.json
 
 ## Rider / JetBrains
 .idea/

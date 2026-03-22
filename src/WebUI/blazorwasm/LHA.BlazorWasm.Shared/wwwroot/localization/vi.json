@@ -55,5 +55,60 @@
             "NullError": "Ứng dụng gặp sự cố về dữ liệu (thiếu thông tin). Vui lòng tải lại trang.",
             "ErrorId": "Mã lỗi"
         }
+    },
+    "Permissions": {
+        "UserManagement": {
+            "Group": "Quản lý người dùng",
+            "Read": "Xem người dùng",
+            "Create": "Tạo người dùng",
+            "Update": "Cập nhật người dùng",
+            "Delete": "Xóa người dùng"
+        },
+        "RoleManagement": {
+            "Group": "Quản lý vai trò",
+            "Read": "Xem vai trò",
+            "Create": "Tạo vai trò",
+            "Update": "Cập nhật vai trò",
+            "Delete": "Xóa vai trò"
+        },
+        "ClaimTypeManagement": {
+            "Group": "Quản lý loại định danh",
+            "Read": "Xem loại định danh",
+            "Create": "Tạo loại định danh",
+            "Update": "Cập nhật loại định danh",
+            "Delete": "Xóa loại định danh"
+        },
+        "SecurityLogManagement": {
+            "Group": "Quản lý nhật ký bảo mật",
+            "Read": "Xem nhật ký bảo mật"
+        },
+        "TenantManagement": {
+            "Group": "Quản lý Tenant",
+            "Read": "Xem Tenant",
+            "Create": "Tạo Tenant",
+            "Update": "Cập nhật Tenant",
+            "Delete": "Xóa Tenant"
+        },
+        "AuditLogManagement": {
+            "Group": "Quản lý nhật ký hoạt động",
+            "Read": "Xem nhật ký hoạt động"
+        },
+        "PermissionMgmt": {
+            "Group": "Quản lý quyền hạn",
+            "DefinitionsRead": "Xem định nghĩa quyền",
+            "DefinitionsManage": "Quản lý định nghĩa quyền",
+            "GroupsRead": "Xem nhóm quyền",
+            "GroupsManage": "Quản lý nhóm quyền",
+            "TemplatesRead": "Xem mẫu quyền",
+            "TemplatesManage": "Quản lý mẫu quyền",
+            "GrantsRead": "Xem cấp quyền",
+            "GrantsManage": "Quản lý cấp quyền"
+        },
+        "Templates": {
+            "TenantAdmin": {
+                "Name": "Quản trị viên Tenant",
+                "Description": "Toàn quyền quản lý các tính năng."
+            }
+        }
     }
 }
