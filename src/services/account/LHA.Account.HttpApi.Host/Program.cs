@@ -5,6 +5,7 @@ using LHA.Account.EntityFrameworkCore;
 using LHA.Account.HttpApi;
 using LHA.AspNetCore;
 using LHA.Auditing;
+using LHA.Auditing.Extensions;
 using LHA.DistributedLocking;
 using LHA.EventBus;
 using LHA.Grpc.Server;
@@ -24,6 +25,17 @@ builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
 builder.Services.AddLHAInMemoryEventBus();
+
+// ── Audit Pipeline (next-gen) ────────────────────────────────────
+builder.Services.AddLHAAuditPipeline(options =>
+{
+    options.ServiceName = "Account";
+    options.CaptureRequestBody = true;
+    options.CaptureResponseBody = false;
+    options.BatchSize = 500;
+    options.FlushIntervalMs = 2_000;
+    options.SamplingRate = 1.0;
+});
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
 builder.Services.AddLhaApiVersioning();
@@ -72,6 +84,9 @@ var app = builder.Build();
 // ── Middleware ────────────────────────────────────────────────────
 app.UseLHAExceptionHandler();
 app.UseLHAUnitOfWork();
+
+// Audit pipeline middleware — after exception handler, before auth
+app.UseLHAAuditLogging();
 app.UseLHASwagger();
 app.UseAuthentication();
 app.UseAuthorization();

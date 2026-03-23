@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Auditing\LHA.Auditing.csproj" />
+    <ProjectReference Include="..\..\MessageBroker\LHA.MessageBroker.Kafka\LHA.MessageBroker.Kafka.csproj" />
+  </ItemGroup>
+
+</Project>

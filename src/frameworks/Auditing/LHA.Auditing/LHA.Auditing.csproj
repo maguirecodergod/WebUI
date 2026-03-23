@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,8 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ulid" Version="1.4.1" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.76.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LHA.Auditing.Contracts\LHA.Auditing.Contracts.csproj" />
     <ProjectReference Include="..\..\MultiTenancy\LHA.MultiTenancy.Abstraction\LHA.MultiTenancy.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Core\LHA.Core\LHA.Core.csproj" />
+    <ProjectReference Include="..\..\BackgroundJob\LHA.BackgroundJob.Abstraction\LHA.BackgroundJob.Abstraction.csproj" />
+    <ProjectReference Include="..\..\EventBus\LHA.EventBus.Abstraction\LHA.EventBus.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>
