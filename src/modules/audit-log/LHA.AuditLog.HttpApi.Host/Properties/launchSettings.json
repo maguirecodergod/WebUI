@@ -1,11 +1,11 @@
 {
   "profiles": {
-    "LHA.Account.HttpApi.Host": {
+    "LHA.AuditLog.HttpApi.Host": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7150;https://localhost:8150",
+      "applicationUrl": "https://localhost:7154;https://localhost:8154",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

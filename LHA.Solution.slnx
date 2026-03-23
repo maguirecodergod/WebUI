@@ -87,6 +87,9 @@
     <Project Path="src/frameworks/Grpc/LHA.Grpc.Server/LHA.Grpc.Server.csproj" />
     <Project Path="src/frameworks/Grpc/LHA.Grpc.Client/LHA.Grpc.Client.csproj" />
   </Folder>
+  <Folder Name="/src/gateways/">
+    <Project Path="src/gateways/LHA.ApiGateway/LHA.ApiGateway.csproj" />
+  </Folder>
   <Folder Name="/src/modules/" />
   <Folder Name="/src/modules/tenant-management/">
     <Project Path="src/modules/tenant-management/LHA.TenantManagement.Application.Contracts/LHA.TenantManagement.Application.Contracts.csproj" />

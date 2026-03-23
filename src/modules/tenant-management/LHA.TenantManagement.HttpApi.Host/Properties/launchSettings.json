@@ -1,11 +1,11 @@
 {
   "profiles": {
-    "LHA.Account.HttpApi.Host": {
+    "LHA.TenantManagement.HttpApi.Host": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7150;https://localhost:8150",
+      "applicationUrl": "https://localhost:7152;https://localhost:8152",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

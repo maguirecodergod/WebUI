@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 using Grpc.Net.Client;
 using LHA.Auditing;
 using LHA.Grpc.Contracts.Services.Account.V1;
@@ -56,7 +56,7 @@ logger.LogInformation("Movie Service migrations applied successfully.");
 // 2. Register permissions with Account Service via gRPC
 // ══════════════════════════════════════════════════════════════════
 var accountGrpcUrl = builder.Configuration["AccountService:GrpcUrl"]
-    ?? "http://localhost:5150";
+    ?? "https://localhost:8150";
 
 logger.LogInformation("Registering Movie permissions with Account Service at {Url} (gRPC)...", accountGrpcUrl);
 
@@ -86,3 +86,4 @@ request.Groups.Add(new PermissionGroupDto
 var response = await client.RegisterPermissionsAsync(request);
 
 logger.LogInformation("Movie permissions registered: {Success} – {Message}", response.Success, response.Message);
+

@@ -40,8 +40,8 @@ builder.Services.AddBlazorWasmComponents();
 
 builder.Services.AddLhaHttpApiClient(options =>
 {
-    // Point to the local or mock API server
-    options.BaseAddress = "http://localhost:5088/";
+    // Point to the API Gateway
+    options.BaseAddress = "https://localhost:7100/";
     options.Timeout = TimeSpan.FromSeconds(30);
     options.MaxRetries = 3;
 });

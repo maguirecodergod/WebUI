@@ -1,6 +1,6 @@
 # Project Structure
 
-_Generated automatically on 2026-03-23 10:14:15_
+_Generated automatically on 2026-03-23 11:22:37_
 
 ```
 .
@@ -175,6 +175,8 @@ _Generated automatically on 2026-03-23 10:14:15_
 |   |   |   |   |   +-- HttpContextCurrentUser.cs
 |   |   |   |   |   +-- LhaClaimTypes.cs
 |   |   |   |   |   \-- RuntimeCurrentContext.cs
+|   |   |   |   +-- Versioning
+|   |   |   |   |   \-- LhaApiVersioningExtensions.cs
 |   |   |   |   +-- BusinessExceptionLocalizer.cs
 |   |   |   |   +-- DependencyInjection.cs
 |   |   |   |   +-- GlobalExceptionHandler.cs
@@ -945,7 +947,9 @@ _Generated automatically on 2026-03-23 10:14:15_
 |   |       +-- LHA.Movie.HttpApi.Host
 |   |       |   \-- LHA.Movie.HttpApi.Host.csproj
 |   |       \-- LHA.Movie.Migrator
-|   |           \-- LHA.Movie.Migrator.csproj
+|   |           +-- appsettings.json
+|   |           +-- LHA.Movie.Migrator.csproj
+|   |           \-- Program.cs
 |   +-- shared
 |   |   +-- LHA.Shared.Contracts
 |   |   |   +-- AuditLog

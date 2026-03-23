@@ -1,11 +1,11 @@
 {
   "profiles": {
-    "LHA.Account.HttpApi.Host": {
+    "LHA.BlazorWasm.App": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7150;https://localhost:8150",
+      "applicationUrl": "https://localhost:7149",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
