@@ -15,7 +15,7 @@ public sealed class AuditLogDbContextFactory
     {
         var optionsBuilder = new DbContextOptionsBuilder<AuditLogDbContext>();
         optionsBuilder.UseNpgsql(
-            "Host=localhost;Port=5432;Database=LienHoaApp_AuditLog;Username=postgres;Password=Khuong@090217");
+            "Host=localhost;Port=5432;Database=LienHoaApp_AuditLog;Username=admin;Password=admin");
 
         return new AuditLogDbContext(optionsBuilder.Options);
     }

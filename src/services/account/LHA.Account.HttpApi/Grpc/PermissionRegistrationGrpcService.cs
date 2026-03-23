@@ -8,7 +8,7 @@ namespace LHA.Account.HttpApi.Grpc;
 /// gRPC server endpoint for external microservices to register their permissions
 /// with the Account (IAM) service. Wraps <see cref="IPermissionRegistrationService"/>.
 /// </summary>
-public sealed class PermissionRegistrationGrpcService(
+public sealed class PermissionRegistrationGrpcServiceV1(
     IPermissionRegistrationService registrationService)
     : PermissionRegistrationService.PermissionRegistrationServiceBase
 {

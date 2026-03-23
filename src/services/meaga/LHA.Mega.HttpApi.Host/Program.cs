@@ -41,6 +41,7 @@ builder.Services.AddLHAKafkaEventBus(
 builder.Services.AddKafkaOutboxProcessor();
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
+builder.Services.AddLhaApiVersioning();
 builder.Services.AddLHASwagger(builder.Configuration);
 
 // ── Global exception handler ──────────────────────────────────────

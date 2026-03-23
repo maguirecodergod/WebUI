@@ -24,7 +24,7 @@ public static class PermissionEndpoints
 
     private static void MapPermissionDefinitionEndpoints(IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/permission-definitions")
+        var group = endpoints.MapVersionedGroup("PermissionManagement", "/api/v{version:apiVersion}/permission-definitions")
             .WithTags("PermissionDefinitions")
             .RequireAuthorization();
 
@@ -86,7 +86,7 @@ public static class PermissionEndpoints
 
     private static void MapPermissionGroupEndpoints(IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/permission-groups")
+        var group = endpoints.MapVersionedGroup("PermissionManagement", "/api/v{version:apiVersion}/permission-groups")
             .WithTags("PermissionGroups")
             .RequireAuthorization();
 
@@ -147,7 +147,7 @@ public static class PermissionEndpoints
 
     private static void MapPermissionTemplateEndpoints(IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/permission-templates")
+        var group = endpoints.MapVersionedGroup("PermissionManagement", "/api/v{version:apiVersion}/permission-templates")
             .WithTags("PermissionTemplates")
             .RequireAuthorization();
 
@@ -208,7 +208,7 @@ public static class PermissionEndpoints
 
     private static void MapPermissionGrantEndpoints(IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/permission-grants")
+        var group = endpoints.MapVersionedGroup("PermissionManagement", "/api/v{version:apiVersion}/permission-grants")
             .WithTags("PermissionGrants")
             .RequireAuthorization();
 

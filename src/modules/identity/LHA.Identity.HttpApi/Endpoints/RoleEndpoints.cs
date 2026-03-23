@@ -15,7 +15,7 @@ public static class RoleEndpoints
 {
     public static IEndpointRouteBuilder MapRoleEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/identity/roles")
+        var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/roles")
             .WithTags("Identity - Roles")
             .RequireAuthorization();
 

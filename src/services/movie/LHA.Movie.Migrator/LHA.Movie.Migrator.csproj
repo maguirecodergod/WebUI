@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LHA.Movie.Application\LHA.Movie.Application.csproj" />
     <ProjectReference Include="..\LHA.Movie.EntityFrameworkCore\LHA.Movie.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Grpc\LHA.Grpc.Client\LHA.Grpc.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

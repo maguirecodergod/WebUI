@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.Identity.Application.Contracts\LHA.Identity.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

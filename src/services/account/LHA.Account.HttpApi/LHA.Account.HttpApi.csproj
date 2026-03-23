@@ -17,6 +17,7 @@
     <ProjectReference Include="..\..\..\modules\tenant-management\LHA.TenantManagement.HttpApi\LHA.TenantManagement.HttpApi.csproj" />
     <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.HttpApi\LHA.AuditLog.HttpApi.csproj" />
     <ProjectReference Include="..\..\..\modules\permission-management\LHA.PermissionManagement.HttpApi\LHA.PermissionManagement.HttpApi.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>

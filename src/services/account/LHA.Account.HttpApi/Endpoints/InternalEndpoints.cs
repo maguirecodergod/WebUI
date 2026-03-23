@@ -10,7 +10,7 @@ public static class InternalEndpoints
 {
     public static IEndpointRouteBuilder MapInternalEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/internal")
+        var group = endpoints.MapVersionedGroup("Account", "/api/v{version:apiVersion}/internal")
             .WithTags("Internal")
             .ExcludeFromDescription();
 

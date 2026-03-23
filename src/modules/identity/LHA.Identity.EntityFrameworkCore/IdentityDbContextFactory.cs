@@ -15,7 +15,7 @@ public sealed class IdentityDbContextFactory
     {
         var optionsBuilder = new DbContextOptionsBuilder<IdentityDbContext>();
         optionsBuilder.UseNpgsql(
-            "Host=localhost;Port=5432;Database=LienHoaApp_Identity;Username=postgres;Password=Khuong@090217");
+            "Host=localhost;Port=5432;Database=LienHoaApp_Identity;Username=admin;Password=admin");
 
         return new IdentityDbContext(optionsBuilder.Options);
     }

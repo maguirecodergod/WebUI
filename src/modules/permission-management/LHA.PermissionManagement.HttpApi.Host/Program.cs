@@ -20,6 +20,7 @@ builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
+builder.Services.AddLhaApiVersioning();
 builder.Services.AddLHASwagger(builder.Configuration);
 
 // ── Global exception handler ──────────────────────────────────────

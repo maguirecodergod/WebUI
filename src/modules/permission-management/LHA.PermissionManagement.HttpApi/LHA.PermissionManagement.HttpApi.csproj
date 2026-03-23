@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.PermissionManagement.Application.Contracts\LHA.PermissionManagement.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

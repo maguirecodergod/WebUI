@@ -40,7 +40,7 @@ public static class AccountEndpoints
         endpoints.MapInternalEndpoints();
 
         // gRPC services (inter-service communication)
-        endpoints.MapGrpcService<PermissionRegistrationGrpcService>();
+        endpoints.MapGrpcService<PermissionRegistrationGrpcServiceV1>();
 
         return endpoints;
     }

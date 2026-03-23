@@ -22,7 +22,7 @@ public static class AuditLogEndpoints
     /// </summary>
     public static IEndpointRouteBuilder MapAuditLogEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/audit-logs")
+        var group = endpoints.MapVersionedGroup("AuditLog", "/api/v{version:apiVersion}/audit-logs")
             .WithTags("AuditLogs")
             .RequireAuthorization();
 

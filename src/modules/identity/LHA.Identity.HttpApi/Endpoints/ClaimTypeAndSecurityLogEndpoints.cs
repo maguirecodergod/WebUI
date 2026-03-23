@@ -15,7 +15,7 @@ public static class ClaimTypeAndSecurityLogEndpoints
 {
     public static IEndpointRouteBuilder MapClaimTypeEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/identity/claim-types")
+        var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/claim-types")
             .WithTags("Identity - Claim Types")
             .RequireAuthorization();
 
@@ -81,7 +81,7 @@ public static class ClaimTypeAndSecurityLogEndpoints
 
     public static IEndpointRouteBuilder MapSecurityLogEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/identity/security-logs")
+        var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/security-logs")
             .WithTags("Identity - Security Logs")
             .RequireAuthorization();
 

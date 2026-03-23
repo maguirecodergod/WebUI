@@ -15,7 +15,7 @@ public static class UserEndpoints
 {
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/identity/users")
+        var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/users")
             .WithTags("Identity - Users")
             .RequireAuthorization();
 

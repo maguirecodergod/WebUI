@@ -14,7 +14,7 @@ public static class AuthEndpoints
 {
     public static IEndpointRouteBuilder MapAuthEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/identity/auth")
+        var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/auth")
             .WithTags("Identity - Auth");
 
         // ── Login ────────────────────────────────────────────────────

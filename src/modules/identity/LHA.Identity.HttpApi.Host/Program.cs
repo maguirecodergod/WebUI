@@ -28,6 +28,7 @@ builder.Services.AddLHADistributedLocking();
 builder.Services.AddLHAInMemoryEventBus();
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
+builder.Services.AddLhaApiVersioning();
 builder.Services.AddLHASwagger(builder.Configuration);
 
 

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.AuditLog.Application.Contracts\LHA.AuditLog.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

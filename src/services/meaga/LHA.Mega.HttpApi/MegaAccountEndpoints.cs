@@ -12,7 +12,7 @@ public static class MegaAccountEndpoints
 {
     public static IEndpointRouteBuilder MapMegaAccountEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/mega/accounts")
+        var group = endpoints.MapVersionedGroup("Mega", "/api/v{version:apiVersion}/mega/accounts")
             .WithTags("Mega - Accounts")
             .RequireAuthorization();
 
