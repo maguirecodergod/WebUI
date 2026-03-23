@@ -15,7 +15,7 @@ public sealed class AuditLogAction
     public string? Parameters { get; init; }
 
     /// <summary>UTC time the action started.</summary>
-    public required DateTime ExecutionTime { get; init; }
+    public required DateTimeOffset ExecutionTime { get; init; }
 
     /// <summary>Duration in milliseconds.</summary>
     public int ExecutionDuration { get; set; }

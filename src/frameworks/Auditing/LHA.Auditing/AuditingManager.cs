@@ -55,7 +55,7 @@ internal sealed class AuditingManager : IAuditingManager
             UserId = _userProvider.UserId,
             UserName = _userProvider.UserName,
             TenantId = _userProvider.TenantId,
-            ExecutionTime = TimeProvider.System.GetUtcNow().UtcDateTime
+            ExecutionTime = TimeProvider.System.GetLocalNow()
         };
 
         // Execute pre-contributors

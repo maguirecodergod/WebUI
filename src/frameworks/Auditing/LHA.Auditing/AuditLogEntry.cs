@@ -30,7 +30,7 @@ public sealed class AuditLogEntry
     public Guid? ImpersonatorTenantId { get; set; }
 
     /// <summary>UTC time of the request/operation start.</summary>
-    public DateTime ExecutionTime { get; set; }
+    public DateTimeOffset ExecutionTime { get; set; }
 
     /// <summary>Total duration in milliseconds.</summary>
     public int ExecutionDuration { get; set; }

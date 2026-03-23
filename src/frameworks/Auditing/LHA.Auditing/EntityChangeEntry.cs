@@ -6,7 +6,7 @@ namespace LHA.Auditing;
 public sealed class EntityChangeEntry
 {
     /// <summary>UTC time the change occurred.</summary>
-    public required DateTime ChangeTime { get; init; }
+    public required DateTimeOffset ChangeTime { get; init; }
 
     /// <summary>Type of change.</summary>
     public required CEntityChangeType ChangeType { get; init; }
