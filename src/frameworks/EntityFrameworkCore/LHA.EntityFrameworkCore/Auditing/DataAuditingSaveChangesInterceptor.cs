@@ -107,7 +107,7 @@ public sealed class DataAuditingSaveChangesInterceptor(IAuditingManager auditing
                 var propChange = new EntityPropertyChange
                 {
                     PropertyName = property.Metadata.Name,
-                    PropertyTypeFullName = property.Metadata.ClrType.FullName,
+                    PropertyTypeFullName = property.Metadata.ClrType.FullName ?? string.Empty,
                     NewValue = entry.State != EntityState.Deleted ? SerializeVal(property.CurrentValue) : null,
                     OriginalValue = entry.State != EntityState.Added ? SerializeVal(property.OriginalValue) : null
                 };
