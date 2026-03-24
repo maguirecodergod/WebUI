@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -37,5 +38,19 @@ public static class AuditingServiceCollectionExtensions
         services.TryAddTransient<IAuditPropertySetter, AuditPropertySetter>();
 
         return services;
+    }
+}
+
+public static class DataAuditingApplicationBuilderExtensions
+{
+    /// <summary>
+    /// Adds the <see cref="LHA.Auditing.Interceptors.DataAuditingMiddleware"/> 
+    /// to the application's request pipeline, enabling integration with the classic 
+    /// EF Core Entity tracking system.
+    /// </summary>
+    public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseLHADataAuditing(
+        this Microsoft.AspNetCore.Builder.IApplicationBuilder app)
+    {
+        return app.UseMiddleware<LHA.Auditing.Interceptors.DataAuditingMiddleware>();
     }
 }
