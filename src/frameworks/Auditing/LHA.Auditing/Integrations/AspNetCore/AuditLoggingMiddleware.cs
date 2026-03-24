@@ -101,11 +101,14 @@ internal sealed class AuditLoggingMiddleware
         {
             sw.Stop();
             record.DurationMs = sw.ElapsedMilliseconds;
-            record.StatusCode = context.Response.StatusCode;
 
-            // Set action name from endpoint metadata
+            // Set action name: prefer EndpointName (e.g. "Login"), then DisplayName, then path
             var endpoint = context.GetEndpoint();
-            record.ActionName = endpoint?.DisplayName ?? path;
+            record.ActionName = endpoint?.Metadata.GetMetadata<Microsoft.AspNetCore.Routing.EndpointNameMetadata>()?.EndpointName
+                               ?? endpoint?.DisplayName
+                               ?? path;
+
+            record.StatusCode = context.Response.StatusCode;
 
             // Capture user info (available after auth middleware)
             record.UserId = currentUser.Id?.ToString();
@@ -126,11 +129,17 @@ internal sealed class AuditLoggingMiddleware
                 await responseBuffer.DisposeAsync();
             }
 
-            // Capture exception
             if (caughtException is not null)
             {
                 record.Status = AuditLogStatus.Failure;
                 record.Exception = AuditExceptionSerializer.Serialize(caughtException);
+
+                // If status code is 200 (default), the outer exception handler hasn't set it yet.
+                // We guess it based on the exception type to ensure the log is accurate.
+                if (record.StatusCode == 200 || record.StatusCode == 0)
+                {
+                    record.StatusCode = GuessStatusCode(caughtException);
+                }
             }
             else
             {
@@ -172,4 +181,15 @@ internal sealed class AuditLoggingMiddleware
 
         return sb.Length > 0 ? sb.ToString() : null;
     }
+
+    private static int GuessStatusCode(Exception ex) => ex switch
+    {
+        UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+        ArgumentException or FormatException or InvalidOperationException => StatusCodes.Status400BadRequest,
+        OperationCanceledException => 499, // Client Closed Request
+        _ when ex.GetType().Name == "EntityNotFoundException" => StatusCodes.Status404NotFound,
+        _ when ex.GetType().Name == "BusinessException" => (int?)ex.GetType().GetProperty("StatusCode")?.GetValue(ex) ?? 400,
+        _ when ex.GetType().Name == "DbUpdateConcurrencyException" => StatusCodes.Status409Conflict,
+        _ => StatusCodes.Status500InternalServerError
+    };
 }
