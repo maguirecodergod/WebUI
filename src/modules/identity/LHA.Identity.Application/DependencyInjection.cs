@@ -1,4 +1,3 @@
-using LHA.Ddd.Domain;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
 using Microsoft.Extensions.DependencyInjection;

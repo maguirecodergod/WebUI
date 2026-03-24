@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="5.2.1" />
     <PackageReference Include="Ulid" Version="1.4.1" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.76.0" />
   </ItemGroup>
@@ -21,6 +22,7 @@
     <ProjectReference Include="..\..\Core\LHA.Core\LHA.Core.csproj" />
     <ProjectReference Include="..\..\BackgroundJob\LHA.BackgroundJob.Abstraction\LHA.BackgroundJob.Abstraction.csproj" />
     <ProjectReference Include="..\..\EventBus\LHA.EventBus.Abstraction\LHA.EventBus.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Ddd\LHA.Ddd.Application.Contracts\LHA.Ddd.Application.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

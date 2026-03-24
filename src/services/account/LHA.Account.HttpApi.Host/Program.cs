@@ -87,6 +87,7 @@ builder.Services.AddAccountEntityFrameworkCore(connectionString);
 
 // Configure EF Core dispatcher to store the audit records
 builder.Services.AddLHAAuditEfCoreDispatcher(options => options.UseNpgsql(connectionString));
+builder.Services.AddAuditingInterception();
 
 var app = builder.Build();
 
