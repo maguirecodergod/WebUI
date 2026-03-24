@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -14,6 +14,9 @@
   <ItemGroup>
     <ProjectReference Include="..\LHA.Account.Application\LHA.Account.Application.csproj" />
     <ProjectReference Include="..\LHA.Account.EntityFrameworkCore\LHA.Account.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\DistributedLocking\LHA.DistributedLocking.Abstraction\LHA.DistributedLocking.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Auditing\LHA.Auditing.Contracts\LHA.Auditing.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

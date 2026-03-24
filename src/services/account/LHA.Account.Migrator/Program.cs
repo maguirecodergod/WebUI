@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using LHA.EventBus;
+using LHA.DistributedLocking;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -27,6 +29,9 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
 builder.Services.AddLHAAuditing();
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
+builder.Services.AddLHAInMemoryEventBus();
+builder.Services.AddLHADistributedLocking();
+builder.Services.AddSingleton<IClientInfoProvider, NullClientInfoProvider>();
 
 // ── Module services (Application + EF Core) ──────────────────────
 builder.Services.AddAccountApplication();
@@ -262,3 +267,10 @@ using (var scope = host.Services.CreateScope())
 }
 
 logger.LogInformation("All Account Service seeding complete.");
+
+public class NullClientInfoProvider : IClientInfoProvider
+{
+    public string? ClientIpAddress => null;
+    public string? BrowserInfo => null;
+    public string? CorrelationId => null;
+}
