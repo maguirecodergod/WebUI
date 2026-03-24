@@ -9,8 +9,11 @@ namespace LHA.Auditing.Interceptors;
 /// Intercepts calls to application services to record as audit log actions.
 /// Implements IInterceptor to be compatible with Castle ProxyGenerator.
 /// </summary>
-public sealed class AuditingInterceptor(IAuditingManager auditingManager) : IInterceptor
+public sealed class AuditingInterceptor(
+    IAuditingManager auditingManager,
+    Microsoft.Extensions.Options.IOptions<AuditingOptions> options) : IInterceptor
 {
+    private readonly AuditingOptions _options = options.Value;
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -121,15 +124,35 @@ public sealed class AuditingInterceptor(IAuditingManager auditingManager) : IInt
             var parameterValues = invocation.Arguments;
             if (parameters.Length == 0) return null;
 
-            var dict = parameters
-                .Select((p, i) => new { p.Name, Value = parameterValues[i] })
-                .ToDictionary(x => x.Name ?? "arg", x => x.Value);
+            var dict = new Dictionary<string, object?>();
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                var p = parameters[i];
+                var value = parameterValues[i];
 
-            return JsonSerializer.Serialize(dict, JsonOptions);
+                // Skip unserializable / sensitive types
+                if (value is null
+                    || value is CancellationToken
+                    || value is System.IO.Stream
+                    || value is System.Linq.Expressions.Expression)
+                {
+                    continue;
+                }
+
+                dict[p.Name ?? $"arg{i}"] = value;
+            }
+
+            var json = dict.Count == 0 ? null : JsonSerializer.Serialize(dict, JsonOptions);
+
+            // Mask sensitive fields before storing
+            if (json is not null && _options.SensitivePropertyNames.Count > 0)
+                json = SensitiveDataMasker.MaskJson(json, _options.SensitivePropertyNames);
+
+            return json;
         }
-        catch
+        catch (Exception ex)
         {
-            return "{\"error\":\"Serialization failed\"}";
+            return $"{{\"error\":\"Serialization failed: {ex.Message.Replace("\"", "'")}\"}}"; 
         }
     }
 }

@@ -57,7 +57,10 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
                 var bodyString = await ReadBodyAsync(context.Request.Body);
                 context.Request.Body.Position = 0;
 
-                // Store in ExtraProperties or we could add it to the first Action later
+                // Mask sensitive fields in the captured body
+                if (bodyString is not null && options.SensitivePropertyNames.Count > 0)
+                    bodyString = SensitiveDataMasker.MaskJson(bodyString, options.SensitivePropertyNames);
+
                 log.ExtraProperties["RequestBody"] = bodyString;
             }
         }

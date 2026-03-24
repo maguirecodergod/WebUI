@@ -74,4 +74,19 @@ public sealed class AuditingOptions
         typeof(System.Linq.Expressions.Expression),
         typeof(CancellationToken)
     ];
+
+    /// <summary>
+    /// JSON property names (case-insensitive) whose values will be replaced with "***"
+    /// in audit log parameters and request bodies. Default covers common credential fields.
+    /// </summary>
+    public HashSet<string> SensitivePropertyNames { get; } =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            "password", "newPassword", "oldPassword", "confirmPassword",
+            "secret", "clientSecret",
+            "token", "accessToken", "refreshToken", "idToken",
+            "apiKey", "apiSecret",
+            "creditCard", "cardNumber", "cvv", "cvc",
+            "ssn", "pin", "otp"
+        };
 }

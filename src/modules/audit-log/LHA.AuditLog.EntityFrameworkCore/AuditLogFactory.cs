@@ -40,7 +40,7 @@ public static class AuditLogFactory
             : null;
 
         var extraProperties = entry.ExtraProperties.Count > 0
-            ? JsonSerializer.Serialize(entry.ExtraProperties, JsonOptions)
+            ? SerializeExtraProperties(entry.ExtraProperties)
             : null;
 
         var auditLog = new AuditLogEntity(
@@ -106,5 +106,42 @@ public static class AuditLogFactory
         }
 
         return auditLog;
+    }
+
+    /// <summary>
+    /// Serializes ExtraProperties, treating string values that are valid JSON
+    /// as raw JSON nodes rather than escaped strings.
+    /// </summary>
+    private static string SerializeExtraProperties(Dictionary<string, object?> props)
+    {
+        using var ms = new System.IO.MemoryStream();
+        using var writer = new Utf8JsonWriter(ms);
+        writer.WriteStartObject();
+
+        foreach (var (key, value) in props)
+        {
+            writer.WritePropertyName(key);
+            if (value is string strValue)
+            {
+                // Try to embed as raw JSON node if valid JSON
+                try
+                {
+                    var doc = JsonDocument.Parse(strValue);
+                    doc.RootElement.WriteTo(writer);
+                }
+                catch
+                {
+                    writer.WriteStringValue(strValue);
+                }
+            }
+            else
+            {
+                JsonSerializer.Serialize(writer, value, JsonOptions);
+            }
+        }
+
+        writer.WriteEndObject();
+        writer.Flush();
+        return System.Text.Encoding.UTF8.GetString(ms.ToArray());
     }
 }
