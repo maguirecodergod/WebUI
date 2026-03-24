@@ -55,6 +55,7 @@ public static class AuditLogFactory
             httpStatusCode: entry.HttpStatusCode,
             url: entry.Url,
             browserInfo: entry.BrowserInfo,
+            actionName: entry.ActionName,
             exceptions: exceptions,
             comments: comments,
             extraProperties: extraProperties);

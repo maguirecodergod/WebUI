@@ -22,7 +22,10 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAAuditing();
+builder.Services.AddLHAAuditing(options => 
+{
+    options.ApplicationName = "Account";
+});
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
@@ -88,10 +91,11 @@ var app = builder.Build();
 
 // ── Middleware ────────────────────────────────────────────────────
 app.UseLHAExceptionHandler();
+app.UseLHADataAuditing();
 app.UseLHAUnitOfWork();
 
 // Audit pipeline middleware — after exception handler, before auth
-app.UseLHAAuditLogging();
+// app.UseLHAAuditLogging();
 app.UseLHASwagger();
 app.UseAuthentication();
 app.UseAuthorization();

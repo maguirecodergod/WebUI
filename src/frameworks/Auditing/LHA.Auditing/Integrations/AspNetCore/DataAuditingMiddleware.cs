@@ -30,7 +30,7 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
         if (log is not null)
         {
             var currentUser = context.RequestServices.GetService<ICurrentUser>();
-            log.ApplicationName = "LHA.WebUI";
+            // log.ApplicationName is set by AuditingManager from options
             log.UserId = currentUser?.Id;
             log.UserName = currentUser?.UserName;
             log.TenantId = currentUser?.TenantId;
@@ -40,6 +40,12 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
             log.ClientIpAddress = context.Connection.RemoteIpAddress?.ToString();
             log.BrowserInfo = context.Request.Headers.UserAgent.ToString();
             log.CorrelationId = Activity.Current?.Id ?? context.TraceIdentifier;
+
+            // Resolve ActionName: prefer EndpointName, then DisplayName, then path
+            var endpoint = context.GetEndpoint();
+            log.ActionName = endpoint?.Metadata.GetMetadata<Microsoft.AspNetCore.Routing.EndpointNameMetadata>()?.EndpointName
+                             ?? endpoint?.DisplayName
+                             ?? context.Request.Path;
         }
 
         try
@@ -48,7 +54,15 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
         }
         catch (Exception ex)
         {
-            log?.Exceptions.Add(ex);
+            if (log is not null)
+            {
+                log.Exceptions.Add(ex);
+                // Guess status code if not set (outer handler hasn't run yet)
+                if (log.HttpStatusCode is null or 200)
+                {
+                    log.HttpStatusCode = GuessStatusCode(ex);
+                }
+            }
             throw;
         }
         finally
@@ -63,4 +77,15 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
             await saveHandle.SaveAsync();
         }
     }
+
+    private static int GuessStatusCode(Exception ex) => ex switch
+    {
+        UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+        ArgumentException or FormatException or InvalidOperationException => StatusCodes.Status400BadRequest,
+        OperationCanceledException => 499, // Client Closed Request
+        _ when ex.GetType().Name == "EntityNotFoundException" => StatusCodes.Status404NotFound,
+        _ when ex.GetType().Name == "BusinessException" => (int?)ex.GetType().GetProperty("StatusCode")?.GetValue(ex) ?? 400,
+        _ when ex.GetType().Name == "DbUpdateConcurrencyException" => StatusCodes.Status409Conflict,
+        _ => StatusCodes.Status500InternalServerError
+    };
 }

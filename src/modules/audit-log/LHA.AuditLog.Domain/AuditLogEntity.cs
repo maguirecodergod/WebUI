@@ -22,6 +22,9 @@ public sealed class AuditLogEntity : Entity<Guid>, IMultiTenant, IHasCreationTim
     /// <summary>Application/service name that produced this log.</summary>
     public string? ApplicationName { get; private init; }
 
+    /// <summary>Name of the action (e.g. "Login", "Register").</summary>
+    public string? ActionName { get; private init; }
+
     /// <summary>Authenticated user identifier.</summary>
     public Guid? UserId { get; private init; }
 
@@ -111,6 +114,7 @@ public sealed class AuditLogEntity : Entity<Guid>, IMultiTenant, IHasCreationTim
         int? httpStatusCode,
         string? url,
         string? browserInfo,
+        string? actionName,
         string? exceptions,
         string? comments,
         string? extraProperties)
@@ -132,6 +136,7 @@ public sealed class AuditLogEntity : Entity<Guid>, IMultiTenant, IHasCreationTim
         HttpStatusCode = httpStatusCode;
         Url = url;
         BrowserInfo = browserInfo;
+        ActionName = actionName;
         Exceptions = exceptions;
         Comments = comments;
         ExtraProperties = extraProperties;

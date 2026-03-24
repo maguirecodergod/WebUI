@@ -11,6 +11,9 @@ public sealed class AuditLogEntry
     /// <summary>Application/service name.</summary>
     public string? ApplicationName { get; set; }
 
+    /// <summary>Name of the action (e.g. "Login", "Register").</summary>
+    public string? ActionName { get; set; }
+
     /// <summary>Authenticated user identifier.</summary>
     public Guid? UserId { get; set; }
 
