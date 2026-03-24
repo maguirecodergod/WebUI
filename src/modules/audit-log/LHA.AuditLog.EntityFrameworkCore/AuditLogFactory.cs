@@ -26,7 +26,13 @@ public static class AuditLogFactory
         var logId = Guid.CreateVersion7();
 
         var exceptions = entry.Exceptions.Count > 0
-            ? JsonSerializer.Serialize(entry.Exceptions.Select(e => e.ToString()), JsonOptions)
+            ? JsonSerializer.Serialize(entry.Exceptions.Select(ex => new 
+                {
+                    Type = ex.GetType().FullName,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace,
+                    InnerException = ex.InnerException?.Message
+                }), JsonOptions)
             : null;
 
         var comments = entry.Comments.Count > 0

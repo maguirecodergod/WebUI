@@ -46,6 +46,13 @@ public sealed class AuditingOptions
     public bool AlwaysLogOnException { get; set; } = true;
 
     /// <summary>
+    /// Whether to capture the request body in audit logs.
+    /// Default: <c>false</c>.
+    /// </summary>
+    public bool CaptureRequestBody { get; set; }
+
+
+    /// <summary>
     /// Whether to create audit logs for anonymous (unauthenticated) users.
     /// Default: <c>true</c>.
     /// </summary>

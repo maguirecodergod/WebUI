@@ -2,6 +2,8 @@ using System.Diagnostics;
 using LHA.Core.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Text;
 
 namespace LHA.Auditing.Interceptors;
 
@@ -46,6 +48,18 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
             log.ActionName = endpoint?.Metadata.GetMetadata<Microsoft.AspNetCore.Routing.EndpointNameMetadata>()?.EndpointName
                              ?? endpoint?.DisplayName
                              ?? context.Request.Path;
+
+            // Capture request body if enabled
+            var options = context.RequestServices.GetRequiredService<IOptions<AuditingOptions>>().Value;
+            if (options.CaptureRequestBody && context.Request.ContentLength > 0)
+            {
+                context.Request.EnableBuffering();
+                var bodyString = await ReadBodyAsync(context.Request.Body);
+                context.Request.Body.Position = 0;
+
+                // Store in ExtraProperties or we could add it to the first Action later
+                log.ExtraProperties["RequestBody"] = bodyString;
+            }
         }
 
         try
@@ -70,8 +84,27 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
             sw.Stop();
             if (log is not null)
             {
-                log.HttpStatusCode = context.Response.StatusCode;
+                // Only overwrite if it was 200/null (indicating no exception guessed it yet)
+                // or if the response actually has a real status code set by another middleware
+                if (log.HttpStatusCode is null or 200 && context.Response.StatusCode != 200)
+                {
+                    log.HttpStatusCode = context.Response.StatusCode;
+                }
+                
                 log.ExecutionDuration = (int)sw.ElapsedMilliseconds;
+
+                // Add at least one action to the log to satisfy AuditLogActionEntity requirements
+                if (log.Actions.Count == 0)
+                {
+                    log.Actions.Add(new AuditLogAction
+                    {
+                        ServiceName = log.ApplicationName ?? "Application",
+                        MethodName = log.ActionName ?? context.Request.Path,
+                        ExecutionTime = log.ExecutionTime,
+                        ExecutionDuration = log.ExecutionDuration,
+                        Parameters = log.ExtraProperties.TryGetValue("RequestBody", out var body) ? body?.ToString() : null
+                    });
+                }
             }
             
             await saveHandle.SaveAsync();
@@ -88,4 +121,11 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
         _ when ex.GetType().Name == "DbUpdateConcurrencyException" => StatusCodes.Status409Conflict,
         _ => StatusCodes.Status500InternalServerError
     };
+
+    private static async Task<string?> ReadBodyAsync(Stream bodyStream)
+    {
+        using var reader = new StreamReader(bodyStream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: 1024, leaveOpen: true);
+        var body = await reader.ReadToEndAsync();
+        return body;
+    }
 }

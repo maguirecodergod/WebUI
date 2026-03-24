@@ -25,6 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLHAAuditing(options => 
 {
     options.ApplicationName = "Account";
+    options.CaptureRequestBody = true;
 });
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
