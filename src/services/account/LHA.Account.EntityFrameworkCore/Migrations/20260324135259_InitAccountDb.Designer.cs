@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LHA.Account.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AccountDbContext))]
-    [Migration("20260324094211_AddAuditLogPipeline")]
-    partial class AddAuditLogPipeline
+    [Migration("20260324135259_InitAccountDb")]
+    partial class InitAccountDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,10 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ActionName")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
 
                     b.Property<string>("ApplicationName")
                         .HasMaxLength(96)
@@ -155,84 +159,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.ToTable("Audit_Log", (string)null);
                 });
 
-            modelBuilder.Entity("LHA.AuditLog.Domain.EntityChangeEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AuditLogId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("ChangeTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<byte>("ChangeType")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("EntityId")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
-                    b.Property<Guid?>("EntityTenantId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("EntityTypeFullName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
-
-                    b.Property<Guid?>("TenantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuditLogId");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("EntityTypeFullName", "EntityId");
-
-                    b.ToTable("Audit_EntityChange", (string)null);
-                });
-
-            modelBuilder.Entity("LHA.AuditLog.Domain.EntityPropertyChangeEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("EntityChangeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("NewValue")
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)");
-
-                    b.Property<string>("OriginalValue")
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)");
-
-                    b.Property<string>("PropertyName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
-                    b.Property<string>("PropertyTypeFullName")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
-
-                    b.Property<Guid?>("TenantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EntityChangeId");
-
-                    b.ToTable("Audit_PropertyChange", (string)null);
-                });
-
-            modelBuilder.Entity("LHA.Auditing.EfCore.AuditLogPipelineEntity", b =>
+            modelBuilder.Entity("LHA.AuditLog.Domain.AuditLogPipelineEntity", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(26)
@@ -332,7 +259,84 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
 
                     b.HasIndex("ServiceName", "Timestamp");
 
-                    b.ToTable("AuditLogPipeline", (string)null);
+                    b.ToTable("Audit_LogPipeline", (string)null);
+                });
+
+            modelBuilder.Entity("LHA.AuditLog.Domain.EntityChangeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuditLogId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("ChangeTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<byte>("ChangeType")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("EntityId")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<Guid?>("EntityTenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("EntityTypeFullName")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuditLogId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("EntityTypeFullName", "EntityId");
+
+                    b.ToTable("Audit_EntityChange", (string)null);
+                });
+
+            modelBuilder.Entity("LHA.AuditLog.Domain.EntityPropertyChangeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("EntityChangeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("NewValue")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("OriginalValue")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("PropertyName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("PropertyTypeFullName")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntityChangeId");
+
+                    b.ToTable("Audit_PropertyChange", (string)null);
                 });
 
             modelBuilder.Entity("LHA.EntityFrameworkCore.InboxMessage", b =>

@@ -14,6 +14,7 @@ public static class AuditLogConsts
     public const int MaxHttpMethodLength = 16;
     public const int MaxUrlLength = 2048;
     public const int MaxBrowserInfoLength = 512;
+    public const int MaxActionNameLength = 512;
     public const int MaxServiceNameLength = 512;
     public const int MaxMethodNameLength = 256;
     public const int MaxEntityIdLength = 128;
