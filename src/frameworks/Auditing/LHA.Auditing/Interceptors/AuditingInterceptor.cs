@@ -89,8 +89,10 @@ public sealed class AuditingInterceptor(IAuditingManager auditingManager) : IInt
     private (AuditLogAction action, Stopwatch sw) PreProcess(IInvocation invocation)
     {
         var methodName = invocation.Method.Name;
-        // Use the declaring type's name (the interface or the class)
-        var serviceName = invocation.Method.DeclaringType?.Name ?? invocation.TargetType?.Name ?? "Unknown";
+        // TargetType = the concrete class (e.g. AuthAppService), NOT the proxy or interface
+        var serviceName = invocation.TargetType?.Name
+                       ?? invocation.Method.DeclaringType?.Name
+                       ?? "Unknown";
 
         var action = new AuditLogAction
         {

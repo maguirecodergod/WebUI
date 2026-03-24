@@ -50,7 +50,7 @@ public interface IIdentityRoleAppService
 /// <summary>
 /// Application service for authentication (login, register, refresh, current user).
 /// </summary>
-public interface IAuthAppService
+public interface IAuthAppService : IApplicationService
 {
     /// <summary>Authenticates a user and returns JWT tokens.</summary>
     Task<AuthResultDto> LoginAsync(LoginInput input, CancellationToken ct = default);
@@ -68,7 +68,7 @@ public interface IAuthAppService
 /// <summary>
 /// Application service for claim type management.
 /// </summary>
-public interface IIdentityClaimTypeAppService
+public interface IIdentityClaimTypeAppService : IApplicationService
 {
     Task<IdentityClaimTypeDto> GetAsync(Guid id, CancellationToken ct = default);
     Task<PagedResultDto<IdentityClaimTypeDto>> GetListAsync(GetClaimTypesInput input, CancellationToken ct = default);
@@ -80,7 +80,7 @@ public interface IIdentityClaimTypeAppService
 /// <summary>
 /// Application service for security log queries.
 /// </summary>
-public interface IIdentitySecurityLogAppService
+public interface IIdentitySecurityLogAppService : IApplicationService
 {
     Task<PagedResultDto<IdentitySecurityLogDto>> GetListAsync(GetSecurityLogsInput input, CancellationToken ct = default);
 }
@@ -88,7 +88,7 @@ public interface IIdentitySecurityLogAppService
 /// <summary>
 /// Application service for permission grant management.
 /// </summary>
-public interface IPermissionAppService
+public interface IPermissionAppService : IApplicationService
 {
     /// <summary>Gets all permissions for a provider (role or user) with grant status.</summary>
     Task<List<PermissionGrantDto>> GetAsync(GetPermissionListInput input, CancellationToken ct = default);
