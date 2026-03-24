@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\..\modules\tenant-management\LHA.TenantManagement.EntityFrameworkCore\LHA.TenantManagement.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.EntityFrameworkCore\LHA.AuditLog.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\..\modules\permission-management\LHA.PermissionManagement.EntityFrameworkCore\LHA.PermissionManagement.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Auditing\LHA.Auditing.EfCore\LHA.Auditing.EfCore.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+
 namespace LHA.Auditing;
+
+[Flags]
+public enum AuditMode
+{
+    None = 0,
+    HttpPipeline = 1, // Only HTTP API audit
+    DataChange = 2,   // Only EF Core Entity Change audit
+    All = HttpPipeline | DataChange
+}
 
 /// <summary>
 /// Configuration options for the LHA auditing infrastructure.
@@ -9,6 +22,11 @@ public sealed class AuditingOptions
     /// Master switch for auditing. Default: <c>true</c>.
     /// </summary>
     public bool IsEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Enabled audit modes. Default: <see cref="AuditMode.None"/>.
+    /// </summary>
+    public AuditMode Mode { get; set; } = AuditMode.None;
 
     /// <summary>
     /// Application/service name stamped on audit log entries.

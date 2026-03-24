@@ -17,6 +17,6 @@ public sealed class AccountDbContextFactory
         optionsBuilder.UseNpgsql(
             "Host=localhost;Port=5432;Database=LienHoaApp_Account;Username=admin;Password=admin");
 
-        return new AccountDbContext(optionsBuilder.Options);
+        return new AccountDbContext(optionsBuilder.Options, null!);
     }
 }

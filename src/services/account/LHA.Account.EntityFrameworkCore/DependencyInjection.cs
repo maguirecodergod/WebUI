@@ -1,5 +1,6 @@
 using LHA.AuditLog.EntityFrameworkCore;
 using LHA.EntityFrameworkCore;
+using LHA.EntityFrameworkCore.Auditing;
 using LHA.EventBus;
 using LHA.Identity.EntityFrameworkCore;
 using LHA.PermissionManagement.EntityFrameworkCore;
@@ -25,6 +26,9 @@ public static class DependencyInjection
         this IServiceCollection services,
         string connectionString)
     {
+        // 0) Register Data Auditing Interceptor
+        services.AddScoped<DataAuditingSaveChangesInterceptor>();
+
         // 1) Register the unified AccountDbContext and replacement mappings.
         services.AddLhaDbContext<AccountDbContext>(options =>
         {

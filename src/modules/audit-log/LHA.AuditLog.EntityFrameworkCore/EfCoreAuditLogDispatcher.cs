@@ -1,11 +1,12 @@
 using System.Text.Json;
+using LHA.AuditLog.Domain;
 using LHA.Auditing.Pipeline;
 using LHA.Auditing.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace LHA.Auditing.EfCore;
+namespace LHA.AuditLog.EntityFrameworkCore;
 
 /// <summary>
 /// <see cref="IAuditLogDispatcher"/> that persists audit log records

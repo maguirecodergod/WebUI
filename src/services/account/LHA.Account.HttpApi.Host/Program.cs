@@ -5,6 +5,7 @@ using LHA.Account.EntityFrameworkCore;
 using LHA.Account.HttpApi;
 using LHA.AspNetCore;
 using LHA.Auditing;
+using LHA.Auditing.EfCore;
 using LHA.Auditing.Extensions;
 using LHA.DistributedLocking;
 using LHA.EventBus;
@@ -15,6 +16,7 @@ using LHA.MultiTenancy;
 using LHA.Swagger;
 using LHA.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +80,9 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
 
 builder.Services.AddAccountApplication();
 builder.Services.AddAccountEntityFrameworkCore(connectionString);
+
+// Configure EF Core dispatcher to store the audit records
+builder.Services.AddLHAAuditEfCoreDispatcher(options => options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 

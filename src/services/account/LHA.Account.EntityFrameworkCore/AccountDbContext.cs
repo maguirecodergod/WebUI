@@ -1,4 +1,5 @@
 using LHA.Auditing;
+using LHA.Auditing.EfCore;
 using LHA.AuditLog.EntityFrameworkCore;
 using LHA.EntityFrameworkCore;
 using LHA.Identity.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using LHA.MultiTenancy;
 using LHA.PermissionManagement.EntityFrameworkCore;
 using LHA.TenantManagement.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LHA.Account.EntityFrameworkCore;
 
@@ -23,12 +25,28 @@ public sealed class AccountDbContext
     /// <inheritdoc />
     public DbSet<InboxMessage> InboxMessages => Set<InboxMessage>();
 
+    private readonly IServiceProvider _serviceProvider;
+
     public AccountDbContext(
         DbContextOptions<AccountDbContext> options,
+        IServiceProvider serviceProvider,
         IAuditPropertySetter? auditPropertySetter = null,
         ICurrentTenant? currentTenant = null)
         : base(options, auditPropertySetter, currentTenant)
     {
+        _serviceProvider = serviceProvider;
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        
+        // Apply Data Auditing interceptor to capture EF Core entity changes
+        var interceptor = _serviceProvider?.GetService<LHA.EntityFrameworkCore.Auditing.DataAuditingSaveChangesInterceptor>();
+        if (interceptor is not null)
+        {
+            optionsBuilder.AddInterceptors(interceptor);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
