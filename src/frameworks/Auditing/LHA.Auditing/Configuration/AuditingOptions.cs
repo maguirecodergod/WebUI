@@ -1,16 +1,7 @@
 namespace LHA.Auditing;
 
-[Flags]
-public enum AuditMode
-{
-    None = 0,
-    HttpPipeline = 1, // Only HTTP API audit
-    DataChange = 2,   // Only EF Core Entity Change audit
-    All = HttpPipeline | DataChange
-}
-
 /// <summary>
-/// Configuration options for the LHA auditing infrastructure.
+/// Configuration options for the core LHA auditing infrastructure.
 /// </summary>
 public sealed class AuditingOptions
 {
@@ -18,11 +9,6 @@ public sealed class AuditingOptions
     /// Master switch for auditing. Default: <c>true</c>.
     /// </summary>
     public bool IsEnabled { get; set; } = true;
-
-    /// <summary>
-    /// Enabled audit modes. Default: <see cref="AuditMode.None"/>.
-    /// </summary>
-    public AuditMode Mode { get; set; } = AuditMode.None;
 
     /// <summary>
     /// Application/service name stamped on audit log entries.
@@ -36,29 +22,10 @@ public sealed class AuditingOptions
     public bool HideErrors { get; set; } = true;
 
     /// <summary>
-    /// Always persist an audit log when an exception occurs, regardless of other filters.
-    /// Default: <c>true</c>.
-    /// </summary>
-    public bool AlwaysLogOnException { get; set; } = true;
-
-    /// <summary>
-    /// Whether to capture the request body in audit logs.
+    /// Whether to capture the request body in audit logs via the HTTP Middleware.
     /// Default: <c>false</c>.
     /// </summary>
     public bool CaptureRequestBody { get; set; }
-
-
-    /// <summary>
-    /// Whether to create audit logs for anonymous (unauthenticated) users.
-    /// Default: <c>true</c>.
-    /// </summary>
-    public bool IsEnabledForAnonymousUsers { get; set; } = true;
-
-    /// <summary>
-    /// Whether to create audit logs for HTTP GET/HEAD requests.
-    /// Default: <c>false</c>.
-    /// </summary>
-    public bool IsEnabledForGetRequests { get; set; }
 
     /// <summary>
     /// Types to ignore during parameter serialization and entity history tracking

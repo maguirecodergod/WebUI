@@ -6,5 +6,5 @@ namespace LHA.Ddd.Application;
 public class PagedAndSortedResultRequestDto : PagedResultRequestDto, ISortedResultRequest
 {
     /// <inheritdoc />
-    public string? Sorting { get; init; }
+    public string? Sorting { get; set; }
 }

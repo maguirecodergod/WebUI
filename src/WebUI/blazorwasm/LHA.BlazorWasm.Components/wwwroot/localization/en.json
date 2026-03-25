@@ -187,7 +187,11 @@
             "TimeoutError": "The request timed out. Please try again.",
             "UnauthorizedError": "You do not have permission to access that resource.",
             "NullError": "The application encountered missing data. Please refresh.",
-            "ErrorId": "Error ID"
+            "ErrorId": "Error ID",
+            "OopsTitle": "Oops!",
+            "OopsMessage": "Something went wrong. Please try again later.",
+            "TryAgain": "Try Again",
+            "BackHome": "Back to Home"
         }
     }
 }

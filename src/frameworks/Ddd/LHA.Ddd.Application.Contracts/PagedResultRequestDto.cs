@@ -19,9 +19,9 @@ public class PagedResultRequestDto : IPagedResultRequest
 
     /// <inheritdoc />
     [Range(0, int.MaxValue)]
-    public int SkipCount { get; init; }
+    public int SkipCount { get; set; }
 
     /// <inheritdoc />
     [Range(1, MaxMaxResultCount)]
-    public int MaxResultCount { get; init; } = DefaultMaxResultCount;
+    public int MaxResultCount { get; set; } = DefaultMaxResultCount;
 }

@@ -33,7 +33,8 @@ public static class DependencyInjection
         services.AddLhaDbContext<AccountDbContext>(options =>
         {
             options.Configure<AccountDbContext>(ctx =>
-                ctx.DbContextOptions.UseNpgsql(connectionString));
+                ctx.DbContextOptions.UseNpgsql(connectionString,
+                    o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
             options.ReplaceDbContext<IdentityDbContext, AccountDbContext>();
             options.ReplaceDbContext<TenantManagementDbContext, AccountDbContext>();
@@ -75,7 +76,8 @@ public static class DependencyInjection
             builder.ConfigureDbContext(options =>
             {
                 options.Configure<AuditLogDbContext>(ctx =>
-                    ctx.DbContextOptions.UseNpgsql(connectionString));
+                    ctx.DbContextOptions.UseNpgsql(connectionString, 
+                        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
             });
         });
 

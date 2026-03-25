@@ -9,7 +9,6 @@ using LHA.BlazorWasm.Services.ErrorHandling;
 using LHA.BlazorWasm.Components;
 using LHA.BlazorWasm.Services.StatusBadge;
 using LHA.BlazorWasm.HttpApi.Client.Extensions;
-using LHA.BlazorWasm.HttpApi.Client.Options;
 using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.App.Services;
 

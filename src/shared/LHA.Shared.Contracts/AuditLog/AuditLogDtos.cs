@@ -11,6 +11,7 @@ public sealed class AuditLogDto
 {
     public Guid Id { get; init; }
     public string? ApplicationName { get; init; }
+    public string? ActionName { get; init; }
     public Guid? UserId { get; init; }
     public string? UserName { get; init; }
     public Guid? TenantId { get; init; }

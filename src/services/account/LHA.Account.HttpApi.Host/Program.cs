@@ -41,8 +41,7 @@ builder.Services.AddLHAAuditLogging(
     {
         options.ApplicationName = "Account";
         options.CaptureRequestBody = true;
-    }
-    );
+    });
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
 builder.Services.AddLhaApiVersioning();

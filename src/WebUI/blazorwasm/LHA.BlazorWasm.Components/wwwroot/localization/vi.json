@@ -187,7 +187,11 @@
             "TimeoutError": "Yêu cầu đã hết thời gian chờ. Vui lòng thử lại.",
             "UnauthorizedError": "Bạn không có quyền truy cập vào tài nguyên này.",
             "NullError": "Ứng dụng gặp sự cố về dữ liệu (thiếu thông tin). Vui lòng tải lại trang.",
-            "ErrorId": "Mã lỗi"
+            "ErrorId": "Mã lỗi",
+            "OopsTitle": "Oops!",
+            "OopsMessage": "Đã xảy ra lỗi. Vui lòng thử lại sau.",
+            "TryAgain": "Thử lại",
+            "BackHome": "Quay lại trang chủ"
         }
     }
 }

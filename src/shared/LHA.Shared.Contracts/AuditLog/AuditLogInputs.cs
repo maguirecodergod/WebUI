@@ -8,43 +8,43 @@ namespace LHA.Shared.Contracts.AuditLog;
 public sealed class GetAuditLogsInput : PagedAndSortedResultRequestDto
 {
     /// <summary>Start time filter (inclusive).</summary>
-    public DateTimeOffset? StartTime { get; init; }
+    public DateTimeOffset? StartTime { get; set; }
 
     /// <summary>End time filter (inclusive).</summary>
-    public DateTimeOffset? EndTime { get; init; }
+    public DateTimeOffset? EndTime { get; set; }
 
     /// <summary>Filter by HTTP method (GET, POST, etc.).</summary>
-    public string? HttpMethod { get; init; }
+    public string? HttpMethod { get; set; }
 
     /// <summary>Filter by URL (contains, case-insensitive).</summary>
-    public string? Url { get; init; }
+    public string? Url { get; set; }
 
     /// <summary>Minimum HTTP status code.</summary>
-    public int? MinStatusCode { get; init; }
+    public int? MinStatusCode { get; set; }
 
     /// <summary>Maximum HTTP status code.</summary>
-    public int? MaxStatusCode { get; init; }
+    public int? MaxStatusCode { get; set; }
 
     /// <summary>Filter by user identifier.</summary>
-    public Guid? UserId { get; init; }
+    public Guid? UserId { get; set; }
 
     /// <summary>Filter by user name (contains, case-insensitive).</summary>
-    public string? UserName { get; init; }
+    public string? UserName { get; set; }
 
     /// <summary>Filter by application name.</summary>
-    public string? ApplicationName { get; init; }
+    public string? ApplicationName { get; set; }
 
     /// <summary>Filter by distributed correlation identifier.</summary>
-    public string? CorrelationId { get; init; }
+    public string? CorrelationId { get; set; }
 
     /// <summary>Filter by maximum execution duration in milliseconds.</summary>
-    public int? MaxExecutionDuration { get; init; }
+    public int? MaxExecutionDuration { get; set; }
 
     /// <summary>Filter by minimum execution duration in milliseconds.</summary>
-    public int? MinExecutionDuration { get; init; }
+    public int? MinExecutionDuration { get; set; }
 
     /// <summary>Filter by whether exceptions occurred. <c>null</c> returns all.</summary>
-    public bool? HasException { get; init; }
+    public bool? HasException { get; set; }
 }
 
 /// <summary>
