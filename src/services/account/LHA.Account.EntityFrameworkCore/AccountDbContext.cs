@@ -1,5 +1,4 @@
 using LHA.Auditing;
-using LHA.Auditing.EfCore;
 using LHA.AuditLog.EntityFrameworkCore;
 using LHA.EntityFrameworkCore;
 using LHA.Identity.EntityFrameworkCore;
@@ -53,10 +52,14 @@ public sealed class AccountDbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Determine the audit mode configured in DI (fallback to All)
+        var auditOptions = _serviceProvider?.GetService<Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>>();
+        var auditMode = auditOptions?.Value.Mode ?? AuditLogStoreMode.All;
+
         // Apply module model configurations first.
         modelBuilder.ConfigureIdentity();
         modelBuilder.ConfigureTenantManagement();
-        modelBuilder.ConfigureAuditLog();
+        modelBuilder.ConfigureAuditLog(auditMode);
         modelBuilder.ConfigurePermissionManagement();
         modelBuilder.TryConfigureEventBus<AccountDbContext>();
 

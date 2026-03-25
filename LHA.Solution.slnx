@@ -19,7 +19,6 @@
     <Project Path="src/frameworks/Auditing/LHA.Auditing.Contracts/LHA.Auditing.Contracts.csproj" />
     <Project Path="src/frameworks/Auditing/LHA.Auditing/LHA.Auditing.csproj" />
     <Project Path="src/frameworks/Auditing/LHA.Auditing.Kafka/LHA.Auditing.Kafka.csproj" />
-    <Project Path="src/frameworks/Auditing/LHA.Auditing.EfCore/LHA.Auditing.EfCore.csproj" />
   </Folder>
   <Folder Name="/src/frameworks/Core/">
     <Project Path="src/frameworks/Core/LHA.Core/LHA.Core.csproj" />

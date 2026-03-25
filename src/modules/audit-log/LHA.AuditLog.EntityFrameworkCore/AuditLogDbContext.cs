@@ -15,10 +15,16 @@ namespace LHA.AuditLog.EntityFrameworkCore;
 /// </summary>
 public sealed class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
 {
+    // ── Data Audit (relational, structured) ────────────────────────────
     public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
     public DbSet<AuditLogActionEntity> AuditLogActions => Set<AuditLogActionEntity>();
     public DbSet<EntityChangeEntity> EntityChanges => Set<EntityChangeEntity>();
     public DbSet<EntityPropertyChangeEntity> EntityPropertyChanges => Set<EntityPropertyChangeEntity>();
+
+    // ── Pipeline Audit (high-throughput, lightweight) ──────────────────
+    public DbSet<AuditLogPipelineEntity> AuditLogPipeline => Set<AuditLogPipelineEntity>();
+
+    private readonly Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? _options;
 
     public AuditLogDbContext(DbContextOptions<AuditLogDbContext> options)
         : base(options)
@@ -27,15 +33,17 @@ public sealed class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
 
     public AuditLogDbContext(
         DbContextOptions<AuditLogDbContext> options,
+        Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? auditOptions = null,
         IAuditPropertySetter? auditPropertySetter = null,
         ICurrentTenant? currentTenant = null)
         : base(options, auditPropertySetter, currentTenant)
     {
+        _options = auditOptions;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ConfigureAuditLog();
+        modelBuilder.ConfigureAuditLog(_options?.Value.Mode ?? AuditLogStoreMode.All);
     }
 }

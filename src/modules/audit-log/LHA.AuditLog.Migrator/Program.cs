@@ -15,15 +15,30 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Missing 'Default' connection string.");
 
 // ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAAuditing();
+builder.Services.AddLHAAuditLogging();
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 
 // ── Module services ──────────────────────────────────────────────
-builder.Services.AddAuditLogEntityFrameworkCore(options =>
+builder.Services.AddAuditLogEntityFrameworkCore(auditBuilder =>
 {
-    options.Configure<AuditLogDbContext>(ctx =>
-        ctx.DbContextOptions.UseNpgsql(connectionString));
+    // ─── AUDIT LOG STORE MODE EXAMPLES ───
+    // Uncomment ONE of the following modes to test different audit setups
+    // when creating your schema and writing logs:
+
+    // 1. All Mode (Default): Uses both Relational Structured Logs & Pipeline Logs
+    auditBuilder.UseAll(); 
+
+    // 2. Data Audit Only: Relational Data Action and Entity Logs (Pipeline ignored)
+    //auditBuilder.UseDataAuditOnly();
+
+    // 3. Pipeline Only: High-throughput API logs (Data Audit tables ignored)
+    //auditBuilder.UsePipelineOnly();
+    auditBuilder.ConfigureDbContext(options =>
+                {
+                    options.Configure<AuditLogDbContext>(ctx =>
+                        ctx.DbContextOptions.UseNpgsql(connectionString));
+                });
 });
 
 using var host = builder.Build();

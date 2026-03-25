@@ -10,7 +10,7 @@ namespace LHA.Auditing;
 /// <summary>
 /// Registers LHA auditing services in the DI container.
 /// </summary>
-public static class AuditingServiceCollectionExtensions
+internal static class AuditingServiceCollectionExtensions
 {
     /// <summary>
     /// Adds core LHA auditing services:
@@ -51,7 +51,7 @@ public static class AuditingServiceCollectionExtensions
     /// Swaps existing registrations of <see cref="IApplicationService"/> with intercepted proxies.
     /// Should be called after all services have been registered, usually at the end of Program.cs.
     /// </summary>
-    public static IServiceCollection AddAuditingInterception(this IServiceCollection services)
+    internal static IServiceCollection AddAuditingInterception(this IServiceCollection services)
     {
         // Find all interface registrations for types implementing IApplicationService
         var descriptors = services
@@ -107,14 +107,14 @@ public static class AuditingServiceCollectionExtensions
     }
 }
 
-public static class DataAuditingApplicationBuilderExtensions
+internal static class DataAuditingApplicationBuilderExtensions
 {
     /// <summary>
     /// Adds the <see cref="LHA.Auditing.Interceptors.DataAuditingMiddleware"/> 
     /// to the application's request pipeline, enabling integration with the classic 
     /// EF Core Entity tracking system.
     /// </summary>
-    public static IApplicationBuilder UseLHADataAuditing(
+    internal static IApplicationBuilder UseLHADataAuditing(
         this IApplicationBuilder app)
     {
         return app.UseMiddleware<LHA.Auditing.Interceptors.DataAuditingMiddleware>();

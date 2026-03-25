@@ -1,5 +1,4 @@
 using LHA.Auditing;
-using LHA.AuditLog.Domain;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 

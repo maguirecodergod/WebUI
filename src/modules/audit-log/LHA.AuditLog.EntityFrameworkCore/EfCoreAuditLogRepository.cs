@@ -1,5 +1,4 @@
 using LHA.AuditLog.Domain;
-using LHA.Core;
 using LHA.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

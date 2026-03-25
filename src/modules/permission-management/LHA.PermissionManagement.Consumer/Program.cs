@@ -15,7 +15,7 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Missing 'Default' connection string.");
 
 // ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAAuditing();
+builder.Services.AddLHAAuditLogging();
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();

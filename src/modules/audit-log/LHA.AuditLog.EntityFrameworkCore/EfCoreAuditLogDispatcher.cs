@@ -1,22 +1,13 @@
-using System.Text.Json;
 using LHA.AuditLog.Domain;
 using LHA.Auditing.Pipeline;
-using LHA.Auditing.Serialization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace LHA.AuditLog.EntityFrameworkCore;
 
 /// <summary>
-/// <see cref="IAuditLogDispatcher"/> that persists audit log records
-/// directly to the database via EF Core.
-/// <para>
-/// Used as a reliable fallback when Kafka is unavailable, or as the
-/// primary storage in simpler deployments.
-/// Uses a dedicated DbContext scope to avoid polluting the request pipeline.
-/// Performs bulk insert for efficiency.
-/// </para>
+/// <see cref="IAuditLogDispatcher"/> that persists Pipeline audit log records
+/// directly to the database via EF Core using the unified <see cref="AuditLogDbContext"/>.
 /// </summary>
 internal sealed class EfCoreAuditLogDispatcher : IAuditLogDispatcher
 {
@@ -35,7 +26,7 @@ internal sealed class EfCoreAuditLogDispatcher : IAuditLogDispatcher
     public async Task DispatchAsync(IReadOnlyList<AuditLogRecord> records, CancellationToken cancellationToken = default)
     {
         await using var scope = _scopeFactory.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<AuditLogPipelineDbContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AuditLogDbContext>();
 
         var entities = new List<AuditLogPipelineEntity>(records.Count);
 
@@ -70,65 +61,9 @@ internal sealed class EfCoreAuditLogDispatcher : IAuditLogDispatcher
             });
         }
 
-        dbContext.AuditLogs.AddRange(entities);
+        dbContext.AuditLogPipeline.AddRange(entities);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        _logger.LogDebug("Dispatched {Count} audit logs to database.", records.Count);
-    }
-}
-
-/// <summary>
-/// DbContext for pipeline audit log storage.
-/// </summary>
-public sealed class AuditLogPipelineDbContext : DbContext
-{
-    public DbSet<AuditLogPipelineEntity> AuditLogs => Set<AuditLogPipelineEntity>();
-
-    public AuditLogPipelineDbContext(DbContextOptions<AuditLogPipelineDbContext> options)
-        : base(options)
-    {
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ConfigureAuditLogPipeline();
-    }
-}
-
-/// <summary>
-/// ModelBuilder extensions to map Pipeline Audit logging entity into existing DbContexts.
-/// </summary>
-public static class AuditLogPipelineModelBuilderExtensions
-{
-    public static ModelBuilder ConfigureAuditLogPipeline(this ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<AuditLogPipelineEntity>(b =>
-        {
-            b.ToTable("AuditLogPipeline");
-            b.HasKey(e => e.Id);
-            b.Property(e => e.Id).HasMaxLength(26); // ULID length
-            b.Property(e => e.ServiceName).HasMaxLength(256);
-            b.Property(e => e.InstanceId).HasMaxLength(256);
-            b.Property(e => e.ActionName).HasMaxLength(512);
-            b.Property(e => e.UserId).HasMaxLength(40);
-            b.Property(e => e.TenantId).HasMaxLength(40);
-            b.Property(e => e.UserName).HasMaxLength(256);
-            b.Property(e => e.TraceId).HasMaxLength(64);
-            b.Property(e => e.SpanId).HasMaxLength(64);
-            b.Property(e => e.CorrelationId).HasMaxLength(128);
-            b.Property(e => e.HttpMethod).HasMaxLength(10);
-            b.Property(e => e.RequestPath).HasMaxLength(2048);
-            b.Property(e => e.ClientIp).HasMaxLength(64);
-            b.Property(e => e.UserAgent).HasMaxLength(512);
-
-            // Index for common queries
-            b.HasIndex(e => e.Timestamp);
-            b.HasIndex(e => e.TenantId);
-            b.HasIndex(e => e.UserId);
-            b.HasIndex(e => e.TraceId);
-            b.HasIndex(e => new { e.ServiceName, e.Timestamp });
-        });
-
-        return modelBuilder;
+        _logger.LogDebug("Dispatched {Count} pipeline audit logs to database.", records.Count);
     }
 }

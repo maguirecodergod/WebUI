@@ -57,10 +57,26 @@ public static class DependencyInjection
                 ctx.DbContextOptions.UseNpgsql(connectionString));
         });
 
-        services.AddAuditLogEntityFrameworkCore(options =>
+        services.AddAuditLogEntityFrameworkCore(builder =>
         {
-            options.Configure<AuditLogDbContext>(ctx =>
-                ctx.DbContextOptions.UseNpgsql(connectionString));
+            // ─── AUDIT LOG STORE MODE EXAMPLES ───
+            // Uncomment ONE of the following modes to test different audit setups
+            // when creating your schema and writing logs:
+
+            // 1. All Mode (Default): Uses both Relational Structured Logs & Pipeline Logs
+            builder.UseAll(); 
+
+            // 2. Data Audit Only: Relational Data Action and Entity Logs (Pipeline ignored)
+            //builder.UseDataAuditOnly();
+
+            // 3. Pipeline Only: High-throughput API logs (Data Audit tables ignored)
+            //builder.UsePipelineOnly();
+
+            builder.ConfigureDbContext(options =>
+            {
+                options.Configure<AuditLogDbContext>(ctx =>
+                    ctx.DbContextOptions.UseNpgsql(connectionString));
+            });
         });
 
         services.AddPermissionManagementEntityFrameworkCore(options =>

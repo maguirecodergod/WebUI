@@ -13,7 +13,6 @@
     <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Swagger\LHA.Swagger\LHA.Swagger.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\..\frameworks\Auditing\LHA.Auditing.EfCore\LHA.Auditing.EfCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

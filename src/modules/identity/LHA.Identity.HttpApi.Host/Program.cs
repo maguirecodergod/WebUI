@@ -22,23 +22,22 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Missing 'Default' connection string.");
 
 // ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAAuditing();
+builder.Services.AddLHAAuditLogging(
+    mode: AuditingMode.All,
+    configurePipeline: options =>
+    {
+        options.ServiceName = "Identity";
+        options.CaptureRequestBody = true;
+        options.CaptureResponseBody = false;
+        options.BatchSize = 500;
+        options.FlushIntervalMs = 2_000;
+        options.SamplingRate = 1.0;
+        options.MaxBodySizeBytes = 32 * 1024;
+    });
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
 builder.Services.AddLHAInMemoryEventBus();
-
-// ── Audit Pipeline (next-gen) ────────────────────────────────────
-builder.Services.AddLHAAuditPipeline(options =>
-{
-    options.ServiceName = "Identity";
-    options.CaptureRequestBody = true;
-    options.CaptureResponseBody = false;
-    options.BatchSize = 500;
-    options.FlushIntervalMs = 2_000;
-    options.SamplingRate = 1.0;   // 100% in dev; lower in prod
-    options.MaxBodySizeBytes = 32 * 1024;
-});
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
 builder.Services.AddLhaApiVersioning();
@@ -95,7 +94,7 @@ app.UseRequestLocalization(opts =>
 app.UseLHAAspNetCore();
 
 // Audit pipeline middleware — after exception handler, before auth
-app.UseLHAAuditLogging();
+app.UseLHAAuditLogging(AuditingMode.All);
 
 app.UseLHASwagger();
 app.UseAuthentication();

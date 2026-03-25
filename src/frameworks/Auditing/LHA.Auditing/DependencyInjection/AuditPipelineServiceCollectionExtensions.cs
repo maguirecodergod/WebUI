@@ -10,7 +10,7 @@ namespace LHA.Auditing.Extensions;
 /// Extension methods for registering the high-performance audit logging pipeline
 /// in the DI container.
 /// </summary>
-public static class AuditPipelineServiceCollectionExtensions
+internal static class AuditPipelineServiceCollectionExtensions
 {
     /// <summary>
     /// Adds the high-performance audit logging pipeline:
@@ -24,7 +24,7 @@ public static class AuditPipelineServiceCollectionExtensions
     ///   <item><see cref="AuditPipelineCircuitBreaker"/> — dispatch resilience</item>
     /// </list>
     /// </summary>
-    public static IServiceCollection AddLHAAuditPipeline(
+    internal static IServiceCollection AddLHAAuditPipeline(
         this IServiceCollection services,
         Action<AuditPipelineOptions>? configure = null)
     {
@@ -62,7 +62,7 @@ public static class AuditPipelineServiceCollectionExtensions
     /// Adds the audit logging HTTP middleware to the request pipeline.
     /// Call this early, before authentication/authorization.
     /// </summary>
-    public static WebApplication UseLHAAuditLogging(this WebApplication app)
+    internal static WebApplication UseLHAAuditPipeline(this WebApplication app)
     {
         app.UseMiddleware<AuditLoggingMiddleware>();
         return app;

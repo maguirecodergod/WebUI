@@ -17,7 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAAuditing();
+builder.Services.AddLHAAuditLogging();
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();

@@ -1,4 +1,4 @@
-﻿using LHA.Auditing;
+using LHA.Auditing;
 using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
 using LHA.TenantManagement.Domain;
@@ -15,12 +15,12 @@ var builder = Host.CreateApplicationBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Missing 'Default' connection string.");
 
-// ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAAuditing();
+// -- Framework services -------------------------------------------
+builder.Services.AddLHAAuditLogging();
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 
-// ── Module services ──────────────────────────────────────────────
+// -- Module services ----------------------------------------------
 builder.Services.AddTenantManagementEntityFrameworkCore(options =>
 {
     options.Configure<TenantManagementDbContext>(ctx =>
@@ -33,7 +33,7 @@ using var host = builder.Build();
 var logger = host.Services.GetRequiredService<ILoggerFactory>()
     .CreateLogger("TenantManagement.Migrator");
 
-// ── 1. Apply pending migrations ──────────────────────────────────
+// -- 1. Apply pending migrations ----------------------------------
 logger.LogInformation("Applying TenantManagement migrations...");
 
 using (var migrationScope = host.Services.CreateScope())
@@ -44,7 +44,7 @@ using (var migrationScope = host.Services.CreateScope())
 
 logger.LogInformation("TenantManagement migrations applied successfully.");
 
-// ── 2. Seed default data ─────────────────────────────────────────
+// -- 2. Seed default data -----------------------------------------
 logger.LogInformation("Seeding default data...");
 
 using (var seedScope = host.Services.CreateScope())
