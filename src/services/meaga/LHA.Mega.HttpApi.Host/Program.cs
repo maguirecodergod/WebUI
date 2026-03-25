@@ -17,7 +17,6 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAAuditLogging();
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
@@ -80,6 +79,9 @@ builder.Services.AddMegaEntityFrameworkCore(options =>
     options.Configure<MegaDbContext>(ctx =>
         ctx.DbContextOptions.UseNpgsql(connectionString));
 });
+
+// ── Auditing (Interception must follow application registrations) ─
+builder.Services.AddLHAAuditLogging();
 
 var app = builder.Build();
 
