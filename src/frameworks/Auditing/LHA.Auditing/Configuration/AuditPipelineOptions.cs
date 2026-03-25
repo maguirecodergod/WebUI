@@ -109,7 +109,19 @@ public sealed class AuditPipelineOptions
         "/healthz",
         "/ready",
         "/metrics",
-        "/favicon.ico"
+        "/favicon.ico",
+        "/swagger",
+        "/swagger/index.html",
+        "/swagger/v1/swagger.json",
+        "/swagger/v1/swagger.yaml",
+        "/swagger/v1/swagger.xml",
+        "/scalars",
+        "/scalars/index.html",
+        "/scalars/v1/schema.json",
+        "/scalars/v1/schema.yaml",
+        "/scalars/v1/schema.xml",
+        "/openapi",
+        "/openapi/v1.json"
     };
 
     /// <summary>

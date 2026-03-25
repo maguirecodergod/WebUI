@@ -23,7 +23,7 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
 
 // ── Framework services ───────────────────────────────────────────
 builder.Services.AddLHAAuditLogging(
-    mode: AuditingMode.All,
+    mode: CAuditingMode.All,
     configurePipeline: options =>
     {
         options.ServiceName = "Identity";
@@ -94,7 +94,7 @@ app.UseRequestLocalization(opts =>
 app.UseLHAAspNetCore();
 
 // Audit pipeline middleware — after exception handler, before auth
-app.UseLHAAuditLogging(AuditingMode.All);
+app.UseLHAAuditLogging(CAuditingMode.All);
 
 app.UseLHASwagger();
 app.UseAuthentication();

@@ -29,21 +29,23 @@ builder.Services.AddLHAInMemoryEventBus();
 // Use AuditingMode to control which audit producers run in this App.
 // Make sure it matches the storage setup (AuditLogStoreMode) in Account.EntityFrameworkCore!
 builder.Services.AddLHAAuditLogging(
-    mode: AuditingMode.All,
+    mode: CAuditingMode.DataAudit,
     configureDataAudit: options =>
     {
         options.ApplicationName = "Account";
         options.CaptureRequestBody = true;
-    },
-    configurePipeline: options =>
-    {
-        options.ServiceName = "Account";
-        options.CaptureRequestBody = true;
-        options.CaptureResponseBody = false;
-        options.BatchSize = 500;
-        options.FlushIntervalMs = 2_000;
-        options.SamplingRate = 1.0;
-    });
+    }
+    // ,
+    // configurePipeline: options =>
+    // {
+    //     options.ServiceName = "Account";
+    //     options.CaptureRequestBody = true;
+    //     options.CaptureResponseBody = false;
+    //     options.BatchSize = 500;
+    //     options.FlushIntervalMs = 2_000;
+    //     options.SamplingRate = 1.0;
+    // }
+    );
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
 builder.Services.AddLhaApiVersioning();
@@ -93,7 +95,7 @@ var app = builder.Build();
 app.UseLHAExceptionHandler();
 
 // Apply chosen Audit Middlewares via the Facade (must match earlier setup)
-app.UseLHAAuditLogging(mode: AuditingMode.All);
+app.UseLHAAuditLogging(mode: CAuditingMode.DataAudit);
 
 app.UseLHAUnitOfWork();
 app.UseLHASwagger();

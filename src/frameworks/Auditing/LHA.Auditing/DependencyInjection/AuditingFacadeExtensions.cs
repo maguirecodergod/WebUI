@@ -4,23 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using LHA.Auditing.Extensions;
 
 namespace LHA.Auditing;
-
-/// <summary>
-/// Mode defining which auditing mechanisms (Producers) to enable across the pipeline.
-/// </summary>
-[Flags]
-public enum AuditingMode
-{
-    /// <summary>Relational Data Action and Entity Logs</summary>
-    DataAudit = 1,
-
-    /// <summary>High-throughput API logs pipeline</summary>
-    Pipeline = 2,
-
-    /// <summary>Both auditing mechanisms</summary>
-    All = DataAudit | Pipeline
-}
-
 /// <summary>
 /// Unified facade for registering the Audit Logging mechanisms.
 /// </summary>
@@ -32,17 +15,17 @@ public static class AuditingFacadeExtensions
     /// </summary>
     public static IServiceCollection AddLHAAuditLogging(
         this IServiceCollection services,
-        AuditingMode mode = AuditingMode.All,
+        CAuditingMode mode = CAuditingMode.All,
         Action<AuditingOptions>? configureDataAudit = null,
         Action<AuditPipelineOptions>? configurePipeline = null)
     {
-        if (mode.HasFlag(AuditingMode.DataAudit))
+        if (mode.HasFlag(CAuditingMode.DataAudit))
         {
             services.AddLHAAuditing(configureDataAudit);
             services.AddAuditingInterception();
         }
 
-        if (mode.HasFlag(AuditingMode.Pipeline))
+        if (mode.HasFlag(CAuditingMode.Pipeline))
         {
             services.AddLHAAuditPipeline(configurePipeline);
         }
@@ -56,14 +39,14 @@ public static class AuditingFacadeExtensions
     /// </summary>
     public static WebApplication UseLHAAuditLogging(
         this WebApplication app, 
-        AuditingMode mode = AuditingMode.All)
+        CAuditingMode mode = CAuditingMode.All)
     {
-        if (mode.HasFlag(AuditingMode.DataAudit))
+        if (mode.HasFlag(CAuditingMode.DataAudit))
         {
             app.UseLHADataAuditing();
         }
 
-        if (mode.HasFlag(AuditingMode.Pipeline))
+        if (mode.HasFlag(CAuditingMode.Pipeline))
         {
             app.UseLHAAuditPipeline();
         }
