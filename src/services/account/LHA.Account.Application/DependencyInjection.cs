@@ -1,5 +1,7 @@
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Account.Application.Permissions;
+using LHA.Account.Application.AuditLogs;
+using LHA.Shared.Contracts.AuditLog;
 using LHA.AuditLog.Application;
 using LHA.Identity.Application;
 using LHA.PermissionManagement.Application;
@@ -27,6 +29,7 @@ public static class DependencyInjection
 
         // Account-level services
         services.TryAddScoped<IPermissionRegistrationService, PermissionRegistrationService>();
+        services.AddScoped<IAuditLogAppService, LHA.Account.Application.AuditLogs.AuditLogAppService>();
 
         return services;
     }

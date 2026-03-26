@@ -1,4 +1,5 @@
 using LHA.Auditing;
+using LHA.Ddd.Application;
 
 namespace LHA.Shared.Contracts.AuditLog;
 
@@ -7,9 +8,8 @@ namespace LHA.Shared.Contracts.AuditLog;
 /// <summary>
 /// DTO for a single audit log entry.
 /// </summary>
-public sealed class AuditLogDto
+public sealed class AuditLogDto : EntityDto<Guid>
 {
-    public Guid Id { get; init; }
     public string? ApplicationName { get; init; }
     public string? ActionName { get; init; }
     public Guid? UserId { get; init; }
@@ -38,9 +38,9 @@ public sealed class AuditLogDto
 /// <summary>
 /// DTO for a single audit log action (method invocation).
 /// </summary>
-public sealed class AuditLogActionDto
+public sealed class AuditLogActionDto : EntityDto<Guid>
 {
-    public Guid Id { get; init; }
+    public Guid AuditLogId { get; init; }
     public string ServiceName { get; init; } = null!;
     public string MethodName { get; init; } = null!;
     public string? Parameters { get; init; }
@@ -51,9 +51,8 @@ public sealed class AuditLogActionDto
 /// <summary>
 /// DTO for a single entity change within an audit log.
 /// </summary>
-public sealed class EntityChangeDto
+public sealed class EntityChangeDto : EntityDto<Guid>
 {
-    public Guid Id { get; init; }
     public Guid AuditLogId { get; init; }
     public DateTimeOffset ChangeTime { get; init; }
     public CEntityChangeType ChangeType { get; init; }
@@ -67,9 +66,9 @@ public sealed class EntityChangeDto
 /// <summary>
 /// DTO for a single property change within an entity change.
 /// </summary>
-public sealed class EntityPropertyChangeDto
+public sealed class EntityPropertyChangeDto : EntityDto<Guid>
 {
-    public Guid Id { get; init; }
+    public Guid EntityChangeId { get; init; }
     public string PropertyName { get; init; } = null!;
     public string PropertyTypeFullName { get; init; } = null!;
     public string? OriginalValue { get; init; }

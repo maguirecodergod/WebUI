@@ -6,6 +6,7 @@ using LHA.BlazorWasm.HttpApi.Client.Core;
 using LHA.BlazorWasm.HttpApi.Client.Handlers;
 using LHA.BlazorWasm.HttpApi.Client.Options;
 using LHA.BlazorWasm.HttpApi.Client.Clients;
+using LHA.Shared.Contracts.AuditLog;
 using LHA.Security.Encryption;
 using LHA.Security.Keys;
 using LHA.Security.Signing;
@@ -51,6 +52,8 @@ public static class HttpApiClientExtensions
 
         // 4. Register Typed Clients (extend this list as new clients are created)
         RegisterTypedClient<ExampleApiClient>(services);
+        RegisterTypedClient<AuditLogApiClient>(services);
+        services.AddScoped<IAuditLogAppService>(sp => sp.GetRequiredService<AuditLogApiClient>());
 
         return services;
     }

@@ -32,6 +32,7 @@ public static class AccountEndpoints
 
         // Audit Log module
         endpoints.MapAuditLogEndpoints();
+        endpoints.MapAccountAuditLogEndpoints();
 
         // Permission Management module
         endpoints.MapPermissionManagementEndpoints();

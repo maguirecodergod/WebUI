@@ -8,6 +8,8 @@ using LHA.TenantManagement.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using LHA.Account.Domain.Repositories;
+using LHA.Account.EntityFrameworkCore.Repositories;
 
 namespace LHA.Account.EntityFrameworkCore;
 
@@ -92,6 +94,12 @@ public static class DependencyInjection
         // and the last Replace() wins — override back to AccountDbContext.
         services.Replace(ServiceDescriptor.Scoped(typeof(IOutboxStore), typeof(EfCoreOutboxStore<AccountDbContext>)));
         services.Replace(ServiceDescriptor.Scoped(typeof(IInboxStore), typeof(EfCoreInboxStore<AccountDbContext>)));
+
+        // 3) Register Account specialized Audit Log Repositories
+        services.AddScoped<Domain.Repositories.IAuditLogRepository, Repositories.EfCoreAuditLogRepository>();
+        services.AddScoped<IAuditLogActionRepository, EfCoreAuditLogActionRepository>();
+        services.AddScoped<IEntityChangeRepository, EfCoreEntityChangeRepository>();
+        services.AddScoped<IEntityPropertyChangeRepository, EfCoreEntityPropertyChangeRepository>();
 
         return services;
     }

@@ -1,4 +1,5 @@
 using LHA.Ddd.Application;
+using LHA.Auditing;
 
 namespace LHA.Shared.Contracts.AuditLog;
 
@@ -48,13 +49,38 @@ public sealed class GetAuditLogsInput : PagedAndSortedResultRequestDto
 }
 
 /// <summary>
+/// Input for querying audit log actions.
+/// </summary>
+public sealed class GetAuditLogActionsInput : PagedAndSortedResultRequestDto
+{
+    public Guid? AuditLogId { get; set; }
+    public string? ServiceName { get; set; }
+    public string? MethodName { get; set; }
+    public int? MinExecutionDuration { get; set; }
+    public int? MaxExecutionDuration { get; set; }
+}
+
+/// <summary>
 /// Input for querying entity changes with filtering and paging.
 /// </summary>
 public sealed class GetEntityChangesInput : PagedAndSortedResultRequestDto
 {
+    public Guid? AuditLogId { get; set; }
+
     /// <summary>Filter by entity CLR type full name.</summary>
-    public string? EntityTypeFullName { get; init; }
+    public string? EntityTypeFullName { get; set; }
 
     /// <summary>Filter by entity primary key.</summary>
-    public string? EntityId { get; init; }
+    public string? EntityId { get; set; }
+
+    public CEntityChangeType? ChangeType { get; set; }
+}
+
+/// <summary>
+/// Input for querying entity property changes.
+/// </summary>
+public sealed class GetEntityPropertyChangesInput : PagedAndSortedResultRequestDto
+{
+    public Guid? EntityChangeId { get; set; }
+    public string? PropertyName { get; set; }
 }
