@@ -1,4 +1,5 @@
 using LHA.Core;
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.Identity.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -37,9 +38,11 @@ public sealed class EfCoreIdentityRoleRepository
 
     /// <inheritdoc />
     public async Task<List<IdentityRole>> GetListAsync(
-        string? filter, CMasterStatus? status,
-        string? sorting, int skipCount, int maxResultCount,
-        CancellationToken cancellationToken)
+        PagingParam paging,
+        SorterParam? sorter = null,
+        string? filter = null,
+        CMasterStatus? status = null,
+        CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
 
@@ -47,9 +50,8 @@ public sealed class EfCoreIdentityRoleRepository
             .Include(r => r.Claims)
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, r => r.Status == status!.Value)
-            .SortByDynamic(sorting, defaultProperty: "Name")
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "Name")
+            .PageBy(paging)
             .ToListAsync(cancellationToken);
     }
 

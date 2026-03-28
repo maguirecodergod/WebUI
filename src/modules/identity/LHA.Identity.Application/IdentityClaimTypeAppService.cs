@@ -1,4 +1,5 @@
 using LHA.Ddd.Application;
+using LHA.Ddd.Domain;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
 using LHA.UnitOfWork;
@@ -33,17 +34,16 @@ public sealed class IdentityClaimTypeAppService : ApplicationService, IIdentityC
     {
         var totalCount = await _claimTypeRepository.GetCountAsync(input.Filter, ct);
         var items = await _claimTypeRepository.GetListAsync(
+            input,
+            sorter: input.Sorter,
             filter: input.Filter,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount,
             cancellationToken: ct);
 
         return new PagedResultDto<IdentityClaimTypeDto>(
             totalCount,
             items.ConvertAll(MapToDto),
-            input.SkipCount,
-            input.MaxResultCount);
+            input.PageNumber,
+            input.PageSize);
     }
 
     /// <inheritdoc />

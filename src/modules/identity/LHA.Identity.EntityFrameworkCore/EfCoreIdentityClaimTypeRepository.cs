@@ -1,3 +1,4 @@
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.Identity.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -27,16 +28,16 @@ public sealed class EfCoreIdentityClaimTypeRepository
 
     /// <inheritdoc />
     public async Task<List<IdentityClaimType>> GetListAsync(
-        string? filter, string? sorting, int skipCount, int maxResultCount,
-        CancellationToken cancellationToken)
+        PagingParam paging, SorterParam? sorter = null,
+        string? filter = null,
+        CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
 
         return await dbSet.AsQueryable()
             .SearchDynamic(filter, SearchColumns)
-            .SortByDynamic(sorting, defaultProperty: "Name")
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "Name")
+            .PageBy(paging)
             .ToListAsync(cancellationToken);
     }
 

@@ -10,13 +10,12 @@ namespace LHA.Account.Domain.Repositories;
 public interface IEntityChangeRepository : IRepository<EntityChangeEntity, Guid>
 {
     Task<List<EntityChangeEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         Guid? auditLogId = null,
         string? entityTypeFullName = null,
         string? entityId = null,
         CEntityChangeType? changeType = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         bool includeDetails = false,
         CancellationToken cancellationToken = default);
 

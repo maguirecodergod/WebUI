@@ -7,11 +7,7 @@ public interface IMegaAccountAppService
     Task<MegaAccountDto> GetAsync(Guid id, CancellationToken ct = default);
 
     Task<PagedResultDto<MegaAccountDto>> GetListAsync(
-        string? filter,
-        bool? isActive,
-        string? sorting,
-        int skipCount = 0,
-        int maxResultCount = 10,
+        GetMegaAccountsInput input,
         CancellationToken ct = default);
 
     Task<MegaAccountDto> CreateAsync(CreateMegaAccountInput input, CancellationToken ct = default);

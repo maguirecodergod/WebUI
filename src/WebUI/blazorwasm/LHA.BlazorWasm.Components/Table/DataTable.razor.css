@@ -1,0 +1,268 @@
+/* ═══════════════════════════════════════════════════════════════════
+   DataTable — Replica Design System (Indigo Theme)
+   ═══════════════════════════════════════════════════════════════════ */
+
+:host {
+    display: block;
+    width: 100%;
+}
+
+.dt-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 0.875rem;
+    color: #1e293b;
+}
+
+/* ── Toolbar ── */
+.dt-toolbar {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Match original: search/btns on the right */
+    gap: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dt-toolbar-start {
+    margin-right: auto;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+/* ── Search ── */
+.dt-search {
+    position: relative;
+    width: 200px;
+}
+
+.dt-search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+    width: 14px;
+    height: 14px;
+}
+
+.dt-search-input {
+    width: 100%;
+    height: 36px;
+    padding: 0 0.75rem 0 2.25rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dt-search-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* ── Toolbar Buttons ── */
+.dt-toolbar-btn {
+    height: 36px;
+    padding: 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: #475569;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dt-toolbar-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.dt-toolbar-btn svg {
+    color: #475569; /* Match original icon color */
+}
+
+/* ── Table & Headers ── */
+.dt-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.dt-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+::deep .dt-header-cell {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background: #f8fafc;
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.75rem;
+    border-bottom: 1px solid #edf2f7;
+    white-space: nowrap;
+}
+
+::deep .dt-sort-icon {
+    display: inline-flex;
+    margin-left: 0.4rem;
+    font-size: 0.65rem;
+    color: #cbd5e1;
+}
+
+::deep .dt-cell {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+::deep .dt-row-hoverable:hover {
+    background: #f1f5f9;
+}
+
+::deep .dt-col-select { width: 40px; }
+::deep .dt-col-expand { width: 40px; }
+
+::deep .dt-skeleton {
+    height: 1rem;
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+/* ── Dropdowns ── */
+.dt-col-toggle-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 0.5rem 0;
+    min-width: 160px;
+    z-index: 100;
+}
+
+.dt-col-toggle-item {
+    padding: 0.375rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: #475569;
+    cursor: pointer;
+}
+
+.dt-col-toggle-item:hover { background: #f8fafc; }
+
+.dt-col-toggle-item input[type="checkbox"] {
+    accent-color: #4f46e5;
+}
+
+/* ── Sidebar (Filters) ── */
+.dt-sidebar {
+    position: fixed;
+    top: 0;
+    right: -340px;
+    width: 340px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.08);
+    z-index: 2000;
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.dt-sidebar-open { right: 0; }
+
+.dt-sidebar-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dt-sidebar-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+}
+
+.dt-sidebar-body {
+    padding: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.dt-sidebar-label {
+    display: block;
+    font-size: 0.65rem; /* Small CAPS style */
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+}
+
+.dt-filter-input {
+    width: 100%;
+    height: 38px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0 0.75rem;
+    font-size: 0.8125rem;
+    outline: none;
+}
+
+.dt-filter-input:focus { border-color: #6366f1; }
+
+.dt-sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 1999;
+}
+
+.dt-col-toggle-item {
+    padding: 0.375rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: #475569;
+    cursor: pointer;
+}
+
+.dt-col-toggle-item:hover { background: #f8fafc; }
+
+.dt-col-toggle-item input[type="checkbox"] {
+    accent-color: #4f46e5;
+}

@@ -1,3 +1,26 @@
 {
-    
+    "DataTable.Search": "Tìm kiếm...",
+    "DataTable.Filters": "Bộ lọc",
+    "DataTable.Columns": "Cột hiển thị",
+    "DataTable.Refresh": "Làm mới",
+    "DataTable.NoData": "Không có dữ liệu.",
+    "DataTable.SelectedCount": "Đã chọn {0} mục",
+    "DataTable.AllPageSelected": "Đã chọn tất cả {0} mục trên trang này.",
+    "DataTable.SelectAllDataset": "Chọn tất cả {0} mục trên toàn hệ thống",
+    "DataTable.AllDatasetSelected": "Đã chọn tất cả {0} mục từ tất cả các trang.",
+    "DataTable.ClearSelection": "Huỷ chọn",
+    "DataTable.RowsPerPage": "Số dòng trên mỗi trang:",
+    "DataTable.ShowingEntries": "Hiển thị {0} đến {1} trong tổng số {2} mục",
+    "DataTable.GoToPage": "Đến trang",
+    "DataTable.First": "Trang đầu",
+    "DataTable.Last": "Trang cuối",
+    "DataTable.FilterMin": "Tối thiểu",
+    "DataTable.FilterMax": "Tối đa",
+    "DataTable.All": "Tất cả",
+    "DataTable.NoFilters": "Không có cột nào được lọc.",
+    "DataTable.ClearFilters": "Xoá tất cả bộ lọc",
+    "Common.Prev": "Tháng trước",
+    "Common.Next": "Tháng sau",
+    "Common.Yes": "Có",
+    "Common.No": "Không"
 }

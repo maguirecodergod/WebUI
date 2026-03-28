@@ -26,11 +26,10 @@ public static class MegaAccountEndpoints
         .WithSummary("Gets a mega account by ID.");
 
         group.MapGet("/", async (
-            string? filter, bool? isActive, string? sorting,
-            int skipCount, int maxResultCount,
+            [AsParameters] GetMegaAccountsInput input,
             IMegaAccountAppService service, CancellationToken ct) =>
         {
-            var result = await service.GetListAsync(filter, isActive, sorting, skipCount, maxResultCount, ct);
+            var result = await service.GetListAsync(input, ct);
             return Results.Ok(ApiResponse<PagedResultDto<MegaAccountDto>>.Ok(result));
         })
         .RequireAuthorization(P.Accounts.Read)

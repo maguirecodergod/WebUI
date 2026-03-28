@@ -1,15 +1,15 @@
 using LHA.Ddd.Domain;
 using LHA.PermissionManagement.Domain.Shared;
 
-namespace LHA.PermissionManagement.Domain;
+namespace LHA.PermissionManagement.Domain.PermissionTemplates;
 
 /// <summary>
 /// Layer 3 — A permission template (e.g. "TenantAdmin", "StoreManager", "Cashier").
 /// Templates are composed of permission groups to quickly assign bundles of permissions.
 /// </summary>
-public sealed class PermissionTemplate : FullAuditedAggregateRoot<Guid>
+public sealed class PermissionTemplateEntity : FullAuditedAggregateRoot<Guid>
 {
-    private readonly List<PermissionTemplateItem> _items = [];
+    private readonly List<PermissionTemplateItemEntity> _items = [];
 
     /// <summary>Unique template name.</summary>
     public string Name { get; private set; } = null!;
@@ -21,11 +21,11 @@ public sealed class PermissionTemplate : FullAuditedAggregateRoot<Guid>
     public string? Description { get; private set; }
 
     /// <summary>Permission groups in this template.</summary>
-    public IReadOnlyCollection<PermissionTemplateItem> Items => _items.AsReadOnly();
+    public IReadOnlyCollection<PermissionTemplateItemEntity> Items => _items.AsReadOnly();
 
-    private PermissionTemplate() { }
+    private PermissionTemplateEntity() { }
 
-    public PermissionTemplate(Guid id, string name, string displayName, string? description = null)
+    public PermissionTemplateEntity(Guid id, string name, string displayName, string? description = null)
     {
         Id = id;
 
@@ -40,38 +40,38 @@ public sealed class PermissionTemplate : FullAuditedAggregateRoot<Guid>
         Description = description;
     }
 
-    public PermissionTemplate SetDisplayName(string displayName)
+    public PermissionTemplateEntity SetDisplayName(string displayName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(displayName);
         DisplayName = displayName.Trim();
         return this;
     }
 
-    public PermissionTemplate SetDescription(string? description)
+    public PermissionTemplateEntity SetDescription(string? description)
     {
         Description = description;
         return this;
     }
 
-    public PermissionTemplate AddGroup(Guid permissionGroupId)
+    public PermissionTemplateEntity AddGroup(Guid permissionGroupId)
     {
         if (_items.Any(i => i.PermissionGroupId == permissionGroupId)) return this;
-        _items.Add(new PermissionTemplateItem(Guid.CreateVersion7(), Id, permissionGroupId));
+        _items.Add(new PermissionTemplateItemEntity(Guid.CreateVersion7(), Id, permissionGroupId));
         return this;
     }
 
-    public PermissionTemplate RemoveGroup(Guid permissionGroupId)
+    public PermissionTemplateEntity RemoveGroup(Guid permissionGroupId)
     {
         var existing = _items.FirstOrDefault(i => i.PermissionGroupId == permissionGroupId);
         if (existing is not null) _items.Remove(existing);
         return this;
     }
 
-    public PermissionTemplate SyncGroups(IEnumerable<Guid> groupIds)
+    public PermissionTemplateEntity SyncGroups(IEnumerable<Guid> groupIds)
     {
         _items.Clear();
         foreach (var gid in groupIds)
-            _items.Add(new PermissionTemplateItem(Guid.CreateVersion7(), Id, gid));
+            _items.Add(new PermissionTemplateItemEntity(Guid.CreateVersion7(), Id, gid));
         return this;
     }
 }

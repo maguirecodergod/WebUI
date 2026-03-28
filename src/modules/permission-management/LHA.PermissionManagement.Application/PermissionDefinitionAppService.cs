@@ -1,6 +1,7 @@
 using LHA.Ddd.Application;
+using LHA.Ddd.Domain;
 using LHA.PermissionManagement.Application.Contracts;
-using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
 using LHA.UnitOfWork;
 
 namespace LHA.PermissionManagement.Application;
@@ -30,18 +31,17 @@ public sealed class PermissionDefinitionAppService
     {
         var totalCount = await _repo.GetCountAsync(input.Filter, input.ServiceName, input.GroupName);
         var items = await _repo.GetListAsync(
+            input,
+            sorter: input.Sorter,
             filter: input.Filter,
             serviceName: input.ServiceName,
-            groupName: input.GroupName,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount);
+            groupName: input.GroupName);
 
         return new PagedResultDto<PermissionDefinitionDto>(
             totalCount,
             items.ConvertAll(MapToDto),
-            input.SkipCount,
-            input.MaxResultCount);
+            input.PageNumber,
+            input.PageSize);
     }
 
     public async Task<PermissionDefinitionDto?> FindByNameAsync(
@@ -70,7 +70,7 @@ public sealed class PermissionDefinitionAppService
             }
             else
             {
-                var entity = new PermissionDefinition(
+                var entity = new PermissionDefinitionEntity(
                     Guid.NewGuid(),
                     input.Name,
                     input.DisplayName,
@@ -95,7 +95,7 @@ public sealed class PermissionDefinitionAppService
         await uow.CompleteAsync();
     }
 
-    private static PermissionDefinitionDto MapToDto(PermissionDefinition e) => new()
+    private static PermissionDefinitionDto MapToDto(PermissionDefinitionEntity e) => new()
     {
         Id = e.Id,
         Name = e.Name,

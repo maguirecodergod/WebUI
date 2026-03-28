@@ -1,13 +1,13 @@
 using LHA.Ddd.Domain;
 using LHA.PermissionManagement.Domain.Shared;
 
-namespace LHA.PermissionManagement.Domain;
+namespace LHA.PermissionManagement.Domain.PermissionDefinitions;
 
 /// <summary>
 /// Layer 1 — Atomic permission definition (e.g. "tenant.create", "store.view").
 /// Registered by microservices at startup. Immutable after creation (name is the key).
 /// </summary>
-public sealed class PermissionDefinition : Entity<Guid>
+public sealed class PermissionDefinitionEntity : Entity<Guid>
 {
     /// <summary>Unique permission name, e.g. "tenant.create".</summary>
     public string Name { get; private set; } = null!;
@@ -24,9 +24,9 @@ public sealed class PermissionDefinition : Entity<Guid>
     /// <summary>Optional long description.</summary>
     public string? Description { get; private set; }
 
-    private PermissionDefinition() { }
+    private PermissionDefinitionEntity() { }
 
-    public PermissionDefinition(
+    public PermissionDefinitionEntity(
         Guid id, string name, string displayName,
         string serviceName, string? groupName = null, string? description = null)
     {
@@ -46,7 +46,7 @@ public sealed class PermissionDefinition : Entity<Guid>
         Description = description;
     }
 
-    public PermissionDefinition UpdateDisplayInfo(string displayName, string? description)
+    public PermissionDefinitionEntity UpdateDisplayInfo(string displayName, string? description)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(displayName);
         DisplayName = displayName.Trim();

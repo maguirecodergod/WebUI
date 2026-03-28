@@ -1,0 +1,128 @@
+@* ──────────────────────────────────────────────────────────────
+    DataTablePager — Full-featured pagination control.
+    Features: First/Prev/Pages/Next/Last, page size selector, jump-to-page, info text.
+   ────────────────────────────────────────────────────────────── *@
+@namespace LHA.BlazorWasm.Components.Table
+@inherits LhaComponentBase
+
+<div class="dt-pager">
+    @* ── Left: Info + Page Size ── *@
+    <div class="dt-pager-column">
+        <div class="dt-pager-info">
+            @{
+                var from = TotalCount == 0 ? 0 : (PageNumber - 1) * PageSize + 1;
+                var to = Math.Min(PageNumber * PageSize, TotalCount);
+            }
+            <span>@string.Format(Localizer.L("DataTable.ShowingEntries"), from, to, TotalCount)</span>
+        </div>
+        
+        <div class="dt-pager-size">
+            <span>@Localizer.L("DataTable.RowsPerPage")</span>
+            <select value="@PageSize" @onchange="OnPageSizeChange">
+                @foreach (var size in PageSizes)
+                {
+                    <option value="@size">@size</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    @* ── Right: Navigation + Jump ── *@
+    <div class="dt-pager-column">
+        <div class="dt-pager-nav">
+            @* Previous block *@
+            <button class="dt-pager-btn" disabled="@(PageNumber <= 1)"
+                    @onclick="() => GoTo(1)" title="@Localizer.L("DataTable.First")">«</button>
+            <button class="dt-pager-btn" disabled="@(PageNumber <= 1)"
+                    @onclick="() => GoTo(PageNumber - 1)" title="@Localizer.L("Common.Prev")">‹</button>
+
+            @* Page Numbers *@
+            @foreach (var item in GetPageItems())
+            {
+                if (item.IsEllipsis)
+                {
+                    <span class="dt-pager-btn" style="cursor: default; opacity: 0.6;">…</span>
+                }
+                else
+                {
+                    <button class="dt-pager-btn @(item.Page == PageNumber ? "dt-pager-active" : "")"
+                            @onclick="() => GoTo(item.Page)">@item.Page</button>
+                }
+            }
+
+            @* Next block *@
+            <button class="dt-pager-btn" disabled="@(PageNumber >= TotalPages)"
+                    @onclick="() => GoTo(PageNumber + 1)" title="@Localizer.L("Common.Next")">›</button>
+            <button class="dt-pager-btn" disabled="@(PageNumber >= TotalPages)"
+                    @onclick="() => GoTo(TotalPages)" title="@Localizer.L("DataTable.Last")">»</button>
+        </div>
+
+        <div class="dt-pager-jump">
+            <span>@Localizer.L("DataTable.GoToPage")</span>
+            <input type="number" min="1" max="@TotalPages" value="@PageNumber"
+                   @onchange="OnJumpChange" class="dt-pager-jump-input" />
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int PageNumber { get; set; } = 1;
+    [Parameter] public int PageSize { get; set; } = 10;
+    [Parameter] public int TotalCount { get; set; }
+    [Parameter] public int[] PageSizes { get; set; } = [10, 25, 50, 100];
+    [Parameter] public EventCallback<int> OnPageChanged { get; set; }
+    [Parameter] public EventCallback<int> OnPageSizeChanged { get; set; }
+
+    private int TotalPages => Math.Max(1, (int)Math.Ceiling((double)TotalCount / PageSize));
+
+    private async Task GoTo(int page)
+    {
+        page = Math.Max(1, Math.Min(page, TotalPages));
+        if (page != PageNumber)
+            await OnPageChanged.InvokeAsync(page);
+    }
+
+    private async Task OnPageSizeChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var size) && size > 0)
+            await OnPageSizeChanged.InvokeAsync(size);
+    }
+
+    private async Task OnJumpChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var page))
+            await GoTo(page);
+    }
+
+    private IEnumerable<PagerItem> GetPageItems()
+    {
+        const int window = 2;
+        var total = TotalPages;
+
+        if (total <= 7)
+        {
+            for (var i = 1; i <= total; i++)
+                yield return new PagerItem(i);
+            yield break;
+        }
+
+        yield return new PagerItem(1);
+
+        var start = Math.Max(2, PageNumber - window);
+        var end = Math.Min(total - 1, PageNumber + window);
+
+        if (start > 2) yield return PagerItem.Ellipsis;
+
+        for (var i = start; i <= end; i++)
+            yield return new PagerItem(i);
+
+        if (end < total - 1) yield return PagerItem.Ellipsis;
+
+        yield return new PagerItem(total);
+    }
+
+    private readonly record struct PagerItem(int Page, bool IsEllipsis = false)
+    {
+        public static PagerItem Ellipsis => new(0, true);
+    }
+}

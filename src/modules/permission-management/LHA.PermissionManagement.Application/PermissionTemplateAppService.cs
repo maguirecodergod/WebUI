@@ -1,6 +1,9 @@
 using LHA.Ddd.Application;
+using LHA.Ddd.Domain;
 using LHA.PermissionManagement.Application.Contracts;
-using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.PermissionGroups;
+using LHA.PermissionManagement.Domain.PermissionTemplates;
 using LHA.UnitOfWork;
 
 namespace LHA.PermissionManagement.Application;
@@ -36,17 +39,16 @@ public sealed class PermissionTemplateAppService
     {
         var totalCount = await _templateRepo.GetCountAsync(input.Filter);
         var templates = await _templateRepo.GetListAsync(
-            filter: input.Filter,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount);
+            input,
+            sorter: input.Sorter,
+            filter: input.Filter);
 
         var dtos = new List<PermissionTemplateDto>(templates.Count);
         foreach (var t in templates)
             dtos.Add(await MapToDtoAsync(t));
 
         return new PagedResultDto<PermissionTemplateDto>(
-            totalCount, dtos, input.SkipCount, input.MaxResultCount);
+            totalCount, dtos, input.PageNumber, input.PageSize);
     }
 
     public async Task<PermissionTemplateDto> CreateAsync(CreatePermissionTemplateInput input)
@@ -54,7 +56,7 @@ public sealed class PermissionTemplateAppService
         await using var uow = _uowManager.Begin(
             new UnitOfWorkOptions { IsTransactional = true });
 
-        var template = new PermissionTemplate(
+        var template = new PermissionTemplateEntity(
             Guid.NewGuid(), input.Name, input.DisplayName, input.Description);
 
         foreach (var groupId in input.GroupIds)
@@ -99,7 +101,7 @@ public sealed class PermissionTemplateAppService
         return template is not null ? await MapToDtoAsync(template) : null;
     }
 
-    private async Task<PermissionTemplateDto> MapToDtoAsync(PermissionTemplate template)
+    private async Task<PermissionTemplateDto> MapToDtoAsync(PermissionTemplateEntity template)
     {
         var groupIds = template.Items.Select(i => i.PermissionGroupId).ToList();
         var groups = new List<PermissionGroupDto>(groupIds.Count);

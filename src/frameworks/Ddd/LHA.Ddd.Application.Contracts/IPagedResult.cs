@@ -10,4 +10,13 @@ public interface IPagedResult<out T> : IListResult<T>
     /// Total number of items across all pages.
     /// </summary>
     long TotalCount { get; }
+
+    /// <summary>Current page number (1-based).</summary>
+    int CurrentPage { get; }
+
+    /// <summary>Total number of pages.</summary>
+    int TotalPages { get; }
+
+    /// <summary>Number of items per page.</summary>
+    int PageSize { get; }
 }

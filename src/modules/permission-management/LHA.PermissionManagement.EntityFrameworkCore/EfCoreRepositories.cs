@@ -1,5 +1,10 @@
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.PermissionGroups;
+using LHA.PermissionManagement.Domain.PermissionGrants;
+using LHA.PermissionManagement.Domain.PermissionTemplates;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.PermissionManagement.EntityFrameworkCore;
@@ -7,7 +12,7 @@ namespace LHA.PermissionManagement.EntityFrameworkCore;
 // ─── PermissionDefinition ────────────────────────────────────────
 
 public sealed class EfCorePermissionDefinitionRepository
-    : EfCoreRepository<PermissionManagementDbContext, PermissionDefinition, Guid>,
+    : EfCoreRepository<PermissionManagementDbContext, PermissionDefinitionEntity, Guid>,
       IPermissionDefinitionRepository
 {
     private static readonly string[] SearchColumns = ["Name", "DisplayName", "ServiceName"];
@@ -15,13 +20,13 @@ public sealed class EfCorePermissionDefinitionRepository
     public EfCorePermissionDefinitionRepository(
         IDbContextProvider<PermissionManagementDbContext> dbContextProvider) : base(dbContextProvider) { }
 
-    public async Task<PermissionDefinition?> FindByNameAsync(string name, CancellationToken ct = default)
+    public async Task<PermissionDefinitionEntity?> FindByNameAsync(string name, CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet.FirstOrDefaultAsync(x => x.Name == name, ct);
     }
 
-    public async Task<List<PermissionDefinition>> GetListByNamesAsync(
+    public async Task<List<PermissionDefinitionEntity>> GetListByNamesAsync(
         IEnumerable<string> names, CancellationToken ct = default)
     {
         var nameList = names.ToList();
@@ -29,14 +34,14 @@ public sealed class EfCorePermissionDefinitionRepository
         return await dbSet.Where(x => nameList.Contains(x.Name)).ToListAsync(ct);
     }
 
-    public async Task<List<PermissionDefinition>> GetListByServiceAsync(
+    public async Task<List<PermissionDefinitionEntity>> GetListByServiceAsync(
         string serviceName, CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet.Where(x => x.ServiceName == serviceName).ToListAsync(ct);
     }
 
-    public async Task<List<PermissionDefinition>> GetListByIdsAsync(
+    public async Task<List<PermissionDefinitionEntity>> GetListByIdsAsync(
         IEnumerable<Guid> ids, CancellationToken ct = default)
     {
         var idList = ids.ToList();
@@ -44,9 +49,9 @@ public sealed class EfCorePermissionDefinitionRepository
         return await dbSet.Where(x => idList.Contains(x.Id)).ToListAsync(ct);
     }
 
-    public async Task<List<PermissionDefinition>> GetListAsync(
+    public async Task<List<PermissionDefinitionEntity>> GetListAsync(
+        PagingParam paging, SorterParam? sorter = null,
         string? filter = null, string? serviceName = null, string? groupName = null,
-        string? sorting = null, int skipCount = 0, int maxResultCount = int.MaxValue,
         CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
@@ -54,9 +59,8 @@ public sealed class EfCorePermissionDefinitionRepository
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(!string.IsNullOrEmpty(serviceName), x => x.ServiceName == serviceName)
             .WhereIf(!string.IsNullOrEmpty(groupName), x => x.GroupName == groupName)
-            .SortByDynamic(sorting, defaultProperty: "Name")
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "Name")
+            .PageBy(paging)
             .ToListAsync(ct);
     }
 
@@ -77,7 +81,7 @@ public sealed class EfCorePermissionDefinitionRepository
 // ─── PermissionGroup ─────────────────────────────────────────────
 
 public sealed class EfCorePermissionGroupRepository
-    : EfCoreRepository<PermissionManagementDbContext, PermissionGroup, Guid>,
+    : EfCoreRepository<PermissionManagementDbContext, PermissionGroupEntity, Guid>,
       IPermissionGroupRepository
 {
     private static readonly string[] SearchColumns = ["Name", "DisplayName"];
@@ -85,21 +89,21 @@ public sealed class EfCorePermissionGroupRepository
     public EfCorePermissionGroupRepository(
         IDbContextProvider<PermissionManagementDbContext> dbContextProvider) : base(dbContextProvider) { }
 
-    public override async Task<PermissionGroup?> FindAsync(Guid id, CancellationToken ct = default)
+    public override async Task<PermissionGroupEntity?> FindAsync(Guid id, CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet.Include(g => g.Items).FirstOrDefaultAsync(g => g.Id == id, ct);
     }
 
-    public async Task<PermissionGroup?> FindByNameAsync(string name, CancellationToken ct = default)
+    public async Task<PermissionGroupEntity?> FindByNameAsync(string name, CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet.Include(g => g.Items).FirstOrDefaultAsync(g => g.Name == name, ct);
     }
 
-    public async Task<List<PermissionGroup>> GetListAsync(
+    public async Task<List<PermissionGroupEntity>> GetListAsync(
+        PagingParam paging, SorterParam? sorter = null,
         string? filter = null, string? serviceName = null,
-        string? sorting = null, int skipCount = 0, int maxResultCount = int.MaxValue,
         CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
@@ -107,9 +111,8 @@ public sealed class EfCorePermissionGroupRepository
             .Include(g => g.Items)
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(!string.IsNullOrEmpty(serviceName), g => g.ServiceName == serviceName)
-            .SortByDynamic(sorting, defaultProperty: "Name")
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "Name")
+            .PageBy(paging)
             .ToListAsync(ct);
     }
 
@@ -129,7 +132,7 @@ public sealed class EfCorePermissionGroupRepository
 // ─── PermissionTemplate ──────────────────────────────────────────
 
 public sealed class EfCorePermissionTemplateRepository
-    : EfCoreRepository<PermissionManagementDbContext, PermissionTemplate, Guid>,
+    : EfCoreRepository<PermissionManagementDbContext, PermissionTemplateEntity, Guid>,
       IPermissionTemplateRepository
 {
     private static readonly string[] SearchColumns = ["Name", "DisplayName"];
@@ -137,30 +140,29 @@ public sealed class EfCorePermissionTemplateRepository
     public EfCorePermissionTemplateRepository(
         IDbContextProvider<PermissionManagementDbContext> dbContextProvider) : base(dbContextProvider) { }
 
-    public override async Task<PermissionTemplate?> FindAsync(Guid id, CancellationToken ct = default)
+    public override async Task<PermissionTemplateEntity?> FindAsync(Guid id, CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet.Include(t => t.Items).FirstOrDefaultAsync(t => t.Id == id, ct);
     }
 
-    public async Task<PermissionTemplate?> FindByNameAsync(string name, CancellationToken ct = default)
+    public async Task<PermissionTemplateEntity?> FindByNameAsync(string name, CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet.Include(t => t.Items).FirstOrDefaultAsync(t => t.Name == name, ct);
     }
 
-    public async Task<List<PermissionTemplate>> GetListAsync(
-        string? filter = null, string? sorting = null,
-        int skipCount = 0, int maxResultCount = int.MaxValue,
+    public async Task<List<PermissionTemplateEntity>> GetListAsync(
+        PagingParam paging, SorterParam? sorter = null,
+        string? filter = null,
         CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet
             .Include(t => t.Items)
             .SearchDynamic(filter, SearchColumns)
-            .SortByDynamic(sorting, defaultProperty: "Name")
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "Name")
+            .PageBy(paging)
             .ToListAsync(ct);
     }
 
@@ -177,13 +179,13 @@ public sealed class EfCorePermissionTemplateRepository
 // ─── PermissionGrant ─────────────────────────────────────────────
 
 public sealed class EfCorePermissionGrantRepository
-    : EfCoreRepository<PermissionManagementDbContext, PermissionGrant, Guid>,
+    : EfCoreRepository<PermissionManagementDbContext, PermissionGrantEntity, Guid>,
       IPermissionGrantRepository
 {
     public EfCorePermissionGrantRepository(
         IDbContextProvider<PermissionManagementDbContext> dbContextProvider) : base(dbContextProvider) { }
 
-    public async Task<PermissionGrant?> FindAsync(
+    public async Task<PermissionGrantEntity?> FindAsync(
         string name, string providerName, string providerKey, CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();
@@ -191,7 +193,7 @@ public sealed class EfCorePermissionGrantRepository
             x => x.Name == name && x.ProviderName == providerName && x.ProviderKey == providerKey, ct);
     }
 
-    public async Task<List<PermissionGrant>> GetListAsync(
+    public async Task<List<PermissionGrantEntity>> GetListAsync(
         string providerName, string providerKey, CancellationToken ct = default)
     {
         var dbSet = await GetDbSetAsync();

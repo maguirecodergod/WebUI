@@ -1,6 +1,7 @@
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Identity.Domain;
-using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.PermissionGroups;
 using LHA.UnitOfWork;
 
 namespace LHA.Account.Application.Permissions;
@@ -17,13 +18,13 @@ public sealed class PermissionRegistrationService(
         using var uow = uowManager.Begin(isTransactional: true);
 
         // ── 1. Upsert permission definitions ─────────────────────
-        var defEntities = new List<PermissionDefinition>();
+        var defEntities = new List<PermissionDefinitionEntity>();
         foreach (var p in input.Permissions)
         {
             var existing = await defRepo.FindByNameAsync(p.Name, ct);
             if (existing is null)
             {
-                existing = new PermissionDefinition(
+                existing = new PermissionDefinitionEntity(
                     Guid.NewGuid(), p.Name, p.DisplayName,
                     input.ServiceName, p.GroupName);
                 await defRepo.InsertAsync(existing, ct);
@@ -37,7 +38,7 @@ public sealed class PermissionRegistrationService(
             var grp = await groupRepo.FindByNameAsync(g.Name, ct);
             if (grp is null)
             {
-                grp = new PermissionGroup(
+                grp = new PermissionGroupEntity(
                     Guid.NewGuid(), g.Name, g.DisplayName, input.ServiceName);
                 foreach (var def in defEntities.Where(d => d.GroupName == g.Name))
                     grp.AddPermission(def.Id);

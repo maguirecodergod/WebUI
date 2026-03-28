@@ -1,0 +1,265 @@
+@* ═══════════════════════════════════════════════════════════════════
+    DataTable<TItem> — Enterprise-grade reusable data table component.
+   ═══════════════════════════════════════════════════════════════════ *@
+@namespace LHA.BlazorWasm.Components.Table
+@inherits LhaComponentBase
+@typeparam TItem
+@implements IDisposable
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@{
+    var visibleCols = VisibleColumns;
+}
+
+<div class="dt-container @CssClass" @attributes="AdditionalAttributes">
+
+    @* ════════════ TOOLBAR ════════════ *@
+    @if (ShowToolbar)
+    {
+        <div class="dt-toolbar">
+            @* Left-side slot / Info *@
+            <div class="dt-toolbar-start">
+                @if (ToolbarTemplate is not null)
+                {
+                    @ToolbarTemplate
+                }
+            </div>
+
+            @* Right-side Actions *@
+            @if (Searchable)
+            {
+                <div class="dt-search">
+                    <svg class="dt-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text"
+                           class="dt-search-input"
+                           placeholder="@Localizer.L("DataTable.Search")"
+                           value="@_searchInput"
+                           @oninput="OnSearchInput" />
+                </div>
+            }
+
+            @if (_columns.Any(c => c.Filterable))
+            {
+                <button type="button" class="dt-toolbar-btn @(_filterSidebarOpen ? "dt-toolbar-btn-active" : "")"
+                        @onclick="ToggleFilterSidebar">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    @Localizer.L("DataTable.Filters")
+                </button>
+            }
+
+            @if (ShowColumnToggle && _columns.Count > 0)
+            {
+                <div style="position: relative;">
+                    <button type="button" class="dt-toolbar-btn" @onclick="ToggleColumnDropdown" @onclick:stopPropagation>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="12" y1="3" x2="12" y2="21"></line>
+                        </svg>
+                        @Localizer.L("DataTable.Columns")
+                    </button>
+                    @if (_columnToggleOpen)
+                    {
+                        <div class="dt-col-toggle-list" @onclick:stopPropagation>
+                            @foreach (var col in _columns)
+                            {
+                                <div class="dt-col-toggle-item" @onclick="async () => await ToggleColumnVisibility(col, !col.Visible)">
+                                    <input type="checkbox" checked="@col.Visible" />
+                                    <span>@col.Title</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+
+            <button type="button" class="dt-toolbar-btn" @onclick="RefreshAsync" disabled="@_isLoading">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M1 20v-6h6"></path>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+            </button>
+        </div>
+    }
+
+    @* ════════════ TABLE ════════════ *@
+    <div class="dt-wrapper" style="@(MaxHeight is not null ? $"max-height:{MaxHeight};overflow-y:auto" : "")">
+        <table class="dt-table">
+            <thead>
+                <tr class="dt-header-row">
+                    @if (SelectionMode != SelectionMode.None)
+                    {
+                        <th class="dt-header-cell dt-col-select" style="text-align: center;">
+                            @if (SelectionMode == SelectionMode.Multiple)
+                            {
+                                <input type="checkbox" checked="@_allPageSelected" @onchange="async () => await ToggleSelectAllPage()" />
+                            }
+                        </th>
+                    }
+                    @if (ExpandedRowTemplate is not null)
+                    {
+                        <th class="dt-header-cell dt-col-expand"></th>
+                    }
+
+                    @foreach (var col in visibleCols)
+                    {
+                        var sort = GetSort(col.Field);
+                        <th class="dt-header-cell @(col.Sortable ? "dt-sortable" : "")"
+                            style="@col.GetColumnStyle()"
+                            @onclick="async () => { if (col.Sortable) await ToggleSort(col.Field); }">
+                            
+                            @if (col.HeaderTemplate is not null) { @col.HeaderTemplate }
+                            else { <span>@col.Title</span> }
+
+                            @if (col.Sortable)
+                            {
+                                <span class="dt-sort-icon">
+                                    @if (sort.Direction == SortDirection.Ascending) { <text>▲</text> }
+                                    else if (sort.Direction == SortDirection.Descending) { <text>▼</text> }
+                                    else { <text>⇅</text> }
+                                </span>
+                            }
+                        </th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (_isLoading && _displayItems.Count == 0)
+                {
+                    @for (var i = 0; i < 5; i++)
+                    {
+                        <tr class="dt-row">
+                            @for (var j = 0; j < (visibleCols.Count + (SelectionMode != SelectionMode.None ? 1 : 0) + (ExpandedRowTemplate is not null ? 1 : 0)); j++)
+                            {
+                                <td class="dt-cell"><div class="dt-skeleton"></div></td>
+                            }
+                        </tr>
+                    }
+                }
+                else if (_displayItems.Count == 0)
+                {
+                    <tr>
+                        <td colspan="@_totalColumns" class="dt-cell" style="text-align: center; padding: 3rem;">
+                            @if (EmptyTemplate is not null) { @EmptyTemplate }
+                            else { <text>@Localizer.L("DataTable.NoData")</text> }
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in _displayItems)
+                    {
+                        <tr class="dt-row dt-row-hoverable @(IsSelected(item) ? "dt-row-selected" : "")"
+                            @onclick="async () => await HandleRowClickInternal(item)">
+
+                            @if (SelectionMode != SelectionMode.None)
+                            {
+                                <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
+                                    @if (SelectionMode == SelectionMode.Multiple)
+                                    {
+                                        <input type="checkbox" checked="@IsSelected(item)" @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" checked="@IsSelected(item)" @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
+                                    }
+                                </td>
+                            }
+
+                            @if (ExpandedRowTemplate is not null)
+                            {
+                                <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
+                                    <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : "")"
+                                            @onclick="() => ToggleExpand(item)">›</button>
+                                </td>
+                            }
+
+                            @foreach (var col in visibleCols)
+                            {
+                                <td class="dt-cell @col.GetCellCss(item)" style="@GetCellInlineStyle(col, item)">
+                                    @if (col.CellTemplate is not null) { @col.CellTemplate(item) }
+                                    else { @col.GetDisplayValue(item) }
+                                </td>
+                            }
+                        </tr>
+                        @if (IsExpanded(item) && ExpandedRowTemplate is not null)
+                        {
+                            <tr class="dt-expanded-row">
+                                <td colspan="@_totalColumns" style="padding: 0;">@ExpandedRowTemplate(item)</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* ════════════ PAGER ════════════ *@
+    @if (ShowPager)
+    {
+        <DataTablePager PageNumber="@_request.PageNumber"
+                        PageSize="@_request.PageSize"
+                        TotalCount="@_totalCount"
+                        PageSizes="@PageSizes"
+                        OnPageChanged="HandlePageChanged"
+                        OnPageSizeChanged="HandlePageSizeChanged" />
+    }
+
+    @* ════════════ SIDEBAR ════════════ *@
+    @if (_filterSidebarOpen)
+    {
+        <div class="dt-sidebar-overlay" @onclick="CloseFilterSidebar"></div>
+    }
+    <aside class="dt-sidebar @(_filterSidebarOpen ? "dt-sidebar-open" : "")">
+        <div class="dt-sidebar-header">
+            <h3 class="dt-sidebar-title">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                @Localizer.L("DataTable.Filters")
+            </h3>
+            <button type="button" @onclick="CloseFilterSidebar" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+        </div>
+        <div class="dt-sidebar-body">
+            @foreach (var col in _columns.Where(c => c.Filterable))
+            {
+                <div class="dt-sidebar-filter-group">
+                    <label class="dt-sidebar-label">@col.Title</label>
+                    @RenderFilterInput(col)
+                </div>
+            }
+        </div>
+    </aside>
+</div>
+
+@code {
+    private RenderFragment RenderFilterInput(ColumnDefinition<TItem> col) => __builder =>
+    {
+        switch (col.FilterType)
+        {
+            case FilterType.Text:
+                <input type="text" class="dt-filter-input" placeholder="@col.Title"
+                       value="@GetFilterValue(col.Field)"
+                       @oninput="async e => await HandleFilterTextInput(col.Field, e.Value?.ToString(), FilterType.Text)" />
+                break;
+            case FilterType.Select:
+                <select class="dt-filter-input" @onchange="async e => await HandleFilterChange(col.Field, e.Value?.ToString(), FilterType.Select, FilterOperator.Equals)">
+                    <option value="">@Localizer.L("DataTable.All")</option>
+                    @if (col.FilterOptions is not null)
+                    {
+                        @foreach (var opt in col.FilterOptions) { <option value="@opt.Value">@opt.Label</option> }
+                    }
+                </select>
+                break;
+        }
+    };
+}

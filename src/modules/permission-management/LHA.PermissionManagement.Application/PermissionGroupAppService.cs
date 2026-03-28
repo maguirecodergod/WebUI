@@ -1,6 +1,8 @@
 using LHA.Ddd.Application;
+using LHA.Ddd.Domain;
 using LHA.PermissionManagement.Application.Contracts;
-using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.PermissionGroups;
 using LHA.UnitOfWork;
 
 namespace LHA.PermissionManagement.Application;
@@ -35,11 +37,10 @@ public sealed class PermissionGroupAppService
     {
         var totalCount = await _groupRepo.GetCountAsync(input.Filter, input.ServiceName);
         var groups = await _groupRepo.GetListAsync(
+            input,
+            sorter: input.Sorter,
             filter: input.Filter,
-            serviceName: input.ServiceName,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount);
+            serviceName: input.ServiceName);
 
         // Batch-load all permission definitions referenced by these groups
         var allPermIds = groups.SelectMany(g => g.Items.Select(i => i.PermissionDefinitionId)).Distinct().ToList();
@@ -56,7 +57,7 @@ public sealed class PermissionGroupAppService
         });
 
         return new PagedResultDto<PermissionGroupDto>(
-            totalCount, dtos, input.SkipCount, input.MaxResultCount);
+            totalCount, dtos, input.PageNumber, input.PageSize);
     }
 
     public async Task<PermissionGroupDto> CreateAsync(CreatePermissionGroupInput input)
@@ -64,7 +65,7 @@ public sealed class PermissionGroupAppService
         await using var uow = _uowManager.Begin(
             new UnitOfWorkOptions { IsTransactional = true });
 
-        var group = new PermissionGroup(
+        var group = new PermissionGroupEntity(
             Guid.NewGuid(), input.Name, input.DisplayName, input.ServiceName, input.Description);
 
         foreach (var permId in input.PermissionDefinitionIds)
@@ -115,7 +116,7 @@ public sealed class PermissionGroupAppService
     }
 
     private static PermissionGroupDto MapToDto(
-        PermissionGroup group, List<PermissionDefinition> permissions) => new()
+        PermissionGroupEntity group, List<PermissionDefinitionEntity> permissions) => new()
     {
         Id = group.Id,
         Name = group.Name,

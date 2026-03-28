@@ -44,17 +44,16 @@ public sealed class TenantAppService : ApplicationService, ITenantAppService
     {
         var totalCount = await _tenantRepository.GetCountAsync(input.Filter, input.Status);
         var tenants = await _tenantRepository.GetListAsync(
+            input,
+            sorter: input.Sorter,
             filter: input.Filter,
-            status: input.Status,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount);
+            status: input.Status);
 
         return new PagedResultDto<TenantDto>(
             totalCount,
             tenants.ConvertAll(MapToDto),
-            input.SkipCount,
-            input.MaxResultCount);
+            input.PageNumber,
+            input.PageSize);
     }
 
     /// <inheritdoc />

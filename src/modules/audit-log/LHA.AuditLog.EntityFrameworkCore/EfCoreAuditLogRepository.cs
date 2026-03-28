@@ -1,4 +1,5 @@
 using LHA.AuditLog.Domain;
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,8 @@ public sealed class EfCoreAuditLogRepository
 
     /// <inheritdoc />
     public async Task<List<AuditLogEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         DateTimeOffset? startTime = null,
         DateTimeOffset? endTime = null,
         string? httpMethod = null,
@@ -43,9 +46,6 @@ public sealed class EfCoreAuditLogRepository
         int? maxExecutionDuration = null,
         int? minExecutionDuration = null,
         bool? hasException = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
@@ -54,13 +54,9 @@ public sealed class EfCoreAuditLogRepository
             minStatusCode, maxStatusCode, userId, userName, applicationName,
             correlationId, maxExecutionDuration, minExecutionDuration, hasException);
 
-        query = !string.IsNullOrWhiteSpace(sorting)
-            ? query.SortByDynamic(sorting)
-            : query.OrderByDescending(x => x.ExecutionTime);
-
         return await query
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "ExecutionTime", defaultAscending: false)
+            .PageBy(paging)
             .Include(x => x.Actions)
             .Include(x => x.EntityChanges)
                 .ThenInclude(c => c.PropertyChanges)
@@ -95,11 +91,10 @@ public sealed class EfCoreAuditLogRepository
 
     /// <inheritdoc />
     public async Task<List<EntityChangeEntity>> GetEntityChangesAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         string? entityTypeFullName = null,
         string? entityId = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default)
     {
         var dbContext = await GetDbContextAsync();
@@ -111,13 +106,9 @@ public sealed class EfCoreAuditLogRepository
             .WhereIf(!string.IsNullOrWhiteSpace(entityId),
                 c => c.EntityId == entityId);
 
-        query = !string.IsNullOrWhiteSpace(sorting)
-            ? query.SortByDynamic(sorting)
-            : query.OrderByDescending(c => c.ChangeTime);
-
         return await query
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "ChangeTime", defaultAscending: false)
+            .PageBy(paging)
             .Include(c => c.PropertyChanges)
             .ToListAsync(cancellationToken);
     }

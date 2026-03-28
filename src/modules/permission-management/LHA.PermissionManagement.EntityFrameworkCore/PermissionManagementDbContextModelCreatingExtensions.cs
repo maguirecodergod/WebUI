@@ -12,7 +12,7 @@ public static class PermissionManagementDbContextModelCreatingExtensions
         modelBuilder.Ignore<LHA.Ddd.Domain.DomainEventRecord>();
 
         // ─── PermissionDefinition ────────────────────────────────
-        modelBuilder.Entity<PermissionDefinition>(b =>
+        modelBuilder.Entity<PermissionDefinitionEntity>(b =>
         {
             b.ToTable("PermissionDefinitions");
             b.HasKey(x => x.Id);
@@ -40,7 +40,7 @@ public static class PermissionManagementDbContextModelCreatingExtensions
         });
 
         // ─── PermissionGroup ─────────────────────────────────────
-        modelBuilder.Entity<PermissionGroup>(b =>
+        modelBuilder.Entity<PermissionGroupEntity>(b =>
         {
             b.ToTable("PermissionGroups");
             b.ConfigureByConvention();
@@ -74,7 +74,7 @@ public static class PermissionManagementDbContextModelCreatingExtensions
         });
 
         // ─── PermissionGroupItem ─────────────────────────────────
-        modelBuilder.Entity<PermissionGroupItem>(b =>
+        modelBuilder.Entity<PermissionGroupItemEntity>(b =>
         {
             b.ToTable("PermissionGroupItems");
             b.HasKey(x => x.Id);
@@ -83,7 +83,7 @@ public static class PermissionManagementDbContextModelCreatingExtensions
         });
 
         // ─── PermissionTemplate ──────────────────────────────────
-        modelBuilder.Entity<PermissionTemplate>(b =>
+        modelBuilder.Entity<PermissionTemplateEntity>(b =>
         {
             b.ToTable("PermissionTemplates");
             b.ConfigureByConvention();
@@ -113,7 +113,7 @@ public static class PermissionManagementDbContextModelCreatingExtensions
         });
 
         // ─── PermissionTemplateItem ──────────────────────────────
-        modelBuilder.Entity<PermissionTemplateItem>(b =>
+        modelBuilder.Entity<PermissionTemplateItemEntity>(b =>
         {
             b.ToTable("PermissionTemplateItems");
             b.HasKey(x => x.Id);
@@ -122,7 +122,7 @@ public static class PermissionManagementDbContextModelCreatingExtensions
         });
 
         // ─── PermissionGrant ─────────────────────────────────────
-        modelBuilder.Entity<PermissionGrant>(b =>
+        modelBuilder.Entity<PermissionGrantEntity>(b =>
         {
             b.ToTable("PermissionGrants");
             b.HasKey(x => x.Id);

@@ -1,0 +1,121 @@
+@* ──────────────────────────────────────────────────────────────
+    DataTableColumn — Declarative column definition.
+    Renders nothing. Registers a ColumnDefinition with the parent DataTable.
+
+    Usage:
+      <DataTable TItem="Product">
+          <DataTableColumn TItem="Product" Property="@(x => x.Name)" Title="Name" Sortable Filterable />
+          <DataTableColumn TItem="Product" Property="@(x => x.Price)" Format="N2" Alignment="ColumnAlignment.Right" />
+          <DataTableColumn TItem="Product" Title="Actions">
+              <CellTemplate>
+                  <button @onclick="() => Edit(context)">Edit</button>
+              </CellTemplate>
+          </DataTableColumn>
+      </DataTable>
+   ────────────────────────────────────────────────────────────── *@
+@namespace LHA.BlazorWasm.Components.Table
+@typeparam TItem
+@implements IDisposable
+
+@code {
+    [CascadingParameter] public DataTable<TItem> Table { get; set; } = default!;
+
+    // ── Identity ─────────────────────────────────────────────
+    /// <summary>Expression-based property selector. Extracts field name + value accessor.</summary>
+    [Parameter] public System.Linq.Expressions.Expression<Func<TItem, object?>>? Property { get; set; }
+
+    /// <summary>Explicit field name (overrides expression-derived name). Used as sort/filter key.</summary>
+    [Parameter] public string? Field { get; set; }
+
+    /// <summary>Column header text. Auto-generated from Field if omitted.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>Format string for IFormattable values (e.g. "N2", "d", "C2").</summary>
+    [Parameter] public string? Format { get; set; }
+
+    // ── Features ─────────────────────────────────────────────
+    [Parameter] public bool Sortable { get; set; }
+    [Parameter] public bool Filterable { get; set; }
+    [Parameter] public FilterType FilterType { get; set; } = FilterType.Text;
+    [Parameter] public IReadOnlyList<SelectOption>? FilterOptions { get; set; }
+
+    // ── Visibility ───────────────────────────────────────────
+    [Parameter] public bool Visible { get; set; } = true;
+
+    // ── Sizing ───────────────────────────────────────────────
+    [Parameter] public string? Width { get; set; }
+    [Parameter] public string? MinWidth { get; set; }
+    [Parameter] public string? MaxWidth { get; set; }
+
+    // ── Position / Alignment ─────────────────────────────────
+    [Parameter] public FixedPosition Fixed { get; set; } = FixedPosition.None;
+    [Parameter] public ColumnAlignment Alignment { get; set; } = ColumnAlignment.Left;
+
+    // ── Styling ──────────────────────────────────────────────
+    [Parameter] public bool Highlight { get; set; }
+    [Parameter] public Func<TItem, string?>? CellCssClass { get; set; }
+    [Parameter] public Func<TItem, string?>? CellStyle { get; set; }
+
+    // ── Templates ────────────────────────────────────────────
+    [Parameter] public RenderFragment<TItem>? CellTemplate { get; set; }
+    [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+
+    // ── Internal ─────────────────────────────────────────────
+    private ColumnDefinition<TItem>? _definition;
+
+    protected override void OnInitialized()
+    {
+        _definition = BuildDefinition();
+        Table.AddColumn(_definition);
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (_definition is null) return;
+        // Update mutable properties on re-render — but skip Visible if overridden at runtime
+        if (!_definition.VisibilityOverridden)
+            _definition.Visible = Visible;
+        _definition.Title = Title ?? (Field is { Length: > 0 } f ? ColumnDefinition<TItem>.Humanize(f) : _definition.Title);
+    }
+
+    private ColumnDefinition<TItem> BuildDefinition()
+    {
+        var field = Field ?? "";
+        Func<TItem, object?>? selector = null;
+
+        if (Property is not null)
+        {
+            field = Field ?? ColumnDefinition<TItem>.ExtractMemberName(Property);
+            selector = Property.Compile();
+        }
+
+        return new ColumnDefinition<TItem>
+        {
+            Field = field,
+            Title = Title ?? (field.Length > 0 ? ColumnDefinition<TItem>.Humanize(field) : ""),
+            ValueSelector = selector,
+            Format = Format,
+            Sortable = Sortable,
+            Filterable = Filterable,
+            FilterType = FilterType,
+            FilterOptions = FilterOptions,
+            Visible = Visible,
+            Width = Width,
+            MinWidth = MinWidth,
+            MaxWidth = MaxWidth,
+            Fixed = Fixed,
+            Alignment = Alignment,
+            Highlight = Highlight,
+            CellCssClass = CellCssClass,
+            CellStyle = CellStyle,
+            CellTemplate = CellTemplate,
+            HeaderTemplate = HeaderTemplate,
+        };
+    }
+
+    public void Dispose()
+    {
+        if (_definition is not null)
+            Table.RemoveColumn(_definition);
+    }
+}

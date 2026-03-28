@@ -2,7 +2,7 @@ using LHA.Ddd.Domain;
 using LHA.MultiTenancy;
 using LHA.PermissionManagement.Domain.Shared;
 
-namespace LHA.PermissionManagement.Domain;
+namespace LHA.PermissionManagement.Domain.PermissionGrants;
 
 /// <summary>
 /// Records a permission grant to a provider (e.g. Role "R", User "U").
@@ -13,7 +13,7 @@ namespace LHA.PermissionManagement.Domain;
 /// "this user has this permission directly".
 /// </para>
 /// </summary>
-public sealed class PermissionGrant : Entity<Guid>, IMultiTenant
+public sealed class PermissionGrantEntity : Entity<Guid>, IMultiTenant
 {
     public Guid? TenantId { get; private set; }
 
@@ -26,9 +26,9 @@ public sealed class PermissionGrant : Entity<Guid>, IMultiTenant
     /// <summary>Provider key: role ID or user ID as string.</summary>
     public string ProviderKey { get; private set; } = null!;
 
-    private PermissionGrant() { }
+    private PermissionGrantEntity() { }
 
-    public PermissionGrant(Guid id, string name, string providerName, string providerKey, Guid? tenantId = null)
+    public PermissionGrantEntity(Guid id, string name, string providerName, string providerKey, Guid? tenantId = null)
     {
         Id = id;
 

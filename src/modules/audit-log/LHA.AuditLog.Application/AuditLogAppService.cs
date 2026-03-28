@@ -11,7 +11,7 @@ namespace LHA.AuditLog.Application;
 /// queried through this service. No create/update/delete operations.
 /// </para>
 /// </summary>
-public sealed class AuditLogAppService : ApplicationService, IAuditLogAppService
+public sealed class AuditLogAppService : ApplicationService, LHA.AuditLog.Application.Contracts.IAuditLogAppService
 {
     private readonly IAuditLogRepository _auditLogRepository;
 
@@ -49,6 +49,8 @@ public sealed class AuditLogAppService : ApplicationService, IAuditLogAppService
             cancellationToken: cancellationToken);
 
         var items = await _auditLogRepository.GetListAsync(
+            input,
+            sorter: input.Sorter,
             startTime: input.StartTime,
             endTime: input.EndTime,
             httpMethod: input.HttpMethod,
@@ -62,16 +64,13 @@ public sealed class AuditLogAppService : ApplicationService, IAuditLogAppService
             maxExecutionDuration: input.MaxExecutionDuration,
             minExecutionDuration: input.MinExecutionDuration,
             hasException: input.HasException,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount,
             cancellationToken: cancellationToken);
 
         return new PagedResultDto<AuditLogDto>(
             totalCount,
             items.ConvertAll(MapToDto),
-            input.SkipCount,
-            input.MaxResultCount);
+            input.PageNumber,
+            input.PageSize);
     }
 
     /// <inheritdoc />
@@ -85,18 +84,17 @@ public sealed class AuditLogAppService : ApplicationService, IAuditLogAppService
             cancellationToken: cancellationToken);
 
         var items = await _auditLogRepository.GetEntityChangesAsync(
+            input,
+            sorter: input.Sorter,
             entityTypeFullName: input.EntityTypeFullName,
             entityId: input.EntityId,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount,
             cancellationToken: cancellationToken);
 
         return new PagedResultDto<EntityChangeDto>(
             totalCount,
             items.ConvertAll(MapToEntityChangeDto),
-            input.SkipCount,
-            input.MaxResultCount);
+            input.PageNumber,
+            input.PageSize);
     }
 
     // ─── Mapping ─────────────────────────────────────────────────────

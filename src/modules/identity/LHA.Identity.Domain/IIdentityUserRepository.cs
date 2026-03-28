@@ -26,12 +26,11 @@ public interface IIdentityUserRepository : IRepository<IdentityUser, Guid>
 
     /// <summary>Returns a filtered and paged list of users.</summary>
     Task<List<IdentityUser>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         string? filter = null,
         CMasterStatus? status = null,
         Guid? roleId = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default);
 
     /// <summary>Returns the total count matching the filter.</summary>

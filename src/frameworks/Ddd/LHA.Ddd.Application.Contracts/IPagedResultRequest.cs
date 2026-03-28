@@ -1,27 +1,17 @@
-using System.ComponentModel.DataAnnotations;
+using LHA.Ddd.Domain;
 
 namespace LHA.Ddd.Application;
 
 /// <summary>
-/// Represents a request that limits the number of results returned.
+/// Represents a request that supports paging.
 /// </summary>
-public interface ILimitedResultRequest
+public interface IPagedResultRequest
 {
-    /// <summary>
-    /// Maximum number of items to return.
-    /// </summary>
-    int MaxResultCount { get; }
-}
+    /// <summary>Current page number (1-based).</summary>
+    int PageNumber { get; }
 
-/// <summary>
-/// Represents a paged result request with skip and max count.
-/// </summary>
-public interface IPagedResultRequest : ILimitedResultRequest
-{
-    /// <summary>
-    /// Number of items to skip before returning results.
-    /// </summary>
-    int SkipCount { get; }
+    /// <summary>Number of items per page.</summary>
+    int PageSize { get; }
 }
 
 /// <summary>
@@ -29,8 +19,6 @@ public interface IPagedResultRequest : ILimitedResultRequest
 /// </summary>
 public interface ISortedResultRequest
 {
-    /// <summary>
-    /// A sorting expression (e.g. <c>"Name ASC, CreationTime DESC"</c>).
-    /// </summary>
-    string? Sorting { get; }
+    /// <summary>Sorting parameters.</summary>
+    SorterParam? Sorter { get; }
 }

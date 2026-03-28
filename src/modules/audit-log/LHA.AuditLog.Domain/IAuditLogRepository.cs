@@ -12,6 +12,8 @@ public interface IAuditLogRepository : IRepository<AuditLogEntity, Guid>
     /// Returns a paged/filtered list of audit logs with eager-loaded children.
     /// </summary>
     Task<List<AuditLogEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         DateTimeOffset? startTime = null,
         DateTimeOffset? endTime = null,
         string? httpMethod = null,
@@ -25,9 +27,6 @@ public interface IAuditLogRepository : IRepository<AuditLogEntity, Guid>
         int? maxExecutionDuration = null,
         int? minExecutionDuration = null,
         bool? hasException = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -53,11 +52,10 @@ public interface IAuditLogRepository : IRepository<AuditLogEntity, Guid>
     /// Returns entity changes filtered by entity type and/or entity ID.
     /// </summary>
     Task<List<EntityChangeEntity>> GetEntityChangesAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         string? entityTypeFullName = null,
         string? entityId = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default);
 
     /// <summary>

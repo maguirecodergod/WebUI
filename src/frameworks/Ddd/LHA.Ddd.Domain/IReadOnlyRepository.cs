@@ -28,4 +28,19 @@ public interface IReadOnlyRepository<TEntity, in TKey>
     /// Returns the total count of entities.
     /// </summary>
     Task<long> GetCountAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns a paged list of entities.
+    /// </summary>
+    Task<List<TEntity>> GetListAsync(
+        PagingParam paging,
+        string? sorting = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns a paged, sorted, and filtered list of entities.
+    /// </summary>
+    Task<List<TEntity>> GetListAsync<TFilter>(
+        TableParam<TFilter> input,
+        CancellationToken cancellationToken = default);
 }

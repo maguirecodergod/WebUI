@@ -1,5 +1,6 @@
 using LHA.Account.Domain.Repositories;
 using LHA.AuditLog.Domain;
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,13 @@ public class EfCoreAuditLogActionRepository
     }
 
     public virtual async Task<List<AuditLogActionEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         Guid? auditLogId = null,
         string? serviceName = null,
         string? methodName = null,
         int? minExecutionDuration = null,
         int? maxExecutionDuration = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default)
     {
         IQueryable<AuditLogActionEntity> query = await GetDbSetAsync();
@@ -29,9 +29,8 @@ public class EfCoreAuditLogActionRepository
         query = ApplyFilter(query, auditLogId, serviceName, methodName, minExecutionDuration, maxExecutionDuration);
 
         return await query
-            .SortByDynamic(sorting, nameof(AuditLogActionEntity.ExecutionTime), false)
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, nameof(AuditLogActionEntity.ExecutionTime), false)
+            .PageBy(paging)
             .ToListAsync(cancellationToken);
     }
 

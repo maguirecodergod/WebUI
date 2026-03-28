@@ -1,5 +1,6 @@
 using LHA.Account.Domain.Repositories;
 using LHA.AuditLog.Domain;
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +15,10 @@ public class EfCoreEntityPropertyChangeRepository
     }
 
     public virtual async Task<List<EntityPropertyChangeEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         Guid? entityChangeId = null,
         string? propertyName = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default)
     {
         IQueryable<EntityPropertyChangeEntity> query = await GetDbSetAsync();
@@ -26,9 +26,8 @@ public class EfCoreEntityPropertyChangeRepository
         query = ApplyFilter(query, entityChangeId, propertyName);
 
         return await query
-            .SortByDynamic(sorting, nameof(EntityPropertyChangeEntity.PropertyName), true)
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, nameof(EntityPropertyChangeEntity.PropertyName), true)
+            .PageBy(paging)
             .ToListAsync(cancellationToken);
     }
 

@@ -1,4 +1,5 @@
 using LHA.Core;
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.TenantManagement.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -50,11 +51,10 @@ public sealed class EfCoreTenantRepository
 
     /// <inheritdoc />
     public async Task<List<TenantEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         string? filter = null,
         CMasterStatus? status = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
@@ -63,9 +63,8 @@ public sealed class EfCoreTenantRepository
             .Include(t => t.ConnectionStrings)
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, t => t.Status == status!.Value)
-            .SortByDynamic(sorting, defaultProperty: "Name")
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "Name")
+            .PageBy(paging)
             .ToListAsync(cancellationToken);
     }
 

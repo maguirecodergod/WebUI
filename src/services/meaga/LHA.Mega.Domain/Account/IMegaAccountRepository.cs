@@ -7,11 +7,10 @@ public interface IMegaAccountRepository : IRepository<MegaAccountEntity, Guid>
     Task<MegaAccountEntity?> FindByCodeAsync(string code, CancellationToken cancellationToken = default);
 
     Task<List<MegaAccountEntity>> GetListAsync(
-        string? filter,
-        bool? isActive,
-        string? sorting,
-        int skipCount,
-        int maxResultCount,
+        PagingParam paging,
+        SorterParam? sorter = null,
+        string? filter = null,
+        bool? isActive = null,
         CancellationToken cancellationToken = default);
 
     Task<long> GetCountAsync(

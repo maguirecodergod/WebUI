@@ -14,11 +14,10 @@ public interface IIdentityRoleRepository : IRepository<IdentityRole, Guid>
 
     /// <summary>Returns a filtered and paged list of roles.</summary>
     Task<List<IdentityRole>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         string? filter = null,
         CMasterStatus? status = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default);
 
     /// <summary>Returns the total count matching the filter.</summary>

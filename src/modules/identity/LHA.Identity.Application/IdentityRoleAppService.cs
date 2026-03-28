@@ -1,5 +1,6 @@
 using LHA.Core;
 using LHA.Ddd.Application;
+using LHA.Ddd.Domain;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
 using LHA.UnitOfWork;
@@ -39,17 +40,16 @@ public sealed class IdentityRoleAppService : ApplicationService, IIdentityRoleAp
     {
         var totalCount = await _roleRepository.GetCountAsync(input.Filter, input.Status);
         var roles = await _roleRepository.GetListAsync(
+            input,
+            sorter: input.Sorter,
             filter: input.Filter,
-            status: input.Status,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount);
+            status: input.Status);
 
         return new PagedResultDto<IdentityRoleDto>(
             totalCount,
             roles.ConvertAll(MapToDto),
-            input.SkipCount,
-            input.MaxResultCount);
+            input.PageNumber,
+            input.PageSize);
     }
 
     /// <inheritdoc />
@@ -112,8 +112,8 @@ public sealed class IdentityRoleAppService : ApplicationService, IIdentityRoleAp
     public async Task<List<IdentityRoleDto>> GetAllAsync(CancellationToken ct)
     {
         var roles = await _roleRepository.GetListAsync(
-            sorting: "Name",
-            maxResultCount: int.MaxValue,
+            paging: new PagingParam { PageSize = 1000 },
+            sorter: new SorterParam { KeyName = "Name", IsASC = true },
             cancellationToken: ct);
 
         return roles.ConvertAll(MapToDto);

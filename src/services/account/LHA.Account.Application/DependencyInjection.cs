@@ -1,6 +1,5 @@
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Account.Application.Permissions;
-using LHA.Account.Application.AuditLogs;
 using LHA.Shared.Contracts.AuditLog;
 using LHA.AuditLog.Application;
 using LHA.Identity.Application;

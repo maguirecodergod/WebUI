@@ -19,13 +19,18 @@ public sealed class MegaAccountAppService(
     }
 
     public async Task<PagedResultDto<MegaAccountDto>> GetListAsync(
-        string? filter, bool? isActive, string? sorting,
-        int skipCount = 0, int maxResultCount = 10, CancellationToken ct = default)
+        GetMegaAccountsInput input, CancellationToken ct = default)
     {
-        var totalCount = await repository.GetCountAsync(filter, isActive, ct);
-        var items = await repository.GetListAsync(filter, isActive, sorting, skipCount, maxResultCount, ct);
+        var totalCount = await repository.GetCountAsync(input.Filter, input.IsActive, ct);
+        var items = await repository.GetListAsync(
+            input,
+            sorter: input.Sorter,
+            filter: input.Filter,
+            isActive: input.IsActive,
+            cancellationToken: ct);
+
         return new PagedResultDto<MegaAccountDto>(
-            totalCount, items.ConvertAll(MapToDto), skipCount, maxResultCount);
+            totalCount, items.ConvertAll(MapToDto), input.PageNumber, input.PageSize);
     }
 
     public async Task<MegaAccountDto> CreateAsync(CreateMegaAccountInput input, CancellationToken ct = default)

@@ -1,3 +1,4 @@
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.Mega.Domain.Account;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,14 @@ public sealed class EfCoreMegaAccountRepository
     }
 
     public async Task<List<MegaAccountEntity>> GetListAsync(
-        string? filter, bool? isActive, string? sorting,
-        int skipCount, int maxResultCount, CancellationToken cancellationToken = default)
+        PagingParam paging, SorterParam? sorter = null,
+        string? filter = null, bool? isActive = null,
+        CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
         return await ApplyFilter(dbSet, filter, isActive)
-            .OrderBy(a => a.Code)
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: nameof(MegaAccountEntity.Code))
+            .PageBy(paging)
             .ToListAsync(cancellationToken);
     }
 

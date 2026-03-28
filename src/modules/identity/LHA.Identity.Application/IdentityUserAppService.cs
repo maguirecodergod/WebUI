@@ -1,5 +1,6 @@
 using LHA.Core;
 using LHA.Ddd.Application;
+using LHA.Ddd.Domain;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
 using LHA.UnitOfWork;
@@ -42,19 +43,18 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
     {
         var totalCount = await _userRepository.GetCountAsync(input.Filter, input.Status, input.RoleId);
         var users = await _userRepository.GetListAsync(
+            input,
+            sorter: input.Sorter,
             filter: input.Filter,
             status: input.Status,
-            roleId: input.RoleId,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount);
+            roleId: input.RoleId);
 
         var dtos = new List<IdentityUserDto>(users.Count);
         foreach (var user in users)
             dtos.Add(await MapToDtoAsync(user));
 
         return new PagedResultDto<IdentityUserDto>(
-            totalCount, dtos, input.SkipCount, input.MaxResultCount);
+            totalCount, dtos, input.PageNumber, input.PageSize);
     }
 
     /// <inheritdoc />

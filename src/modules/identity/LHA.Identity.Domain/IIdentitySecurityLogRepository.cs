@@ -9,12 +9,11 @@ public interface IIdentitySecurityLogRepository : IRepository<IdentitySecurityLo
 {
     /// <summary>Returns a filtered and paged list of security logs.</summary>
     Task<List<IdentitySecurityLog>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         string? filter = null,
         Guid? userId = null,
         string? action = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default);
 
     /// <summary>Returns the total count matching the filter.</summary>

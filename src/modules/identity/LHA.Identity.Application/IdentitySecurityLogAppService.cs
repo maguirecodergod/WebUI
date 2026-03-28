@@ -1,4 +1,5 @@
 using LHA.Ddd.Application;
+using LHA.Ddd.Domain;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
 
@@ -24,19 +25,18 @@ public sealed class IdentitySecurityLogAppService : ApplicationService, IIdentit
             input.Filter, input.UserId, input.Action, ct);
 
         var items = await _securityLogRepository.GetListAsync(
+            input,
+            sorter: input.Sorter,
             filter: input.Filter,
             userId: input.UserId,
             action: input.Action,
-            sorting: input.Sorting,
-            skipCount: input.SkipCount,
-            maxResultCount: input.MaxResultCount,
             cancellationToken: ct);
 
         return new PagedResultDto<IdentitySecurityLogDto>(
             totalCount,
             items.ConvertAll(MapToDto),
-            input.SkipCount,
-            input.MaxResultCount);
+            input.PageNumber,
+            input.PageSize);
     }
 
     private static IdentitySecurityLogDto MapToDto(IdentitySecurityLog log) => new()

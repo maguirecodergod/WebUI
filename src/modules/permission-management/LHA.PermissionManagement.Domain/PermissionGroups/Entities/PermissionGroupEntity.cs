@@ -1,15 +1,15 @@
 using LHA.Ddd.Domain;
 using LHA.PermissionManagement.Domain.Shared;
 
-namespace LHA.PermissionManagement.Domain;
+namespace LHA.PermissionManagement.Domain.PermissionGroups;
 
 /// <summary>
 /// Layer 2 — A named group of permissions (e.g. "Tenant Management", "Store Management").
 /// Groups permissions that logically belong together for easier assignment.
 /// </summary>
-public sealed class PermissionGroup : FullAuditedAggregateRoot<Guid>
+public sealed class PermissionGroupEntity : FullAuditedAggregateRoot<Guid>
 {
-    private readonly List<PermissionGroupItem> _items = [];
+    private readonly List<PermissionGroupItemEntity> _items = [];
 
     /// <summary>Unique group name.</summary>
     public string Name { get; private set; } = null!;
@@ -24,11 +24,11 @@ public sealed class PermissionGroup : FullAuditedAggregateRoot<Guid>
     public string? Description { get; private set; }
 
     /// <summary>Permissions in this group.</summary>
-    public IReadOnlyCollection<PermissionGroupItem> Items => _items.AsReadOnly();
+    public IReadOnlyCollection<PermissionGroupItemEntity> Items => _items.AsReadOnly();
 
-    private PermissionGroup() { }
+    private PermissionGroupEntity() { }
 
-    public PermissionGroup(Guid id, string name, string displayName, string serviceName, string? description = null)
+    public PermissionGroupEntity(Guid id, string name, string displayName, string serviceName, string? description = null)
     {
         Id = id;
 
@@ -45,38 +45,38 @@ public sealed class PermissionGroup : FullAuditedAggregateRoot<Guid>
         Description = description;
     }
 
-    public PermissionGroup SetDisplayName(string displayName)
+    public PermissionGroupEntity SetDisplayName(string displayName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(displayName);
         DisplayName = displayName.Trim();
         return this;
     }
 
-    public PermissionGroup SetDescription(string? description)
+    public PermissionGroupEntity SetDescription(string? description)
     {
         Description = description;
         return this;
     }
 
-    public PermissionGroup AddPermission(Guid permissionId)
+    public PermissionGroupEntity AddPermission(Guid permissionId)
     {
         if (_items.Any(i => i.PermissionDefinitionId == permissionId)) return this;
-        _items.Add(new PermissionGroupItem(Guid.CreateVersion7(), Id, permissionId));
+        _items.Add(new PermissionGroupItemEntity(Guid.CreateVersion7(), Id, permissionId));
         return this;
     }
 
-    public PermissionGroup RemovePermission(Guid permissionId)
+    public PermissionGroupEntity RemovePermission(Guid permissionId)
     {
         var existing = _items.FirstOrDefault(i => i.PermissionDefinitionId == permissionId);
         if (existing is not null) _items.Remove(existing);
         return this;
     }
 
-    public PermissionGroup SyncPermissions(IEnumerable<Guid> permissionIds)
+    public PermissionGroupEntity SyncPermissions(IEnumerable<Guid> permissionIds)
     {
         _items.Clear();
         foreach (var pid in permissionIds)
-            _items.Add(new PermissionGroupItem(Guid.CreateVersion7(), Id, pid));
+            _items.Add(new PermissionGroupItemEntity(Guid.CreateVersion7(), Id, pid));
         return this;
     }
 }

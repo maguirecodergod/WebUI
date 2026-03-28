@@ -27,22 +27,21 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
     public virtual async Task<PagedResultDto<AuditLogDto>> GetListAsync(GetAuditLogsInput input)
     {
         var logs = await _auditLogRepository.GetListAsync(
-            input.StartTime,
-            input.EndTime,
-            input.HttpMethod,
-            input.Url,
-            input.UserId,
-            input.UserName,
-            input.MinStatusCode,
-            input.MaxStatusCode,
-            input.ApplicationName,
-            input.CorrelationId,
-            input.MinExecutionDuration,
-            input.MaxExecutionDuration,
-            input.HasException,
-            input.Sorting,
-            input.SkipCount,
-            input.MaxResultCount
+            input,
+            sorter: input.Sorter,
+            startTime: input.StartTime,
+            endTime: input.EndTime,
+            httpMethod: input.HttpMethod,
+            url: input.Url,
+            userId: input.UserId,
+            userName: input.UserName,
+            minStatusCode: input.MinStatusCode,
+            maxStatusCode: input.MaxStatusCode,
+            applicationName: input.ApplicationName,
+            correlationId: input.CorrelationId,
+            minExecutionDuration: input.MinExecutionDuration,
+            maxExecutionDuration: input.MaxExecutionDuration,
+            hasException: input.HasException
         );
 
         var totalCount = await _auditLogRepository.GetCountAsync(
@@ -63,7 +62,9 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
 
         return new PagedResultDto<AuditLogDto>(
             totalCount,
-            logs.Select(MapToDto).ToList()
+            logs.Select(MapToDto).ToList(),
+            input.PageNumber,
+            input.PageSize
         );
     }
 
@@ -76,14 +77,13 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
     public virtual async Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(GetAuditLogActionsInput input)
     {
         var actions = await _auditLogActionRepository.GetListAsync(
-            input.AuditLogId,
-            input.ServiceName,
-            input.MethodName,
-            input.MinExecutionDuration,
-            input.MaxExecutionDuration,
-            input.Sorting,
-            input.SkipCount,
-            input.MaxResultCount
+            input,
+            sorter: input.Sorter,
+            auditLogId: input.AuditLogId,
+            serviceName: input.ServiceName,
+            methodName: input.MethodName,
+            minExecutionDuration: input.MinExecutionDuration,
+            maxExecutionDuration: input.MaxExecutionDuration
         );
 
         var totalCount = await _auditLogActionRepository.GetCountAsync(
@@ -96,20 +96,21 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
 
         return new PagedResultDto<AuditLogActionDto>(
             totalCount,
-            actions.Select(MapToDto).ToList()
+            actions.Select(MapToDto).ToList(),
+            input.PageNumber,
+            input.PageSize
         );
     }
 
     public virtual async Task<PagedResultDto<EntityChangeDto>> GetEntityChangesAsync(GetEntityChangesInput input)
     {
         var changes = await _entityChangeRepository.GetListAsync(
-            input.AuditLogId,
-            input.EntityTypeFullName,
-            input.EntityId,
-            input.ChangeType,
-            input.Sorting,
-            input.SkipCount,
-            input.MaxResultCount,
+            input,
+            sorter: input.Sorter,
+            auditLogId: input.AuditLogId,
+            entityTypeFullName: input.EntityTypeFullName,
+            entityId: input.EntityId,
+            changeType: input.ChangeType,
             includeDetails: true
         );
 
@@ -122,18 +123,19 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
 
         return new PagedResultDto<EntityChangeDto>(
             totalCount,
-            changes.Select(MapToDto).ToList()
+            changes.Select(MapToDto).ToList(),
+            input.PageNumber,
+            input.PageSize
         );
     }
 
     public virtual async Task<PagedResultDto<EntityPropertyChangeDto>> GetEntityPropertyChangesAsync(GetEntityPropertyChangesInput input)
     {
         var propChanges = await _entityPropertyChangeRepository.GetListAsync(
-            input.EntityChangeId,
-            input.PropertyName,
-            input.Sorting,
-            input.SkipCount,
-            input.MaxResultCount
+            input,
+            sorter: input.Sorter,
+            entityChangeId: input.EntityChangeId,
+            propertyName: input.PropertyName
         );
 
         var totalCount = await _entityPropertyChangeRepository.GetCountAsync(
@@ -143,7 +145,9 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
 
         return new PagedResultDto<EntityPropertyChangeDto>(
             totalCount,
-            propChanges.Select(MapToDto).ToList()
+            propChanges.Select(MapToDto).ToList(),
+            input.PageNumber,
+            input.PageSize
         );
     }
 

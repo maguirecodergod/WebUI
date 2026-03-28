@@ -1,3 +1,26 @@
 {
-    
+    "DataTable.Search": "Search...",
+    "DataTable.Filters": "Filters",
+    "DataTable.Columns": "Columns",
+    "DataTable.Refresh": "Refresh",
+    "DataTable.NoData": "No data available.",
+    "DataTable.SelectedCount": "{0} items selected",
+    "DataTable.AllPageSelected": "All {0} items on this page are selected.",
+    "DataTable.SelectAllDataset": "Select all {0} items in entire dataset",
+    "DataTable.AllDatasetSelected": "All {0} items selected from all pages.",
+    "DataTable.ClearSelection": "Clear",
+    "DataTable.RowsPerPage": "Rows per page:",
+    "DataTable.ShowingEntries": "Showing {0} to {1} of {2} entries",
+    "DataTable.GoToPage": "Go to page",
+    "DataTable.First": "First Page",
+    "DataTable.Last": "Last Page",
+    "DataTable.FilterMin": "Min",
+    "DataTable.FilterMax": "Max",
+    "DataTable.All": "All",
+    "DataTable.NoFilters": "No filterable columns found.",
+    "DataTable.ClearFilters": "Clear All",
+    "Common.Prev": "Previous",
+    "Common.Next": "Next",
+    "Common.Yes": "Yes",
+    "Common.No": "No"
 }

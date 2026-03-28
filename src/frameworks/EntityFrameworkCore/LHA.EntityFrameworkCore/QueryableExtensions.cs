@@ -175,6 +175,38 @@ public static class QueryableExtensions
         return source.OrderByDynamic(propertyName, ascending);
     }
 
+    /// <summary>
+    /// Applies dynamic ordering using a <see cref="SorterParam"/>.
+    /// </summary>
+    public static IQueryable<T> SortByDynamic<T>(
+        this IQueryable<T> source,
+        LHA.Ddd.Domain.SorterParam? sorter,
+        string defaultProperty = "Id",
+        bool defaultAscending = true)
+    {
+        if (sorter == null || string.IsNullOrWhiteSpace(sorter.KeyName))
+            return source.OrderByDynamic(defaultProperty, defaultAscending);
+
+        return source.OrderByDynamic(sorter.KeyName, sorter.IsASC);
+    }
+
+    // ──────────────────────────────────────────────────────────────────
+    //  Paging
+    // ──────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Applies paging to the queryable source.
+    /// </summary>
+    public static IQueryable<T> PageBy<T>(
+        this IQueryable<T> source,
+        LHA.Ddd.Domain.PagingParam paging)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(paging);
+
+        return source.Skip((paging.PageNumber - 1) * paging.PageSize).Take(paging.PageSize);
+    }
+
     // ──────────────────────────────────────────────────────────────────
     //  WhereIf (conditional filter)
     // ──────────────────────────────────────────────────────────────────

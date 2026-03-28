@@ -9,31 +9,39 @@
 <PageTitle>API Client Test</PageTitle>
 
 <div class="test-container p-4">
-    <h1 class="mb-4">HTTP API Client Test Page</h1>
-    <p class="text-muted">Test all scenarios for the <code>LHA.BlazorWasm.HttpApi.Client</code> library.</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1 fw-bold text-dark">HTTP API Client SDK Test</h1>
+            <p class="text-muted small">Verification suite for the <code>LHA.BlazorWasm.HttpApi.Client</code> library.</p>
+        </div>
+        <div>
+            <Button Style="CButtonStyle.Secondary" OnClick="ClearLogs">Clear Logs</Button>
+            <Button Style="CButtonStyle.Primary" OnClick="TestAll" Disabled="@_isBusy">Run All Tests</Button>
+        </div>
+    </div>
 
-    <div class="row">
+    <div class="row g-4">
         <div class="col-md-5">
-            <div class="card mb-4 shadow-sm h-100">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Standard Operations</h5>
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+                    <h5 class="fw-bold text-dark mb-0">Standard Operations</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body px-4 pb-4">
                     <div class="d-grid gap-2">
-                        <button class="btn btn-outline-primary text-start" @onclick="TestGetWeather" disabled="@_isBusy">
-                            <i class="bi bi-cloud-sun"></i> GET Weather (Collection)
+                        <button class="btn btn-outline-primary text-start rounded-3" @onclick="TestGetWeather" disabled="@_isBusy">
+                            <i class="bi bi-cloud-sun me-2"></i> GET Weather (Collection)
                         </button>
-                        <button class="btn btn-outline-primary text-start" @onclick="() => TestGetUser(1)" disabled="@_isBusy">
-                            <i class="bi bi-person"></i> GET User (Single - ID: 1)
+                        <button class="btn btn-outline-primary text-start rounded-3" @onclick="() => TestGetUser(1)" disabled="@_isBusy">
+                            <i class="bi bi-person me-2"></i> GET User (Single - ID: 1)
                         </button>
-                        <button class="btn btn-outline-success text-start" @onclick="TestCreateUser" disabled="@_isBusy">
-                            <i class="bi bi-person-plus"></i> POST Create User
+                        <button class="btn btn-outline-success text-start rounded-3" @onclick="TestCreateUser" disabled="@_isBusy">
+                            <i class="bi bi-person-plus me-2"></i> POST Create User
                         </button>
-                        <button class="btn btn-outline-warning text-start" @onclick="TestUpdateUser" disabled="@_isBusy">
-                            <i class="bi bi-pencil"></i> PUT Update User
+                        <button class="btn btn-outline-warning text-start rounded-3" @onclick="TestUpdateUser" disabled="@_isBusy">
+                            <i class="bi bi-pencil me-2"></i> PUT Update User
                         </button>
-                        <button class="btn btn-outline-danger text-start" @onclick="TestDeleteUser" disabled="@_isBusy">
-                            <i class="bi bi-trash"></i> DELETE User
+                        <button class="btn btn-outline-danger text-start rounded-3" @onclick="TestDeleteUser" disabled="@_isBusy">
+                            <i class="bi bi-trash me-1"></i> DELETE User
                         </button>
                     </div>
                 </div>
@@ -41,28 +49,36 @@
         </div>
 
         <div class="col-md-7">
-            <div class="card mb-4 shadow-sm h-100">
-                <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0">Error & Edge Cases</h5>
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+                    <h5 class="fw-bold text-dark mb-0">Error & Edge Cases</h5>
                 </div>
-                <div class="card-body">
-                    <div class="row g-2">
+                <div class="card-body px-4 pb-4">
+                    <div class="row g-3">
                         <div class="col-6">
-                            <button class="btn btn-danger w-100 mb-2" @onclick="Test404" disabled="@_isBusy">404 Not Found</button>
+                            <button class="btn btn-soft-danger w-100 h-100 py-3 rounded-3" @onclick="Test404" disabled="@_isBusy">
+                                <div class="fw-bold fs-5">404</div>
+                                <div class="small opacity-75">Not Found</div>
+                            </button>
                         </div>
                         <div class="col-6">
-                            <button class="btn btn-danger w-100 mb-2" @onclick="Test500" disabled="@_isBusy">500 Server Error</button>
+                            <button class="btn btn-soft-danger w-100 h-100 py-3 rounded-3" @onclick="Test500" disabled="@_isBusy">
+                                <div class="fw-bold fs-5">500</div>
+                                <div class="small opacity-75">Server Error</div>
+                            </button>
                         </div>
                         <div class="col-6">
-                            <button class="btn btn-secondary w-100" @onclick="Test401" disabled="@_isBusy">401 Unauthorized</button>
+                            <button class="btn btn-soft-secondary w-100 h-100 py-3 rounded-3" @onclick="Test401" disabled="@_isBusy">
+                                <div class="fw-bold fs-5">401</div>
+                                <div class="small opacity-75">Unauthorized</div>
+                            </button>
                         </div>
                         <div class="col-6">
-                            <button class="btn btn-dark w-100" @onclick="TestAll" disabled="@_isBusy">Run All Tests</button>
+                            <button class="btn btn-soft-primary w-100 h-100 py-3 rounded-3" @onclick="TestAll" disabled="@_isBusy">
+                                <div class="fw-bold fs-5">ALL</div>
+                                <div class="small opacity-75">Run Suite</div>
+                            </button>
                         </div>
-                    </div>
-                    <hr />
-                    <div class="mt-2">
-                        <button class="btn btn-outline-secondary w-100" @onclick="ClearLogs">Clear Output Logs</button>
                     </div>
                 </div>
             </div>
@@ -71,62 +87,83 @@
 
     @if (_isBusy)
     {
-        <div class="progress my-4" style="height: 10px;">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 100%"></div>
+        <div class="progress my-4 rounded-pill" style="height: 6px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 100%"></div>
         </div>
     }
 
-    <div class="card shadow-sm mt-4">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Execution Results</h5>
-            <span class="badge bg-light text-dark">@_testResults.Count Entries</span>
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mt-4">
+        <div class="card-header bg-white border-bottom-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-dark mb-0">Execution Results Log</h5>
         </div>
-        <div class="card-body p-0" style="max-height: 600px; overflow-y: auto; background-color: #f8f9fa;">
-            @if (_testResults.Count == 0)
-            {
-                <div class="p-5 text-center text-muted">
-                    <i class="bi bi-terminal fs-1 d-block mb-3"></i>
-                    Ready to start testing. Choose an operation above.
-                </div>
-            }
-            else
-            {
-                <div class="list-group list-group-flush">
-                    @foreach (var result in _testResults)
-                    {
-                        <div class="list-group-item border-start border-4 @(result.Success ? "border-success" : "border-danger") bg-white mb-2 shadow-sm mx-2 mt-2 rounded">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <h6 class="mb-1 fw-bold @(result.Success ? "text-success" : "text-danger")">@result.Action</h6>
-                                <span class="text-muted small">@result.Timestamp.ToString("HH:mm:ss.fff")</span>
-                            </div>
-                            <div class="my-2">
-                                <span class="badge @(result.Success ? "bg-success" : "bg-danger")">@(result.Success ? "PASSED" : "FAILED")</span>
-                                @if (result.StatusCode != null)
-                                {
-                                    <span class="badge bg-secondary ms-1">HTTP @((int)result.StatusCode) (@result.StatusCode)</span>
-                                }
-                            </div>
-                            <div class="position-relative">
-                                <pre class="mt-2 mb-0 p-3 bg-light border rounded small" style="max-height: 200px; overflow: auto;"><code>@result.Content</code></pre>
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
+        <div class="card-body p-0">
+            <DataTable TItem="TestResult" Items="_testResults" Searchable="true" 
+                       Hoverable="true" Striped="false" CssClass="border-0 shadow-none">
+                <ChildContent>
+                    <DataTableColumn TItem="TestResult" Title="Action" Property="@(x => x.Action)" Sortable Width="250px" />
+                    <DataTableColumn TItem="TestResult" Title="Status" Width="120px" Alignment="ColumnAlignment.Center">
+                        <CellTemplate>
+                            <span class='badge rounded-pill @(context.Success ? "bg-success" : "bg-danger") px-3'>
+                                @(context.Success ? "PASSED" : "FAILED")
+                            </span>
+                        </CellTemplate>
+                    </DataTableColumn>
+                    <DataTableColumn TItem="TestResult" Title="HTTP Code" Width="150px">
+                        <CellTemplate>
+                            @if (context.StatusCode != null)
+                            {
+                                <span class="badge bg-light text-dark border">@((int)context.StatusCode) (@context.StatusCode)</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">N/A</span>
+                            }
+                        </CellTemplate>
+                    </DataTableColumn>
+                    <DataTableColumn TItem="TestResult" Title="Timestamp" Width="120px">
+                        <CellTemplate>
+                            <span class="text-muted small">@context.Timestamp.ToString("HH:mm:ss.fff")</span>
+                        </CellTemplate>
+                    </DataTableColumn>
+                </ChildContent>
+                
+                <ExpandedRowTemplate>
+                    <div class="p-3 bg-light rounded-3 m-2 border">
+                        <label class="small fw-bold text-muted mb-2 d-block text-uppercase">Raw Payload / StackTrace</label>
+                        <pre class="m-0 p-3 bg-dark text-light rounded small" style="max-height: 400px; overflow: auto; font-family: 'JetBrains Mono', monospace;">@context.Content</pre>
+                    </div>
+                </ExpandedRowTemplate>
+
+                <EmptyTemplate>
+                    <div class="p-5 text-center text-muted">
+                        <i class="bi bi-terminal fs-1 d-block mb-3 opacity-25"></i>
+                        Ready to start testing. Choose an operation above.
+                    </div>
+                </EmptyTemplate>
+            </DataTable>
         </div>
     </div>
 </div>
 
 <style>
     .test-container {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
+        font-family: 'Outfit', sans-serif;
     }
+    
+    .btn-soft-danger { background: #fee2e2; color: #ef4444; border: none; transition: all 0.2s; }
+    .btn-soft-danger:hover { background: #ef4444; color: white; transform: translateY(-3px); }
+    
+    .btn-soft-primary { background: #e0e7ff; color: #6366f1; border: none; transition: all 0.2s; }
+    .btn-soft-primary:hover { background: #6366f1; color: white; transform: translateY(-3px); }
+    
+    .btn-soft-secondary { background: #f1f5f9; color: #64748b; border: none; transition: all 0.2s; }
+    .btn-soft-secondary:hover { background: #64748b; color: white; transform: translateY(-3px); }
+
     pre { 
         white-space: pre-wrap; 
         word-break: break-all;
-        font-family: 'Cascadia Code', 'Courier New', Courier, monospace;
-        color: #212529;
     }
 </style>
 
@@ -167,7 +204,6 @@
         {
             var response = await action();
             
-            // For the purpose of "Passed", we consider successful status code (2xx)
             bool isSuccess = response.Result?.Success ?? false;
             
             string content;
@@ -213,7 +249,7 @@
 
     private void ClearLogs() => _testResults.Clear();
 
-    private class TestResult
+    public class TestResult
     {
         public string Action { get; set; } = "";
         public bool Success { get; set; }

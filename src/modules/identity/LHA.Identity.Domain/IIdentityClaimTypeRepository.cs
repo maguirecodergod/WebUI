@@ -12,10 +12,9 @@ public interface IIdentityClaimTypeRepository : IRepository<IdentityClaimType, G
 
     /// <summary>Returns a paged list of claim types.</summary>
     Task<List<IdentityClaimType>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         string? filter = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default);
 
     /// <summary>Returns the total count matching the filter.</summary>

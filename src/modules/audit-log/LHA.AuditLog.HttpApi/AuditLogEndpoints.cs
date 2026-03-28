@@ -29,7 +29,7 @@ public static class AuditLogEndpoints
         // ── List (paged + filtered) ──────────────────────────────────
         group.MapGet("/", async (
             [AsParameters] GetAuditLogsInput input,
-            IAuditLogAppService service,
+            LHA.AuditLog.Application.Contracts.IAuditLogAppService service,
             CancellationToken cancellationToken) =>
         {
             var result = await service.GetListAsync(input, cancellationToken);
@@ -42,7 +42,7 @@ public static class AuditLogEndpoints
         // ── Get by ID ────────────────────────────────────────────────
         group.MapGet("/{id:guid}", async (
             Guid id,
-            IAuditLogAppService service,
+            LHA.AuditLog.Application.Contracts.IAuditLogAppService service,
             CancellationToken cancellationToken) =>
         {
             var dto = await service.GetAsync(id, cancellationToken);
@@ -55,7 +55,7 @@ public static class AuditLogEndpoints
         // ── Entity changes (filtered) ────────────────────────────────
         group.MapGet("/entity-changes", async (
             [AsParameters] GetEntityChangesInput input,
-            IAuditLogAppService service,
+            LHA.AuditLog.Application.Contracts.IAuditLogAppService service,
             CancellationToken cancellationToken) =>
         {
             var result = await service.GetEntityChangesAsync(input, cancellationToken);

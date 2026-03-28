@@ -21,11 +21,10 @@ public interface ITenantRepository : IRepository<TenantEntity, Guid>
     /// Returns a filtered and paged list of tenants.
     /// </summary>
     Task<List<TenantEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         string? filter = null,
         CMasterStatus? status = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default);
 
     /// <summary>

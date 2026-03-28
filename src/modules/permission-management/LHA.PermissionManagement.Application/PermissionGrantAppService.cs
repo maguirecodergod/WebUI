@@ -1,6 +1,6 @@
 using LHA.Ddd.Application;
 using LHA.PermissionManagement.Application.Contracts;
-using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionGrants;
 using LHA.UnitOfWork;
 
 namespace LHA.PermissionManagement.Application;
@@ -37,7 +37,7 @@ public sealed class PermissionGrantAppService
         await using var uow = _uowManager.Begin(
             new UnitOfWorkOptions { IsTransactional = true });
 
-        var grant = new PermissionGrant(
+        var grant = new PermissionGrantEntity(
             Guid.NewGuid(),
             input.PermissionName,
             input.ProviderName,
@@ -67,7 +67,7 @@ public sealed class PermissionGrantAppService
         return grant is not null;
     }
 
-    private static PermissionGrantDto MapToDto(PermissionGrant e) => new()
+    private static PermissionGrantDto MapToDto(PermissionGrantEntity e) => new()
     {
         Id = e.Id,
         TenantId = e.TenantId,

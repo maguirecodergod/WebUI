@@ -1,3 +1,4 @@
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.Identity.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +18,9 @@ public sealed class EfCoreIdentitySecurityLogRepository
 
     /// <inheritdoc />
     public async Task<List<IdentitySecurityLog>> GetListAsync(
-        string? filter, Guid? userId, string? action,
-        string? sorting, int skipCount, int maxResultCount,
-        CancellationToken cancellationToken)
+        PagingParam paging, SorterParam? sorter = null,
+        string? filter = null, Guid? userId = null, string? action = null,
+        CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
 
@@ -27,9 +28,8 @@ public sealed class EfCoreIdentitySecurityLogRepository
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(userId.HasValue, sl => sl.UserId == userId!.Value)
             .WhereIf(!string.IsNullOrWhiteSpace(action), sl => sl.Action == action)
-            .SortByDynamic(sorting, defaultProperty: "CreationTime", defaultAscending: false)
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, defaultProperty: "CreationTime", defaultAscending: false)
+            .PageBy(paging)
             .ToListAsync(cancellationToken);
     }
 

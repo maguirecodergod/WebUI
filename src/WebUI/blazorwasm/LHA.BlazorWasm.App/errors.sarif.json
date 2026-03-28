@@ -1,0 +1,868 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "5.0.0.0",
+        "fileVersion": "5.0.0-2.25612.105 (44525024)",
+        "semanticVersion": "5.0.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "RZ1006",
+          "level": "error",
+          "message": "The code block is missing a closing \"}\" character.  Make sure you have a matching \"}\" character for all the \"{\" characters within this block, and that none of the \"}\" characters are being interpreted as markup.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/Pages/AuditLogs/AuditLogList.razor",
+                "region": {
+                  "startLine": 432,
+                  "startColumn": 1,
+                  "endLine": 432,
+                  "endColumn": 2
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "RZ1006",
+          "level": "error",
+          "message": "The code block is missing a closing \"}\" character.  Make sure you have a matching \"}\" character for all the \"{\" characters within this block, and that none of the \"}\" characters are being interpreted as markup.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/Pages/AuditLogs/AuditLogList.razor",
+                "region": {
+                  "startLine": 432,
+                  "startColumn": 7,
+                  "endLine": 432,
+                  "endColumn": 8
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "RZ9980",
+          "level": "error",
+          "message": "Unclosed tag '' with no matching end tag.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/Pages/AuditLogs/AuditLogList.razor",
+                "region": {
+                  "startLine": 528,
+                  "startColumn": 9,
+                  "endLine": 528,
+                  "endColumn": 17
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "RZ1025",
+          "level": "error",
+          "message": "The \"\" element was not closed.  All elements must be either self-closing or have a matching end tag.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/Pages/AuditLogs/AuditLogList.razor",
+                "region": {
+                  "startLine": 528,
+                  "startColumn": 10,
+                  "endLine": 528,
+                  "endColumn": 10
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "RZ9980",
+          "level": "error",
+          "message": "Unclosed tag '' with no matching end tag.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/Pages/AuditLogs/AuditLogList.razor",
+                "region": {
+                  "startLine": 529,
+                  "startColumn": 9,
+                  "endLine": 529,
+                  "endColumn": 18
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1513",
+          "level": "error",
+          "message": "} expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2135,
+                  "startColumn": 3613,
+                  "endLine": 2135,
+                  "endColumn": 3613
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, '=>' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2239,
+                  "startColumn": 43,
+                  "endLine": 2239,
+                  "endColumn": 44
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1525",
+          "level": "error",
+          "message": "Invalid expression term ';'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2239,
+                  "startColumn": 43,
+                  "endLine": 2239,
+                  "endColumn": 44
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, ',' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2239,
+                  "startColumn": 43,
+                  "endLine": 2239,
+                  "endColumn": 44
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, '=>' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2240,
+                  "startColumn": 47,
+                  "endLine": 2240,
+                  "endColumn": 48
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1525",
+          "level": "error",
+          "message": "Invalid expression term ';'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2240,
+                  "startColumn": 47,
+                  "endLine": 2240,
+                  "endColumn": 48
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, ',' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2240,
+                  "startColumn": 47,
+                  "endLine": 2240,
+                  "endColumn": 48
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, '=>' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2241,
+                  "startColumn": 68,
+                  "endLine": 2241,
+                  "endColumn": 69
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1525",
+          "level": "error",
+          "message": "Invalid expression term ';'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2241,
+                  "startColumn": 68,
+                  "endLine": 2241,
+                  "endColumn": 69
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, ',' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2241,
+                  "startColumn": 68,
+                  "endLine": 2241,
+                  "endColumn": 69
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, '=>' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2242,
+                  "startColumn": 43,
+                  "endLine": 2242,
+                  "endColumn": 44
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1525",
+          "level": "error",
+          "message": "Invalid expression term ';'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2242,
+                  "startColumn": 43,
+                  "endLine": 2242,
+                  "endColumn": 44
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, ',' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2242,
+                  "startColumn": 43,
+                  "endLine": 2242,
+                  "endColumn": 44
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, '=>' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2243,
+                  "startColumn": 48,
+                  "endLine": 2243,
+                  "endColumn": 49
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1525",
+          "level": "error",
+          "message": "Invalid expression term ';'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2243,
+                  "startColumn": 48,
+                  "endLine": 2243,
+                  "endColumn": 49
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, ',' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2243,
+                  "startColumn": 48,
+                  "endLine": 2243,
+                  "endColumn": 49
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, '=>' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2263,
+                  "startColumn": 3,
+                  "endLine": 2263,
+                  "endColumn": 4
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1525",
+          "level": "error",
+          "message": "Invalid expression term ';'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2263,
+                  "startColumn": 3,
+                  "endLine": 2263,
+                  "endColumn": 4
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, ',' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2263,
+                  "startColumn": 3,
+                  "endLine": 2263,
+                  "endColumn": 4
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, '=>' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2264,
+                  "startColumn": 37,
+                  "endLine": 2264,
+                  "endColumn": 38
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1525",
+          "level": "error",
+          "message": "Invalid expression term ';'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2264,
+                  "startColumn": 37,
+                  "endLine": 2264,
+                  "endColumn": 38
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, ',' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2264,
+                  "startColumn": 37,
+                  "endLine": 2264,
+                  "endColumn": 38
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, '=>' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2265,
+                  "startColumn": 37,
+                  "endLine": 2265,
+                  "endColumn": 38
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1525",
+          "level": "error",
+          "message": "Invalid expression term ';'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2265,
+                  "startColumn": 37,
+                  "endLine": 2265,
+                  "endColumn": 38
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1003",
+          "level": "error",
+          "message": "Syntax error, ',' expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2265,
+                  "startColumn": 37,
+                  "endLine": 2265,
+                  "endColumn": 38
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS1002",
+          "level": "error",
+          "message": "; expected",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2266,
+                  "startColumn": 10,
+                  "endLine": 2266,
+                  "endColumn": 10
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0103",
+          "level": "error",
+          "message": "The name 'ExtractEntityName' does not exist in the current context",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/Pages/AuditLogs/AuditLogList.razor",
+                "region": {
+                  "startLine": 304,
+                  "startColumn": 87,
+                  "endLine": 304,
+                  "endColumn": 104
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0103",
+          "level": "error",
+          "message": "The name 'GetMutationTypeBadge' does not exist in the current context",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/Pages/AuditLogs/AuditLogList.razor",
+                "region": {
+                  "startLine": 307,
+                  "startColumn": 65,
+                  "endLine": 307,
+                  "endColumn": 85
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0246",
+          "level": "error",
+          "message": "The type or namespace name '__builder' could not be found (are you missing a using directive or an assembly reference?)",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2239,
+                  "startColumn": 13,
+                  "endLine": 2239,
+                  "endColumn": 22
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0246",
+          "level": "error",
+          "message": "The type or namespace name '__builder' could not be found (are you missing a using directive or an assembly reference?)",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2240,
+                  "startColumn": 13,
+                  "endLine": 2240,
+                  "endColumn": 22
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0246",
+          "level": "error",
+          "message": "The type or namespace name '__builder' could not be found (are you missing a using directive or an assembly reference?)",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2241,
+                  "startColumn": 13,
+                  "endLine": 2241,
+                  "endColumn": 22
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0246",
+          "level": "error",
+          "message": "The type or namespace name '__builder' could not be found (are you missing a using directive or an assembly reference?)",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2242,
+                  "startColumn": 13,
+                  "endLine": 2242,
+                  "endColumn": 22
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0246",
+          "level": "error",
+          "message": "The type or namespace name '__builder' could not be found (are you missing a using directive or an assembly reference?)",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2243,
+                  "startColumn": 13,
+                  "endLine": 2243,
+                  "endColumn": 22
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0246",
+          "level": "error",
+          "message": "The type or namespace name '__builder' could not be found (are you missing a using directive or an assembly reference?)",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2244,
+                  "startColumn": 13,
+                  "endLine": 2244,
+                  "endColumn": 22
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0246",
+          "level": "error",
+          "message": "The type or namespace name '__builder' could not be found (are you missing a using directive or an assembly reference?)",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2264,
+                  "startColumn": 13,
+                  "endLine": 2264,
+                  "endColumn": 22
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0246",
+          "level": "error",
+          "message": "The type or namespace name '__builder' could not be found (are you missing a using directive or an assembly reference?)",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///E:/Microservices/WebUI/src/WebUI/blazorwasm/LHA.BlazorWasm.App/obj/Debug/net10.0/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Pages_AuditLogs_AuditLogList_razor.g.cs",
+                "region": {
+                  "startLine": 2265,
+                  "startColumn": 13,
+                  "endLine": 2265,
+                  "endColumn": 22
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "CS0103": {
+          "id": "CS0103",
+          "defaultLevel": "error",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0103)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry",
+              "NotConfigurable"
+            ]
+          }
+        },
+        "CS0246": {
+          "id": "CS0246",
+          "defaultLevel": "error",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry",
+              "NotConfigurable"
+            ]
+          }
+        },
+        "CS1002": {
+          "id": "CS1002",
+          "defaultLevel": "error",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1002)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry",
+              "NotConfigurable"
+            ]
+          }
+        },
+        "CS1003": {
+          "id": "CS1003",
+          "defaultLevel": "error",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1003)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry",
+              "NotConfigurable"
+            ]
+          }
+        },
+        "CS1513": {
+          "id": "CS1513",
+          "defaultLevel": "error",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1513)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry",
+              "NotConfigurable"
+            ]
+          }
+        },
+        "CS1525": {
+          "id": "CS1525",
+          "defaultLevel": "error",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1525)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry",
+              "NotConfigurable"
+            ]
+          }
+        },
+        "RZ1006": {
+          "id": "RZ1006",
+          "shortDescription": "The code block is missing a closing \"}\" character.  Make sure you have a matching \"}\" character for all the \"{\" characters within this block, and that none of the \"}\" characters are being interpreted as markup.",
+          "defaultLevel": "error",
+          "properties": {
+            "category": "Razor",
+            "isEnabledByDefault": true
+          }
+        },
+        "RZ1025": {
+          "id": "RZ1025",
+          "shortDescription": "The \"\" element was not closed.  All elements must be either self-closing or have a matching end tag.",
+          "defaultLevel": "error",
+          "properties": {
+            "category": "Razor",
+            "isEnabledByDefault": true
+          }
+        },
+        "RZ9980": {
+          "id": "RZ9980",
+          "shortDescription": "Unclosed tag '' with no matching end tag.",
+          "defaultLevel": "error",
+          "properties": {
+            "category": "Razor",
+            "isEnabledByDefault": true
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 using LHA.Account.Domain.Repositories;
 using LHA.AuditLog.Domain;
 using LHA.Auditing;
+using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,13 +16,12 @@ public class EfCoreEntityChangeRepository
     }
 
     public virtual async Task<List<EntityChangeEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         Guid? auditLogId = null,
         string? entityTypeFullName = null,
         string? entityId = null,
         CEntityChangeType? changeType = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         bool includeDetails = false,
         CancellationToken cancellationToken = default)
     {
@@ -30,9 +30,8 @@ public class EfCoreEntityChangeRepository
         query = ApplyFilter(query, auditLogId, entityTypeFullName, entityId, changeType);
 
         return await query
-            .SortByDynamic(sorting, nameof(EntityChangeEntity.ChangeTime), false)
-            .Skip(skipCount)
-            .Take(maxResultCount)
+            .SortByDynamic(sorter, nameof(EntityChangeEntity.ChangeTime), false)
+            .PageBy(paging)
             .ToListAsync(cancellationToken);
     }
 

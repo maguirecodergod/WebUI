@@ -1,27 +1,19 @@
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using LHA.Ddd.Domain;
 
 namespace LHA.Ddd.Application;
 
 /// <summary>
-/// Base DTO for paged requests with validation.
+/// Base DTO for paged requests.
 /// </summary>
-public class PagedResultRequestDto : IPagedResultRequest
+public class PagedResultRequestDto : PagingParam, IPagedResultRequest
 {
-    /// <summary>
-    /// Default maximum result count when not specified.
-    /// </summary>
-    public const int DefaultMaxResultCount = 10;
+    /// <summary>Simple full-text search query.</summary>
+    public string? SearchQuery { get; set; }
 
-    /// <summary>
-    /// Hard upper limit for <see cref="MaxResultCount"/>.
-    /// </summary>
-    public const int MaxMaxResultCount = 1000;
+    /// <summary>Columns to apply search to.</summary>
+    public List<string> AllowSearchColumns { get; set; } = new List<string>();
 
-    /// <inheritdoc />
-    [Range(0, int.MaxValue)]
-    public int SkipCount { get; set; }
-
-    /// <inheritdoc />
-    [Range(1, MaxMaxResultCount)]
-    public int MaxResultCount { get; set; } = DefaultMaxResultCount;
+    /// <summary>Sorting parameters.</summary>
+    public SorterParam? Sorter { get; set; }
 }

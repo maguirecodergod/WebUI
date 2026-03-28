@@ -9,14 +9,13 @@ namespace LHA.Account.Domain.Repositories;
 public interface IAuditLogActionRepository : IRepository<AuditLogActionEntity, Guid>
 {
     Task<List<AuditLogActionEntity>> GetListAsync(
+        PagingParam paging,
+        SorterParam? sorter = null,
         Guid? auditLogId = null,
         string? serviceName = null,
         string? methodName = null,
         int? minExecutionDuration = null,
         int? maxExecutionDuration = null,
-        string? sorting = null,
-        int skipCount = 0,
-        int maxResultCount = int.MaxValue,
         CancellationToken cancellationToken = default);
 
     Task<long> GetCountAsync(
