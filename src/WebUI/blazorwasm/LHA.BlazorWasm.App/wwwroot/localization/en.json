@@ -1,4 +1,22 @@
 {
+    "Common": {
+        "Yes": "Yes",
+        "No": "No",
+        "Confirm": "Confirm",
+        "Cancel": "Cancel",
+        "Delete": "Delete",
+        "Back": "Back",
+        "Next": "Next",
+        "Previous": "Previous",
+        "Refresh": "Refresh",
+        "Count": "Count",
+        "Detail": "Detail",
+        
+        "ConfirmDelete": "Are you sure you want to delete?"
+    },
+    "PageTitle": {
+        "AuditLogList": "Audit Logs"
+    },
     "DataTable.Search": "Search...",
     "DataTable.Filters": "Filters",
     "DataTable.Columns": "Columns",
