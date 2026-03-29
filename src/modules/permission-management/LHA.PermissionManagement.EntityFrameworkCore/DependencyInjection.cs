@@ -1,5 +1,9 @@
 using LHA.EntityFrameworkCore;
 using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.PermissionGrants;
+using LHA.PermissionManagement.Domain.PermissionGroups;
+using LHA.PermissionManagement.Domain.PermissionTemplates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -14,10 +18,10 @@ public static class PermissionManagementEntityFrameworkCoreDependencyInjection
         services.AddLhaDbContext<PermissionManagementDbContext>(configureOptions);
 
         // Generic repositories
-        services.AddEfCoreRepository<PermissionManagementDbContext, PermissionDefinition, Guid>();
-        services.AddEfCoreRepository<PermissionManagementDbContext, PermissionGroup, Guid>();
-        services.AddEfCoreRepository<PermissionManagementDbContext, PermissionTemplate, Guid>();
-        services.AddEfCoreRepository<PermissionManagementDbContext, PermissionGrant, Guid>();
+        services.AddEfCoreRepository<PermissionManagementDbContext, PermissionDefinitionEntity, Guid>();
+        services.AddEfCoreRepository<PermissionManagementDbContext, PermissionGroupEntity, Guid>();
+        services.AddEfCoreRepository<PermissionManagementDbContext, PermissionTemplateEntity, Guid>();
+        services.AddEfCoreRepository<PermissionManagementDbContext, PermissionGrantEntity, Guid>();
 
         // Custom repositories
         services.TryAddScoped<IPermissionDefinitionRepository, EfCorePermissionDefinitionRepository>();

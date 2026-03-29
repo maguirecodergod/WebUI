@@ -3,6 +3,7 @@ using LHA.Account.Application.Permissions;
 using LHA.Shared.Contracts.AuditLog;
 using LHA.AuditLog.Application;
 using LHA.Identity.Application;
+using LHA.Identity.Domain;
 using LHA.PermissionManagement.Application;
 using LHA.TenantManagement.Application;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,18 @@ public static class DependencyInjection
         // Account-level services
         services.TryAddScoped<IPermissionRegistrationService, PermissionRegistrationService>();
         services.AddScoped<IAuditLogAppService, LHA.Account.Application.AuditLogs.AuditLogAppService>();
+
+        // Bridge implementations for Identity module
+        services.AddScoped<AccountUserTenantLookupService>();
+        services.AddScoped<IUserTenantLookupService>(sp => sp.GetRequiredService<AccountUserTenantLookupService>());
+        services.AddScoped<ITenantManagerBridge>(sp => sp.GetRequiredService<AccountUserTenantLookupService>());
+        services.AddScoped<IPermissionStore, AccountPermissionStore>();
+
+        // Tenant Provisioning Orchestration
+        services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.SharedTenantProvisionerStrategy>();
+        services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.PerTenantProvisionerStrategy>();
+        services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.HybridTenantProvisionerStrategy>();
+        services.AddTransient<TenantProvisioning.ITenantProvisioningOrchestrator, TenantProvisioning.TenantProvisioningOrchestrator>();
 
         return services;
     }

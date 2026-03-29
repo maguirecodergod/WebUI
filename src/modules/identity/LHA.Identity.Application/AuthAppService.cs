@@ -5,6 +5,7 @@ using LHA.EventBus;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
 using LHA.Identity.Domain.Shared;
+using LHA.MultiTenancy;
 using LHA.UnitOfWork;
 
 namespace LHA.Identity.Application;
@@ -24,6 +25,13 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private readonly IEventBus _eventBus;
     private readonly IIdentitySecurityLogRepository _securityLogRepository;
     private readonly IClientInfoProvider _clientInfoProvider;
+    private readonly IUserTenantLookupService _userTenantLookupService;
+    private readonly IPermissionStore _permissionStore;
+    private readonly ITenantManagerBridge _tenantManagerBridge;
+    private readonly ICurrentTenant _currentTenant;
+
+    public const string SystemSuperAdminRole = "SystemSuperAdmin";
+    public const string TenantAdminRole = "TenantAdmin";
 
     public AuthAppService(
         IIdentityUserRepository userRepository,
@@ -35,7 +43,11 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         IUnitOfWorkManager uowManager,
         IEventBus eventBus,
         IIdentitySecurityLogRepository securityLogRepository,
-        IClientInfoProvider clientInfoProvider)
+        IClientInfoProvider clientInfoProvider,
+        IUserTenantLookupService userTenantLookupService,
+        IPermissionStore permissionStore,
+        ITenantManagerBridge tenantManagerBridge,
+        ICurrentTenant currentTenant)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -47,6 +59,10 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         _eventBus = eventBus;
         _securityLogRepository = securityLogRepository;
         _clientInfoProvider = clientInfoProvider;
+        _userTenantLookupService = userTenantLookupService;
+        _permissionStore = permissionStore;
+        _tenantManagerBridge = tenantManagerBridge;
+        _currentTenant = currentTenant;
     }
 
     /// <inheritdoc />
@@ -101,34 +117,138 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             throw new UnauthorizedAccessException("Invalid password.");
         }
 
-        // Success — reset failed count, generate tokens
+        // Success — reset failed count
         user.ResetAccessFailedCount();
 
-        var (roleIds, roleNames) = await GetRolesAsync(user, ct);
-        var permissions = await ResolvePermissionsAsync(user.Id, roleIds, ct);
-        var accessToken = _jwtTokenService.GenerateAccessToken(
-            user.Id, user.UserName, user.Email, user.TenantId, roleNames, permissions);
-        var refreshToken = JwtTokenService.GenerateRefreshToken();
-        var refreshExpiry = _jwtTokenService.GetRefreshTokenExpiration();
+        // 1. Determine target tenant from current context (resolved by ICurrentTenant)
+        // If _currentTenant.Id is null, the request is at the Host level.
+        var targetTenantId = _currentTenant.Id;
+
+        // 2. Fetch roles for the target tenant
+        var (roleIds, roleNames) = await GetRolesAsync(user, targetTenantId, ct);
+
+        // 3. System Super Admin: login directly with all permissions (Host only)
+        if (roleNames.Contains(SystemSuperAdminRole) && user.TenantId == null)
+        {
+            var allPermissions = await _permissionStore.GetAllPermissionsAsync(ct);
+            var accessToken = _jwtTokenService.GenerateAccessToken(
+                user.Id, user.UserName, user.Email, user.TenantId, roleNames, allPermissions);
+            var refreshToken = JwtTokenService.GenerateRefreshToken();
+            var refreshExpiry = _jwtTokenService.GetRefreshTokenExpiration();
+
+            user.SetToken(JwtTokenService.RefreshTokenProvider, JwtTokenService.RefreshTokenName,
+                refreshToken, refreshExpiry);
+
+            await _userRepository.UpdateAsync(user);
+            await RecordSecurityLogAsync("Login", IdentitySecurityLogActionConsts.LoginSucceeded,
+                user.Id, user.UserName, ct);
+            await _eventBus.PublishAsync(new LoginSucceededEto(
+                user.Id, user.UserName, user.TenantId, DateTimeOffset.UtcNow), ct);
+
+            await uow.CompleteAsync();
+
+            return new AuthResultDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
+                ExpiresIn = _jwtTokenService.AccessTokenExpiresInSeconds,
+            };
+        }
+
+        // 4. Tenant Admin & Tenant Selection logic
+        if (_currentTenant.Id == null && roleNames.Contains(TenantAdminRole))
+        {
+            var userTenants = await GetUserTenantsAsync(user, ct);
+            // If user belongs to multiple tenants and hasn't selected one yet via context (header/host), return the list
+            if (userTenants.Count > 1)
+            {
+                await uow.CompleteAsync();
+                return new AuthResultDto
+                {
+                    RequiresTenantSelection = true,
+                    Tenants = userTenants
+                };
+            }
+            
+            // If user only has one tenant, we should probably redirect/re-login for that tenant if context is Host
+            if (userTenants.Count == 1 && userTenants[0].Id != targetTenantId)
+            {
+                targetTenantId = userTenants[0].Id;
+                (roleIds, roleNames) = await GetRolesAsync(user, targetTenantId, ct);
+            }
+        }
+        else if (_currentTenant.Id != null)
+        {
+            // Validate user actually has access to the current tenant resolved from context
+            if (!user.Roles.Any(r => r.TenantId == _currentTenant.Id))
+            {
+                throw new UnauthorizedAccessException($"User does not have access to the current tenant '{_currentTenant.Id}'.");
+            }
+        }
+
+        // 5. Finalize login for the selected/default tenant
+        var permissions = await ResolvePermissionsAsync(user.Id, roleIds, targetTenantId, ct);
+        var accessTokenFinal = _jwtTokenService.GenerateAccessToken(
+            user.Id, user.UserName, user.Email, targetTenantId, roleNames, permissions);
+        var refreshTokenFinal = JwtTokenService.GenerateRefreshToken();
+        var refreshExpiryFinal = _jwtTokenService.GetRefreshTokenExpiration();
 
         user.SetToken(JwtTokenService.RefreshTokenProvider, JwtTokenService.RefreshTokenName,
-            refreshToken, refreshExpiry);
+            refreshTokenFinal, refreshExpiryFinal);
 
         await _userRepository.UpdateAsync(user);
 
         await RecordSecurityLogAsync("Login", IdentitySecurityLogActionConsts.LoginSucceeded,
             user.Id, user.UserName, ct);
         await _eventBus.PublishAsync(new LoginSucceededEto(
-            user.Id, user.UserName, user.TenantId, DateTimeOffset.UtcNow), ct);
+            user.Id, user.UserName, targetTenantId, DateTimeOffset.UtcNow), ct);
 
         await uow.CompleteAsync();
 
         return new AuthResultDto
         {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken,
+            AccessToken = accessTokenFinal,
+            RefreshToken = refreshTokenFinal,
             ExpiresIn = _jwtTokenService.AccessTokenExpiresInSeconds,
         };
+    }
+
+    /// <inheritdoc />
+    public async Task<AuthResultDto> RegisterTenantAsync(RegisterTenantInput input, CancellationToken ct = default)
+    {
+        // 1. Create Tenant (via Bridge)
+        var tenantId = await _tenantManagerBridge.CreateTenantAsync(input.TenantName, input.DatabaseStyle, ct);
+
+        // 2. Create Admin user in the new Tenant context
+        await using var uow = _uowManager.Begin(new UnitOfWorkOptions { IsTransactional = true });
+
+        var user = await _userManager.CreateAsync(
+            input.AdminUserName,
+            input.AdminEmail,
+            input.AdminPassword,
+            tenantId);
+
+        // 3. Assign TenantAdmin role to the new user
+        // We look for the "TenantAdmin" role. 
+        var normalizedRoleName = _lookupNormalizer.NormalizeName(TenantAdminRole);
+        var role = await _roleRepository.FindByNormalizedNameAsync(normalizedRoleName, ct);
+        if (role != null)
+        {
+            user.AddRole(role.Id);
+        }
+
+        await _userRepository.InsertAsync(user, ct);
+
+        // Commit UoW before generating tokens to ensure data is persistent
+        await uow.CompleteAsync();
+
+        // 4. Automated login for the new admin
+        // We reuse LoginAsync logic by passing the credentials or just generating token directly
+        return await LoginAsync(new LoginInput
+        {
+            UserNameOrEmail = input.AdminUserName,
+            Password = input.AdminPassword
+        }, ct);
     }
 
     /// <inheritdoc />
@@ -175,8 +295,8 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             throw new UnauthorizedAccessException("User account is not active.");
 
         // Rotate tokens
-        var (roleIds, roleNames) = await GetRolesAsync(user, ct);
-        var permissions = await ResolvePermissionsAsync(user.Id, roleIds, ct);
+        var (roleIds, roleNames) = await GetRolesAsync(user, user.TenantId, ct);
+        var permissions = await ResolvePermissionsAsync(user.Id, roleIds, user.TenantId, ct);
         var accessToken = _jwtTokenService.GenerateAccessToken(
             user.Id, user.UserName, user.Email, user.TenantId, roleNames, permissions);
         var refreshToken = JwtTokenService.GenerateRefreshToken();
@@ -200,7 +320,17 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     public async Task<CurrentUserDto> GetCurrentUserAsync(Guid userId, CancellationToken ct)
     {
         var user = await _userRepository.GetAsync(userId, ct);
-        var (_, roleNames) = await GetRolesAsync(user, ct);
+        var (roleIds, roleNames) = await GetRolesAsync(user, user.TenantId, ct);
+
+        List<string> permissions;
+        if (roleNames.Contains(SystemSuperAdminRole) && user.TenantId == null)
+        {
+            permissions = await _permissionStore.GetAllPermissionsAsync(ct);
+        }
+        else
+        {
+            permissions = await ResolvePermissionsAsync(user.Id, roleIds, user.TenantId, ct);
+        }
 
         return new CurrentUserDto
         {
@@ -211,10 +341,29 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             Name = user.Name,
             Surname = user.Surname,
             Roles = [.. roleNames],
+            Permissions = permissions
         };
     }
 
     // ─── Helpers ─────────────────────────────────────────────────────
+
+    private async Task<List<UserTenantDto>> GetUserTenantsAsync(IdentityUser user, CancellationToken ct)
+    {
+        var tenantIds = user.Roles
+            .Where(r => r.TenantId != null)
+            .Select(r => r.TenantId!.Value)
+            .Distinct()
+            .ToList();
+
+        if (tenantIds.Count == 0) return [];
+
+        var tenants = await _userTenantLookupService.GetTenantsAsync(tenantIds, ct);
+        return tenants.ConvertAll(t => new UserTenantDto
+        {
+            Id = t.Id,
+            Name = t.Name
+        });
+    }
 
     private async Task<IdentityUser?> FindUserByLoginAsync(string userNameOrEmail, CancellationToken ct)
     {
@@ -231,9 +380,14 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     }
 
     private async Task<(List<Guid> Ids, List<string> Names)> GetRolesAsync(
-        IdentityUser user, CancellationToken ct)
+        IdentityUser user, Guid? tenantId, CancellationToken ct)
     {
-        var roleIds = user.Roles.Select(r => r.RoleId).ToList();
+        // Filter roles by specifically requested tenant, or user's base tenant
+        var roleIds = user.Roles
+            .Where(r => r.TenantId == tenantId)
+            .Select(r => r.RoleId)
+            .ToList();
+
         if (roleIds.Count == 0) return ([], []);
 
         var roles = await _roleRepository.GetListByIdsAsync(roleIds, ct);
@@ -246,7 +400,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     /// <para>Priority: user deny > user allow > role deny > role allow.</para>
     /// </summary>
     private async Task<List<string>> ResolvePermissionsAsync(
-        Guid userId, List<Guid> roleIds, CancellationToken ct)
+        Guid userId, List<Guid> roleIds, Guid? tenantId, CancellationToken ct)
     {
         // 1. Role-based grants (ProviderName="R", ProviderKey=roleId)
         var roleResult = new Dictionary<string, bool>(StringComparer.Ordinal);

@@ -88,12 +88,12 @@ public sealed class AccountDbContext
         modelBuilder.Entity<AuditLog.Domain.EntityPropertyChangeEntity>().ToTable(DbSchemeConsts.Audit.PropertyChange);
 
         // Permission Management
-        modelBuilder.Entity<PermissionManagement.Domain.PermissionDefinitionEntity>().ToTable(DbSchemeConsts.Permission.Definition);
-        modelBuilder.Entity<PermissionManagement.Domain.PermissionGroupEntity>().ToTable(DbSchemeConsts.Permission.PermGroup);
-        modelBuilder.Entity<PermissionManagement.Domain.PermissionGroupItemEntity>().ToTable(DbSchemeConsts.Permission.GroupItem);
-        modelBuilder.Entity<PermissionManagement.Domain.PermissionTemplateEntity>().ToTable(DbSchemeConsts.Permission.Template);
-        modelBuilder.Entity<PermissionManagement.Domain.PermissionTemplateItemEntity>().ToTable(DbSchemeConsts.Permission.TemplateItem);
-        modelBuilder.Entity<PermissionManagement.Domain.PermissionGrantEntity>().ToTable(DbSchemeConsts.Permission.Grant);
+        modelBuilder.Entity<PermissionManagement.Domain.PermissionDefinitions.PermissionDefinitionEntity>().ToTable(DbSchemeConsts.Permission.Definition);
+        modelBuilder.Entity<PermissionManagement.Domain.PermissionGroups.PermissionGroupEntity>().ToTable(DbSchemeConsts.Permission.PermGroup);
+        modelBuilder.Entity<PermissionManagement.Domain.PermissionGroups.PermissionGroupItemEntity>().ToTable(DbSchemeConsts.Permission.GroupItem);
+        modelBuilder.Entity<PermissionManagement.Domain.PermissionTemplates.PermissionTemplateEntity>().ToTable(DbSchemeConsts.Permission.Template);
+        modelBuilder.Entity<PermissionManagement.Domain.PermissionTemplates.PermissionTemplateItemEntity>().ToTable(DbSchemeConsts.Permission.TemplateItem);
+        modelBuilder.Entity<PermissionManagement.Domain.PermissionGrants.PermissionGrantEntity>().ToTable(DbSchemeConsts.Permission.Grant);
 
         // Event Bus
         modelBuilder.Entity<OutboxMessage>().ToTable(DbSchemeConsts.Event.Outbox);

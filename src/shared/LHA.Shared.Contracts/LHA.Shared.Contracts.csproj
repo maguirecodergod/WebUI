@@ -14,4 +14,8 @@
     <ProjectReference Include="..\..\modules\tenant-management\LHA.TenantManagement.Domain.Shared\LHA.TenantManagement.Domain.Shared.csproj" />
     <ProjectReference Include="..\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+  </ItemGroup>
 </Project>

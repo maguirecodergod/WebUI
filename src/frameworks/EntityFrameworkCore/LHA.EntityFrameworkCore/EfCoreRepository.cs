@@ -73,6 +73,35 @@ public class EfCoreRepository<TDbContext, TEntity, TKey>
     }
 
     /// <inheritdoc />
+    public virtual async Task<List<TEntity>> GetListAsync(
+        PagingParam paging,
+        string? sorting = null,
+        CancellationToken cancellationToken = default)
+    {
+        var query = await GetDbSetAsync();
+        // Base implementation does not handle dynamic sorting (requires Dynamic LINQ).
+        // It provides basic paging.
+        return await query
+            .Skip((paging.PageNumber - 1) * paging.PageSize)
+            .Take(paging.PageSize)
+            .ToListAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public virtual async Task<List<TEntity>> GetListAsync<TFilter>(
+        TableParam<TFilter> input,
+        CancellationToken cancellationToken = default)
+    {
+        var query = await GetDbSetAsync();
+        // Base implementation does not handle filtering or dynamic sorting.
+        // It provides basic paging based on TableParam (which extends PagingParam).
+        return await query
+            .Skip((input.PageNumber - 1) * input.PageSize)
+            .Take(input.PageSize)
+            .ToListAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
     public virtual async Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         var dbContext = await GetDbContextAsync();

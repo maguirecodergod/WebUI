@@ -15,6 +15,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using LHA.EventBus;
 using LHA.DistributedLocking;
+using LHA.PermissionManagement.Domain.PermissionTemplates;
+using LHA.PermissionManagement.Domain.PermissionGroups;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -193,13 +196,13 @@ using (var scope = host.Services.CreateScope())
             (AccountPermissions.PermissionMgmt.GrantsManage,      AccountPermissions.PermissionMgmt.L.GrantsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
         };
 
-        var defEntities = new List<PermissionDefinition>();
+        var defEntities = new List<PermissionDefinitionEntity>();
         foreach (var (name, displayName, service, groupName) in allPermissions)
         {
             var def = await defRepo.FindByNameAsync(name);
             if (def is null)
             {
-                def = new PermissionDefinition(
+                def = new PermissionDefinitionEntity(
                     Guid.NewGuid(), name, displayName, service, groupName, null);
                 await defRepo.InsertAsync(def);
                 logger.LogInformation("Permission '{Name}' created.", name);
@@ -219,13 +222,13 @@ using (var scope = host.Services.CreateScope())
             (AccountPermissions.PermissionMgmt.GroupName,       AccountPermissions.PermissionMgmt.L.Group,       "PermissionManagement"),
         };
 
-        var groupEntities = new List<PermissionGroup>();
+        var groupEntities = new List<PermissionGroupEntity>();
         foreach (var (name, displayName, service) in groupDefs)
         {
             var grp = await groupRepo.FindByNameAsync(name);
             if (grp is null)
             {
-                grp = new PermissionGroup(Guid.NewGuid(), name, displayName, service, null);
+                grp = new PermissionGroupEntity(Guid.NewGuid(), name, displayName, service, null);
                 foreach (var def in defEntities.Where(d => d.GroupName == name))
                     grp.AddPermission(def.Id);
                 await groupRepo.InsertAsync(grp);
@@ -238,7 +241,7 @@ using (var scope = host.Services.CreateScope())
         var adminTemplate = await templateRepo.FindByNameAsync(AccountPermissions.Templates.TenantAdmin.Name);
         if (adminTemplate is null)
         {
-            adminTemplate = new PermissionTemplate(
+            adminTemplate = new PermissionTemplateEntity(
                 Guid.NewGuid(), AccountPermissions.Templates.TenantAdmin.Name, 
                 AccountPermissions.Templates.TenantAdmin.L_Name,
                 AccountPermissions.Templates.TenantAdmin.L_Description);

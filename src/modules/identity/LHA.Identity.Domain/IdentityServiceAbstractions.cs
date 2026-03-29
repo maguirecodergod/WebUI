@@ -28,3 +28,31 @@ public interface ILookupNormalizer
     /// <summary>Normalizes an email for lookup.</summary>
     string NormalizeEmail(string email);
 }
+
+/// <summary>
+/// Abstraction to fetch tenant information (name, id) from Tenant module.
+/// </summary>
+public interface IUserTenantLookupService
+{
+    Task<List<(Guid Id, string Name)>> GetTenantsAsync(List<Guid> tenantIds, CancellationToken ct = default);
+}
+
+/// <summary>
+/// Abstraction to fetch all available permissions from Permission module.
+/// </summary>
+public interface IPermissionStore
+{
+    Task<List<string>> GetAllPermissionsAsync(CancellationToken ct = default);
+}
+
+/// <summary>
+/// Bridge abstraction to call Tenant management operations from within Identity module
+/// without direct coupling to TenantManagement.Domain.
+/// </summary>
+public interface ITenantManagerBridge
+{
+    /// <summary>
+    /// Creates a new tenant and returns its unique identifier.
+    /// </summary>
+    Task<Guid> CreateTenantAsync(string name, int databaseStyle, CancellationToken ct = default);
+}

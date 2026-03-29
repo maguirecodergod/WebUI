@@ -1,7 +1,10 @@
 using LHA.Auditing;
 using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
-using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.PermissionGrants;
+using LHA.PermissionManagement.Domain.PermissionGroups;
+using LHA.PermissionManagement.Domain.PermissionTemplates;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.PermissionManagement.EntityFrameworkCore;

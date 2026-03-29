@@ -1,4 +1,3 @@
-using LHA.AuditLog.Application.Contracts;
 using LHA.AuditLog.Domain;
 using LHA.Ddd.Application;
 

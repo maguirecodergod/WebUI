@@ -96,9 +96,18 @@ public sealed class ProviderGrantInfoDto
 /// <summary>Auth token pair returned after login / refresh.</summary>
 public sealed class AuthResultDto
 {
-    public required string AccessToken { get; init; }
-    public required string RefreshToken { get; init; }
+    public string? AccessToken { get; init; }
+    public string? RefreshToken { get; init; }
     public long ExpiresIn { get; init; }
+    public bool RequiresTenantSelection { get; init; }
+    public List<UserTenantDto>? Tenants { get; init; }
+}
+
+/// <summary>DTO for a tenant linked to a user.</summary>
+public sealed class UserTenantDto
+{
+    public Guid Id { get; init; }
+    public required string Name { get; init; }
 }
 
 /// <summary>DTO for the currently authenticated user.</summary>
@@ -111,4 +120,5 @@ public sealed class CurrentUserDto
     public string? Name { get; init; }
     public string? Surname { get; init; }
     public List<string> Roles { get; init; } = [];
+    public List<string> Permissions { get; init; } = [];
 }

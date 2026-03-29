@@ -1,5 +1,11 @@
 using LHA.Ddd.Application;
 using LHA.Shared.Contracts.Identity;
+using LHA.Shared.Contracts.Identity.Users;
+using LHA.Shared.Contracts.Identity.Roles;
+using LHA.Shared.Contracts.Identity.Auth;
+using LHA.Shared.Contracts.Identity.Claims;
+using LHA.Shared.Contracts.Identity.Audit;
+using LHA.Shared.Contracts.Identity.Permissions;
 
 namespace LHA.Identity.Application.Contracts;
 
@@ -57,6 +63,9 @@ public interface IAuthAppService : IApplicationService
 
     /// <summary>Registers a new user account.</summary>
     Task<IdentityUserDto> RegisterAsync(CreateIdentityUserInput input, CancellationToken ct = default);
+
+    /// <summary>Registers a new tenant and its initial admin user.</summary>
+    Task<AuthResultDto> RegisterTenantAsync(RegisterTenantInput input, CancellationToken ct = default);
 
     /// <summary>Refreshes an access token using a refresh token.</summary>
     Task<AuthResultDto> RefreshTokenAsync(RefreshTokenInput input, CancellationToken ct = default);
