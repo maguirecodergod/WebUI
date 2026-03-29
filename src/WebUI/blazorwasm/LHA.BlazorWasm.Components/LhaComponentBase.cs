@@ -1,6 +1,4 @@
-using LHA.BlazorWasm.Services.Localization;
 using LHA.BlazorWasm.Shared.Abstractions.Localization;
-using LHA.BlazorWasm.Shared.Models.Localization;
 using LHA.BlazorWasm.Services.Toast;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

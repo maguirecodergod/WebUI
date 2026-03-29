@@ -566,7 +566,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
 
     private object GetItemKey(TItem item) => KeySelector?.Invoke(item) ?? (object)item!;
 
-    private bool IsSelected(TItem item) => _selectedItems.ContainsKey(GetItemKey(item));
+    private bool IsSelected(TItem item) => _allEntireDatasetSelected || _selectedItems.ContainsKey(GetItemKey(item));
 
     private async Task HandleSelectionToggle(TItem item, object? checkedValue)
     {

@@ -1,0 +1,160 @@
+@page "/login"
+@layout EmptyLayout
+@using LHA.Shared.Contracts.Identity.Auth
+@using LHA.BlazorWasm.HttpApi.Client.Clients
+@using LHA.BlazorWasm.HttpApi.Client.Core
+@using LHA.BlazorWasm.Services.Auth
+@using LHA.BlazorWasm.Components.Forms
+@using LHA.BlazorWasm.Components.Buttons
+@using LHA.BlazorWasm.Components.Form
+@inject NavigationManager NavManager
+@inject AuthApiClient AuthClient
+@inject ApiAuthenticationStateProvider AuthStateProvider
+
+<div class="register-container">
+    @* Phông nền vũ trụ với hiệu ứng Glow đa sắc *@
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <div class="register-glass-panel login-panel-reveal">
+        <div class="register-header">
+            <h1 class="brand-title">LHA<span class="brand-accent">App</span></h1>
+            <p class="subtitle">Hệ sinh thái Enterprise Thế hệ mới</p>
+        </div>
+
+        <EditForm Model="@Model" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+            <ServerSideValidator @ref="_serverValidator" />
+
+            <div class="login-fields-container">
+                <FormField Label="Tài khoản hoặc Email" Required="true" 
+                           ValueExpression="@(() => Model.UserNameOrEmail)"
+                           Class="futuristic-field">
+                    <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <input @bind="Model.UserNameOrEmail" type="text" class="glass-input" placeholder="admin@lha.io" />
+                    </div>
+                </FormField>
+
+                <FormField Label="Mật khẩu" Required="true" 
+                           ValueExpression="@(() => Model.Password)"
+                           Class="futuristic-field">
+                    <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input @bind="Model.Password" type="password" class="glass-input" placeholder="••••••••" />
+                    </div>
+                </FormField>
+            </div>
+
+            <div class="login-options">
+                <label class="remember-me">
+                    <input type="checkbox" />
+                    <span class="checkmark-ui"></span>
+                    Ghi nhớ đăng nhập
+                </label>
+                <a href="/forgot-password" class="forgot-link">Quên mật khẩu?</a>
+            </div>
+
+            <div class="login-actions">
+                <Button Type="CButtonType.Submit" 
+                        Style="CButtonStyle.Primary" 
+                        Size="CButtonSize.Large"
+                        IsLoading="IsLoading"
+                        FullWidth="true"
+                        Class="btn-neon-pulse">
+                    <span class="btn-text">ĐĂNG NHẬP HỆ THỐNG</span>
+                    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </Button>
+            </div>
+            
+            <div class="login-footer">
+                <p>Bạn chưa có không gian làm việc?</p>
+                <button type="button" class="btn-secondary-ghost" @onclick="GoToRegister">
+                    Khởi tạo Tenant mới ngay
+                </button>
+            </div>
+        </EditForm>
+    </div>
+
+    @* Trang trí các đường kẻ kỹ thuật số viễn tưởng *@
+    <div class="digital-grid"></div>
+</div>
+
+@code {
+    private LoginModel Model { get; set; } = new();
+    private ServerSideValidator _serverValidator = default!;
+    private bool IsLoading { get; set; } = false;
+
+    [SupplyParameterFromQuery(Name = "returnUrl")]
+    public string? ReturnUrl { get; set; }
+
+    private async Task HandleLogin()
+    {
+        if (IsLoading) return;
+
+        IsLoading = true;
+        _serverValidator.ClearErrors();
+        StateHasChanged();
+
+        try
+        {
+            var authResult = await AuthClient.LoginAsync(new LoginInput 
+            {
+                UserNameOrEmail = Model.UserNameOrEmail,
+                Password = Model.Password
+            });
+
+            if (authResult != null && !string.IsNullOrWhiteSpace(authResult.AccessToken))
+            {
+                await AuthStateProvider.MarkUserAsAuthenticatedAsync(authResult);
+                
+                var redirectUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? "/" : Uri.UnescapeDataString(ReturnUrl);
+                NavManager.NavigateTo(redirectUrl);
+            }
+        }
+        catch (ApiException ex)
+        {
+            if (ex.StatusCode == System.Net.HttpStatusCode.BadRequest || 
+                ex.StatusCode == System.Net.HttpStatusCode.UnprocessableEntity)
+            {
+                if (ex.ApiError?.ValidationErrors != null)
+                {
+                    _serverValidator.DisplayErrors(ex.ApiError.ValidationErrors);
+                }
+            }
+        }
+        catch (Exception)
+        {
+            // Transient faults handled centrally by ToastApiErrorHandler
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void GoToRegister()
+    {
+        NavManager.NavigateTo("/register-tenant");
+    }
+
+    public class LoginModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Vui lòng nhập tài khoản hoặc email")]
+        public string UserNameOrEmail { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
+        public string Password { get; set; } = string.Empty;
+    }
+}

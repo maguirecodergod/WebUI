@@ -219,28 +219,30 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         // 1. Create Tenant (via Bridge)
         var tenantId = await _tenantManagerBridge.CreateTenantAsync(input.TenantName, input.DatabaseStyle, ct);
 
-        // 2. Create Admin user in the new Tenant context
-        await using var uow = _uowManager.Begin(new UnitOfWorkOptions { IsTransactional = true });
-
-        var user = await _userManager.CreateAsync(
-            input.AdminUserName,
-            input.AdminEmail,
-            input.AdminPassword,
-            tenantId);
-
-        // 3. Assign TenantAdmin role to the new user
-        // We look for the "TenantAdmin" role. 
-        var normalizedRoleName = _lookupNormalizer.NormalizeName(TenantAdminRole);
-        var role = await _roleRepository.FindByNormalizedNameAsync(normalizedRoleName, ct);
-        if (role != null)
+        // 2. Change ambient context to the new tenant so EF uses its connection settings
+        using (_currentTenant.Change(tenantId))
         {
-            user.AddRole(role.Id);
+            await using var uow = _uowManager.Begin(new UnitOfWorkOptions { IsTransactional = true });
+
+            var user = await _userManager.CreateAsync(
+                input.AdminUserName,
+                input.AdminEmail,
+                input.AdminPassword,
+                tenantId);
+
+            // 3. Assign TenantAdmin role to the new user
+            var normalizedRoleName = _lookupNormalizer.NormalizeName(TenantAdminRole);
+            var role = await _roleRepository.FindByNormalizedNameAsync(normalizedRoleName, ct);
+            if (role != null)
+            {
+                user.AddRole(role.Id);
+            }
+
+            await _userRepository.InsertAsync(user, ct);
+
+            // Commit UoW before generating tokens to ensure data is persistent
+            await uow.CompleteAsync();
         }
-
-        await _userRepository.InsertAsync(user, ct);
-
-        // Commit UoW before generating tokens to ensure data is persistent
-        await uow.CompleteAsync();
 
         // 4. Automated login for the new admin
         // We reuse LoginAsync logic by passing the credentials or just generating token directly

@@ -1,7 +1,14 @@
 @page "/register-tenant"
 @layout EmptyLayout
 @using LHA.TenantManagement.Domain.Shared
+@using LHA.Shared.Contracts.Identity.Auth
+@using LHA.BlazorWasm.HttpApi.Client.Clients
+@using LHA.BlazorWasm.HttpApi.Client.Core
+@using LHA.BlazorWasm.Services.Auth
+@using LHA.BlazorWasm.Components.Forms
 @inject NavigationManager NavManager
+@inject AuthApiClient AuthClient
+@inject ApiAuthenticationStateProvider AuthStateProvider
 
 <div class="register-container">
     @* Background elements for glassmorphism ambient glow *@
@@ -120,6 +127,7 @@
 
                     <EditForm Model="@Model" OnValidSubmit="NextStep">
                         <DataAnnotationsValidator />
+                        <ServerSideValidator @ref="_serverValidator" />
 
                         <div class="form-grid">
                             <div class="input-group full-width">
@@ -202,30 +210,65 @@
 
 
 
-    private void NextStep()
+    private ServerSideValidator _serverValidator = default!;
 
+    private async Task NextStep()
     {
-
         if (CurrentStep < 3)
-
         {
-
             CurrentStep++;
-
             if (CurrentStep == 3)
-
             {
+                StateHasChanged(); // Render the loading UI quickly
 
-                // Trigger actual API call here in real app
+                var input = new RegisterTenantInput
+                {
+                    TenantName = Model.TenantName,
+                    DatabaseStyle = (int)SelectedStyle,
+                    AdminUserName = Model.AdminUsername,
+                    AdminEmail = Model.AdminEmail,
+                    AdminPassword = Model.AdminPassword
+                };
 
-                // await RegisterTenantAsync();
+                try
+                {
+                    var authResult = await AuthClient.RegisterTenantAsync(input);
+                    if (authResult != null && !string.IsNullOrEmpty(authResult.AccessToken))
+                    {
+                        await AuthStateProvider.MarkUserAsAuthenticatedAsync(authResult);
+                        await Task.Delay(1000); 
+                        GoToDashboard();
+                    }
+                    else
+                    {
+                        CurrentStep = 2; // general error, no exception
+                    }
+                }
+                catch (ApiException ex)
+                {
+                    CurrentStep = 2; // Return to form to show errors
+                    StateHasChanged();
 
+                    if (ex.StatusCode == System.Net.HttpStatusCode.BadRequest || 
+                        ex.StatusCode == System.Net.HttpStatusCode.UnprocessableEntity)
+                    {
+                        // Safely display validation errors matched by property name
+                        if (ex.ApiError?.ValidationErrors != null)
+                        {
+                            _serverValidator.DisplayErrors(ex.ApiError.ValidationErrors);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Network errors or other unexpected crashes.
+                    // The ToastApiErrorHandler will have shown the user a toast already.
+                    CurrentStep = 2;
+                    StateHasChanged();
+                }
             }
-
             StateHasChanged();
-
         }
-
     }
 
 

@@ -1,16 +1,22 @@
-<GlobalErrorBoundary>
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
-        <NotFound>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <NotFoundPage />
-            </LayoutView>
-        </NotFound>
-    </Router>
-</GlobalErrorBoundary>
+<CascadingAuthenticationState>
+    <GlobalErrorBoundary>
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <NotAuthorized>
+                        <RedirectToLogin />
+                    </NotAuthorized>
+                </AuthorizeRouteView>
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <NotFoundPage />
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </GlobalErrorBoundary>
+</CascadingAuthenticationState>
 
 @code {
     protected override async Task OnInitializedAsync()

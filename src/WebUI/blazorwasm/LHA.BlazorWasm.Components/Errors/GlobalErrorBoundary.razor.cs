@@ -30,6 +30,16 @@ public partial class GlobalErrorBoundary : LhaErrorBoundaryBase, IDisposable
     /// </summary>
     protected override Task OnErrorAsync(Exception exception)
     {
+        // Gracefully ignore Auth errors from throwing the boundary, 
+        // because ToastApiErrorHandler is already routing to /login or /forbidden.
+        if (exception is LHA.BlazorWasm.HttpApi.Client.Core.ApiException apiEx && 
+            (apiEx.StatusCode == System.Net.HttpStatusCode.Unauthorized || 
+             apiEx.StatusCode == System.Net.HttpStatusCode.Forbidden))
+        {
+            Recover();
+            return Task.CompletedTask;
+        }
+
         ActiveException = exception;
         var report = ErrorReporter.ReportError(exception, Navigation.Uri);
 

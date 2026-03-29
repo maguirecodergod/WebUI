@@ -42,6 +42,19 @@ public static class AuthEndpoints
         .WithName("Register")
         .WithSummary("Registers a new user account.");
 
+        // ── Register Tenant ──────────────────────────────────────────
+        group.MapPost("/register-tenant", async (
+            RegisterTenantInput input,
+            IAuthAppService service,
+            CancellationToken ct) =>
+        {
+            var result = await service.RegisterTenantAsync(input, ct);
+            return Results.Ok(ApiResponse<AuthResultDto>.Ok(result));
+        })
+        .AllowAnonymous()
+        .WithName("RegisterTenant")
+        .WithSummary("Self-service onboarding: creates a new tenant, an admin, and returns tokens.");
+
         // ── Refresh Token ────────────────────────────────────────────
         group.MapPost("/refresh", async (
             RefreshTokenInput input,

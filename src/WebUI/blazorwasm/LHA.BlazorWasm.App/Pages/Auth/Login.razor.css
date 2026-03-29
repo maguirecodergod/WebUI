@@ -1,0 +1,273 @@
+::deep {
+  --neon-blue: #00f0ff;
+  --neon-purple: #9d00ff;
+  --neon-pink: #ff00c1;
+  --glass-bg: rgba(10, 10, 18, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 15px 45px 0 rgba(0, 0, 0, 0.6);
+}
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background-color: #030308;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  color: #fff;
+  padding: 1.5rem;
+}
+
+/* ── Digital Grid Background ── */
+.digital-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 1;
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+}
+
+/* ── Ambient Glows ── */
+.ambient-glow {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  filter: blur(150px);
+  z-index: 0;
+  opacity: 0.4;
+  animation: pulse-glow 10s ease-in-out infinite alternate;
+}
+
+.glow-1 {
+  top: -10%;
+  left: -5%;
+  background: radial-gradient(circle, var(--neon-purple) 0%, transparent 70%);
+}
+
+.glow-2 {
+  bottom: -15%;
+  right: -5%;
+  background: radial-gradient(circle, var(--neon-blue) 0%, transparent 70%);
+  animation-delay: -5s;
+}
+
+.glow-3 {
+  top: 40%;
+  left: 30%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--neon-pink) 0%, transparent 70%);
+  opacity: 0.15;
+  animation-duration: 15s;
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.2; }
+  100% { transform: scale(1.2) translate(30px, -30px); opacity: 0.5; }
+}
+
+/* ── Main Panel ── */
+.register-glass-panel {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 460px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  padding: 3rem 2.5rem;
+  box-shadow: var(--glass-shadow);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-panel-reveal {
+  animation: panel-entrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes panel-entrance {
+  from { opacity: 0; transform: translateY(60px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.brand-title {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  margin: 0;
+  background: linear-gradient(135deg, #fff 30%, #a0a0b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5));
+}
+
+.brand-accent {
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 1rem;
+  margin-top: 0.6rem;
+  letter-spacing: 0.5px;
+}
+
+/* ── Form Styling ── */
+.login-fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+::deep .futuristic-field .form-label {
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.6rem;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    width: 20px;
+    height: 20px;
+    color: rgba(255, 255, 255, 0.3);
+    transition: color 0.3s;
+}
+
+.glass-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 0.9rem 1rem 0.9rem 2.8rem;
+  border-radius: 12px;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-input:focus {
+  border-color: var(--neon-blue);
+  background: rgba(0, 0, 0, 0.45);
+  box-shadow: 
+    0 0 0 4px rgba(0, 240, 255, 0.05),
+    inset 0 0 10px rgba(0, 240, 255, 0.05);
+}
+
+.glass-input:focus + .input-icon,
+.input-with-icon:focus-within .input-icon {
+    color: var(--neon-blue);
+}
+
+/* ── Login Options ── */
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0 2rem;
+    font-size: 0.85rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: color 0.2s;
+}
+
+.remember-me:hover { color: #f8fafc; }
+
+.forgot-link {
+    color: var(--neon-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-link:hover { text-decoration: underline; }
+
+/* ── Actions ── */
+.login-actions { margin-bottom: 2rem; }
+
+::deep .btn-neon-pulse {
+    border-radius: 12px !important;
+    height: 52px;
+    letter-spacing: 2px;
+    font-weight: 800 !important;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    border: none !important;
+    transition: all 0.4s !important;
+}
+
+::deep .btn-neon-pulse:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 240, 255, 0.4) !important;
+    filter: brightness(1.1);
+}
+
+.btn-arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s;
+}
+
+::deep .btn-neon-pulse:hover .btn-arrow {
+    transform: translateX(4px);
+}
+
+/* ── Footer ── */
+.login-footer {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 2rem;
+}
+
+.login-footer p {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+::deep .btn-secondary-ghost {
+    color: #fff !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    font-size: 0.85rem !important;
+    padding: 0.6rem 1.5rem !important;
+}
+
+::deep .btn-secondary-ghost:hover {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: var(--neon-blue) !important;
+    color: var(--neon-blue) !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .register-glass-panel { padding: 2.5rem 1.5rem; }
+    .brand-title { font-size: 2.2rem; }
+}

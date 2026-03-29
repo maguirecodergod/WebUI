@@ -1,0 +1,36 @@
+@page "/forbidden"
+@layout EmptyLayout
+@inject NavigationManager NavManager
+
+<div class="register-container" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+    @* Background elements for glassmorphism ambient glow *@
+    <div class="ambient-glow glow-1" style="background: linear-gradient(135deg, rgba(255, 60, 60, 0.4), transparent 60%);"></div>
+    <div class="ambient-glow glow-2" style="background: linear-gradient(225deg, rgba(200, 40, 40, 0.4), transparent 60%);"></div>
+
+    <div class="register-glass-panel" style="max-width: 600px; text-align: center; padding: 3rem;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">
+            <svg viewBox="0 0 24 24" width="80" height="80" stroke="var(--neon-accent, #00f0ff)" stroke-width="1.5" fill="none" class="plan-icon plan-icon-blue" style="margin: 0 auto;">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+            </svg>
+        </div>
+        
+        <h1 class="brand-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Access <span class="brand-accent">Denied</span></h1>
+        
+        <p class="section-desc" style="font-size: 1.1rem; margin-bottom: 2rem;">
+            You lack the necessary permissions to view the requested resource.
+        </p>
+        
+        <div class="wizard-actions center-align">
+            <button class="btn-primary-neon" @onclick="GoHome">Back to Dashboard</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void GoHome()
+    {
+        NavManager.NavigateTo("/");
+    }
+}

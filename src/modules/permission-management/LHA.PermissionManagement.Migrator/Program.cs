@@ -2,6 +2,9 @@ using LHA.Auditing;
 using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
 using LHA.PermissionManagement.Domain;
+using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.PermissionGroups;
+using LHA.PermissionManagement.Domain.PermissionTemplates;
 using LHA.PermissionManagement.EntityFrameworkCore;
 using LHA.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -71,13 +74,13 @@ using (var seedScope = host.Services.CreateScope())
         ("identity.roles.delete", "Delete Roles", "RoleManagement"),
     };
 
-    var defEntities = new List<PermissionDefinition>();
+    var defEntities = new List<PermissionDefinitionEntity>();
     foreach (var (name, displayName, groupName) in identityPermissions)
     {
         var existing = await defRepo.FindByNameAsync(name);
         if (existing is null)
         {
-            var def = new PermissionDefinition(
+            var def = new PermissionDefinitionEntity(
                 Guid.NewGuid(), name, displayName, "Identity", groupName, null);
             await defRepo.InsertAsync(def);
             defEntities.Add(def);
@@ -103,7 +106,7 @@ using (var seedScope = host.Services.CreateScope())
         var existing = await defRepo.FindByNameAsync(name);
         if (existing is null)
         {
-            var def = new PermissionDefinition(
+            var def = new PermissionDefinitionEntity(
                 Guid.NewGuid(), name, displayName, "TenantManagement", groupName, null);
             await defRepo.InsertAsync(def);
             defEntities.Add(def);
@@ -119,7 +122,7 @@ using (var seedScope = host.Services.CreateScope())
     var userMgmtGroup = await groupRepo.FindByNameAsync("UserManagement");
     if (userMgmtGroup is null)
     {
-        userMgmtGroup = new PermissionGroup(
+        userMgmtGroup = new PermissionGroupEntity(
             Guid.NewGuid(), "UserManagement", "User Management", "Identity", null);
         foreach (var def in defEntities.Where(d => d.GroupName == "UserManagement"))
             userMgmtGroup.AddPermission(def.Id);
@@ -130,7 +133,7 @@ using (var seedScope = host.Services.CreateScope())
     var roleMgmtGroup = await groupRepo.FindByNameAsync("RoleManagement");
     if (roleMgmtGroup is null)
     {
-        roleMgmtGroup = new PermissionGroup(
+        roleMgmtGroup = new PermissionGroupEntity(
             Guid.NewGuid(), "RoleManagement", "Role Management", "Identity", null);
         foreach (var def in defEntities.Where(d => d.GroupName == "RoleManagement"))
             roleMgmtGroup.AddPermission(def.Id);
@@ -141,7 +144,7 @@ using (var seedScope = host.Services.CreateScope())
     var tenantMgmtGroup = await groupRepo.FindByNameAsync("TenantManagement");
     if (tenantMgmtGroup is null)
     {
-        tenantMgmtGroup = new PermissionGroup(
+        tenantMgmtGroup = new PermissionGroupEntity(
             Guid.NewGuid(), "TenantManagement", "Tenant Management", "TenantManagement", null);
         foreach (var def in defEntities.Where(d => d.GroupName == "TenantManagement"))
             tenantMgmtGroup.AddPermission(def.Id);
@@ -153,7 +156,7 @@ using (var seedScope = host.Services.CreateScope())
     var adminTemplate = await templateRepo.FindByNameAsync("TenantAdmin");
     if (adminTemplate is null)
     {
-        adminTemplate = new PermissionTemplate(
+        adminTemplate = new PermissionTemplateEntity(
             Guid.NewGuid(), "TenantAdmin", "Tenant Administrator",
             "Full access to all identity and tenant management features.");
         adminTemplate.AddGroup(userMgmtGroup.Id);

@@ -222,12 +222,30 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     {
         if (firstRender)
         {
-            _jsModule = await JS.InvokeAsync<IJSObjectReference>(
-                "import",
-                "./_content/LHA.BlazorWasm.Components/Sidebar/Sidebar.razor.js");
+            try
+            {
+                _jsModule = await JS.InvokeAsync<IJSObjectReference>(
+                    "import",
+                    "./_content/LHA.BlazorWasm.Components/Sidebar/Sidebar.razor.js");
 
-            await _jsModule.InvokeVoidAsync("initialize", _sidebarRef, _dotNetRef,
-                TabletBreakpoint, MobileBreakpoint);
+                if (!_isDisposed)
+                {
+                    await _jsModule.InvokeVoidAsync("initialize", _sidebarRef, _dotNetRef,
+                        TabletBreakpoint, MobileBreakpoint);
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                // Component disposed before JS interop could finish.
+            }
+            catch (JSDisconnectedException)
+            {
+                // Browser connection lost.
+            }
+            catch (TaskCanceledException)
+            {
+                // Interop cancelled.
+            }
         }
     }
 

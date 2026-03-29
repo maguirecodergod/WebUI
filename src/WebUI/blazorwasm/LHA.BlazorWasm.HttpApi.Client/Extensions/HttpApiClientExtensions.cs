@@ -55,6 +55,8 @@ public static class HttpApiClientExtensions
         RegisterTypedClient<AuditLogApiClient>(services);
         services.AddScoped<IAuditLogAppService>(sp => sp.GetRequiredService<AuditLogApiClient>());
 
+        RegisterTypedClient<AuthApiClient>(services);
+
         return services;
     }
 

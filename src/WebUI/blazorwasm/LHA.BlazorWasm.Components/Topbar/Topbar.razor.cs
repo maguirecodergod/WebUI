@@ -60,14 +60,33 @@ public partial class Topbar : LhaComponentBase, IDisposable
 
     private IJSObjectReference? _jsModule;
     private DotNetObjectReference<Topbar>? _dotNetHelper;
+    private bool _isDisposed;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             _dotNetHelper = DotNetObjectReference.Create(this);
-            _jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/js/topbar.js");
-            await _jsModule.InvokeVoidAsync("initTopbar", _dotNetHelper);
+            try
+            {
+                _jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/js/topbar.js");
+                if (!_isDisposed)
+                {
+                    await _jsModule.InvokeVoidAsync("initTopbar", _dotNetHelper);
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                // Component disposed before JS interop could finish.
+            }
+            catch (JSDisconnectedException)
+            {
+                // Browser connection lost.
+            }
+            catch (TaskCanceledException)
+            {
+                // Interop cancelled.
+            }
         }
     }
 
@@ -86,14 +105,18 @@ public partial class Topbar : LhaComponentBase, IDisposable
         StateHasChanged();
     }
 
-    public async void Dispose()
+    public void Dispose()
     {
+        _isDisposed = true;
         TopbarService.State.OnStateChanged -= StateHasChanged;
         
+        _dotNetHelper?.Dispose();
+
         if (_jsModule != null)
         {
-            await _jsModule.DisposeAsync();
+            _ = _jsModule.DisposeAsync().AsTask();
         }
-        _dotNetHelper?.Dispose();
+        
+        GC.SuppressFinalize(this);
     }
 }

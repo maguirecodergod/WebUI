@@ -146,15 +146,10 @@
     private GetAuditLogsInput _input = new()
     {
         PageSize = 10,
-        Sorter = new SorterParam
-        {
-            KeyName = "ExecutionTime",
-            IsASC =
-false
-        }
+        SorterKey = "ExecutionTime",
+        SorterIsAsc = false
     };
     private long _totalCount;
-    private bool _loading = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -163,7 +158,6 @@ false
 
     private async Task LoadLogsAsync()
     {
-        _loading = true;
         try
         {
             var result = await AuditLogService.GetListAsync(_input);
@@ -173,10 +167,6 @@ false
         catch (Exception ex)
         {
             ToastService.Error("Error: " + ex.Message);
-        }
-        finally
-        {
-            _loading = false;
         }
     }
 
