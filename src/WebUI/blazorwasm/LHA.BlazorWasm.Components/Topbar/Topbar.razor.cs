@@ -11,6 +11,8 @@ public partial class Topbar : LhaComponentBase, IDisposable
     [Parameter] public RenderFragment? LeftContent { get; set; }
     [Parameter] public RenderFragment? CenterContent { get; set; }
     [Parameter] public RenderFragment? RightContent { get; set; }
+    [Parameter] public bool IsSticky { get; set; } = true;
+
 
     [Parameter] public string AppName { get; set; } = "LHA WebUI";
     [Parameter] public string? LogoSvg { get; set; }
@@ -20,6 +22,7 @@ public partial class Topbar : LhaComponentBase, IDisposable
     private string _searchText = string.Empty;
     private bool _isNotificationOpen;
     private bool _isProfileOpen;
+    private bool _isSearchOpen;
 
     protected override void OnInitialized()
     {
@@ -27,14 +30,14 @@ public partial class Topbar : LhaComponentBase, IDisposable
         TopbarService.State.OnStateChanged += StateHasChanged;
     }
 
-    private async Task HandleSidebarToggle()
-    {
-        TopbarService.ToggleSidebar();
-        if (OnSidebarToggle.HasDelegate)
-        {
-            await OnSidebarToggle.InvokeAsync();
-        }
-    }
+    // private async Task HandleSidebarToggle()
+    // {
+    //     TopbarService.ToggleSidebar();
+    //     if (OnSidebarToggle.HasDelegate)
+    //     {
+    //         await OnSidebarToggle.InvokeAsync();
+    //     }
+    // }
 
     private void HandleSearch(ChangeEventArgs e)
     {
@@ -52,8 +55,15 @@ public partial class Topbar : LhaComponentBase, IDisposable
     {
         _isProfileOpen = !_isProfileOpen;
         _isNotificationOpen = false;
+        _isSearchOpen = false;
     }
 
+    private void ToggleSearch()
+    {
+        _isSearchOpen = !_isSearchOpen;
+        _isProfileOpen = false;
+        _isNotificationOpen = false;
+    }
 
     private IJSObjectReference? _jsModule;
     private DotNetObjectReference<Topbar>? _dotNetHelper;
@@ -99,8 +109,10 @@ public partial class Topbar : LhaComponentBase, IDisposable
     {
         _isNotificationOpen = false;
         _isProfileOpen = false;
+        _isSearchOpen = false;
         StateHasChanged();
     }
+
 
     public override void Dispose()
     {

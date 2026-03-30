@@ -7,9 +7,12 @@ export function initTopbar(dotNetHelper) {
     });
 
     // Close dropdowns on click outside
-    window.addEventListener('click', (e) => {
+    window.addEventListener('mousedown', (e) => {
         const topbar = document.querySelector('.topbar');
-        if (topbar && !topbar.contains(e.target)) {
+        const searchOverlay = document.querySelector('.mobile-search-overlay');
+        
+        // If clicking outside BOTH the topbar and the search overlay, close all
+        if (topbar && !topbar.contains(e.target) && (!searchOverlay || !searchOverlay.contains(e.target))) {
             dotNetHelper.invokeMethodAsync('CloseDropdowns');
         }
     });

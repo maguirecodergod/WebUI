@@ -2,66 +2,72 @@
 @using LHA.BlazorWasm.Components.LanguageSelector
 @using LHA.BlazorWasm.Components.Breadcrumb
 
-<header class="topbar">
+<header class="topbar @(IsSticky ? "sticky" : "")">
     @* --- Left Section --- *@
-    <div class="topbar-left">
+    <div class="topbar-section left">
         @if (LeftContent != null)
         {
             @LeftContent
         }
         else
         {
-            <button class="sidebar-toggle" @onclick="HandleSidebarToggle" aria-label="Toggle Sidebar">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-            <a href="/" class="topbar-logo">
-                @if (!string.IsNullOrEmpty(LogoSvg))
-                {
-                    @((MarkupString)LogoSvg)
-                }
-                else
-                {
-                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+            <div class="topbar-group">
+                @* <button class="icon-button sidebar-toggle" @onclick="HandleSidebarToggle" aria-label="Toggle Sidebar">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
-                }
-                <span>@AppName</span>
-            </a>
+                </button> *@
+                <a href="/" class="topbar-logo" aria-label="Go to homepage">
+                    <div class="logo-icon">
+                        @if (!string.IsNullOrEmpty(LogoSvg))
+                        {
+                            @((MarkupString)LogoSvg)
+                        }
+                        else
+                        {
+                            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                            </svg>
+                        }
+                    </div>
+                    <span class="logo-text">@AppName</span>
+                </a>
+            </div>
         }
     </div>
 
     @* --- Center Section --- *@
-    <div class="topbar-center">
+    <div class="topbar-section center">
         @if (CenterContent != null)
         {
             @CenterContent
         }
         else
         {
-            <div class="topbar-search">
-                <span class="search-icon">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </span>
-                <input type="text" placeholder="Search anything... (Ctrl + K)" @oninput="HandleSearch" />
-                <span class="kbd-shortcut">⌘ K</span>
+            <div class="search-container">
+                <div class="topbar-search">
+                    <span class="search-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </span>
+                    <input type="text" placeholder="Search... (Ctrl + K)" @oninput="HandleSearch" />
+                    <span class="kbd-shortcut">⌘ K</span>
+                </div>
+
+                @if (TopbarService.State.Breadcrumbs.Any())
+                {
+                    <Breadcrumb Items="TopbarService.State.Breadcrumbs" Class="breadcrumb-desktop" />
+                }
             </div>
-            
-            @if (TopbarService.State.Breadcrumbs.Any())
-            {
-                <Breadcrumb Items="TopbarService.State.Breadcrumbs" Class="d-none d-lg-flex" />
-            }
         }
     </div>
 
     @* --- Right Section --- *@
-    <div class="topbar-right">
+    <div class="topbar-section right">
         @if (RightContent != null)
         {
             @RightContent
@@ -71,71 +77,153 @@
             <div class="topbar-actions">
                 @if (TopbarService.State.IsLoading)
                 {
-                    <Skeleton Variant="CSkeletonVariant.Circular" Width="36px" Height="36px" />
-                    <Skeleton Variant="CSkeletonVariant.Circular" Width="36px" Height="36px" />
-                    <Skeleton Variant="CSkeletonVariant.Circular" Width="36px" Height="36px" />
-                    <div class="user-profile">
-                        <Skeleton Variant="CSkeletonVariant.Circular" Width="32px" Height="32px" />
-                        <div class="user-info">
-                            <Skeleton Width="80px" Height="14px" />
-                            <Skeleton Width="60px" Height="10px" />
+                    <div class="loading-skeletons">
+                        <Skeleton Variant="CSkeletonVariant.Circular" Width="36px" Height="36px" />
+                        <Skeleton Variant="CSkeletonVariant.Circular" Width="36px" Height="36px" />
+                        <div class="user-block-loading">
+                            <Skeleton Variant="CSkeletonVariant.Circular" Width="32px" Height="32px" />
                         </div>
                     </div>
                 }
                 else
                 {
-                    @foreach (var item in TopbarService.State.DynamicItems)
-                    {
-                        <TopbarItem Item="item" />
-                    }
+                    @* Dynamic items usually hidden on mobile or moving to menu *@
+                    <div class="dynamic-actions desktop-only" @onclick:stopPropagation>
+                        @foreach (var item in TopbarService.State.DynamicItems)
+                        {
+                            <TopbarItem Item="item" />
+                        }
+                    </div>
+
+                    <button class="icon-button mobile-search-button" @onclick="ToggleSearch" @onclick:stopPropagation
+                            aria-label="Open search">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
 
                     <NotificationBell Count="TopbarService.State.UnreadCount" />
 
-                    <ThemeSwitch Variant="CThemeSwitchVariant.Toggle" />
-                    
-                    <LanguageSelector Mode="LHA.BlazorWasm.Services.Localization.CLanguageSelectorMode.Dropdown" ShowFlags="true" ShowNames="false" />
-
-                    @* User Profile *@
-                    <div class="user-profile" @onclick="ToggleProfile" @onclick:stopPropagation>
-                        <div class="user-avatar">
-                            @if (!string.IsNullOrEmpty(TopbarService.State.User?.AvatarUrl))
-                            {
-                                <img src="@TopbarService.State.User.AvatarUrl" alt="@TopbarService.State.User.DisplayName" />
-                            }
-                            else
-                            {
-                                <span>@(TopbarService.State.User?.DisplayName.FirstOrDefault().ToString().ToUpper() ?? "U")</span>
-                            }
-                        </div>
-                        <div class="user-info">
-                            <span class="user-name">@(TopbarService.State.User?.DisplayName ?? "Guest")</span>
-                            <span class="user-role">@(TopbarService.State.User?.Role ?? "Anonymous")</span>
-                        </div>
-                        
-                        @* Profile Dropdown *@
-                        <div class="topbar-dropdown @(_isProfileOpen ? "show" : "")">
-                            <div class="topbar-item" @onclick='(() => Navigation.NavigateTo("/profile"))'>
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                <span>Profile</span>
-                            </div>
-                            <div class="topbar-item" @onclick='(() => Navigation.NavigateTo("/settings"))'>
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                                <span>Settings</span>
-                            </div>
-                            <div class="dropdown-divider" style="height: 1px; background: var(--topbar-border); margin: 0.5rem 0;"></div>
-                            <div class="topbar-item" style="color: #ef4444;" @onclick='(() => Navigation.NavigateTo("/logout"))'>
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                                <span>Logout</span>
-                            </div>
-                        </div>
+                    <div class="settings-actions tablet-desktop-only" @onclick:stopPropagation>
+                        <ThemeSwitch Variant="CThemeSwitchVariant.Toggle" />
+                        <LanguageSelector Mode="LHA.BlazorWasm.Services.Localization.CLanguageSelectorMode.Dropdown"
+                                          ShowFlags="true" ShowNames="false" />
                     </div>
-                }
-            </div>
-        }
-    </div>
-</header>
+                    @* User Profile *@
+                    <div class="user-profile-container">
+                        <div class="user-profile-toggle @(_isProfileOpen ? "active" : "")" @onclick="ToggleProfile"
+                             @onclick:stopPropagation>
+                            <div class="user-avatar">
+                                @if (!string.IsNullOrEmpty(TopbarService.State.User?.AvatarUrl))
+                                {
+                                    <img src="@TopbarService.State.User.AvatarUrl" alt="@TopbarService.State.User.DisplayName" />
+                                }
+                                else
+                                {
+                                    <span>@(TopbarService.State.User?.DisplayName.FirstOrDefault().ToString().ToUpper() ??
+                                                                    "U")</span>
+                                    }
+                                </div>
+                                <div class="user-info-text">
+                                    <span class="user-name">@(TopbarService.State.User?.DisplayName ?? "Guest")</span>
+                                    <span class="user-role">@(TopbarService.State.User?.Role ?? "Anonymous")</span>
+                                </div>
+                                <svg class="dropdown-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                                     stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
 
-@if (_isProfileOpen || _isNotificationOpen)
-{
-    <div class="topbar-backdrop" @onclick="CloseDropdowns" style="position: fixed; inset: 0; z-index: 999;"></div>
-}
+                            @* Profile Dropdown - Now a sibling to the toggle, not a child of the clickable area *@
+                            <div class="topbar-dropdown profile-menu @(_isProfileOpen ? "show" : "")" @onclick:stopPropagation>
+                                <div class="dropdown-header mobile-only">
+                                    <div class="mobile-user-details">
+                                        <span class="user-name">@(TopbarService.State.User?.DisplayName ?? "Guest")</span>
+                                        <span class="user-role">@(TopbarService.State.User?.Role ?? "Anonymous")</span>
+                                    </div>
+                                </div>
+
+                                @* Dynamic items in mobile menu *@
+                                @if (TopbarService.State.DynamicItems.Any())
+                                {
+                                    <div class="dropdown-section mobile-only">
+                                        <div class="dropdown-subtitle">Actions</div>
+                                        @foreach (var item in TopbarService.State.DynamicItems)
+                                        {
+                                            <div class="dropdown-item">
+                                                <TopbarItem Item="item" />
+                                            </div>
+                                        }
+                                        <div class="dropdown-divider"></div>
+                                    </div>
+                                }
+
+                                <div class="dropdown-item" @onclick='(() => Navigation.NavigateTo("/profile"))'>
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                         stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <span>Profile</span>
+                                </div>
+                                <div class="dropdown-item" @onclick='(() => Navigation.NavigateTo("/settings"))'>
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                         stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path
+                                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                                        </path>
+                                    </svg>
+                                    <span>Settings</span>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                @* Mobile only actions in profile menu *@
+                                <div class="dropdown-subtitle mobile-only">Appearance</div>
+                                <div class="dropdown-item mobile-only" @onclick:stopPropagation>
+                                    <ThemeSwitch Variant="CThemeSwitchVariant.Toggle" />
+                                    <span>Dark Mode</span>
+                                </div>
+                                <div class="dropdown-item mobile-only" @onclick:stopPropagation>
+                                    <LanguageSelector Mode="LHA.BlazorWasm.Services.Localization.CLanguageSelectorMode.Dropdown"
+                                                      ShowFlags="true" ShowNames="true" />
+                                </div>
+                                <div class="dropdown-divider mobile-only"></div>
+
+                                <div class="dropdown-item logout" @onclick='(() => Navigation.NavigateTo("/logout"))'>
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                         stroke-width="2">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16 17 21 12 16 7"></polyline>
+                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    </svg>
+                                    <span>Logout</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            }
+        </div>
+    </header>
+
+    @if (_isProfileOpen || _isNotificationOpen || _isSearchOpen)
+    {
+        <div class="topbar-backdrop" @onclick="CloseDropdowns"></div>
+    }
+
+    @if (_isSearchOpen)
+    {
+        <div class="mobile-search-overlay">
+            <div class="mobile-search-bar">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" placeholder="Search..." @oninput="HandleSearch" autofocus />
+                <button class="close-search" @onclick="ToggleSearch">✕</button>
+            </div>
+        </div>
+    }
+
