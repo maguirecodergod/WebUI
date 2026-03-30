@@ -8,10 +8,22 @@ namespace LHA.BlazorWasm.Components;
 /// <summary>
 /// Base class for all LHA components to provide common internal injected services.
 /// </summary>
-public abstract class LhaComponentBase : ComponentBase
+public abstract class LhaComponentBase : ComponentBase, IDisposable
 {
     [Inject] internal ILocalizationService Localizer { get; set; } = default!;
     [Inject] internal IToastService ToastNotification { get; set; } = default!;
     [Inject] internal IJSRuntime JS { get; set; } = default!;
     [Inject] internal NavigationManager Navigation { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        Localizer.OnLanguageChanged += ReRender;
+    }
+
+    private void ReRender() => InvokeAsync(StateHasChanged);
+
+    public virtual void Dispose()
+    {
+        Localizer.OnLanguageChanged -= ReRender;
+    }
 }

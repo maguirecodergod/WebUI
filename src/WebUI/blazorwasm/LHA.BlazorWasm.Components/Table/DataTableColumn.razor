@@ -15,7 +15,6 @@
    ────────────────────────────────────────────────────────────── *@
 @namespace LHA.BlazorWasm.Components.Table
 @typeparam TItem
-@implements IDisposable
 
 @code {
     [CascadingParameter] public DataTable<TItem> Table { get; set; } = default!;
@@ -62,9 +61,9 @@
 
     // ── Internal ─────────────────────────────────────────────
     private ColumnDefinition<TItem>? _definition;
-
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         _definition = BuildDefinition();
         Table.AddColumn(_definition);
     }
@@ -113,8 +112,9 @@
         };
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         if (_definition is not null)
             Table.RemoveColumn(_definition);
     }

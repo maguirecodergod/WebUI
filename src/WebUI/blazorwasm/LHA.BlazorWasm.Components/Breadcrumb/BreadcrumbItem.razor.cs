@@ -64,12 +64,14 @@ public partial class BreadcrumbItem : LhaComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         Parent?.Register(this);
         Parent?.NotifyChanged();
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         Parent?.Unregister(this);
         Parent?.NotifyChanged();
     }

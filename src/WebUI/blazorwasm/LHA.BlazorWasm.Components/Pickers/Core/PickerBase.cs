@@ -18,17 +18,12 @@ public abstract class PickerBase<TValue> : LhaComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
-        Localizer.OnLanguageChanged += HandleLanguageChanged;
+        base.OnInitialized();
     }
 
-    private void HandleLanguageChanged()
+    public override void Dispose()
     {
-        InvokeAsync(StateHasChanged);
-    }
-
-    public virtual void Dispose()
-    {
-        Localizer.OnLanguageChanged -= HandleLanguageChanged;
+        base.Dispose();
     }
 
     [Parameter] public bool Disabled { get; set; }

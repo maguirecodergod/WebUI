@@ -1,4 +1,3 @@
-using LHA.BlazorWasm.Services.Localization;
 using LHA.BlazorWasm.Services.Theme;
 using Microsoft.AspNetCore.Components;
 
@@ -22,16 +21,11 @@ public class ThemeSwitchBase : LhaComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         ThemeState.OnThemeChanged += OnStateChanged;
-        Localizer.OnLanguageChanged += RefreshUI;
     }
 
     private void OnStateChanged(CThemeMode newTheme)
-    {
-        RefreshUI();
-    }
-
-    private void RefreshUI()
     {
         InvokeAsync(StateHasChanged);
     }
@@ -42,9 +36,9 @@ public class ThemeSwitchBase : LhaComponentBase, IDisposable
         await ThemeService.SetThemeAsync(nextTheme);
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         ThemeState.OnThemeChanged -= OnStateChanged;
-        Localizer.OnLanguageChanged -= RefreshUI;
     }
 }

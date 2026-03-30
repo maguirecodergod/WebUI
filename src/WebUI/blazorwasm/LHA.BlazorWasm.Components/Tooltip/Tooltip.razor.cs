@@ -140,8 +140,9 @@ public partial class Tooltip : IDisposable
         }
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         _delayCts?.Cancel();
         _delayCts?.Dispose();
         if (_jsModule != null)

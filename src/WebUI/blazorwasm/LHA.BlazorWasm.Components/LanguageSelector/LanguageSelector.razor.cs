@@ -79,13 +79,7 @@ public partial class LanguageSelector : LhaComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
-        // Subscribe to localization service to trigger re-renders dynamically when language changes
-        Localizer.OnLanguageChanged += RefreshUI;
-    }
-
-    private void RefreshUI()
-    {
-        InvokeAsync(StateHasChanged);
+        base.OnInitialized();
     }
 
     private async Task SelectLanguageAsync(string culture)
@@ -96,8 +90,8 @@ public partial class LanguageSelector : LhaComponentBase, IDisposable
         }
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
-        Localizer.OnLanguageChanged -= RefreshUI;
+        base.Dispose();
     }
 }

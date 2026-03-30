@@ -60,6 +60,7 @@
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         if (State != null)
         {
             State.OnOptionsChanged += RefreshList;
@@ -85,8 +86,9 @@
         await OnSelect.InvokeAsync(option);
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         if (State != null)
         {
             State.OnOptionsChanged -= RefreshList;

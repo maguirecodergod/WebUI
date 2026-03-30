@@ -6,15 +6,11 @@
 @typeparam TItem
 @implements IDisposable
 
-<CascadingValue Value="this" IsFixed="true">
-    @ChildContent
-</CascadingValue>
-
 @{
     var visibleCols = VisibleColumns;
 }
 
-<div class="dt-container @CssClass" @attributes="AdditionalAttributes">
+<div class="dt-container @ThemeClass @CssClass" style="margin:0;" @attributes="AdditionalAttributes">
 
     @* ════════════ TOOLBAR ════════════ *@
     @if (ShowToolbar)
@@ -43,27 +39,28 @@
 
             @if (_columns.Any(c => c.Filterable))
             {
-                <button type="button" class="dt-toolbar-btn @(_filterSidebarOpen ? "dt-toolbar-btn-active" : "")"
-                        @onclick="ToggleFilterSidebar">
+                <Button Class="@($"dt-toolbar-btn {(_filterSidebarOpen ? "dt-toolbar-btn-active" : "")}")"
+                        Style="CButtonStyle.Light" OnClick="ToggleFilterSidebar">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
                          stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                     </svg>
                     @Localizer.L("DataTable.Filters")
-                </button>
+                </Button>
             }
 
             @if (ShowColumnToggle && _columns.Count > 0)
             {
                 <div style="position: relative;">
-                    <button type="button" class="dt-toolbar-btn" @onclick="ToggleColumnDropdown" @onclick:stopPropagation>
+                    <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="ToggleColumnDropdown"
+                            OnClick:stopPropagation="true">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
                              stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                             <line x1="12" y1="3" x2="12" y2="21"></line>
                         </svg>
                         @Localizer.L("DataTable.Columns")
-                    </button>
+                    </Button>
                     @if (_columnToggleOpen)
                     {
                         <div class="dt-col-toggle-list" @onclick:stopPropagation>
@@ -79,18 +76,18 @@
                 </div>
             }
 
-            <button type="button" class="dt-toolbar-btn" @onclick="RefreshAsync" disabled="@_isLoading">
+            <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="RefreshAsync" IsLoading="@_isLoading">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M23 4v6h-6"></path>
                     <path d="M1 20v-6h6"></path>
                     <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
                 </svg>
-            </button>
+            </Button>
         </div>
     }
 
     @* ════════════ TABLE ════════════ *@
-    <div class="dt-wrapper" style="@(MaxHeight is not null ? $"max-height:{MaxHeight};overflow-y:auto" : "")">
+    <div class="dt-wrapper" style="@(MaxHeight is not null ? $"max-height:{MaxHeight};" : "")">
         <table class="dt-table">
             <thead>
                 <tr class="dt-header-row">
@@ -121,7 +118,6 @@
                             }
                             else
                             {
-
                                 <span>@col.Title</span>
                             }
 
@@ -130,17 +126,26 @@
                                 <span class="dt-sort-icon">
                                     @if (sort.Direction == SortDirection.Ascending)
                                     {
-                                        <text>▲</text>
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="dt-svg-icon">
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        </svg>
                                     }
                                     else if (sort.Direction == SortDirection.Descending)
                                     {
-
-                                        <text>▼</text>
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="dt-svg-icon">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
                                     }
                                     else
                                     {
-
-                                        <text>⇅</text>
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="dt-svg-icon"
+                                             style="opacity: 0.2;">
+                                            <polyline points="7 15 12 20 17 15"></polyline>
+                                            <polyline points="7 9 12 4 17 9"></polyline>
+                                        </svg>
                                     }
                                 </span>
                             }
@@ -158,31 +163,33 @@
                                 @if (!_allEntireDatasetSelected)
                                 {
                                     <span>@string.Format(Localizer.L("DataTable.AllPageItemsSelected"), _displayItems.Count)</span>
-                                    <button type="button" class="dt-selection-link" @onclick="SelectAllEntireDataset">
+                                    <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
+                                            OnClick="SelectAllEntireDataset">
                                         @string.Format(Localizer.L("DataTable.SelectAllItems"), _totalCount)
-                                    </button>
+                                    </Button>
                                 }
                                 else
                                 {
                                     <span>@string.Format(Localizer.L("DataTable.AllItemsSelected"), _totalCount)</span>
-                                    <button type="button" class="dt-selection-link" @onclick="ClearSelection">
+                                    <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
+                                            OnClick="ClearSelection">
                                         @Localizer.L("DataTable.ClearSelection")
-                                    </button>
+                                    </Button>
                                 }
                             </div>
                         </td>
                     </tr>
                 }
+
                 @if (_isLoading && _displayItems.Count == 0)
                 {
                     @for (var i = 0; i < 5; i++)
                     {
                         <tr class="dt-row">
-                            @for (var j = 0; j < (visibleCols.Count + (SelectionMode != SelectionMode.None ? 1 : 0) +
-                    (ExpandedRowTemplate is not null ? 1 : 0)); j++)
+                            @for (var j = 0; j < (visibleCols.Count + (SelectionMode != SelectionMode.None ? 1 : 0) + (ExpandedRowTemplate is not null ? 1 : 0)); j++)
                             {
                                 <td class="dt-cell">
-                                    <div class="dt-skeleton"></div>
+                                    <Skeleton Height="1.25rem" Width="100%" />
                                 </td>
                             }
                         </tr>
@@ -198,7 +205,6 @@
                             }
                             else
                             {
-
                                 <text>@Localizer.L("DataTable.NoData")</text>
                             }
                         </td>
@@ -244,7 +250,6 @@
                                     }
                                     else
                                     {
-
                                         @col.GetDisplayValue(item)
                                     }
                                 </td>
@@ -268,33 +273,38 @@
         <DataTablePager PageNumber="@_request.PageNumber" PageSize="@_request.PageSize" TotalCount="@_totalCount"
                         PageSizes="@PageSizes" OnPageChanged="HandlePageChanged" OnPageSizeChanged="HandlePageSizeChanged" />
     }
+</div>
 
-    @* ════════════ SIDEBAR ════════════ *@
-    @if (_filterSidebarOpen)
-    {
-        <div class="dt-sidebar-overlay" @onclick="CloseFilterSidebar"></div>
-    }
-    <aside class="dt-sidebar @(_filterSidebarOpen ? "dt-sidebar-open" : "")">
-        <div class="dt-sidebar-header">
-            <h3 class="dt-sidebar-title">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-                @Localizer.L("DataTable.Filters")
-            </h3>
-            <button type="button" @onclick="CloseFilterSidebar"
-                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
-        </div>
-        <div class="dt-sidebar-body">
-            @foreach (var col in _columns.Where(c => c.Filterable))
-            {
-                <div class="dt-sidebar-filter-group">
-                    <label class="dt-sidebar-label">@col.Title</label>
-                    @RenderFilterInput(col)
-                </div>
-            }
-        </div>
-    </aside>
+@if (_filterSidebarOpen)
+{
+    <div class="dt-sidebar-overlay" @onclick="CloseFilterSidebar"></div>
+}
+
+<aside class="dt-sidebar @ThemeClass @(_filterSidebarOpen ? "dt-sidebar-open" : "")">
+    <div class="dt-sidebar-header">
+        <h3 class="dt-sidebar-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            @Localizer.L("DataTable.Filters")
+        </h3>
+        <button type="button" @onclick="CloseFilterSidebar" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+    </div>
+    <div class="dt-sidebar-body">
+        @foreach (var col in _columns.Where(c => c.Filterable))
+        {
+            <div class="dt-sidebar-filter-group">
+                <label class="dt-sidebar-label">@col.Title</label>
+                @RenderFilterInput(col)
+            </div>
+        }
+    </div>
+</aside>
+
+<div style="display:none">
+    <CascadingValue Value="this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
 </div>
 
 @code {

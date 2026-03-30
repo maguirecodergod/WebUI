@@ -1,4 +1,10 @@
-/* base properties */
+/* ══════════════════════════════════════════════════════════════
+   Button — System Themed Design
+   All colors use CSS custom properties from theme.css so the
+   button automatically responds to .theme-light / .theme-dark.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Base ── */
 .base-btn {
     display: inline-flex;
     align-items: center;
@@ -9,163 +15,222 @@
     vertical-align: middle;
     user-select: none;
     border: 1px solid transparent;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    border-radius: 0.375rem;
+    transition: color 0.15s ease-in-out,
+        background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out,
+        opacity 0.15s ease-in-out;
     cursor: pointer;
-    font-family: inherit;
-    gap: 0.5rem; /* space between icon and text */
+    font-family: var(--font-family, inherit);
+    gap: 0.5rem;
+    outline: none;
+    text-decoration: none;
 }
 
-/* state: disabled */
-.base-btn:disabled, .btn-disabled {
-    opacity: 0.65;
+.base-btn:focus-visible {
+    box-shadow: 0 0 0 3px var(--range-bg, rgba(99, 102, 241, 0.25));
+}
+
+/* ── Disabled ── */
+.base-btn:disabled,
+.btn-disabled {
+    opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
 }
 
-/* state: full width */
+/* ── Full Width ── */
 .btn-full-width {
     width: 100%;
 }
 
-/* size variants */
+/* ── Loading ── */
+.btn-loading {
+    cursor: wait;
+    pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SIZE VARIANTS
+   ══════════════════════════════════════════════════════════════ */
+
 .btn-small {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
     line-height: 1.5;
-    border-radius: 0.2rem;
+    border-radius: 0.25rem;
 }
 
 .btn-medium {
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
+    padding: 0.4375rem 0.875rem;
+    font-size: 0.875rem;
     line-height: 1.5;
     border-radius: 0.375rem;
 }
 
 .btn-large {
-    padding: 0.5rem 1rem;
-    font-size: 1.25rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 1rem;
     line-height: 1.5;
     border-radius: 0.5rem;
 }
 
-/* style variants */
+/* ══════════════════════════════════════════════════════════════
+   STYLE VARIANTS — use CSS vars for full theme support
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Primary ── */
 .btn-primary {
     color: #fff;
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: var(--primary-color, #6366f1);
+    border-color: var(--primary-color, #6366f1);
 }
+
 .btn-primary:hover:not(:disabled) {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+    background-color: var(--primary-hover, #4f46e5);
+    border-color: var(--primary-hover, #4f46e5);
+    box-shadow: 0 4px 12px var(--range-bg, rgba(99, 102, 241, 0.35));
 }
 
+/* ── Secondary ── */
 .btn-secondary {
-    color: #fff;
-    background-color: #6c757d;
-    border-color: #6c757d;
-}
-.btn-secondary:hover:not(:disabled) {
-    background-color: #5c636a;
-    border-color: #565e64;
+    color: var(--text-color, #374151);
+    background-color: var(--hover-bg, #f3f4f6);
+    border-color: var(--border-color, #d1d5db);
 }
 
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--border-color, #e5e7eb);
+    border-color: var(--text-muted, #9ca3af);
+}
+
+/* ── Success ── */
 .btn-success {
     color: #fff;
-    background-color: #198754;
-    border-color: #198754;
-}
-.btn-success:hover:not(:disabled) {
-    background-color: #157347;
-    border-color: #146c43;
+    background-color: var(--success-color, #12b76a);
+    border-color: var(--success-color, #12b76a);
 }
 
+.btn-success:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--success-color, #12b76a) 85%, black);
+    border-color: color-mix(in srgb, var(--success-color, #12b76a) 85%, black);
+    box-shadow: 0 4px 12px var(--success-bg, rgba(18, 183, 106, 0.3));
+}
+
+/* ── Danger ── */
 .btn-danger {
     color: #fff;
-    background-color: #dc3545;
-    border-color: #dc3545;
+    background-color: var(--error-color, #f04438);
+    border-color: var(--error-color, #f04438);
 }
+
 .btn-danger:hover:not(:disabled) {
-    background-color: #bb2d3b;
-    border-color: #b02a37;
+    background-color: color-mix(in srgb, var(--error-color, #f04438) 85%, black);
+    border-color: color-mix(in srgb, var(--error-color, #f04438) 85%, black);
+    box-shadow: 0 4px 12px var(--error-bg, rgba(240, 68, 56, 0.3));
 }
 
+/* ── Warning ── */
 .btn-warning {
-    color: #000;
-    background-color: #ffc107;
-    border-color: #ffc107;
+    color: #1a1c21;
+    background-color: var(--warning-color, #f79009);
+    border-color: var(--warning-color, #f79009);
 }
+
 .btn-warning:hover:not(:disabled) {
-    background-color: #ffca2c;
-    border-color: #ffc720;
+    background-color: color-mix(in srgb, var(--warning-color, #f79009) 85%, black);
+    border-color: color-mix(in srgb, var(--warning-color, #f79009) 85%, black);
+    box-shadow: 0 4px 12px var(--warning-bg, rgba(247, 144, 9, 0.3));
 }
 
+/* ── Info ── */
 .btn-info {
-    color: #000;
-    background-color: #0dcaf0;
-    border-color: #0dcaf0;
-}
-.btn-info:hover:not(:disabled) {
-    background-color: #31d2f2;
-    border-color: #25cff2;
-}
-
-.btn-light {
-    color: #000;
-    background-color: #f8f9fa;
-    border-color: #f8f9fa;
-}
-.btn-light:hover:not(:disabled) {
-    background-color: #f9fafb;
-    border-color: #f9fafb;
-}
-
-.btn-dark {
     color: #fff;
-    background-color: #212529;
-    border-color: #212529;
-}
-.btn-dark:hover:not(:disabled) {
-    background-color: #1c1f23;
-    border-color: #1a1e21;
+    background-color: var(--primary-color, #6366f1);
+    border-color: var(--primary-color, #6366f1);
+    opacity: 0.85;
 }
 
+.btn-info:hover:not(:disabled) {
+    opacity: 1;
+    background-color: var(--primary-hover, #4f46e5);
+    border-color: var(--primary-hover, #4f46e5);
+}
+
+/* ── Light ── */
+.btn-light {
+    color: var(--text-color, #374151);
+    background-color: var(--input-bg, #ffffff);
+    border-color: var(--border-color, #e5e7eb);
+}
+
+.btn-light:hover:not(:disabled) {
+    background-color: var(--hover-bg, #f9fafb);
+    border-color: var(--text-muted, #9ca3af);
+    color: var(--text-color, #111827);
+}
+
+/* ── Dark ── */
+.btn-dark {
+    color: #f9fafb;
+    background-color: var(--text-color, #111827);
+    border-color: var(--text-color, #111827);
+}
+
+.btn-dark:hover:not(:disabled) {
+    background-color: var(--text-muted, #374151);
+    border-color: var(--text-muted, #374151);
+}
+
+/* ── Link ── */
 .btn-link {
-    font-weight: 400;
-    color: #0d6efd;
+    font-weight: 500;
+    color: var(--primary-color, #6366f1);
     text-decoration: underline;
     background-color: transparent;
     border: none;
     box-shadow: none;
-}
-.btn-link:hover:not(:disabled) {
-    color: #0a58ca;
+    padding-left: 0;
+    padding-right: 0;
 }
 
+.btn-link:hover:not(:disabled) {
+    color: var(--primary-hover, #4f46e5);
+    text-decoration-thickness: 2px;
+}
+
+/* ── Ghost ── */
 .btn-ghost {
-    color: var(--text-color, #111827);
+    color: var(--text-color, #374151);
     background-color: transparent;
     border-color: transparent;
 }
+
 .btn-ghost:hover:not(:disabled) {
     background-color: var(--hover-bg, #f3f4f6);
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, #6366f1);
+    border-color: transparent;
 }
 
-/* spinner */
+/* ══════════════════════════════════════════════════════════════
+   SPINNER
+   ══════════════════════════════════════════════════════════════ */
+
 .btn-spinner {
     display: inline-block;
-    width: 1.2em;
-    height: 1.2em;
+    width: 1em;
+    height: 1em;
     vertical-align: text-bottom;
     border: 0.15em solid currentColor;
     border-right-color: transparent;
     border-radius: 50%;
-    animation: spinner-border 0.75s linear infinite;
+    animation: btn-spin 0.65s linear infinite;
+    flex-shrink: 0;
 }
 
-@keyframes spinner-border {
-    to { 
-        transform: rotate(360deg); 
+@keyframes btn-spin {
+    to {
+        transform: rotate(360deg);
     }
 }

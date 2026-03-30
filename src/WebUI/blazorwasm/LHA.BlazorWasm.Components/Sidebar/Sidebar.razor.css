@@ -11,14 +11,14 @@
     --sidebar-text: #334155;
     --sidebar-text-muted: #94a3b8;
     --sidebar-text-active: #2563eb;
-    --sidebar-border: #e2e8f0;
+    --sidebar-border: #cbd5e1;
     --sidebar-divider: #f1f5f9;
     --sidebar-badge-bg: #ef4444;
     --sidebar-badge-text: #ffffff;
     --sidebar-overlay-bg: rgba(0, 0, 0, 0.5);
     --sidebar-scrollbar-thumb: #cbd5e1;
     --sidebar-scrollbar-track: transparent;
-    --sidebar-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --sidebar-shadow: 4px 0 32px rgba(0, 0, 0, 0.12);
     --sidebar-resize-handle: #cbd5e1;
     --sidebar-resize-handle-active: #2563eb;
     --sidebar-transition-speed: 250ms;
@@ -40,7 +40,7 @@
     --sidebar-border: #1e293b;
     --sidebar-divider: #1e293b;
     --sidebar-scrollbar-thumb: #334155;
-    --sidebar-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --sidebar-shadow: 4px 0 32px rgba(0, 0, 0, 0.4);
     --sidebar-resize-handle: #334155;
 }
 
@@ -55,13 +55,13 @@
     width: var(--sidebar-width);
     min-width: 0;
     background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--sidebar-border);
+    border-right: none !important;
     box-shadow: var(--sidebar-shadow);
     transition:
         width var(--sidebar-transition-speed) ease-in-out,
         min-width var(--sidebar-transition-speed) ease-in-out,
         transform var(--sidebar-transition-speed) ease-in-out;
-    z-index: 100;
+    z-index: 1005;
     user-select: none;
     flex-shrink: 0;
     overflow: visible;
@@ -218,14 +218,16 @@
 .lha-sidebar__resize-handle {
     position: absolute;
     top: 0;
-    right: -4px;
-    width: 8px;
+    right: -0.5px;
+    width: 1px;
     height: 100%;
     cursor: col-resize;
     z-index: 110;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgba(22, 24, 27, 0.03);
+    border-left: 1px solid var(--sidebar-border);
     transition: background-color 150ms ease;
 }
 
@@ -258,7 +260,7 @@
     border-radius: 50% !important;
     background-color: var(--sidebar-bg) !important;
     border: 1px solid var(--sidebar-border) !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -308,6 +310,7 @@
 /* ═══════════════════ Reduced Motion ═══════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
+
     .lha-sidebar,
     .lha-sidebar *,
     .lha-sidebar__overlay,

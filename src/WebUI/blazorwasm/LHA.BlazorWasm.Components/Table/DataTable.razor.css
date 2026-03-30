@@ -15,6 +15,10 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    height: fit-content;
+    align-self: flex-start;
+    min-height: 0 !important;
+    width: 100%;
     font-family: var(--font-family, inherit);
     font-size: 0.875rem;
     color: var(--text-color, #1e293b);
@@ -94,6 +98,16 @@
     border-color: var(--text-muted, #cbd5e1);
 }
 
+.dt-toolbar-btn-active {
+    background: var(--range-bg, rgba(99, 102, 241, 0.08)) !important;
+    border-color: var(--primary-color, #6366f1) !important;
+    color: var(--primary-color, #6366f1) !important;
+}
+
+.dt-toolbar-btn-active svg {
+    color: var(--primary-color, #6366f1) !important;
+}
+
 .dt-toolbar-btn svg {
     color: var(--text-muted, #475569);
 }
@@ -102,6 +116,9 @@
 .dt-wrapper {
     width: 100%;
     overflow-x: auto;
+    overflow-y: auto;
+    flex: 0 1 auto;
+    max-height: 700px;
 }
 
 .dt-table {
@@ -110,13 +127,16 @@
 }
 
 ::deep .dt-header-cell {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     padding: 0.75rem 1rem;
     text-align: left;
     background: var(--hover-bg, #f8fafc);
     font-weight: 600;
     color: var(--text-muted, #475569);
     font-size: 0.75rem;
-    border-bottom: 1px solid var(--border-color, #edf2f7);
+    border-bottom: 2px solid var(--border-color, #edf2f7); /* Strengthened for visibility */
     white-space: nowrap;
 }
 
@@ -163,13 +183,18 @@
     background: var(--popup-bg, #fff);
     box-shadow: var(--popup-shadow, -4px 0 20px rgba(0,0,0,0.08));
     z-index: 2000;
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    display: none;
     flex-direction: column;
     border-left: 1px solid var(--border-color, #f1f5f9);
+    opacity: 0;
 }
 
-.dt-sidebar-open { right: 0; }
+.dt-sidebar-open { 
+    right: 0; 
+    display: flex;
+    opacity: 1;
+}
 
 .dt-sidebar-header {
     padding: 1rem 1.25rem;

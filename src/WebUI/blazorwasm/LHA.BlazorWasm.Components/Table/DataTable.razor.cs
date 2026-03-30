@@ -16,6 +16,10 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     // ═══════════════════════════════════════════════════════════
 
     [Inject] private ILocalStorageService LocalStorage { get; set; } = default!;
+    [Inject] private LHA.BlazorWasm.Services.Theme.IThemeService ThemeService { get; set; } = default!;
+    [Inject] private LHA.BlazorWasm.Services.Theme.ThemeState ThemeState { get; set; } = default!;
+
+    private string ThemeClass => ThemeService.ThemeClass;
 
     // ═══════════════════════════════════════════════════════════
     // PARAMETERS — Data
@@ -63,7 +67,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     [Parameter] public int SearchDebounceMs { get; set; } = 350;
 
     /// <summary>Max height for the table body area. Enables vertical scrolling with sticky header.</summary>
-    [Parameter] public string? MaxHeight { get; set; }
+    [Parameter] public string? MaxHeight { get; set; } = "700px";
 
     /// <summary>Unique table identifier for persisting user settings (column visibility, etc.).</summary>
     [Parameter] public string? TableId { get; set; }
@@ -199,6 +203,8 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
+        ThemeState.OnThemeChanged += OnThemeChanged;
         _request.PageSize = DefaultPageSize;
         _searchDebouncer = new Debouncer(SearchDebounceMs);
         _filterDebouncer = new Debouncer(SearchDebounceMs);
@@ -773,8 +779,13 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     // DISPOSE
     // ═══════════════════════════════════════════════════════════
 
-    public void Dispose()
+    private void OnThemeChanged(LHA.BlazorWasm.Services.Theme.CThemeMode _) =>
+        InvokeAsync(StateHasChanged);
+
+    public override void Dispose()
     {
+        base.Dispose();
+        ThemeState.OnThemeChanged -= OnThemeChanged;
         _searchDebouncer?.Dispose();
         _filterDebouncer?.Dispose();
     }

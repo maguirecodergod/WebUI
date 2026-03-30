@@ -54,8 +54,9 @@ public partial class Toast : LhaComponentBase, IDisposable
         }
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         // GC Cleanup
     }
 }

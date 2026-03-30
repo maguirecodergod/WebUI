@@ -8,11 +8,13 @@ public partial class ToastContainer : LhaComponentBase, IDisposable
 {
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         ToastNotification.State.OnChange += StateHasChanged;
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         ToastNotification.State.OnChange -= StateHasChanged;
     }
 }

@@ -1,8 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using LHA.BlazorWasm.Services.Localization;
-using LHA.BlazorWasm.Services.Theme;
-using LHA.BlazorWasm.Components.Breadcrumb;
 using Microsoft.JSInterop;
 
 
@@ -11,22 +7,23 @@ namespace LHA.BlazorWasm.Components.Topbar;
 public partial class Topbar : LhaComponentBase, IDisposable
 {
     [Inject] public ITopbarService TopbarService { get; set; } = default!;
-    
+
     [Parameter] public RenderFragment? LeftContent { get; set; }
     [Parameter] public RenderFragment? CenterContent { get; set; }
     [Parameter] public RenderFragment? RightContent { get; set; }
-    
+
     [Parameter] public string AppName { get; set; } = "LHA WebUI";
     [Parameter] public string? LogoSvg { get; set; }
-    
+
     [Parameter] public EventCallback OnSidebarToggle { get; set; }
-    
+
     private string _searchText = string.Empty;
     private bool _isNotificationOpen;
     private bool _isProfileOpen;
-    
+
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         TopbarService.State.OnStateChanged += StateHasChanged;
     }
 
@@ -105,18 +102,19 @@ public partial class Topbar : LhaComponentBase, IDisposable
         StateHasChanged();
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         _isDisposed = true;
         TopbarService.State.OnStateChanged -= StateHasChanged;
-        
+
         _dotNetHelper?.Dispose();
 
         if (_jsModule != null)
         {
             _ = _jsModule.DisposeAsync().AsTask();
         }
-        
+
         GC.SuppressFinalize(this);
     }
 }

@@ -64,19 +64,9 @@ public partial class NotFoundPage : LhaComponentBase, IDisposable
     private string GoHomeText => Localizer.L("Errors.NotFound.GoHome");
     private string GoBackText => Localizer.L("Errors.NotFound.GoBack");
 
-    protected override void OnInitialized()
+    public override void Dispose()
     {
-        Localizer.OnLanguageChanged += HandleLanguageChanged;
-    }
-
-    private void HandleLanguageChanged()
-    {
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        Localizer.OnLanguageChanged -= HandleLanguageChanged;
+        base.Dispose();
     }
 
     private async Task HandleBackAsync()
