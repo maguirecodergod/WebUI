@@ -31,7 +31,7 @@
     justify-content: space-between;
     padding: 0 1rem;
     position: relative;
-    z-index: 2100;
+    z-index: 999;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--topbar-text);
 }
@@ -418,7 +418,7 @@
 .topbar-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 2000;
+    z-index: 950;
     background: transparent; /* Keeping it transparent for now, can add rgba(0,0,0,0.1) if dimming is desired */
 }
 

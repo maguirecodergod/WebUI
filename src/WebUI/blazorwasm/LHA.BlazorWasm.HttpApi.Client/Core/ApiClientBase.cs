@@ -102,8 +102,8 @@ public abstract class ApiClientBase : IApiClient
                  return ApiResponse<T>.Ok(default!, (int)response.StatusCode);
             }
 
-            var data = await JsonSerializer.DeserializeAsync<T>(stream, JsonOptionsProvider.Default, cancellationToken).ConfigureAwait(false);
-            return ApiResponse<T>.Ok(data!, (int)response.StatusCode);
+            var apiResponse = await JsonSerializer.DeserializeAsync<ApiResponse<T>>(stream, JsonOptionsProvider.Default, cancellationToken).ConfigureAwait(false);
+            return apiResponse ?? ApiResponse<T>.Ok(default!, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
