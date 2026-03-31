@@ -112,9 +112,82 @@
         }
     },
     "Login": {
+        "Title": "Đăng nhập",
+        "Subtitle": "Truy cập không gian làm việc của bạn",
+        "UserNameOrEmail": "Tài khoản hoặc Email",
+        "Password": "Mật khẩu",
+        "RememberMe": "Ghi nhớ tôi",
+        "ForgotPassword": "Quên mật khẩu?",
+        "NoAccount": "Chưa có tài khoản?",
+        "RegisterTenant": "Tạo Tenant mới",
         "Validation": {
             "UserNameOrEmailRequired": "Vui lòng nhập tài khoản hoặc email",
             "PasswordRequired": "Vui lòng nhập mật khẩu"
+        }
+    },
+    "TenantRegister": {
+        "Title": "Đăng ký Tenant mới",
+        "Subtitle": "Gia nhập Hệ sinh thái Doanh nghiệp",
+        "Steps": {
+            "Plan": "Gói dịch vụ",
+            "Details": "Chi tiết",
+            "Launch": "Khởi chạy"
+        },
+        "Step1": {
+            "Title": "Chọn Kiến trúc Cơ sở Dữ liệu",
+            "Desc": "Chọn mức độ cô lập phù hợp với nhu cầu bảo mật và ngân sách của tổ chức bạn.",
+            "BadgePopular": "Phổ biến nhất",
+            "PlanStartup": {
+                "Name": "Startup",
+                "Subtitle": "Cơ sở dữ liệu dùng chung",
+                "Desc": "Cô lập logic qua TenantID. Triển khai nhanh, hoàn hảo cho các startup đang phát triển.",
+                "Price": "$29",
+                "Feature1": "Tài nguyên SQL dùng chung",
+                "Feature2": "Bảo mật mức hàng (RLS)",
+                "Feature3": "Tối đa 50 người dùng"
+            },
+            "PlanBusiness": {
+                "Name": "Business",
+                "Subtitle": "Kiến trúc Hybrid",
+                "Desc": "Cân bằng giữa cô lập và chi phí. Metadata dùng chung, schema dữ liệu riêng.",
+                "Price": "$99",
+                "Feature1": "Cô lập mức Schema",
+                "Feature2": "Hạn mức IO riêng biệt",
+                "Feature3": "Tối đa 500 người dùng"
+            },
+            "PlanEnterprise": {
+                "Name": "Enterprise",
+                "Subtitle": "Cơ sở dữ liệu riêng biệt",
+                "Desc": "Cô lập vật lý để tối đa hóa bảo mật và đáp ứng yêu cầu tuân thủ.",
+                "Price": "$299",
+                "Feature1": "Cô lập cơ sở dữ liệu vật lý",
+                "Feature2": "Mã hóa BYOK",
+                "Feature3": "Không giới hạn người dùng"
+            },
+            "Continue": "Tiếp tục thiết lập"
+        },
+        "Step2": {
+            "Title": "Chi tiết Tổ chức",
+            "Desc": "Thiết lập không gian làm việc và tài khoản quản trị cho gói {0}.",
+            "OrgName": "Tên Tổ chức",
+            "AdminUsername": "Tên đăng nhập Admin",
+            "AdminEmail": "Email Admin",
+            "AdminPassword": "Mật khẩu Admin",
+            "Back": "Quay lại chọn gói",
+            "Finalize": "Hoàn tất thiết lập"
+        },
+        "Step3": {
+            "Title": "Đang triển khai môi trường",
+            "Desc": "Tenant {0} ({1}) đang được khởi tạo. Bạn sẽ được chuyển hướng đến bảng điều khiển trong giây lát.",
+            "Launch": "Truy cập Dashboard"
+        },
+        "Validation": {
+            "NameRequired": "Vui lòng nhập tên tổ chức.",
+            "AdminUsernameRequired": "Vui lòng nhập tên đăng nhập admin.",
+            "AdminEmailRequired": "Vui lòng nhập email admin.",
+            "InvalidEmail": "Vui lòng nhập định dạng email hợp lệ.",
+            "AdminPasswordRequired": "Vui lòng nhập mật khẩu admin.",
+            "PasswordTooShort": "Mật khẩu phải có ít nhất 6 ký tự."
         }
     }
 }

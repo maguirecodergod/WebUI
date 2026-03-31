@@ -112,9 +112,82 @@
         }
     },
     "Login": {
+        "Title": "Login",
+        "Subtitle": "Access your workspace",
+        "UserNameOrEmail": "Username or Email",
+        "Password": "Password",
+        "RememberMe": "Remember Me",
+        "ForgotPassword": "Forgot password?",
+        "NoAccount": "Don't have an account?",
+        "RegisterTenant": "Create New Tenant",
         "Validation": {
             "UserNameOrEmailRequired": "Username or email is required",
             "PasswordRequired": "Password is required"
+        }
+    },
+    "TenantRegister": {
+        "Title": "Register New Tenant",
+        "Subtitle": "Join the Enterprise Ecosystem",
+        "Steps": {
+            "Plan": "Plan",
+            "Details": "Details",
+            "Launch": "Launch"
+        },
+        "Step1": {
+            "Title": "Select Database Architecture",
+            "Desc": "Choose the isolation level that fits your organization's security and budget needs.",
+            "BadgePopular": "Most Popular",
+            "PlanStartup": {
+                "Name": "Startup",
+                "Subtitle": "Shared Database",
+                "Desc": "Logical isolation via TenantID. Fast provisioning, perfect for scaling startups.",
+                "Price": "$29",
+                "Feature1": "Shared SQL resources",
+                "Feature2": "Logical row-level security",
+                "Feature3": "Up to 50 users"
+            },
+            "PlanBusiness": {
+                "Name": "Business",
+                "Subtitle": "Hybrid Architecture",
+                "Desc": "Balancing isolation and cost. Shared metadata, dedicated data schema.",
+                "Price": "$99",
+                "Feature1": "Schema-level isolation",
+                "Feature2": "Dedicated IO quotas",
+                "Feature3": "Up to 500 users"
+            },
+            "PlanEnterprise": {
+                "Name": "Enterprise",
+                "Subtitle": "Dedicated Database",
+                "Desc": "Physical isolation for maximum security and compliance requirements.",
+                "Price": "$299",
+                "Feature1": "Physical database isolation",
+                "Feature2": "BYOK Encryption",
+                "Feature3": "Unlimited users"
+            },
+            "Continue": "Continue to Details"
+        },
+        "Step2": {
+            "Title": "Organization Details",
+            "Desc": "Set up your workspace and admin account for the {0} plan.",
+            "OrgName": "Organization Name",
+            "AdminUsername": "Admin Username",
+            "AdminEmail": "Admin Email",
+            "AdminPassword": "Admin Password",
+            "Back": "Back to Plans",
+            "Finalize": "Finalize Setup"
+        },
+        "Step3": {
+            "Title": "Environment Provisioning",
+            "Desc": "Your tenant {0} ({1}) is being spun up. We will redirect you to your dashboard shortly.",
+            "Launch": "Launch Dashboard"
+        },
+        "Validation": {
+            "NameRequired": "Organization name is required.",
+            "AdminUsernameRequired": "Admin username is required.",
+            "AdminEmailRequired": "Admin email is required.",
+            "InvalidEmail": "Please enter a valid email address.",
+            "AdminPasswordRequired": "Admin password is required.",
+            "PasswordTooShort": "Password must be at least 6 characters."
         }
     }
 }

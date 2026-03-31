@@ -1,5 +1,6 @@
 @page "/register-tenant"
 @layout EmptyLayout
+@inherits LhaComponentBase
 @using LHA.TenantManagement.Domain.Shared
 @using LHA.Shared.Contracts.Identity.Auth
 @using LHA.BlazorWasm.HttpApi.Client.Clients
@@ -14,6 +15,8 @@
 @inject LHA.BlazorWasm.Services.Theme.IThemeService ThemeService
 @inject LHA.BlazorWasm.Services.Theme.ThemeState ThemeState
 
+<PageTitle>@Localizer.L("TenantRegister.Title")</PageTitle>
+
 <div class="register-container @ThemeService.ThemeClass">
     @* Background elements for glassmorphism ambient glow *@
     <div class="ambient-glow glow-1"></div>
@@ -22,23 +25,23 @@
     <div class="register-glass-panel">
         <div class="register-header">
             <h1 class="brand-title">LHA<span class="brand-accent">App</span></h1>
-            <p class="subtitle">Join the Enterprise Ecosystem</p>
+            <p class="subtitle">@Localizer.L("TenantRegister.Subtitle")</p>
         </div>
 
         <div class="wizard-steps">
             <div class="step @(CurrentStep == 1 ? "active" : (CurrentStep > 1 ? "completed" : ""))">
                 <div class="step-circle">1</div>
-                <div class="step-text">Plan</div>
+                <div class="step-text">@Localizer.L("TenantRegister.Steps.Plan")</div>
             </div>
             <div class="step-line @(CurrentStep > 1 ? "completed" : "")"></div>
             <div class="step @(CurrentStep == 2 ? "active" : (CurrentStep > 2 ? "completed" : ""))">
                 <div class="step-circle">2</div>
-                <div class="step-text">Details</div>
+                <div class="step-text">@Localizer.L("TenantRegister.Steps.Details")</div>
             </div>
             <div class="step-line @(CurrentStep > 2 ? "completed" : "")"></div>
             <div class="step @(CurrentStep == 3 ? "active" : "")">
                 <div class="step-circle">3</div>
-                <div class="step-text">Launch</div>
+                <div class="step-text">@Localizer.L("TenantRegister.Steps.Launch")</div>
             </div>
         </div>
 
@@ -46,30 +49,28 @@
             @if (CurrentStep == 1)
             {
                 <div class="step-1-plans">
-                    <h2 class="section-title">Select Database Architecture</h2>
-                    <p class="section-desc">Choose the isolation level that fits your organization's security and budget
-                        needs.</p>
+                    <h2 class="section-title">@Localizer.L("TenantRegister.Step1.Title")</h2>
+                    <p class="section-desc">@Localizer.L("TenantRegister.Step1.Desc")</p>
 
                     <div class="plans-grid">
                         @* Basic / Shared Plan *@
                         <div class="plan-card @(SelectedStyle == CMultiTenancyDatabaseStyle.Shared ? "selected" : "")"
                         @onclick="() => SelectedStyle = CMultiTenancyDatabaseStyle.Shared">
-                            <div class="plan-badge">Most Popular</div>
+                            <div class="plan-badge">@Localizer.L("TenantRegister.Step1.BadgePopular")</div>
                             <div class="plan-icon plan-icon-blue">
-                                <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
                                     fill="none">
                                     <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                                 </svg>
                             </div>
-                            <h3>Startup</h3>
-                            <div class="plan-subtitle">Shared Database</div>
-                            <p class="plan-desc">Logical isolation via TenantID. Fast provisioning, perfect for scaling
-                                startups.</p>
-                            <div class="plan-price">$29<span>/mo</span></div>
+                            <h3>@Localizer.L("TenantRegister.Step1.PlanStartup.Name")</h3>
+                            <div class="plan-subtitle">@Localizer.L("TenantRegister.Step1.PlanStartup.Subtitle")</div>
+                            <p class="plan-desc">@Localizer.L("TenantRegister.Step1.PlanStartup.Desc")</p>
+                            <div class="plan-price">@Localizer.L("TenantRegister.Step1.PlanStartup.Price")<span>/mo</span></div>
                             <ul class="plan-features">
-                                <li>Shared SQL resources</li>
-                                <li>Logical row-level security</li>
-                                <li>Up to 50 users</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanStartup.Feature1")</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanStartup.Feature2")</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanStartup.Feature3")</li>
                             </ul>
                         </div>
 
@@ -77,20 +78,20 @@
                         <div class="plan-card @(SelectedStyle == CMultiTenancyDatabaseStyle.Hybrid ? "selected" : "")"
                         @onclick="() => SelectedStyle = CMultiTenancyDatabaseStyle.Hybrid">
                             <div class="plan-icon plan-icon-purple">
-                                <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
                                     fill="none">
-                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                                 </svg>
                             </div>
-                            <h3>Business</h3>
-                            <div class="plan-subtitle">Hybrid Architecture</div>
-                            <p class="plan-desc">Balancing isolation and cost. Shared metadata, dedicated data schema.</p>
-                            <div class="plan-price">$99<span>/mo</span></div>
+                            <h3>@Localizer.L("TenantRegister.Step1.PlanBusiness.Name")</h3>
+                            <div class="plan-subtitle">@Localizer.L("TenantRegister.Step1.PlanBusiness.Subtitle")</div>
+                            <p class="plan-desc">@Localizer.L("TenantRegister.Step1.PlanBusiness.Desc")</p>
+                            <div class="plan-price">@Localizer.L("TenantRegister.Step1.PlanBusiness.Price")<span>/mo</span></div>
                             <ul class="plan-features">
-                                <li>Schema-level isolation</li>
-                                <li>Dedicated IO quotas</li>
-                                <li>Up to 500 users</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanBusiness.Feature1")</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanBusiness.Feature2")</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanBusiness.Feature3")</li>
                             </ul>
                         </div>
 
@@ -98,27 +99,27 @@
                         <div class="plan-card @(SelectedStyle == CMultiTenancyDatabaseStyle.PerTenant ? "selected" : "")"
                         @onclick="() => SelectedStyle = CMultiTenancyDatabaseStyle.PerTenant">
                             <div class="plan-icon plan-icon-gold">
-                                <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
                                     fill="none">
                                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                 </svg>
                             </div>
-                            <h3>Enterprise</h3>
-                            <div class="plan-subtitle">Dedicated Database</div>
-                            <p class="plan-desc">Physical isolation for maximum security and compliance requirements.</p>
-                            <div class="plan-price">$299<span>/mo</span></div>
+                            <h3>@Localizer.L("TenantRegister.Step1.PlanEnterprise.Name")</h3>
+                            <div class="plan-subtitle">@Localizer.L("TenantRegister.Step1.PlanEnterprise.Subtitle")</div>
+                            <p class="plan-desc">@Localizer.L("TenantRegister.Step1.PlanEnterprise.Desc")</p>
+                            <div class="plan-price">@Localizer.L("TenantRegister.Step1.PlanEnterprise.Price")<span>/mo</span></div>
                             <ul class="plan-features">
-                                <li>Physical database isolation</li>
-                                <li>BYOK Encryption</li>
-                                <li>Unlimited users</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanEnterprise.Feature1")</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanEnterprise.Feature2")</li>
+                                <li>@Localizer.L("TenantRegister.Step1.PlanEnterprise.Feature3")</li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="wizard-actions right-align">
                         <Button Style="CButtonStyle.Primary" Size="CButtonSize.Large" OnClick="NextStep" Class="btn-primary-neon">
-                            Continue to Details <span class="arrow">→</span>
+                            @Localizer.L("TenantRegister.Step1.Continue") <span class="arrow">→</span>
                         </Button>
                     </div>
                 </div>
@@ -126,16 +127,15 @@
             else if (CurrentStep == 2)
             {
                 <div class="step-2-details form-animate">
-                    <h2 class="section-title">Organization Details</h2>
-                    <p class="section-desc">Set up your workspace and admin account for the <strong>@SelectedStyle</strong>
-                        plan.</p>
+                    <h2 class="section-title">@Localizer.L("TenantRegister.Step2.Title")</h2>
+                    <p class="section-desc">@string.Format(Localizer.L("TenantRegister.Step2.Desc"), SelectedStyle)</p>
 
                     <EditForm Model="@Model" OnValidSubmit="NextStep">
-                        <DataAnnotationsValidator />
+                        <FluentValidationValidator />
                         <ServerSideValidator @ref="_serverValidator" />
 
                         <div class="form-grid">
-                            <FormField Label="Organization Name" Required="true" Class="full-width" 
+                            <FormField Label="@Localizer.L("TenantRegister.Step2.OrgName")" Required="true" Class="full-width" 
                                        ValueExpression="@(() => (object)Model.TenantName)">
                                 <CInput @bind-Value="Model.TenantName" Placeholder="e.g., Acme Corp.">
                                     <IconContent>
@@ -147,9 +147,9 @@
                                 </CInput>
                             </FormField>
 
-                            <FormField Label="Admin Username" Required="true" 
-                                       ValueExpression="@(() => (object)Model.AdminUsername)">
-                                <CInput @bind-Value="Model.AdminUsername" Placeholder="admin">
+                            <FormField Label="@Localizer.L("TenantRegister.Step2.AdminUsername")" Required="true" 
+                                       ValueExpression="@(() => (object)Model.AdminUserName)">
+                                <CInput @bind-Value="Model.AdminUserName" Placeholder="admin">
                                     <IconContent>
                                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -159,7 +159,7 @@
                                 </CInput>
                             </FormField>
 
-                            <FormField Label="Admin Email" Required="true" 
+                            <FormField Label="@Localizer.L("TenantRegister.Step2.AdminEmail")" Required="true" 
                                        ValueExpression="@(() => (object)Model.AdminEmail)">
                                 <CInput @bind-Value="Model.AdminEmail" Type="email" Placeholder="admin@acme.com">
                                     <IconContent>
@@ -171,7 +171,7 @@
                                 </CInput>
                             </FormField>
 
-                            <FormField Label="Admin Password" Required="true" Class="full-width" 
+                            <FormField Label="@Localizer.L("TenantRegister.Step2.AdminPassword")" Required="true" Class="full-width" 
                                        ValueExpression="@(() => (object)Model.AdminPassword)">
                                 <CInput @bind-Value="Model.AdminPassword" Type="password" Placeholder="••••••••">
                                     <IconContent>
@@ -186,10 +186,10 @@
 
                         <div class="wizard-actions space-between mt-8">
                             <Button Style="CButtonStyle.Ghost" OnClick="PrevStep" Class="btn-secondary-ghost">
-                                <span class="arrow">←</span> Back to Plans
+                                <span class="arrow">←</span> @Localizer.L("TenantRegister.Step2.Back")
                             </Button>
                             <Button Type="CButtonType.Submit" Style="CButtonStyle.Primary" Class="btn-primary-neon">
-                                Finalize Setup <span class="arrow">→</span>
+                                @Localizer.L("TenantRegister.Step2.Finalize") <span class="arrow">→</span>
                             </Button>
                         </div>
                     </EditForm>
@@ -204,16 +204,15 @@
                             <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
                         </svg>
                     </div>
-                    <h2 class="section-title text-center">Environment Provisioning</h2>
-                    <p class="section-desc text-center">Your tenant <strong>@Model.TenantName</strong> (@SelectedStyle) is
-                        being spun up.<br />We will redirect you to your dashboard shortly.</p>
+                    <h2 class="section-title text-center">@Localizer.L("TenantRegister.Step3.Title")</h2>
+                    <p class="section-desc text-center">@string.Format(Localizer.L("TenantRegister.Step3.Desc"), Model.TenantName, SelectedStyle)</p>
 
                     <div class="launch-loader">
                         <div class="progress-bar-neon"></div>
                     </div>
 
                     <div class="wizard-actions center-align mt-8">
-                        <Button Style="CButtonStyle.Primary" OnClick="GoToDashboard" Class="btn-primary-neon">Launch Dashboard</Button>
+                        <Button Style="CButtonStyle.Primary" OnClick="GoToDashboard" Class="btn-primary-neon">@Localizer.L("TenantRegister.Step3.Launch")</Button>
                     </div>
                 </div>
             }
@@ -224,6 +223,7 @@
 @code {
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         ThemeState.OnThemeChanged += OnThemeChanged;
     }
 
@@ -232,8 +232,9 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         ThemeState.OnThemeChanged -= OnThemeChanged;
     }
 
@@ -243,9 +244,7 @@
 
     private CMultiTenancyDatabaseStyle SelectedStyle { get; set; } = CMultiTenancyDatabaseStyle.Shared;
 
-
-
-    private TenantRegisterModel Model { get; set; } = new();
+    private RegisterTenantInput Model { get; set; } = new();
 
 
 
@@ -260,18 +259,11 @@
             {
                 StateHasChanged(); // Render the loading UI quickly
 
-                var input = new RegisterTenantInput
-                {
-                    TenantName = Model.TenantName,
-                    DatabaseStyle = (int)SelectedStyle,
-                    AdminUserName = Model.AdminUsername,
-                    AdminEmail = Model.AdminEmail,
-                    AdminPassword = Model.AdminPassword
-                };
+                Model.DatabaseStyle = (int)SelectedStyle;
 
                 try
                 {
-                    var authResult = await AuthClient.RegisterTenantAsync(input);
+                    var authResult = await AuthClient.RegisterTenantAsync(Model);
                     if (authResult != null && !string.IsNullOrEmpty(authResult.AccessToken))
                     {
                         await AuthStateProvider.MarkUserAsAuthenticatedAsync(authResult);
@@ -331,46 +323,7 @@
 
 
     private void GoToDashboard()
-
     {
-
         NavManager.NavigateTo("/");
-
-    }
-
-
-
-    public class TenantRegisterModel
-
-    {
-
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Organization name is required")]
-
-        [System.ComponentModel.DataAnnotations.StringLength(64, MinimumLength = 3)]
-
-        public string TenantName { get; set; } = string.Empty;
-
-
-
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Admin username is required")]
-
-        public string AdminUsername { get; set; } = "admin";
-
-
-
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Email is required")]
-
-        [System.ComponentModel.DataAnnotations.EmailAddress]
-
-        public string AdminEmail { get; set; } = string.Empty;
-
-
-
-        [System.ComponentModel.DataAnnotations.Required]
-
-        [System.ComponentModel.DataAnnotations.MinLength(6)]
-
-        public string AdminPassword { get; set; } = string.Empty;
-
     }
 }
