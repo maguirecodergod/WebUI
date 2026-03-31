@@ -9,11 +9,11 @@ public sealed class RegisterTenantInput
     public required string AdminUserName { get; init; }
     public required string AdminEmail { get; init; }
     public required string AdminPassword { get; init; }
-    
+
     /// <summary>
     /// Database isolation style (1=Shared, 2=PerTenant, 3=Hybrid).
     /// </summary>
-    public int DatabaseStyle { get; init; } = 1; 
+    public int DatabaseStyle { get; init; } = 1;
 }
 
 public sealed class RegisterTenantInputValidator : AbstractValidator<RegisterTenantInput>

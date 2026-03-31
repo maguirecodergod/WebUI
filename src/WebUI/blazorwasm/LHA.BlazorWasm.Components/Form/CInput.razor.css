@@ -1,0 +1,94 @@
+.lha-input-wrapper {
+    --input-focus-color: #00f0ff;
+    --input-default-bg: var(--lha-input-bg, rgba(0, 0, 0, 0.25));
+    --input-default-border: var(--lha-input-border, rgba(255, 255, 255, 0.1));
+    --input-default-text: var(--lha-input-text, #ffffff);
+    --input-icon-color: var(--lha-input-icon, rgba(255, 255, 255, 0.3));
+    --autofill-bg: var(--lha-input-autofill-bg, rgba(10, 10, 18, 0.95));
+    --autofill-text: var(--lha-input-autofill-text, #ffffff);
+
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.lha-input-wrapper:focus-within {
+    transform: translateY(-1px);
+}
+
+.lha-input-field {
+    width: 100%;
+    background: var(--input-default-bg) !important;
+    border: 1px solid var(--input-default-border) !important;
+    color: var(--input-default-text) !important;
+    padding: 0.7rem 1.1rem;
+    border-radius: 12px;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px);
+}
+
+.lha-input-field:focus {
+    border-color: var(--input-focus-color) !important;
+    box-shadow:
+        0 0 0 4px rgba(0, 240, 255, 0.05),
+        inset 0 0 10px rgba(0, 240, 255, 0.05);
+}
+
+.lha-input-icon-left {
+    position: absolute;
+    left: 14px;
+    width: 20px;
+    height: 20px;
+    color: var(--input-icon-color);
+    pointer-events: none;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.lha-input-wrapper:focus-within .lha-input-icon-left {
+    color: var(--input-focus-color);
+}
+
+.lha-input-field.with-icon-left {
+    padding-left: 2.8rem;
+}
+
+/* Placeholder styling */
+.lha-input-field::placeholder {
+    color: var(--input-icon-color);
+    transition: all 0.3s;
+}
+
+.lha-input-wrapper:focus-within .lha-input-field::placeholder {
+    transform: translateX(4px);
+    opacity: 0.4;
+}
+
+/* Premium Glow for Icon on focus */
+.lha-input-icon-left ::deep svg {
+    width: 20px;
+    height: 20px;
+    filter: drop-shadow(0 0 0px transparent);
+    transition: all 0.3s;
+}
+
+.lha-input-wrapper:focus-within .lha-input-icon-left ::deep svg {
+    filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
+}
+
+/* Autofill fixes */
+.lha-input-field:-webkit-autofill,
+.lha-input-field:-webkit-autofill:hover,
+.lha-input-field:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--autofill-text) !important;
+    -webkit-box-shadow: 0 0 0px 1000px var(--autofill-bg) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}

@@ -1,3 +1,4 @@
+@inject ILocalizationService Localizer
 <CascadingAuthenticationState>
     <GlobalErrorBoundary>
         <Router AppAssembly="@typeof(App).Assembly">
@@ -21,6 +22,6 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        await L.InitializeAsync();
+        await Localizer.InitializeAsync();
     }
 }

@@ -1,5 +1,7 @@
 @page "/login"
 @layout EmptyLayout
+@inherits LhaComponentBase
+@using LHA.BlazorWasm.Services.Theme
 @using LHA.Shared.Contracts.Identity.Auth
 @using LHA.BlazorWasm.HttpApi.Client.Clients
 @using LHA.BlazorWasm.HttpApi.Client.Core
@@ -7,11 +9,12 @@
 @using LHA.BlazorWasm.Components.Forms
 @using LHA.BlazorWasm.Components.Buttons
 @using LHA.BlazorWasm.Components.Form
-@inject NavigationManager NavManager
 @inject AuthApiClient AuthClient
 @inject ApiAuthenticationStateProvider AuthStateProvider
+@inject IThemeService ThemeService
+@inject ThemeState ThemeState
 
-<div class="register-container">
+<div class="register-container @ThemeService.ThemeClass">
     @* Phông nền vũ trụ với hiệu ứng Glow đa sắc *@
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
@@ -20,68 +23,65 @@
     <div class="register-glass-panel login-panel-reveal">
         <div class="register-header">
             <h1 class="brand-title">LHA<span class="brand-accent">App</span></h1>
-            <p class="subtitle">Hệ sinh thái Enterprise Thế hệ mới</p>
+            <p class="subtitle">@Localizer.L("Login.Subtitle")</p>
         </div>
 
-        <EditForm Model="@Model" OnValidSubmit="HandleLogin">
-            <DataAnnotationsValidator />
+        <EditForm Model="@Model" OnValidSubmit="@HandleLogin">
+            <FluentValidationValidator />
             <ServerSideValidator @ref="_serverValidator" />
 
             <div class="login-fields-container">
-                <FormField Label="Tài khoản hoặc Email" Required="true" 
-                           ValueExpression="@(() => Model.UserNameOrEmail)"
-                           Class="futuristic-field">
-                    <div class="input-with-icon">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                        <input @bind="Model.UserNameOrEmail" type="text" class="glass-input" placeholder="admin@lha.io" />
-                    </div>
+                <FormField Label="@Localizer.L("Login.UserNameOrEmail")" Required="true"
+                           ValueExpression="@(() => (object)Model.UserNameOrEmail)">
+                    <CInput @bind-Value="Model.UserNameOrEmail" Type="text" Placeholder="admin@lha.io">
+                        <IconContent>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </IconContent>
+                    </CInput>
                 </FormField>
 
-                <FormField Label="Mật khẩu" Required="true" 
-                           ValueExpression="@(() => Model.Password)"
-                           Class="futuristic-field">
-                    <div class="input-with-icon">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                        </svg>
-                        <input @bind="Model.Password" type="password" class="glass-input" placeholder="••••••••" />
-                    </div>
+                <FormField Label="@Localizer.L("Login.Password")" Required="true"
+                           ValueExpression="@(() => (object)Model.Password)">
+                    <CInput @bind-Value="Model.Password" Type="password" Placeholder="••••••••">
+                        <IconContent>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </IconContent>
+                    </CInput>
                 </FormField>
             </div>
 
             <div class="login-options">
-                <label class="remember-me">
-                    <input type="checkbox" />
-                    <span class="checkmark-ui"></span>
-                    Ghi nhớ đăng nhập
-                </label>
-                <a href="/forgot-password" class="forgot-link">Quên mật khẩu?</a>
+                <div class="remember-me-wrap">
+                    <LHA.BlazorWasm.Components.Switch.Switch @bind-Value="Model.RememberMe" 
+                            Label="@Localizer.L("Login.RememberMe")" 
+                            Size="LHA.BlazorWasm.Components.Switch.CSwitchSize.Small" />
+                </div>
+                <a href="/forgot-password" class="forgot-link">@Localizer.L("Login.ForgotPassword")</a>
             </div>
 
             <div class="login-actions">
-                <Button Type="CButtonType.Submit" 
-                        Style="CButtonStyle.Primary" 
-                        Size="CButtonSize.Large"
-                        IsLoading="IsLoading"
-                        FullWidth="true"
-                        Class="btn-neon-pulse">
-                    <span class="btn-text">ĐĂNG NHẬP HỆ THỐNG</span>
+                <Button Type="CButtonType.Submit" Style="CButtonStyle.Primary" Size="CButtonSize.Large"
+                        IsLoading="IsLoading" FullWidth="true" Class="btn-neon-pulse">
+                    <span class="btn-text">@Localizer.L("Login.Submit")</span>
                     <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
                 </Button>
             </div>
-            
+
             <div class="login-footer">
-                <p>Bạn chưa có không gian làm việc?</p>
-                <button type="button" class="btn-secondary-ghost" @onclick="GoToRegister">
-                    Khởi tạo Tenant mới ngay
-                </button>
+                <p>@Localizer.L("Login.NoAccount")</p>
+                <Button Type="CButtonType.Button" Style="CButtonStyle.Ghost" 
+                        OnClick="GoToRegister" Class="btn-secondary-ghost">
+                    @Localizer.L("Login.RegisterTenant")
+                </Button>
             </div>
         </EditForm>
     </div>
@@ -98,6 +98,23 @@
     [SupplyParameterFromQuery(Name = "returnUrl")]
     public string? ReturnUrl { get; set; }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ThemeState.OnThemeChanged += OnThemeChanged;
+    }
+
+    private void OnThemeChanged(LHA.BlazorWasm.Services.Theme.CThemeMode mode)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        ThemeState.OnThemeChanged -= OnThemeChanged;
+    }
+
     private async Task HandleLogin()
     {
         if (IsLoading) return;
@@ -108,23 +125,19 @@
 
         try
         {
-            var authResult = await AuthClient.LoginAsync(new LoginInput 
-            {
-                UserNameOrEmail = Model.UserNameOrEmail,
-                Password = Model.Password
-            });
+            var authResult = await AuthClient.LoginAsync(Model);
 
             if (authResult != null && !string.IsNullOrWhiteSpace(authResult.AccessToken))
             {
                 await AuthStateProvider.MarkUserAsAuthenticatedAsync(authResult);
-                
+
                 var redirectUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? "/" : Uri.UnescapeDataString(ReturnUrl);
-                NavManager.NavigateTo(redirectUrl);
+                Navigation.NavigateTo(redirectUrl);
             }
         }
         catch (ApiException ex)
         {
-            if (ex.StatusCode == System.Net.HttpStatusCode.BadRequest || 
+            if (ex.StatusCode == System.Net.HttpStatusCode.BadRequest ||
                 ex.StatusCode == System.Net.HttpStatusCode.UnprocessableEntity)
             {
                 if (ex.ApiError?.ValidationErrors != null)
@@ -146,15 +159,6 @@
 
     private void GoToRegister()
     {
-        NavManager.NavigateTo("/register-tenant");
-    }
-
-    public class LoginModel
-    {
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Vui lòng nhập tài khoản hoặc email")]
-        public string UserNameOrEmail { get; set; } = string.Empty;
-
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        public string Password { get; set; } = string.Empty;
+        Navigation.NavigateTo("/register-tenant");
     }
 }

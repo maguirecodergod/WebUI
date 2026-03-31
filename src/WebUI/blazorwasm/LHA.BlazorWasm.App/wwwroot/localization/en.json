@@ -40,5 +40,14 @@
     "Common.Prev": "Previous",
     "Common.Next": "Next",
     "Common.Yes": "Yes",
-    "Common.No": "No"
+    "Common.No": "No",
+    "Login.Title": "LHA App",
+    "Login.Subtitle": "Next-generation Enterprise Ecosystem",
+    "Login.UserNameOrEmail": "ACCOUNT OR EMAIL",
+    "Login.Password": "PASSWORD",
+    "Login.RememberMe": "Remember Login",
+    "Login.ForgotPassword": "Forgot password?",
+    "Login.Submit": "LOGIN TO SYSTEM",
+    "Login.NoAccount": "Don't have a workspace yet?",
+    "Login.RegisterTenant": "Create new Tenant now"
 }

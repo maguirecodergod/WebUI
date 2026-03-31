@@ -59,7 +59,7 @@ public interface IIdentityRoleAppService
 public interface IAuthAppService : IApplicationService
 {
     /// <summary>Authenticates a user and returns JWT tokens.</summary>
-    Task<AuthResultDto> LoginAsync(LoginInput input, CancellationToken ct = default);
+    Task<AuthResultDto> LoginAsync(LoginModel input, CancellationToken ct = default);
 
     /// <summary>Registers a new user account.</summary>
     Task<IdentityUserDto> RegisterAsync(CreateIdentityUserInput input, CancellationToken ct = default);

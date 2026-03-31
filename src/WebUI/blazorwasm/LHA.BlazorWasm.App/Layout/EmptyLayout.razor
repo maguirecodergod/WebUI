@@ -1,18 +1,87 @@
 @inherits LayoutComponentBase
-@inject LHA.BlazorWasm.Services.Theme.IThemeService ThemeService
+@implements IDisposable
+@using LHA.BlazorWasm.Services.Theme
 @using LHA.BlazorWasm.Components.Toast
+@using LHA.BlazorWasm.Components.ThemeSwitch
+@using LHA.BlazorWasm.Components.LanguageSelector
+@using LHA.BlazorWasm.Services.Localization
+@using LHA.BlazorWasm.Shared.Abstractions.Localization
+@inject IThemeService ThemeService
+@inject ThemeState ThemeState
+@inject ILocalizationService Localizer
 
 <div class="empty-layout @ThemeService.ThemeClass">
+    <div class="layout-controls">
+        <ThemeSwitch Variant="CThemeSwitchVariant.Toggle" />
+        <LanguageSelector Mode="CLanguageSelectorMode.Dropdown"
+                          ShowFlags="true" ShowNames="false" />
+    </div>
+
     @Body
     <ToastContainer />
 </div>
 
 <style>
     .empty-layout {
+        --lha-bg-body: #030308;
+        --lha-text-primary: #ffffff;
+        --controls-bg: rgba(255, 255, 255, 0.05);
+        --controls-border: rgba(255, 255, 255, 0.1);
+        
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         background-color: var(--lha-bg-body);
         color: var(--lha-text-primary);
+        position: relative;
+        transition: all 0.5s ease;
+    }
+
+    .empty-layout.theme-light {
+        --lha-bg-body: #f8fafc;
+        --lha-text-primary: #1e293b;
+        --controls-bg: rgba(255, 255, 255, 0.85);
+        --controls-border: rgba(0, 0, 0, 0.08);
+    }
+
+    .layout-controls {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        z-index: 1000;
+        background: var(--controls-bg);
+        backdrop-filter: blur(10px);
+        padding: 0.5rem 0.75rem;
+        border-radius: 12px;
+        border: 1px solid var(--controls-border);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
     }
 </style>
+
+@code {
+    protected override void OnInitialized()
+    {
+        ThemeState.OnThemeChanged += OnThemeChanged;
+        Localizer.OnLanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnThemeChanged(CThemeMode mode)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OnLanguageChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        ThemeState.OnThemeChanged -= OnThemeChanged;
+        Localizer.OnLanguageChanged -= OnLanguageChanged;
+    }
+}

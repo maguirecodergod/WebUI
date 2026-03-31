@@ -10,14 +10,8 @@
     @if (HasTooltip)
     {
         <Tooltip Text="@Tooltip">
-            <button
-                class="lha-switch-control"
-                role="switch"
-                aria-checked="@Value"
-                aria-disabled="@Disabled"
-                disabled="@Disabled"
-                @onclick="Toggle"
-                @onkeydown="HandleKeyDown">
+            <button type="button" class="lha-switch-control" role="switch" aria-checked="@Value" aria-disabled="@Disabled"
+                    disabled="@Disabled" @onclick="Toggle" @onkeydown="HandleKeyDown">
 
                 <span class="lha-switch-track">
                     <span class="lha-switch-thumb">
@@ -39,14 +33,8 @@
     }
     else
     {
-        <button
-            class="lha-switch-control"
-            role="switch"
-            aria-checked="@Value"
-            aria-disabled="@Disabled"
-            disabled="@Disabled"
-            @onclick="Toggle"
-            @onkeydown="HandleKeyDown">
+        <button type="button" class="lha-switch-control" role="switch" aria-checked="@Value" aria-disabled="@Disabled"
+                disabled="@Disabled" @onclick="Toggle" @onkeydown="HandleKeyDown">
 
             <span class="lha-switch-track">
                 <span class="lha-switch-thumb">

@@ -33,6 +33,14 @@
     --warning-bg: rgba(247, 144, 9, 0.08);
     --error-color: #f04438;
     --error-bg: rgba(240, 68, 56, 0.08);
+
+    /* CInput Variables */
+    --lha-input-bg: #ffffff;
+    --lha-input-border: #e2e8f0;
+    --lha-input-text: #1e293b;
+    --lha-input-icon: #94a3b8;
+    --lha-input-autofill-bg: #ffffff;
+    --lha-input-autofill-text: #1e293b;
 }
 
 .theme-dark {
@@ -65,6 +73,14 @@
     --warning-bg: rgba(253, 176, 34, 0.15);
     --error-color: #fda29b;
     --error-bg: rgba(253, 162, 155, 0.15);
+
+    /* CInput Variables */
+    --lha-input-bg: rgba(0, 0, 0, 0.25);
+    --lha-input-border: rgba(255, 255, 255, 0.1);
+    --lha-input-text: #ffffff;
+    --lha-input-icon: rgba(255, 255, 255, 0.3);
+    --lha-input-autofill-bg: rgba(10, 10, 18, 0.95);
+    --lha-input-autofill-text: #ffffff;
 }
 
 .theme-light, .theme-dark {

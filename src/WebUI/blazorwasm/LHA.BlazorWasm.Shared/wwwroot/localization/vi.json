@@ -110,5 +110,11 @@
                 "Description": "Toàn quyền quản lý các tính năng."
             }
         }
+    },
+    "Login": {
+        "Validation": {
+            "UserNameOrEmailRequired": "Vui lòng nhập tài khoản hoặc email",
+            "PasswordRequired": "Vui lòng nhập mật khẩu"
+        }
     }
 }

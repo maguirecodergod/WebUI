@@ -1,0 +1,39 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Diagnostics.CodeAnalysis
+@inherits InputBase<string>
+
+<div class="lha-input-wrapper @(IconContent != null ? "has-icon-left" : "") @Class">
+    @if (IconContent != null)
+    {
+        <div class="lha-input-icon-left">
+            @IconContent
+        </div>
+    }
+    
+    <input 
+        @attributes="AdditionalAttributes"
+        type="@Type"
+        class="lha-input-field @(IconContent != null ? "with-icon-left" : "")"
+        placeholder="@Placeholder"
+        value="@CurrentValue"
+        @oninput="HandleInput" />
+</div>
+
+@code {
+    [Parameter] public string Type { get; set; } = "text";
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
+
+    private void HandleInput(ChangeEventArgs e)
+    {
+        CurrentValueAsString = e.Value?.ToString();
+    }
+
+    protected override bool TryParseValueFromString(string? value, [MaybeNullWhen(false)] out string result, [NotNullWhen(false)] out string? validationErrorMessage)
+    {
+        result = value ?? "";
+        validationErrorMessage = null;
+        return true;
+    }
+}

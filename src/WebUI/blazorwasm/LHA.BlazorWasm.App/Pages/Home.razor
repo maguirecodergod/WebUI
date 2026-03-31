@@ -1,5 +1,6 @@
 @page "/"
 @implements IDisposable
+@inherits LhaComponentBase
 @using LHA.BlazorWasm.Components.Select
 @using LHA.BlazorWasm.Components.Breadcrumb
 @using LHA.BlazorWasm.Components.Section
@@ -7,7 +8,7 @@
 @using LHA.BlazorWasm.Components.Tooltip
 @using System.ComponentModel.DataAnnotations
 
-<PageTitle>@L.L("Common.Save")</PageTitle>
+<PageTitle>@Localizer.L("Common.Save")</PageTitle>
 
 @* <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
     <h1>@L.L("User.Title")</h1>
@@ -18,7 +19,7 @@
     </div>
 </div> *@
 
-<p>@L.L("User.Create") | @L.L("Common.Cancel") | @L.L("Common.Delete")</p>
+<p>@Localizer.L("User.Create") | @Localizer.L("Common.Cancel") | @Localizer.L("Common.Delete")</p>
 
 <hr />
 <h2>Breadcrumb Examples</h2>
@@ -63,23 +64,23 @@
 
 <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem; flex-wrap: wrap;">
     <Button Style="CButtonStyle.Success"
-            OnClick="@(() => ToastService.Success("<b>All changes</b> have been saved <br/> successfully to the server.", "Success"))">
+            OnClick="@(() => ToastNotification.Success("<b>All changes</b> have been saved <br/> successfully to the server.", "Success"))">
         Show Success
     </Button>
     <Button Style="CButtonStyle.Primary"
-            OnClick="@(() => ToastService.Info("A new system update is available for download a sdoiya oidy aoi dysoai ydosiay doisaydo isay oidsya oidyaoidysoaiyd oisay doiay doisay doiasy odisayodi yaoid yaoiy doisaydoisay doisaydoiyas oidysaoi ydsoiay doisay doiay odisy aoidysoai ydoisay doisay odiysaoi dysaoi dyaoi dyasoiy doisay doisay odisay oidyaoi dysoai ydosia ydoasiy doasiy dosiay doiasy oisay doisay oisayo diyaoid ysoaiy odisay.", "Update Available"))">
+            OnClick="@(() => ToastNotification.Info("A new system update is available for download a sdoiya oidy aoi dysoai ydosiay doisaydo isay oidsya oidyaoidysoaiyd oisay doiay doisay doiasy odisayodi yaoid yaoiy doisaydoisay doisaydoiyas oidysaoi ydsoiay doisay doiay odisy aoidysoai ydoisay doisay odiysaoi dysaoi dyaoi dyasoiy doisay doisay odisay oidyaoi dysoai ydosia ydoasiy doasiy dosiay doiasy oisay doisay oisayo diyaoid ysoaiy odisay.", "Update Available"))">
         Show Info
     </Button>
     <Button Style="CButtonStyle.Secondary"
-            OnClick="@(() => ToastService.Warning("Your storage is almost full (92% used).", "Storage Warning"))">
+            OnClick="@(() => ToastNotification.Warning("Your storage is almost full (92% used).", "Storage Warning"))">
         Show Warning
     </Button>
     <Button Style="CButtonStyle.Danger"
-            OnClick="@(() => ToastService.Error("Unexpected disconnection while fetching data.", "Connection Error"))">
+            OnClick="@(() => ToastNotification.Error("Unexpected disconnection while fetching data.", "Connection Error"))">
         Show Error
     </Button>
     <Button Style="CButtonStyle.Secondary"
-            OnClick="@(() => ToastService.Show("This notification will stay for 10 seconds.", CToastLevel.Info, "Persistent Info", 10000))">
+            OnClick="@(() => ToastNotification.Show("This notification will stay for 10 seconds.", CToastLevel.Info, "Persistent Info", 10000))">
         Show Custom (10s)
     </Button>
 </div>
@@ -147,28 +148,28 @@
                                             style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Error
                                             State</label>
                                             <DatePicker TValue="DateTime?" CValidationStatus="CValidationStatus.Error"
-                                                        ValidationMessage="@L.L("Validation.DateInPast")" />
+                                                        ValidationMessage="@Localizer.L("Validation.DateInPast")" />
                                         </div>
                                         <div>
                                             <label
                                                 style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Warning
                                                 State</label>
                                                 <TimePicker TValue="DateTime?" CValidationStatus="CValidationStatus.Warning"
-                                                            ValidationMessage="@L.L("Validation.LimitedAvailability")" />
+                                                            ValidationMessage="@Localizer.L("Validation.LimitedAvailability")" />
                                             </div>
                                             <div>
                                                 <label
                                                     style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Success
                                                     State</label>
                                                     <DateTimePicker TValue="DateTime?" CValidationStatus="CValidationStatus.Success"
-                                                                    ValidationMessage="@L.L("Validation.LooksGood")" />
+                                                                    ValidationMessage="@Localizer.L("Validation.LooksGood")" />
                                                 </div>
                                                 <div style="width: 100%;">
                                                     <label
                                                         style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
                                                         Error</label>
                                                         <DateRangePicker TInner="DateTime?" CValidationStatus="CValidationStatus.Error"
-                                                                         ValidationMessage="@L.L("Validation.OverlapBooking")" />
+                                                                         ValidationMessage="@Localizer.L("Validation.OverlapBooking")" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -437,7 +438,7 @@
                                                                                                     </div>
 
                                                                                                     <hr />
-                                                                                                    <h2>@L.L("FormField.DemoTitle")</h2>
+                                                                                                    <h2>@Localizer.L("FormField.DemoTitle")</h2>
 
                                                                                                     <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
                                                                                                         @* ── Vertical Layout with EditForm Validation ── *@
@@ -447,22 +448,22 @@
                                                                                                             <EditForm Model="@_demoModel" OnValidSubmit="HandleValidSubmit" style="max-width: 480px;">
                                                                                                                 <DataAnnotationsValidator />
 
-                                                                                                                <FormField Label="@L.L("FormField.DemoName")" Required="true" Help="@L.L("FormField.DemoNameHelp")"
+                                                                                                                <FormField Label="@Localizer.L("FormField.DemoName")" Required="true" Help="@Localizer.L("FormField.DemoNameHelp")"
                                                                                                                            ValueExpression="@(() => (object)_demoModel.FullName!)">
                                                                                                                     <InputText @bind-Value="_demoModel.FullName" class="form-control" placeholder="John Doe" />
                                                                                                                 </FormField>
 
-                                                                                                                <FormField Label="@L.L("FormField.DemoEmail")" Required="true" Help="@L.L("FormField.DemoEmailHelp")"
+                                                                                                                <FormField Label="@Localizer.L("FormField.DemoEmail")" Required="true" Help="@Localizer.L("FormField.DemoEmailHelp")"
                                                                                                                            ValueExpression="@(() => (object)_demoModel.Email!)">
                                                                                                                     <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
                                                                                                                 </FormField>
 
                                                                                                                 <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
                                                                                                                     <Button Type="CButtonType.Submit" Style="CButtonStyle.Primary">
-                                                                                                                        @L.L("FormField.DemoSubmit")
+                                                                                                                        @Localizer.L("FormField.DemoSubmit")
                                                                                                                     </Button>
                                                                                                                     <Button Style="CButtonStyle.Secondary" OnClick="ResetForm">
-                                                                                                                        @L.L("FormField.DemoReset")
+                                                                                                                        @Localizer.L("FormField.DemoReset")
                                                                                                                     </Button>
                                                                                                                 </div>
                                                                                                             </EditForm>
@@ -481,13 +482,13 @@
                                                                                                             style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
                                                                                                             <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Horizontal Layout</h3>
                                                                                                             <div style="max-width: 600px;">
-                                                                                                                <FormField Label="@L.L("FormField.DemoCountry")" Layout="CFormFieldLayout.Horizontal">
+                                                                                                                <FormField Label="@Localizer.L("FormField.DemoCountry")" Layout="CFormFieldLayout.Horizontal">
                                                                                                                     <Select TValue="string" Options="countryOptions" @bind-Value="selectedCountry"
                                                                                                                             Placeholder="Choose a country..." />
                                                                                                                 </FormField>
 
-                                                                                                                <FormField Label="@L.L("FormField.DemoEmail")" Layout="CFormFieldLayout.Horizontal"
-                                                                                                                           Help="@L.L("FormField.DemoEmailHelp")">
+                                                                                                                <FormField Label="@Localizer.L("FormField.DemoEmail")" Layout="CFormFieldLayout.Horizontal"
+                                                                                                                           Help="@Localizer.L("FormField.DemoEmailHelp")">
                                                                                                                     <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
                                                                                                                 </FormField>
                                                                                                             </div>
@@ -495,31 +496,31 @@
                                                                                                     </div>
 
                                                                                                     <hr />
-                                                                                                    <h2>@L.L("Section.DemoTitle")</h2>
+                                                                                                    <h2>@Localizer.L("Section.DemoTitle")</h2>
 
                                                                                                     <div
                                                                                                         style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; margin-bottom: 4rem; max-width: 700px;">
                                                                                                         @* ── Collapsible Section with FormFields ── *@
-                                                                                                        <Section Title="@L.L("Section.UserInfo")" Collapsible="true" DefaultExpanded="true">
-                                                                                                            <FormField Label="@L.L("FormField.DemoName")" Required="true" Help="@L.L("FormField.DemoNameHelp")">
+                                                                                                        <Section Title="@Localizer.L("Section.UserInfo")" Collapsible="true" DefaultExpanded="true">
+                                                                                                            <FormField Label="@Localizer.L("FormField.DemoName")" Required="true" Help="@Localizer.L("FormField.DemoNameHelp")">
                                                                                                                 <InputText @bind-Value="_demoModel.FullName" class="form-control" placeholder="John Doe" />
                                                                                                             </FormField>
-                                                                                                            <FormField Label="@L.L("FormField.DemoEmail")" Help="@L.L("FormField.DemoEmailHelp")">
+                                                                                                            <FormField Label="@Localizer.L("FormField.DemoEmail")" Help="@Localizer.L("FormField.DemoEmailHelp")">
                                                                                                                 <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
                                                                                                             </FormField>
                                                                                                         </Section>
 
                                                                                                         @* ── Section with Icon (starts collapsed) ── *@
-                                                                                                        <Section Title="@L.L("Section.Security")" Icon="🔒" Collapsible="true" DefaultExpanded="false">
+                                                                                                        <Section Title="@Localizer.L("Section.Security")" Icon="🔒" Collapsible="true" DefaultExpanded="false">
                                                                                                             <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
-                                                                                                                @L.L("Section.SecurityNote")
+                                                                                                                @Localizer.L("Section.SecurityNote")
                                                                                                             </p>
                                                                                                         </Section>
 
                                                                                                         @* ── Subtle Variant ── *@
-                                                                                                        <Section Title="@L.L("Section.Notifications")" Icon="🔔" Collapsible="true" Variant="CSectionVariant.Subtle">
+                                                                                                        <Section Title="@Localizer.L("Section.Notifications")" Icon="🔔" Collapsible="true" Variant="CSectionVariant.Subtle">
                                                                                                             <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
-                                                                                                                @L.L("Section.NotificationNote")
+                                                                                                                @Localizer.L("Section.NotificationNote")
                                                                                                             </p>
                                                                                                         </Section>
 
@@ -787,7 +788,7 @@ string? searchText)
 
     protected override void OnInitialized()
     {
-        L.OnLanguageChanged += RefreshUI;
+        Localizer.OnLanguageChanged += RefreshUI;
     }
 
     private void RefreshUI()
@@ -795,8 +796,8 @@ string? searchText)
         InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
-        L.OnLanguageChanged -= RefreshUI;
+        Localizer.OnLanguageChanged -= RefreshUI;
     }
 }

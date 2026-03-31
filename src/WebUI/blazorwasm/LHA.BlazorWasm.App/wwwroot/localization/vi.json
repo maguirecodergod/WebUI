@@ -22,5 +22,14 @@
     "Common.Prev": "Tháng trước",
     "Common.Next": "Tháng sau",
     "Common.Yes": "Có",
-    "Common.No": "Không"
+    "Common.No": "Không",
+    "Login.Title": "LHA App",
+    "Login.Subtitle": "Hệ sinh thái Enterprise Thế hệ mới",
+    "Login.UserNameOrEmail": "TÀI KHOẢN HOẶC EMAIL",
+    "Login.Password": "MẬT KHẨU",
+    "Login.RememberMe": "Ghi nhớ đăng nhập",
+    "Login.ForgotPassword": "Quên mật khẩu?",
+    "Login.Submit": "ĐĂNG NHẬP HỆ THỐNG",
+    "Login.NoAccount": "Bạn chưa có không gian làm việc?",
+    "Login.RegisterTenant": "Khởi tạo Tenant mới ngay"
 }

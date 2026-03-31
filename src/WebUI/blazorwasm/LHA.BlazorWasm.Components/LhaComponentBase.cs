@@ -10,10 +10,10 @@ namespace LHA.BlazorWasm.Components;
 /// </summary>
 public abstract class LhaComponentBase : ComponentBase, IDisposable
 {
-    [Inject] internal ILocalizationService Localizer { get; set; } = default!;
-    [Inject] internal IToastService ToastNotification { get; set; } = default!;
-    [Inject] internal IJSRuntime JS { get; set; } = default!;
-    [Inject] internal NavigationManager Navigation { get; set; } = default!;
+    [Inject] protected ILocalizationService Localizer { get; set; } = default!;
+    [Inject] protected IToastService ToastNotification { get; set; } = default!;
+    [Inject] protected IJSRuntime JS { get; set; } = default!;
+    [Inject] protected NavigationManager Navigation { get; set; } = default!;
 
     protected override void OnInitialized()
     {

@@ -4,6 +4,7 @@ using LHA.Identity.Application.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using LHA.Shared.Contracts.Identity.Auth;
 
 namespace LHA.Identity.HttpApi;
 
@@ -19,7 +20,7 @@ public static class AuthEndpoints
 
         // ── Login ────────────────────────────────────────────────────
         group.MapPost("/login", async (
-            LoginInput input,
+            LoginModel input,
             IAuthAppService service) =>
         {
             var result = await service.LoginAsync(input);

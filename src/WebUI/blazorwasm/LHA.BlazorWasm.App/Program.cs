@@ -12,6 +12,8 @@ using LHA.BlazorWasm.HttpApi.Client.Extensions;
 using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.App.Services;
 using LHA.BlazorWasm.Services.Auth;
+using FluentValidation;
+using LHA.Shared.Contracts.Identity.Auth;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -38,6 +40,7 @@ builder.Services.AddErrorReporting();
 builder.Services.AddStatusBadgeServices();
 builder.Services.AddBlazorWasmComponents();
 builder.Services.AddAppAuthentication();
+builder.Services.AddScoped<IValidator<LoginModel>, LoginModelValidator>();
 
 builder.Services.AddLhaHttpApiClient(options =>
 {

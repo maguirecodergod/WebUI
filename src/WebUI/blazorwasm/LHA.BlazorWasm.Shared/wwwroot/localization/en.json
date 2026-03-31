@@ -110,5 +110,11 @@
                 "Description": "Full access to all management features."
             }
         }
+    },
+    "Login": {
+        "Validation": {
+            "UserNameOrEmailRequired": "Username or email is required",
+            "PasswordRequired": "Password is required"
+        }
     }
 }
