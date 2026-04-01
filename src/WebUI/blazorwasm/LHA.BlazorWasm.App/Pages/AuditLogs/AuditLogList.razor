@@ -26,7 +26,7 @@
         <div class="card-body p-0">
             <DataTable TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
                        ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10" Searchable="true" ShowToolbar="true"
-                       SelectionMode="SelectionMode.Multiple" KeySelector="@(x => x.Id)">
+                       SelectionMode="SelectionMode.Multiple" KeySelector="@(x => x.Id)" TableId="@DataTableIds.AuditLogs">
 
                 <ToolbarTemplate>
                     <div class="small text-muted py-2 px-1">API: service.audit.lha.io</div>

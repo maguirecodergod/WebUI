@@ -134,6 +134,8 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     private readonly Dictionary<object, TItem> _selectedItems = new();
     private bool _allPageSelected;
     private bool _allEntireDatasetSelected;
+    private bool _isRestoringSelection;
+    private HashSet<string>? _restoredSelectedKeys;
 
     // Expanded rows
     private readonly HashSet<object> _expandedItems = new();
@@ -247,8 +249,9 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
         {
             _isFirstLoad = false;
 
-            // Restore persisted column visibility
+            // Restore persisted column visibility & selection
             await RestoreColumnVisibilityAsync();
+            await RestoreSelectionAsync();
 
             if (Mode == DataTableMode.ServerSide && ServerDataSource is not null)
             {
@@ -256,6 +259,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
             }
             else
             {
+                SyncSelectedItems();
                 StateHasChanged();
             }
         }
@@ -299,6 +303,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
             var response = await ServerDataSource(_request);
             _displayItems = response.Items;
             _totalCount = response.TotalCount;
+            SyncSelectedItems();
         }
         catch
         {
@@ -385,6 +390,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
                 .ToList();
         }
 
+        SyncSelectedItems();
         UpdatePageSelectionState();
     }
 
@@ -572,7 +578,14 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
 
     private object GetItemKey(TItem item) => KeySelector?.Invoke(item) ?? (object)item!;
 
-    private bool IsSelected(TItem item) => _allEntireDatasetSelected || _selectedItems.ContainsKey(GetItemKey(item));
+    private bool IsSelected(TItem item)
+    {
+        if (_allEntireDatasetSelected) return true;
+        var key = GetItemKey(item);
+        if (_selectedItems.ContainsKey(key)) return true;
+        if (_restoredSelectedKeys != null && _restoredSelectedKeys.Contains(key?.ToString() ?? "")) return true;
+        return false;
+    }
 
     private async Task HandleSelectionToggle(TItem item, object? checkedValue)
     {
@@ -595,6 +608,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
 
         _allEntireDatasetSelected = false;
         UpdatePageSelectionState();
+        await PersistSelectionAsync();
         await NotifySelectionChanged();
     }
 
@@ -616,6 +630,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
         }
 
         _allEntireDatasetSelected = false;
+        await PersistSelectionAsync();
         await NotifySelectionChanged();
     }
 
@@ -628,27 +643,34 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
         }
         _allEntireDatasetSelected = true;
         _allPageSelected = true;
+        await PersistSelectionAsync();
         await NotifySelectionChanged();
     }
 
     private async Task ClearSelection()
     {
         _selectedItems.Clear();
+        _restoredSelectedKeys?.Clear();
         _allPageSelected = false;
         _allEntireDatasetSelected = false;
+        await PersistSelectionAsync();
         await NotifySelectionChanged();
     }
 
     private void UpdatePageSelectionState()
     {
         _allPageSelected = _displayItems.Count > 0 &&
-            _displayItems.All(i => _selectedItems.ContainsKey(GetItemKey(i)));
+            _displayItems.All(i => IsSelected(i));
     }
 
     private async Task NotifySelectionChanged()
     {
         if (OnSelectionChanged.HasDelegate)
-            await OnSelectionChanged.InvokeAsync(_selectedItems.Values.ToList());
+        {
+            // Note: Notify only items we have actual objects for
+            var items = _selectedItems.Values.Where(v => v is not null).ToList();
+            await OnSelectionChanged.InvokeAsync(items);
+        }
     }
 
     private async Task HandleRowClickInternal(TItem item)
@@ -734,6 +756,102 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
             }
         }
         catch { /* ignore corrupted data */ }
+    }
+
+    private string SelectionStorageKey => $"dt-sel-{TableId}";
+
+    private async Task PersistSelectionAsync()
+    {
+        if (string.IsNullOrEmpty(TableId) || SelectionMode == SelectionMode.None) return;
+        try
+        {
+            // Combine current active selection keys with any still-restored keys
+            var allKeys = _selectedItems.Keys
+                .Select(k => k?.ToString() ?? "")
+                .ToList();
+
+            if (_restoredSelectedKeys != null)
+            {
+                foreach (var rk in _restoredSelectedKeys)
+                {
+                    if (!allKeys.Contains(rk)) allKeys.Add(rk);
+                }
+            }
+
+            var state = new SelectionState
+            {
+                SelectedKeys = allKeys,
+                AllEntireDatasetSelected = _allEntireDatasetSelected
+            };
+            await LocalStorage.SetAsync(SelectionStorageKey, state);
+        }
+        catch { }
+    }
+
+    private async Task RestoreSelectionAsync()
+    {
+        if (string.IsNullOrEmpty(TableId) || SelectionMode == SelectionMode.None) return;
+        try
+        {
+            var state = await LocalStorage.GetAsync<SelectionState>(SelectionStorageKey);
+            if (state is null) return;
+
+            _isRestoringSelection = true;
+            _allEntireDatasetSelected = state.AllEntireDatasetSelected;
+
+            if (state.SelectedKeys.Count > 0)
+            {
+                _restoredSelectedKeys = new HashSet<string>(state.SelectedKeys);
+            }
+
+            UpdatePageSelectionState();
+        }
+        catch { }
+        finally
+        {
+            _isRestoringSelection = false;
+        }
+    }
+
+    private void SyncSelectedItems()
+    {
+        if (_displayItems.Count == 0) return;
+
+        bool changed = false;
+        foreach (var item in _displayItems)
+        {
+            var key = GetItemKey(item);
+            var keyStr = key?.ToString() ?? "";
+
+            if (_allEntireDatasetSelected)
+            {
+                if (key != null && !_selectedItems.ContainsKey(key))
+                {
+                    _selectedItems[key] = item;
+                    changed = true;
+                }
+            }
+            else if (key != null && _restoredSelectedKeys != null && _restoredSelectedKeys.Contains(keyStr))
+            {
+                if (!_selectedItems.ContainsKey(key))
+                {
+                    _selectedItems[key] = item;
+                    _restoredSelectedKeys.Remove(keyStr);
+                    changed = true;
+                }
+            }
+        }
+
+        if (changed)
+        {
+            UpdatePageSelectionState();
+        }
+    }
+
+    private class SelectionState
+    {
+        public List<string> SelectedKeys { get; set; } = new();
+        public bool AllEntireDatasetSelected { get; set; }
     }
 
     // ═══════════════════════════════════════════════════════════

@@ -1,7 +1,5 @@
 @page "/test"
 @using LHA.BlazorWasm.HttpApi.Client.Clients
-@using LHA.BlazorWasm.HttpApi.Client.Abstractions
-@using LHA.BlazorWasm.HttpApi.Client.Core
 @using System.Text.Json
 @using LHA.Ddd.Application
 @inject ExampleApiClient ApiClient
@@ -98,6 +96,7 @@
         </div>
         <div class="card-body p-0">
             <DataTable TItem="TestResult" Items="_testResults" Searchable="true" 
+                       TableId="@DataTableIds.TestResults"
                        Hoverable="true" Striped="false" CssClass="border-0 shadow-none">
                 <ChildContent>
                     <DataTableColumn TItem="TestResult" Title="Action" Property="@(x => x.Action)" Sortable Width="250px" />
