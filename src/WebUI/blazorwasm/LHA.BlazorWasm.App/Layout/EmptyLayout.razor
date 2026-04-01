@@ -46,19 +46,21 @@
 
     .layout-controls {
         position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
+        top: 1rem;
+        right: 1rem;
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 0.25rem;
         z-index: 1000;
         background: var(--controls-bg);
         backdrop-filter: blur(10px);
-        padding: 0.5rem 0.75rem;
-        border-radius: 12px;
+        padding: 0.15rem 0.25rem;
+        border-radius: 8px;
         border: 1px solid var(--controls-border);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
+        transform: scale(0.85);
+        transform-origin: top right;
     }
 </style>
 

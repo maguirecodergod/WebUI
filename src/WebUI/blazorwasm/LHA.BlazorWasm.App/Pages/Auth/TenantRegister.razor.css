@@ -205,8 +205,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2rem;
-  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  gap: 0.5rem;
 }
 
 .step {
@@ -227,8 +227,8 @@
 }
 
 .step-circle {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--step-bg);
   border: 1px solid var(--step-border);
@@ -253,16 +253,18 @@
 }
 
 .step-text {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .step-line {
   height: 2px;
-  width: 30px;
+  width: 24px;
   background: var(--step-border);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   transition: all 0.4s ease;
 }
 
@@ -285,7 +287,7 @@
 .section-desc {
   color: #8b8b9e;
   text-align: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
   font-size: 0.8rem;
 }
 
@@ -380,7 +382,7 @@
 }
 
 .plan-price {
-  font-size: 1.3rem;
+  font-size: 1.8rem;
   font-weight: 700;
   margin: 0.5rem 0;
 }
@@ -400,7 +402,7 @@
 .plan-features li {
   font-size: 0.75rem;
   color: #aaa;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -551,7 +553,7 @@
 /* ── Buttons ── */
 .wizard-actions {
   display: flex;
-  margin-top: 0.75rem;
+  margin-top: 0.25rem;
 }
 
 .right-align {
@@ -566,26 +568,27 @@
   justify-content: space-between;
 }
 
-::deep .btn-primary-neon {
-  background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+::deep .btn-primary-refined {
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #7000ff 0%, #00d4ff 100%) !important;
   border: none !important;
-  color: #fff;
-  padding: 0.7rem 1.8rem !important;
-  border-radius: 30px !important;
-  font-weight: 600;
-  font-size: 0.95rem !important;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(112, 0, 255, 0.3) !important;
+  transition: all 0.3s ease !important;
+  padding: 0.6rem 1.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  color: #fff !important;
 }
 
-::deep .btn-primary-neon:hover {
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4) !important;
-  transform: translateY(-2px);
+::deep .btn-primary-refined:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(112, 0, 255, 0.4) !important;
+  filter: brightness(1.1);
+}
+
+::deep .btn-primary-refined:hover .arrow {
+  transform: translateX(4px);
 }
 
 ::deep .btn-secondary-ghost {
