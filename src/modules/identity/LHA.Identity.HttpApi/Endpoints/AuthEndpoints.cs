@@ -20,7 +20,7 @@ public static class AuthEndpoints
 
         // ── Login ────────────────────────────────────────────────────
         group.MapPost("/login", async (
-            LoginModel input,
+            LoginInput input,
             IAuthAppService service) =>
         {
             var result = await service.LoginAsync(input);

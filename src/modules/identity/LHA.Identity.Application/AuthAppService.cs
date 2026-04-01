@@ -66,7 +66,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     }
 
     /// <inheritdoc />
-    public async Task<AuthResultDto> LoginAsync(LoginModel input, CancellationToken ct)
+    public async Task<AuthResultDto> LoginAsync(LoginInput input, CancellationToken ct)
     {
         await using var uow = _uowManager.Begin(
             new UnitOfWorkOptions { IsTransactional = true });
@@ -246,7 +246,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
 
         // 4. Automated login for the new admin
         // We reuse LoginAsync logic by passing the credentials or just generating token directly
-        return await LoginAsync(new LoginModel
+        return await LoginAsync(new LoginInput
         {
             UserNameOrEmail = input.AdminUserName,
             Password = input.AdminPassword

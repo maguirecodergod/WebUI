@@ -40,7 +40,7 @@ builder.Services.AddErrorReporting();
 builder.Services.AddStatusBadgeServices();
 builder.Services.AddBlazorWasmComponents();
 builder.Services.AddAppAuthentication();
-builder.Services.AddScoped<IValidator<LoginModel>, LoginModelValidator>();
+builder.Services.AddScoped<IValidator<LoginInput>, LoginInputValidator>();
 builder.Services.AddScoped<IValidator<RegisterTenantInput>, RegisterTenantInputValidator>();
 
 builder.Services.AddLhaHttpApiClient(options =>

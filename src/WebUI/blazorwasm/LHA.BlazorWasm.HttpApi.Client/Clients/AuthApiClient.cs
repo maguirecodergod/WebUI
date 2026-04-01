@@ -30,9 +30,9 @@ public class AuthApiClient : ApiClientBase
     /// <summary>
     /// Authenticates a user and returns a JWT token.
     /// </summary>
-    public async Task<AuthResultDto?> LoginAsync(LoginModel input)
+    public async Task<AuthResultDto?> LoginAsync(LoginInput input)
     {
-        var response = await PostAsync<LoginModel, AuthResultDto>($"{BaseUrl}/login", input);
+        var response = await PostAsync<LoginInput, AuthResultDto>($"{BaseUrl}/login", input);
         return response.Result.Data;
     }
 }
