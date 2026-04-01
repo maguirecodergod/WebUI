@@ -19,6 +19,8 @@
     },
     "DataTable.Search": "Search...",
     "DataTable.Filters": "Filters",
+    "DataTable.Apply": "Apply",
+    "DataTable.Clear": "Clear",
     "DataTable.Columns": "Columns",
     "DataTable.Refresh": "Refresh",
     "DataTable.NoData": "No data available.",

@@ -134,7 +134,6 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     private readonly Dictionary<object, TItem> _selectedItems = new();
     private bool _allPageSelected;
     private bool _allEntireDatasetSelected;
-    private bool _isRestoringSelection;
     private HashSet<string>? _restoredSelectedKeys;
 
     // Expanded rows
@@ -151,6 +150,9 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     // Debouncers
     private Debouncer? _searchDebouncer;
     private Debouncer? _filterDebouncer;
+
+    // Filter Staging
+    private List<FilterDefinition> _stagedFilters = new();
 
     // ── Computed ──
     private int _totalColumns
@@ -796,7 +798,6 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
             var state = await LocalStorage.GetAsync<SelectionState>(SelectionStorageKey);
             if (state is null) return;
 
-            _isRestoringSelection = true;
             _allEntireDatasetSelected = state.AllEntireDatasetSelected;
 
             if (state.SelectedKeys.Count > 0)
@@ -807,10 +808,6 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
             UpdatePageSelectionState();
         }
         catch { }
-        finally
-        {
-            _isRestoringSelection = false;
-        }
     }
 
     private void SyncSelectedItems()
@@ -858,15 +855,64 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     // FILTER SIDEBAR
     // ═══════════════════════════════════════════════════════════
 
-    private void ToggleFilterSidebar() => _filterSidebarOpen = !_filterSidebarOpen;
+    private void ToggleFilterSidebar()
+    {
+        _filterSidebarOpen = !_filterSidebarOpen;
+        if (_filterSidebarOpen) InitializeStaging();
+    }
+
+    private void InitializeStaging()
+    {
+        _stagedFilters = _request.Filters.Select(f => new FilterDefinition
+        {
+            Field = f.Field,
+            Type = f.Type,
+            Operator = f.Operator,
+            Value = f.Value,
+            ValueTo = f.ValueTo
+        }).ToList();
+    }
 
     private void CloseFilterSidebar() => _filterSidebarOpen = false;
 
-    private async Task ClearAllFilters()
+    private async Task ApplyFiltersAsync()
     {
         _request.Filters.Clear();
+        _request.Filters.AddRange(_stagedFilters);
         _request.PageNumber = 1;
+        CloseFilterSidebar();
         await RefreshAsync();
+    }
+
+    private async Task ClearAllFiltersAsync()
+    {
+        _stagedFilters.Clear();
+        _request.Filters.Clear();
+        _request.PageNumber = 1;
+        CloseFilterSidebar();
+        await RefreshAsync();
+    }
+
+    private string? GetStagedFilterValue(string field) =>
+        _stagedFilters.FirstOrDefault(f => f.Field == field)?.Value;
+
+    private void SetStagedFilter(string field, string? value, FilterType type,
+        FilterOperator op = FilterOperator.Contains, string? valueTo = null)
+    {
+        var existing = _stagedFilters.FirstOrDefault(f => f.Field == field);
+        if (existing is not null) _stagedFilters.Remove(existing);
+
+        if (!string.IsNullOrEmpty(value))
+        {
+            _stagedFilters.Add(new FilterDefinition
+            {
+                Field = field,
+                Type = type,
+                Operator = op,
+                Value = value,
+                ValueTo = valueTo
+            });
+        }
     }
 
     // ═══════════════════════════════════════════════════════════

@@ -299,6 +299,14 @@
             </div>
         }
     </div>
+    <div class="dt-sidebar-footer">
+        <Button Style="CButtonStyle.Light" Size="CButtonSize.Medium" OnClick="ClearAllFiltersAsync" Class="flex-grow-1">
+            @Localizer.L("DataTable.Clear")
+        </Button>
+        <Button Style="CButtonStyle.Primary" Size="CButtonSize.Medium" OnClick="ApplyFiltersAsync" Class="flex-grow-1">
+            @Localizer.L("DataTable.Apply")
+        </Button>
+    </div>
 </aside>
 
 <div style="display:none">
@@ -313,12 +321,12 @@
         switch (col.FilterType)
         {
             case FilterType.Text:
-                <input type="text" class="dt-filter-input" placeholder="@col.Title" value="@GetFilterValue(col.Field)"
-                       @oninput="async e => await HandleFilterTextInput(col.Field, e.Value?.ToString(), FilterType.Text)" />
+                <input type="text" class="dt-filter-input" placeholder="@col.Title" value="@GetStagedFilterValue(col.Field)"
+                       @oninput="e => SetStagedFilter(col.Field, e.Value?.ToString(), FilterType.Text)" />
                 break;
             case FilterType.Select:
-                <select class="dt-filter-input"
-                        @onchange="async e => await HandleFilterChange(col.Field, e.Value?.ToString(), FilterType.Select, FilterOperator.Equals)">
+                <select class="dt-filter-input" value="@GetStagedFilterValue(col.Field)"
+                        @onchange="e => SetStagedFilter(col.Field, e.Value?.ToString(), FilterType.Select, FilterOperator.Equals)">
                     <option value="">@Localizer.L("DataTable.All")</option>
                     @if (col.FilterOptions is not null)
                     {

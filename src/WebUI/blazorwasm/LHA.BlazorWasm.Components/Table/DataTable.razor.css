@@ -221,6 +221,14 @@
     background: var(--background-color, #fff);
 }
 
+.dt-sidebar-footer {
+    padding: 1.25rem;
+    border-top: 1px solid var(--border-color, #f1f5f9);
+    display: flex;
+    gap: 0.75rem;
+    background: var(--popup-bg, #fff);
+}
+
 .dt-sidebar-label {
     display: block;
     font-size: 0.65rem;

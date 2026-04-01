@@ -1,6 +1,8 @@
 {
     "DataTable.Search": "Tìm kiếm...",
     "DataTable.Filters": "Bộ lọc",
+    "DataTable.Apply": "Áp dụng",
+    "DataTable.Clear": "Xóa bộ lọc",
     "DataTable.Columns": "Cột hiển thị",
     "DataTable.Refresh": "Làm mới",
     "DataTable.NoData": "Không có dữ liệu.",
