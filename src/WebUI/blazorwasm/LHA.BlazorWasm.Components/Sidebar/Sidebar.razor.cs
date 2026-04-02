@@ -15,8 +15,6 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     #region ── Injected Services ──
 
     [Inject] private ILocalStorageService LocalStorage { get; set; } = default!;
-    [Inject] private IThemeService ThemeService { get; set; } = default!;
-    [Inject] private ThemeState ThemeState { get; set; } = default!;
 
     #endregion
 

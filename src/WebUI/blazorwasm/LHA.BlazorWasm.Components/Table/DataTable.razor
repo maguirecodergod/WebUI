@@ -28,10 +28,7 @@
             @if (Searchable)
             {
                 <div class="dt-search">
-                    <svg class="dt-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
+                    <i class="bi bi-search dt-search-icon"></i>
                     <input type="text" class="dt-search-input" placeholder="@Localizer.L("DataTable.Search")"
                            value="@_searchInput" @oninput="OnSearchInput" />
                 </div>
@@ -41,10 +38,7 @@
             {
                 <Button Class="@($"dt-toolbar-btn {(_filterSidebarOpen ? "dt-toolbar-btn-active" : "")}")"
                         Style="CButtonStyle.Light" OnClick="ToggleFilterSidebar">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg>
+                    <i class="bi bi-filter"></i>
                     @Localizer.L("DataTable.Filters")
                 </Button>
             }
@@ -54,11 +48,7 @@
                 <div style="position: relative;">
                     <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="ToggleColumnDropdown"
                             OnClick:stopPropagation="true">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                             stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="12" y1="3" x2="12" y2="21"></line>
-                        </svg>
+                        <i class="bi bi-columns-gap"></i>
                         @Localizer.L("DataTable.Columns")
                     </Button>
                     @if (_columnToggleOpen)
@@ -77,11 +67,7 @@
             }
 
             <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="RefreshAsync" IsLoading="@_isLoading">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M23 4v6h-6"></path>
-                    <path d="M1 20v-6h6"></path>
-                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                </svg>
+                <i class="bi bi-arrow-clockwise"></i>
             </Button>
         </div>
     }
@@ -126,26 +112,15 @@
                                 <span class="dt-sort-icon">
                                     @if (sort.Direction == SortDirection.Ascending)
                                     {
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="dt-svg-icon">
-                                            <polyline points="18 15 12 9 6 15"></polyline>
-                                        </svg>
+                                        <i class="bi bi-caret-up-fill dt-svg-icon"></i>
                                     }
                                     else if (sort.Direction == SortDirection.Descending)
                                     {
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="dt-svg-icon">
-                                            <polyline points="6 9 12 15 18 9"></polyline>
-                                        </svg>
+                                        <i class="bi bi-caret-down-fill dt-svg-icon"></i>
                                     }
                                     else
                                     {
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="dt-svg-icon"
-                                             style="opacity: 0.2;">
-                                            <polyline points="7 15 12 20 17 15"></polyline>
-                                            <polyline points="7 9 12 4 17 9"></polyline>
-                                        </svg>
+                                        <i class="bi bi-arrow-down-up dt-svg-icon" style="opacity: 0.3;"></i>
                                     }
                                 </span>
                             }
@@ -237,7 +212,7 @@
                             {
                                 <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
                                     <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : "")"
-                                            @onclick="() => ToggleExpand(item)">›</button>
+                                            @onclick="() => ToggleExpand(item)"><i class="bi bi-chevron-right"></i></button>
                                 </td>
                             }
 
@@ -283,9 +258,7 @@
 <aside class="dt-sidebar @ThemeClass @(_filterSidebarOpen ? "dt-sidebar-open" : "")">
     <div class="dt-sidebar-header">
         <h3 class="dt-sidebar-title">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-            </svg>
+            <i class="bi bi-filter"></i>
             @Localizer.L("DataTable.Filters")
         </h3>
         <button type="button" @onclick="CloseFilterSidebar" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>

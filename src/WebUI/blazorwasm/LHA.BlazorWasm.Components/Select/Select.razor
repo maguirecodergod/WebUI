@@ -40,7 +40,7 @@
                             <span class="select-tag-label">@GetLabel(val)</span>
                             @if (!Disabled && !ReadOnly)
                             {
-                                <span class="select-tag-remove" @onclick="() => RemoveValue(val)">&times;</span>
+                                <span class="select-tag-remove" @onclick="() => RemoveValue(val)"><i class="bi bi-x"></i></span>
                             }
                         </div>
                     }
@@ -56,18 +56,11 @@
             @if (ShowClear && HasAnyValue && !Disabled && !ReadOnly)
             {
                 <span class="select-clear" @onclick="ClearAsync" @onclick:stopPropagation="true">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
+                    <i class="bi bi-x"></i>
                 </span>
             }
             <div class="select-arrow-container">
-                <svg class="select-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
+                <i class="bi bi-chevron-down select-arrow"></i>
             </div>
         </div>
     </div>

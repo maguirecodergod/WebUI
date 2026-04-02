@@ -17,7 +17,7 @@ a,
     position: fixed;
     top: 1rem;
     right: 1.5rem;
-    z-index: 1055;
+    z-index: var(--z-index-toast);
     pointer-events: none;
     /* Let clicks strictly fall through invisible bounds */
 }

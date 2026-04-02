@@ -5,7 +5,7 @@
     --topbar-text: #1f2937;
     --topbar-text-muted: #6b7280;
     --topbar-accent: #3b82f6;
-    --topbar-z-index: 1000;
+    --topbar-z-index: var(--z-index-topbar);
     --topbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     --radius-full: 9999px;
     --radius-lg: 16px;
@@ -31,7 +31,7 @@
     justify-content: space-between;
     padding: 0 1rem;
     position: relative;
-    z-index: 999;
+    z-index: var(--topbar-z-index);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--topbar-text);
 }
@@ -292,7 +292,7 @@
     transform: translateY(10px) scale(0.98);
     pointer-events: none;
     transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
-    z-index: 2000; /* Ensure it stays above everything, including backdrops */
+    z-index: var(--z-index-dropdown);
 }
 
 .topbar-dropdown.show {
@@ -373,7 +373,7 @@
     height: 64px;
     background: var(--topbar-bg);
     backdrop-filter: blur(16px);
-    z-index: 2200;
+    z-index: var(--z-index-overlay);
     display: flex;
     align-items: center;
     padding: 0 1rem;
@@ -418,7 +418,7 @@
 .topbar-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 950;
+    z-index: calc(var(--topbar-z-index) - 1);
     background: transparent; /* Keeping it transparent for now, can add rgba(0,0,0,0.1) if dimming is desired */
 }
 

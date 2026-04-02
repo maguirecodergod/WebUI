@@ -5,9 +5,6 @@ namespace LHA.BlazorWasm.Components.ThemeSwitch;
 
 public class ThemeSwitchBase : LhaComponentBase, IDisposable
 {
-    [Inject] protected IThemeService ThemeService { get; set; } = default!;
-    [Inject] protected ThemeState ThemeState { get; set; } = default!;
-
     [Parameter] public CThemeSwitchVariant Variant { get; set; } = CThemeSwitchVariant.Toggle;
     [Parameter] public string Class { get; set; } = string.Empty;
     [Parameter] public string Style { get; set; } = string.Empty;

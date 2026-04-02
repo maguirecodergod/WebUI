@@ -111,7 +111,7 @@
   height: 600px;
   border-radius: 50%;
   filter: blur(140px);
-  z-index: 0;
+  z-index: var(--z-index-base);
   opacity: 0.5;
   animation: pulse-glow 8s ease-in-out infinite alternate;
 }
@@ -144,7 +144,7 @@
 /* ── Main Panel ── */
 .register-glass-panel {
   position: relative;
-  z-index: 10;
+  z-index: var(--z-index-content);
   width: 100%;
   max-width: 900px;
   background: var(--glass-bg);

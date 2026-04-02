@@ -13,7 +13,7 @@
     box-shadow: var(--popup-shadow);
     display: flex;
     flex-direction: column;
-    z-index: 1000;
+    z-index: var(--z-index-dropdown);
     overflow: hidden;
     animation: slideUp 0.2s ease-out;
 }
@@ -106,7 +106,7 @@
     top: -8px;
     background: var(--popup-bg, #ffffff);
     padding: 4px 0;
-    z-index: 2;
+    z-index: var(--z-index-content);
 }
 
 ::deep .emoji-items {

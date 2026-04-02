@@ -60,17 +60,14 @@
                  Class="lha-sidebar-internal-toggle-tooltip">
             <Button Type="CButtonType.Button" Class="lha-sidebar__internal-toggle" OnClick="HandleInternalToggle"
                     Style="CButtonStyle.Ghost" aria-label="Toggle Sidebar" title="Toggle Sidebar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                     stroke-linejoin="round">
-                    @if (State == CSidebarState.Expanded)
-                    {
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    }
-                    else
-                    {
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    }
-                </svg>
+                @if (State == CSidebarState.Expanded)
+                {
+                    <i class="bi bi-chevron-left"></i>
+                }
+                else
+                {
+                    <i class="bi bi-chevron-right"></i>
+                }
             </Button>
         </Tooltip>
     }

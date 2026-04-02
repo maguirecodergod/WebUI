@@ -16,9 +16,6 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     // ═══════════════════════════════════════════════════════════
 
     [Inject] private ILocalStorageService LocalStorage { get; set; } = default!;
-    [Inject] private LHA.BlazorWasm.Services.Theme.IThemeService ThemeService { get; set; } = default!;
-    [Inject] private LHA.BlazorWasm.Services.Theme.ThemeState ThemeState { get; set; } = default!;
-
     private string ThemeClass => ThemeService.ThemeClass;
 
     // ═══════════════════════════════════════════════════════════

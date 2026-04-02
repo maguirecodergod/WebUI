@@ -127,7 +127,7 @@
         linear-gradient(var(--grid-color) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
     background-size: 40px 40px;
-    z-index: 1;
+    z-index: var(--z-index-deep);
     mask-image: radial-gradient(circle at center, black, transparent 80%);
 }
 
@@ -138,7 +138,7 @@
     height: 700px;
     border-radius: 50%;
     filter: blur(150px);
-    z-index: 0;
+    z-index: var(--z-index-base);
     opacity: 0.4;
     animation: pulse-glow 10s ease-in-out infinite alternate;
 }
@@ -181,7 +181,7 @@
 /* ── Main Panel ── */
 .register-glass-panel {
     position: relative;
-    z-index: 10;
+    z-index: var(--z-index-content);
     width: 100%;
     max-width: 460px;
     background: var(--panel-bg);

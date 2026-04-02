@@ -148,7 +148,7 @@
     justify-content: center;
     transition: all 0.2s;
     opacity: 0;
-    z-index: 5;
+    z-index: var(--z-index-deep);
 }
 
 .picker-input-container:hover .picker-clear {
@@ -170,7 +170,7 @@
     border: 1px solid var(--popup-border);
     border-radius: 16px;
     box-shadow: var(--popup-shadow);
-    z-index: 1050;
+    z-index: var(--z-index-dropdown);
     width: max-content;
     /* Fit contents exactly */
     min-width: auto;
@@ -348,7 +348,7 @@
 .calendar-day:hover {
     background-color: var(--hover-bg);
     color: var(--primary-color);
-    z-index: 1;
+    z-index: var(--z-index-deep);
 }
 
 .calendar-day.other-month {
@@ -645,7 +645,7 @@
         padding: 24px var(--picker-mobile-padding);
         transform: translateY(100%);
         box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
-        z-index: 9999;
+        z-index: var(--z-index-modal);
         /* Ensure it is above everywhere */
     }
 

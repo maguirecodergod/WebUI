@@ -102,7 +102,7 @@
     left: 0;
     width: 100% !important;
     height: 100vh !important;
-    z-index: 99999;
+    z-index: var(--z-index-fullscreen) !important;
     border-radius: 0;
     border: none;
     overflow: visible !important;
@@ -114,7 +114,12 @@
 }
 
 body.rte-fullscreen-active {
-    overflow: hidden;
+    overflow: hidden !important;
+}
+
+body.rte-fullscreen-active .page-content {
+    z-index: var(--z-index-fullscreen) !important;
+    position: relative !important;
 }
 
 /* ----- Toolbar ----- */
@@ -246,6 +251,8 @@ body.rte-fullscreen-active {
     flex-shrink: 0;
     opacity: 0.5;
     transition: transform var(--rte-transition);
+    font-size: 6px;
+    margin-left: 2px;
 }
 
 .rte-dropdown-btn.open .rte-dropdown-arrow {
@@ -256,7 +263,7 @@ body.rte-fullscreen-active {
     position: absolute;
     top: calc(100% + 4px);
     left: 0;
-    z-index: 1000;
+    z-index: var(--z-index-dropdown);
     background: var(--rte-popup-bg);
     border: 1px solid var(--rte-popup-border);
     border-radius: 8px;
@@ -391,7 +398,7 @@ body.rte-fullscreen-active {
 .rte-color-swatch:hover {
     transform: scale(1.25);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    z-index: var(--z-index-deep);
     position: relative;
     border-color: #9ca3af;
 }
@@ -596,7 +603,7 @@ body.rte-fullscreen-active {
     width: 100%;
     height: 100%;
     background: var(--rte-dialog-overlay);
-    z-index: 100000;
+    z-index: var(--z-index-overlay);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -842,7 +849,7 @@ body.rte-fullscreen-active {
     height: 100%;
     opacity: 0;
     cursor: pointer;
-    z-index: 2;
+    z-index: var(--z-index-content);
 }
 
 .rte-dropzone-content {
@@ -851,7 +858,7 @@ body.rte-fullscreen-active {
     align-items: center;
     gap: 8px;
     color: #6b7280;
-    z-index: 1;
+    z-index: var(--z-index-deep);
     pointer-events: none;
 }
 
@@ -932,7 +939,7 @@ body.rte-fullscreen-active {
     border-color: var(--rte-primary);
     color: var(--rte-primary);
     transform: scale(1.15);
-    z-index: 1;
+    z-index: var(--z-index-deep);
 }
 
 .theme-dark .rte-char-item:hover {
@@ -946,7 +953,7 @@ body.rte-fullscreen-active {
 .rte-resizer {
     position: absolute;
     box-shadow: 0 0 0 2px var(--rte-primary);
-    z-index: 100;
+    z-index: var(--z-index-floating);
     pointer-events: none;
 }
 
