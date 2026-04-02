@@ -1,9 +1,9 @@
 using LHA.Ddd.Application;
-using LHA.Ddd.Domain;
 using LHA.TenantManagement.Application.Contracts;
 using LHA.TenantManagement.Domain;
-using LHA.TenantManagement.Domain.Shared;
 using LHA.UnitOfWork;
+using LHA.Shared.Contracts.TenantManagement;
+using LHA.Shared.Domain.TenantManagement;
 
 namespace LHA.TenantManagement.Application;
 

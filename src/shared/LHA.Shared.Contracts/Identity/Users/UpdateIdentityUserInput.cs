@@ -1,4 +1,4 @@
-using LHA.Identity.Domain.Shared;
+using LHA.Shared.Contracts.Identity;
 using FluentValidation;
 
 namespace LHA.Shared.Contracts.Identity.Users;

@@ -1,7 +1,7 @@
 using LHA.Core;
 using LHA.EntityFrameworkCore;
 using LHA.TenantManagement.Domain;
-using LHA.TenantManagement.Domain.Shared;
+using LHA.Shared.Domain.TenantManagement;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.TenantManagement.EntityFrameworkCore;

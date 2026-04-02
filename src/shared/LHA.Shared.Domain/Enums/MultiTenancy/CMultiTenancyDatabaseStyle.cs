@@ -1,4 +1,4 @@
-namespace LHA.TenantManagement.Domain.Shared;
+namespace LHA.Shared.Domain.TenantManagement;
 
 /// <summary>
 /// Determines how a tenant's data is isolated at the database level.

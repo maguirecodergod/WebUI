@@ -4,6 +4,7 @@ using LHA.Ddd.Application;
 using LHA.EventBus;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
+using LHA.Shared.Domain.Identity;
 using LHA.Identity.Domain.Shared;
 using LHA.MultiTenancy;
 using LHA.UnitOfWork;

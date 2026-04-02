@@ -1,7 +1,9 @@
-using LHA.Identity.Domain.Shared;
+using LHA.Shared.Contracts.Identity;
 using FluentValidation;
 
+using LHA.Shared.Domain.Identity;
 namespace LHA.Shared.Contracts.Identity.Claims;
+
 
 /// <summary>Input for creating or updating a claim type.</summary>
 public sealed class CreateOrUpdateClaimTypeInput

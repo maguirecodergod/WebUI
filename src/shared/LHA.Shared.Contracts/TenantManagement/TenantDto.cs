@@ -1,6 +1,6 @@
 using LHA.Core;
 using LHA.Ddd.Application;
-using LHA.TenantManagement.Domain.Shared;
+using LHA.Shared.Domain.TenantManagement;
 
 namespace LHA.Shared.Contracts.TenantManagement;
 

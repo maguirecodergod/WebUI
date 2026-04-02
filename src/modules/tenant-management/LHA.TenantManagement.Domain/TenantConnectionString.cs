@@ -1,5 +1,5 @@
 using LHA.Ddd.Domain;
-using LHA.TenantManagement.Domain.Shared;
+using LHA.Shared.Domain.TenantManagement;
 
 namespace LHA.TenantManagement.Domain;
 

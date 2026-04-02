@@ -1,6 +1,7 @@
 using LHA.Core;
 using LHA.Ddd.Application;
-using LHA.Identity.Domain.Shared;
+using LHA.Shared.Domain.Identity;
+// using LHA.Identity.Domain.Shared;
 
 namespace LHA.Shared.Contracts.Identity;
 

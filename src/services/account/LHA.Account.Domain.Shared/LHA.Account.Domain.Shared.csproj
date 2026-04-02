@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -11,6 +11,7 @@
     <ProjectReference Include="..\..\..\modules\tenant-management\LHA.TenantManagement.Domain.Shared\LHA.TenantManagement.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.Domain.Shared\LHA.AuditLog.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\..\modules\permission-management\LHA.PermissionManagement.Domain.Shared\LHA.PermissionManagement.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
   </ItemGroup>
 
 </Project>

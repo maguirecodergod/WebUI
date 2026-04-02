@@ -2,6 +2,7 @@ using LHA.Ddd.Application;
 using LHA.Ddd.Domain;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
+using LHA.Shared.Domain.Identity;
 using LHA.UnitOfWork;
 
 namespace LHA.Identity.Application;

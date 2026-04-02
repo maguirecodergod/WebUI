@@ -1,5 +1,6 @@
 using LHA.Ddd.Domain;
 using LHA.Identity.Domain.Shared;
+using LHA.Shared.Domain.Identity;
 
 namespace LHA.Identity.Domain;
 

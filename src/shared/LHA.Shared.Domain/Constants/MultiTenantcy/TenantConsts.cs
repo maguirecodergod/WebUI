@@ -1,4 +1,4 @@
-namespace LHA.TenantManagement.Domain.Shared;
+namespace LHA.Shared.Domain.TenantManagement;
 
 /// <summary>
 /// Module-level constants for the tenant management bounded context.

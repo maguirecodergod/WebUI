@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using LHA.TenantManagement.Domain;
-using LHA.TenantManagement.Domain.Shared;
+using LHA.Shared.Domain.TenantManagement;
 
 namespace LHA.Account.Application.TenantProvisioning.Strategies;
 

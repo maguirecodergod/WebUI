@@ -1,7 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Domain.Shared\LHA.Ddd.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -2,6 +2,7 @@ using LHA.Identity.Domain;
 using LHA.TenantManagement.Domain;
 using Microsoft.Extensions.DependencyInjection;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.Shared.Domain.TenantManagement;
 
 namespace LHA.Account.Application;
 
@@ -23,7 +24,7 @@ public sealed class AccountUserTenantLookupService : IUserTenantLookupService, I
         var tenantManager = scope.ServiceProvider.GetRequiredService<LHA.TenantManagement.Domain.TenantManager>();
         var tenantRepo = scope.ServiceProvider.GetRequiredService<LHA.TenantManagement.Domain.ITenantRepository>();
 
-        var style = (LHA.TenantManagement.Domain.Shared.CMultiTenancyDatabaseStyle)databaseStyle;
+        var style = (CMultiTenancyDatabaseStyle)databaseStyle;
         var tenant = await tenantManager.CreateAsync(name, style, ct);
         
         // 1. First, we must persist the tenant to get its ID properly saved

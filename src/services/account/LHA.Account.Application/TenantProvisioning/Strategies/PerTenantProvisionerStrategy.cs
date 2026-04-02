@@ -1,7 +1,7 @@
 using System.Data.Common;
 using LHA.Account.Domain.TenantProvisioning;
 using LHA.TenantManagement.Domain;
-using LHA.TenantManagement.Domain.Shared;
+using LHA.Shared.Domain.TenantManagement;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
