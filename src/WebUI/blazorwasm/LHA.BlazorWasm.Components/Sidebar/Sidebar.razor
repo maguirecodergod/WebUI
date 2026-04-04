@@ -47,19 +47,20 @@
     @* ── Resize Handle (Desktop only, Expanded state) ── *@
     @if (Resizable && EffectiveState == CSidebarState.Expanded)
     {
-        <div class="lha-sidebar__resize-handle" @onmousedown="StartResize" @onmousedown:preventDefault
-             title="@Localizer.L("Sidebar.ResizeTooltip")">
-            <div class="lha-sidebar__resize-indicator"></div>
+        <div class="lha-sidebar__resize-handle" @onmousedown="StartResize" @onmousedown:preventDefault>
+            <Tooltip Text="@Localizer.L("Sidebar.ResizeTooltip")" Placement="CTooltipPlacement.Left" Style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                <div class="lha-sidebar__resize-indicator"></div>
+            </Tooltip>
         </div>
     }
 
     @* ── Internal Toggle Button (Desktop only) ── *@
     @if (ShowToggle && State != CSidebarState.Hidden)
     {
-        <Tooltip Text="@Localizer.L("Sidebar.ResizeTooltip")" Placement="CTooltipPlacement.Left"
+        <Tooltip Text="@(State == CSidebarState.Expanded ? Localizer.L("Sidebar.Collapse") : Localizer.L("Sidebar.Expand"))" Placement="CTooltipPlacement.Left"
                  Class="lha-sidebar-internal-toggle-tooltip">
             <Button Type="CButtonType.Button" Class="lha-sidebar__internal-toggle" OnClick="HandleInternalToggle"
-                    Style="CButtonStyle.Ghost" aria-label="Toggle Sidebar" title="Toggle Sidebar">
+                    Style="CButtonStyle.Ghost" aria-label="Toggle Sidebar">
                 @if (State == CSidebarState.Expanded)
                 {
                     <i class="bi bi-chevron-left"></i>

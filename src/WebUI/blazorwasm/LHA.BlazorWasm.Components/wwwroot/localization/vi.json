@@ -1,7 +1,9 @@
 {
     "Theme": {
         "LightMode": "Chế độ sáng",
-        "DarkMode": "Chế độ tối"
+        "DarkMode": "Chế độ tối",
+        "SwitchToLightMode": "Chuyển sang chế độ sáng",
+        "SwitchToDarkMode": "Chuyển sang chế độ tối"
     },
     "Common": {
         "Select": "Chọn...",
@@ -9,7 +11,8 @@
         "Clear": "Xóa sạch",
         "Start": "Bắt đầu",
         "End": "Kết thúc",
-        "Suggestions": "Hãy thử các cách sau:"
+        "Suggestions": "Hãy thử các cách sau:",
+        "ChangeLanguage": "Thay đổi ngôn ngữ"
     },
     "Calendar": {
         "Sun": "CN",
@@ -143,6 +146,8 @@
     "Sidebar": {
         "AriaLabel": "Điều hướng chính",
         "ResizeTooltip": "Kéo để thay đổi kích thước",
+        "Expand": "Mở rộng thanh bên",
+        "Collapse": "Thu gọn thanh bên",
         "Home": "Trang chủ",
         "Counter": "Bộ đếm",
         "Weather": "Thời tiết",

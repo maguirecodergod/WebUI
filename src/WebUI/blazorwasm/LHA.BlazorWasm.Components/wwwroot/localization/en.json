@@ -1,7 +1,9 @@
 {
     "Theme": {
         "LightMode": "Light Mode",
-        "DarkMode": "Dark Mode"
+        "DarkMode": "Dark Mode",
+        "SwitchToLightMode": "Change to light mode",
+        "SwitchToDarkMode": "Change to dark mode"
     },
     "Common": {
         "Select": "Select...",
@@ -9,7 +11,8 @@
         "Clear": "Clear",
         "Start": "Start",
         "End": "End",
-        "Suggestions": "Try the following:"
+        "Suggestions": "Try the following:",
+        "ChangeLanguage": "Change language"
     },
     "Calendar": {
         "Sun": "Su",
@@ -143,6 +146,8 @@
     "Sidebar": {
         "AriaLabel": "Main Navigation",
         "ResizeTooltip": "Drag to resize",
+        "Expand": "Expand sidebar",
+        "Collapse": "Collapse sidebar",
         "Home": "Home",
         "Counter": "Counter",
         "Weather": "Weather",

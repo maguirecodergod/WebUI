@@ -1,41 +1,43 @@
 @inherits ThemeSwitchBase
 
-<div class="theme-switch @VariantClass @SizeClass @Class" style="@Style" @onclick="ToggleTheme">
-    @if (Variant == CThemeSwitchVariant.Icon)
-    {
-        <div class="icon-wrapper">
-            @if (CurrentTheme == LHA.BlazorWasm.Services.Theme.CThemeMode.Light)
-            {
-                <span class="icon">☀️</span>
-            }
-            else
-            {
-                <span class="icon">🌙</span>
-            }
-        </div>
-    }
-    else if (Variant == CThemeSwitchVariant.Toggle)
-    {
-        <div class="toggle-track">
-            <div class="toggle-thumb @(CurrentTheme == LHA.BlazorWasm.Services.Theme.CThemeMode.Light ? "light" : "dark")">
+<Tooltip Text="@(CurrentTheme == LHA.BlazorWasm.Services.Theme.CThemeMode.Light ? Localizer.L("Theme.SwitchToDarkMode") : Localizer.L("Theme.SwitchToLightMode"))">
+    <div class="theme-switch @VariantClass @SizeClass @Class" style="@Style" @onclick="ToggleTheme">
+        @if (Variant == CThemeSwitchVariant.Icon)
+        {
+            <div class="icon-wrapper">
                 @if (CurrentTheme == LHA.BlazorWasm.Services.Theme.CThemeMode.Light)
                 {
-                    <span class="icon-small">☀️</span>
+                    <span class="icon">☀️</span>
                 }
                 else
                 {
-                    <span class="icon-small">🌙</span>
+                    <span class="icon">🌙</span>
                 }
             </div>
-        </div>
-    }
+        }
+        else if (Variant == CThemeSwitchVariant.Toggle)
+        {
+            <div class="toggle-track">
+                <div class="toggle-thumb @(CurrentTheme == LHA.BlazorWasm.Services.Theme.CThemeMode.Light ? "light" : "dark")">
+                    @if (CurrentTheme == LHA.BlazorWasm.Services.Theme.CThemeMode.Light)
+                    {
+                        <span class="icon-small">☀️</span>
+                    }
+                    else
+                    {
+                        <span class="icon-small">🌙</span>
+                    }
+                </div>
+            </div>
+        }
 
-    @if (ShowLabel)
-    {
-        <span class="theme-label ms-2">
-            @(CurrentTheme == LHA.BlazorWasm.Services.Theme.CThemeMode.Light
-                ? Localizer.L("Theme.LightMode")
-                : Localizer.L("Theme.DarkMode"))
-        </span>
-    }
-</div>
+        @if (ShowLabel)
+        {
+            <span class="theme-label ms-2">
+                @(CurrentTheme == LHA.BlazorWasm.Services.Theme.CThemeMode.Light
+                    ? Localizer.L("Theme.LightMode")
+                    : Localizer.L("Theme.DarkMode"))
+            </span>
+        }
+    </div>
+</Tooltip>

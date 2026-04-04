@@ -66,6 +66,13 @@ article.content {
     padding: 4px 0;
 }
 
+/* ── Remove Sidebar Shadow ── */
+::deep .lha-sidebar,
+::deep .lha-sidebar--drawer-open .lha-sidebar__nav,
+::deep .lha-sidebar--hidden .lha-sidebar__nav {
+    box-shadow: none !important;
+}
+
 /* ── Mobile Toggle Button ── */
 
 .sidebar-toggle-btn {
