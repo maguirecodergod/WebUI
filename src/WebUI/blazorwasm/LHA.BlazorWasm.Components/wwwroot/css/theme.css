@@ -52,9 +52,12 @@
 
     /* CInput Variables */
     --lha-input-bg: #ffffff;
-    --lha-input-border: #e2e8f0;
-    --lha-input-text: #1e293b;
+    --lha-input-border: #cbd5e1;
+    --lha-input-text: #0f172a;
     --lha-input-icon: #94a3b8;
+    --lha-input-placeholder: #64748b;
+    --lha-primary: #4f46e5;
+    --lha-primary-glow: rgba(79, 70, 229, 0.15);
     --lha-input-autofill-bg: #ffffff;
     --lha-input-autofill-text: #1e293b;
 }
@@ -95,6 +98,9 @@
     --lha-input-border: rgba(255, 255, 255, 0.1);
     --lha-input-text: #ffffff;
     --lha-input-icon: rgba(255, 255, 255, 0.3);
+    --lha-input-placeholder: rgba(255, 255, 255, 0.4);
+    --lha-primary: #818cf8;
+    --lha-primary-glow: rgba(129, 140, 248, 0.2);
     --lha-input-autofill-bg: rgba(10, 10, 18, 0.95);
     --lha-input-autofill-text: #ffffff;
 }

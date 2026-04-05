@@ -1,61 +1,26 @@
 html,
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: transparent !important;
+    font-family: 'Outfit', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8fafc;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent body scroll, container should handle it */
 }
 
-h1:focus {
-    outline: none;
-}
-
-a,
-.btn-link {
-    color: #0071c1;
-}
-
-/* Master Toast Viewport Anchoring Layer */
-.toast-container {
-    position: fixed;
-    top: 1rem;
-    right: 1.5rem;
-    z-index: var(--z-index-toast);
-    pointer-events: none;
-    /* Let clicks strictly fall through invisible bounds */
-}
-
-.toast-container>* {
-    pointer-events: auto;
-    /* Re-enable for the generated internal alert elements exclusively */
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
-.btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-.content {
-    padding-top: 1.1rem;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid red;
+/* Remove default Blazor outlines that clash with custom designs */
+.valid.modified:not([type=checkbox]),
+.invalid,
+input.invalid,
+input.valid.modified {
+    outline: none !important;
 }
 
 .validation-message {
-    color: red;
+    font-size: 0.8rem;
+    color: var(--lha-danger, #dc3545);
+    margin-top: 0.25rem;
 }
 
 

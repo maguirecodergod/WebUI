@@ -34,6 +34,14 @@
   --input-bg: #ffffff;
   --input-border: #94a3b8;
   --brand-gradient: none;
+
+  /* CInput theme-specific overrides for light mode */
+  --lha-input-bg: #ffffff;
+  --lha-input-border: #94a3b8;
+  --lha-input-text: #020617;
+  --lha-input-placeholder: #64748b;
+  --lha-primary: #2563eb;
+  --lha-primary-glow: rgba(37, 99, 235, 0.1);
 }
 
 .theme-light .ambient-glow {
@@ -66,16 +74,10 @@
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.1) !important;
 }
 
-.theme-light .subtitle,
-.theme-light .section-desc,
-.theme-light .input-group label {
-  color: #475569 !important;
-}
-
-.theme-light .glass-input {
-  background: #ffffff !important;
-  border-color: #94a3b8 !important;
-  color: #0f172a !important;
+::deep .form-field .form-label {
+  color: var(--muted-text);
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .theme-light ::deep .btn-secondary-ghost {

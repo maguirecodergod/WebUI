@@ -124,36 +124,36 @@
                             <FormField Label="@Localizer.L("TenantRegister.Step2.OrgName")" Required="true" Class="full-width" 
                                        ValueExpression="@(() => (object)Model.TenantName)">
                                 <CInput @bind-Value="Model.TenantName" Placeholder="e.g., Acme Corp.">
-                                    <IconContent>
+                                    <IconLeft>
                                         <i class="bi bi-building"></i>
-                                    </IconContent>
+                                    </IconLeft>
                                 </CInput>
                             </FormField>
 
                             <FormField Label="@Localizer.L("TenantRegister.Step2.AdminUsername")" Required="true" 
                                        ValueExpression="@(() => (object)Model.AdminUserName)">
                                 <CInput @bind-Value="Model.AdminUserName" Placeholder="admin">
-                                    <IconContent>
+                                    <IconLeft>
                                         <i class="bi bi-person"></i>
-                                    </IconContent>
+                                    </IconLeft>
                                 </CInput>
                             </FormField>
 
                             <FormField Label="@Localizer.L("TenantRegister.Step2.AdminEmail")" Required="true" 
                                        ValueExpression="@(() => (object)Model.AdminEmail)">
                                 <CInput @bind-Value="Model.AdminEmail" Type="email" Placeholder="admin@acme.com">
-                                    <IconContent>
+                                    <IconLeft>
                                         <i class="bi bi-envelope"></i>
-                                    </IconContent>
+                                    </IconLeft>
                                 </CInput>
                             </FormField>
 
                             <FormField Label="@Localizer.L("TenantRegister.Step2.AdminPassword")" Required="true" Class="full-width" 
                                        ValueExpression="@(() => (object)Model.AdminPassword)">
                                 <CInput @bind-Value="Model.AdminPassword" Type="password" Placeholder="••••••••">
-                                    <IconContent>
+                                    <IconLeft>
                                         <i class="bi bi-lock"></i>
-                                    </IconContent>
+                                    </IconLeft>
                                 </CInput>
                             </FormField>
                         </div>

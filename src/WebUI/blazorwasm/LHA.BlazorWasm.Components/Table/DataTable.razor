@@ -2,6 +2,7 @@
     DataTable<TItem> — Enterprise-grade reusable data table component.
    ═══════════════════════════════════════════════════════════════════ *@
 @namespace LHA.BlazorWasm.Components.Table
+@using LHA.BlazorWasm.Components.Form
 @inherits LhaComponentBase
 @typeparam TItem
 @implements IDisposable
@@ -27,10 +28,14 @@
             @* Right-side Actions *@
             @if (Searchable)
             {
-                <div class="dt-search">
-                    <i class="bi bi-search dt-search-icon"></i>
-                    <input type="text" class="dt-search-input" placeholder="@Localizer.L("DataTable.Search")"
-                           value="@_searchInput" @oninput="OnSearchInput" />
+                <div class="dt-search" style="min-width: 260px;">
+                    <CInput TValue="string" Value="@_searchInput" ValueChanged="OnSearchValueChanged" 
+                           ValueExpression="@(() => _searchInput)"
+                           Placeholder="@Localizer.L("DataTable.Search")" Clearable="true" Size="CInputSize.Small">
+                        <IconLeft>
+                            <i class="bi bi-search"></i>
+                        </IconLeft>
+                    </CInput>
                 </div>
             }
 
@@ -294,8 +299,10 @@
         switch (col.FilterType)
         {
             case FilterType.Text:
-                <input type="text" class="dt-filter-input" placeholder="@col.Title" value="@GetStagedFilterValue(col.Field)"
-                       @oninput="e => SetStagedFilter(col.Field, e.Value?.ToString(), FilterType.Text)" />
+                <CInput TValue="string" Value="@GetStagedFilterValue(col.Field)" 
+                       ValueChanged="@(v => SetStagedFilter(col.Field, v, FilterType.Text))" 
+                       ValueExpression="@(() => _dummyFilter)"
+                       Placeholder="@col.Title" Clearable="true" Size="CInputSize.Small" />
                 break;
             case FilterType.Select:
                 <select class="dt-filter-input" value="@GetStagedFilterValue(col.Field)"

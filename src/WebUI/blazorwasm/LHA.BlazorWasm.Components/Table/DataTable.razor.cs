@@ -1,6 +1,7 @@
 using LHA.BlazorWasm.Services.Storage;
 using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Components;
+using LHA.BlazorWasm.Components.Form;
 
 namespace LHA.BlazorWasm.Components.Table;
 
@@ -140,6 +141,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     private bool _columnToggleOpen;
     private bool _filterSidebarOpen;
     private string? _searchInput;
+    private string? _dummyFilter; // Required for dynamically generated CInput ValueExpression
 
     // Active filter count for badge
     private int ActiveFilterCount => _request.Filters.Count(f => f.IsActive);
@@ -539,9 +541,9 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     // SEARCH (global, debounced)
     // ═══════════════════════════════════════════════════════════
 
-    private async Task OnSearchInput(ChangeEventArgs e)
+    private async Task OnSearchValueChanged(string? value)
     {
-        _searchInput = e.Value?.ToString();
+        _searchInput = value;
 
         if (_searchDebouncer is not null)
         {

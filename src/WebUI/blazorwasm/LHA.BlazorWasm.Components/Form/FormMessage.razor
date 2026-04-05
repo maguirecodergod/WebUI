@@ -4,11 +4,34 @@
 
 @if (ValueExpression is not null)
 {
-    <div class="form-error">
-        <ValidationMessage For="@ValueExpression" />
-    </div>
+    var messages = EditContext?.GetValidationMessages(FieldIdentifier).ToList();
+    if (messages?.Any() == true)
+    {
+        <div class="form-error @Class" style="@Style">
+            @foreach (var message in messages)
+            {
+                <span class="lha-error-message">@message</span>
+            }
+        </div>
+    }
 }
 
 @code {
     [Parameter] public Expression<Func<object>>? ValueExpression { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+    
+    private FieldIdentifier FieldIdentifier => ValueExpression != null 
+        ? FieldIdentifier.Create(ValueExpression) 
+        : default;
+
+    protected override void OnInitialized()
+    {
+        if (EditContext != null)
+        {
+            EditContext.OnValidationStateChanged += (s, e) => StateHasChanged();
+        }
+    }
 }

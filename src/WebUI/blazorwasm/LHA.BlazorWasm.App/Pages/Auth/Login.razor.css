@@ -47,6 +47,17 @@
     --check-bg: #ffffff;
     --check-border: #64748b;
     --link-color: #2563eb;
+
+    /* CInput theme-specific overrides for light mode */
+    --lha-input-bg: #ffffff;
+    --lha-input-border: #94a3b8;
+    --lha-input-text: #020617;
+    --lha-input-placeholder: #64748b;
+    --lha-primary: #2563eb;
+    --lha-primary-glow: rgba(37, 99, 235, 0.1);
+    
+    /* FormField theme-specific overrides for light mode */
+    --lha-text-secondary: #475569;
 }
 
 .theme-light .ambient-glow,
@@ -76,12 +87,6 @@
     opacity: 1 !important;
 }
 
-.theme-light ::deep .lha-input-field {
-    background: #ffffff !important;
-    border: 2px solid #94a3b8 !important;
-    color: #0f172a !important;
-    opacity: 1 !important;
-}
 
 .theme-light ::deep .lha-input-icon-left {
     color: #475569 !important;
@@ -107,16 +112,18 @@
 
 .register-container {
     min-height: 100vh;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* No container scroll, only panel internal scroll if needed */
     background-color: var(--login-bg);
     font-family: 'Outfit', 'Inter', sans-serif;
     color: var(--login-text);
     padding: 1.5rem;
     transition: background-color 0.5s ease;
+    box-sizing: border-box;
 }
 
 /* ── Digital Grid Background ── */
@@ -183,15 +190,16 @@
     position: relative;
     z-index: var(--z-index-content);
     width: 100%;
-    max-width: 460px;
+    max-width: 440px; /* Slightly narrower */
     background: var(--panel-bg);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border: 1px solid var(--panel-border);
-    border-radius: 28px;
-    padding: 2rem;
+    border-radius: 24px;
+    padding: 1.5rem 1.75rem; /* Reduced padding from 2.25rem 2rem */
     box-shadow: var(--panel-shadow);
     transition: all 0.5s ease;
+    overflow: visible; /* No internal scroll */
 }
 
 .login-panel-reveal {
@@ -212,7 +220,7 @@
 
 .register-header {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem; /* Reduced from 1.5rem */
 }
 
 .brand-title {
@@ -246,36 +254,16 @@
 .login-fields-container {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.75rem; /* Reduced gap from 1.25rem */
 }
 
-::deep .futuristic-field .form-label {
-    color: var(--field-label-color);
-    font-size: 0.85rem;
-    font-weight: 600;
+::deep .form-field .form-label {
+    color: var(--lha-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 0.6rem;
-}
-
-::deep .futuristic-field .form-control-wrapper {
-    background: transparent !important;
-}
-
-::deep .futuristic-field .form-control-wrapper input {
-    background: var(--input-bg) !important;
-    color: var(--input-text) !important;
-    border: 1px solid var(--input-border) !important;
-}
-
-::deep .futuristic-field .form-control-wrapper {
-    background: transparent !important;
-}
-
-::deep .futuristic-field .form-control-wrapper .lha-input-field {
-    background: var(--input-bg) !important;
-    color: var(--input-text) !important;
-    border: 1px solid var(--input-border) !important;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
 }
 
 .login-options {
