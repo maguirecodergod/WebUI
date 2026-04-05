@@ -165,7 +165,35 @@
         "Config": "Configuration",
         "ApiTest": "API Test"
     },
+    "Topbar": {
+        "SearchPlaceholder": "Search or type a command..."
+    },
+    "Search": {
+        "CommandPalettePlaceholder": "What are you looking for?",
+        "Suggestions": "Suggestions",
+        "NoResultsTitle": "No results found",
+        "NoResultsDesc": "We couldn't find anything matching \"{0}\"",
+        "Navigate": "to navigate",
+        "Select": "to select",
+        "Close": "to close",
+        "PoweredBy": "Powered by",
+        "GoToHome": "Go to Dashboard",
+        "GoToHomeDesc": "Navigate to the main application dashboard",
+        "MyProfile": "My Profile",
+        "MyProfileDesc": "View and edit your personal information",
+        "Settings": "Settings",
+        "SettingsDesc": "Manage your application preferences",
+        "Notifications": "Notifications",
+        "NotificationsDesc": "Check your recent alerts and messages",
+        "ChangeTheme": "Change Appearance",
+        "ChangeThemeDesc": "Switch between dark and light mode",
+        "ChangeLanguage": "Change Language",
+        "ChangeLanguageDesc": "Select your preferred application language",
+        "Logout": "Sign Out",
+        "LogoutDesc": "Safely exit your current session"
+    },
     "Emoji": {
+
         "SearchPlaceholder": "Search emoji..."
     },
     "Errors": {

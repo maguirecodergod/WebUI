@@ -46,14 +46,14 @@
         }
         else
         {
-            <div class="search-container">
-                <div class="topbar-search">
-                    <span class="search-icon">
+            <div class="topbar-search-wrapper">
+                <button class="search-trigger" @onclick="OpenCommandPalette" aria-label="Open Search">
+                    <span class="search-trigger-content">
                         <i class="bi bi-search"></i>
+                        <span class="search-placeholder">@L("Topbar.SearchPlaceholder")</span>
                     </span>
-                    <input type="text" placeholder="Search... (Ctrl + K)" @oninput="HandleSearch" />
-                    <span class="kbd-shortcut">⌘ K</span>
-                </div>
+                    <span class="search-kbd">⌘K</span>
+                </button>
 
                 @if (TopbarService.State.Breadcrumbs.Any())
                 {
@@ -92,7 +92,7 @@
                         }
                     </div>
 
-                    <button class="icon-button mobile-search-button" @onclick="ToggleSearch" @onclick:stopPropagation
+                    <button class="icon-button mobile-search-button" @onclick="OpenCommandPalette"
                             aria-label="Open search">
                         <i class="bi bi-search"></i>
                     </button>
@@ -182,21 +182,11 @@
 
             }
         </div>
+        <CommandPalette @bind-IsVisible="_isSearchOpen" />
     </header>
 
-    @if (_isProfileOpen || _isNotificationOpen || _isSearchOpen)
+    @if (_isProfileOpen || _isNotificationOpen)
     {
         <div class="topbar-backdrop" @onclick="CloseDropdowns"></div>
-    }
-
-    @if (_isSearchOpen)
-    {
-        <div class="mobile-search-overlay">
-            <div class="mobile-search-bar">
-                <i class="bi bi-search"></i>
-                <input type="text" placeholder="Search..." @oninput="HandleSearch" autofocus />
-                <button class="close-search" @onclick="ToggleSearch">✕</button>
-            </div>
-        </div>
     }
 

@@ -19,7 +19,6 @@ public partial class Topbar : LhaComponentBase, IDisposable
 
     [Parameter] public EventCallback OnSidebarToggle { get; set; }
 
-    private string _searchText = string.Empty;
     private bool _isNotificationOpen;
     private bool _isProfileOpen;
     private bool _isSearchOpen;
@@ -39,11 +38,7 @@ public partial class Topbar : LhaComponentBase, IDisposable
     //     }
     // }
 
-    private void HandleSearch(ChangeEventArgs e)
-    {
-        _searchText = e.Value?.ToString() ?? string.Empty;
-        // Implement debounce search logic if needed
-    }
+
 
     private void ToggleNotifications()
     {
@@ -58,12 +53,7 @@ public partial class Topbar : LhaComponentBase, IDisposable
         _isSearchOpen = false;
     }
 
-    private void ToggleSearch()
-    {
-        _isSearchOpen = !_isSearchOpen;
-        _isProfileOpen = false;
-        _isNotificationOpen = false;
-    }
+
 
     private IJSObjectReference? _jsModule;
     private DotNetObjectReference<Topbar>? _dotNetHelper;
@@ -76,7 +66,7 @@ public partial class Topbar : LhaComponentBase, IDisposable
             _dotNetHelper = DotNetObjectReference.Create(this);
             try
             {
-                _jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/js/topbar.js");
+                _jsModule = await JS.InvokeAsync<IJSObjectReference>("import", $"/_content/LHA.BlazorWasm.Components/js/topbar.js?t={DateTime.Now.Ticks}");
                 if (!_isDisposed)
                 {
                     await _jsModule.InvokeVoidAsync("initTopbar", _dotNetHelper);
@@ -100,8 +90,10 @@ public partial class Topbar : LhaComponentBase, IDisposable
     [JSInvokable]
     public void OpenCommandPalette()
     {
-        // Logic to open command palette
-        ToastNotification.Info("Command Palette (Ctrl + K) triggered!");
+        _isSearchOpen = true;
+        _isProfileOpen = false;
+        _isNotificationOpen = false;
+        StateHasChanged();
     }
 
     [JSInvokable]

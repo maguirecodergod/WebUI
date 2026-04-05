@@ -45,6 +45,19 @@ public enum NotificationSeverity
     Error
 }
 
+public class SearchResultItem
+{
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public string Title { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? Icon { get; set; }
+    public string? Category { get; set; }
+    public string? Url { get; set; }
+    public Action? OnSelect { get; set; }
+    public string? Shortcut { get; set; }
+    public bool IsActive { get; set; }
+}
+
 public class UserInfoModel
 {
     public string DisplayName { get; set; } = string.Empty;

@@ -1,0 +1,92 @@
+@using Microsoft.JSInterop
+@inherits LhaComponentBase
+
+@if (IsVisible)
+{
+    <div class="command-palette-wrapper @(IsVisible ? "show" : "")">
+        <div class="palette-overlay" @onclick="ClosePalette"></div>
+        
+        <div class="command-palette-container">
+            <div class="palette-header">
+                <i class="bi bi-search search-icon"></i>
+                <input @ref="_searchInput" 
+                       type="text" 
+                       class="palette-input" 
+                       placeholder="@L("Search.CommandPalettePlaceholder")" 
+                       @oninput="HandleInput"
+                       @onkeydown="HandleKeyDown"
+                       @onclick:stopPropagation
+                       value="@_searchText" />
+                <div class="palette-esc">ESC</div>
+            </div>
+
+            <div class="palette-body" @onclick:stopPropagation>
+                @if (string.IsNullOrWhiteSpace(_searchText))
+                {
+                    <div class="palette-suggestions">
+                        <div class="palette-section-title">@L("Search.Suggestions")</div>
+                        @foreach (var item in Suggestions)
+                        {
+                            <div class="palette-item @(item.IsActive ? "active" : "")" @onclick="() => SelectItem(item)">
+                                <i class="@item.Icon"></i>
+                                <div class="item-content">
+                                    <div class="item-title">@item.Title</div>
+                                    @if (!string.IsNullOrEmpty(item.Description))
+                                    {
+                                        <div class="item-desc">@item.Description</div>
+                                    }
+                                </div>
+                                <div class="item-shortcut">@item.Shortcut</div>
+                            </div>
+                        }
+                    </div>
+                }
+                else if (FilteredResults.Any())
+                {
+                    @foreach (var group in FilteredResults.GroupBy(x => x.Category))
+                    {
+                        <div class="palette-section">
+                            <div class="palette-section-title">@group.Key</div>
+                            @foreach (var item in group)
+                            {
+                                <div class="palette-item @(item.IsActive ? "active" : "")" @onclick="() => SelectItem(item)">
+                                    <i class="@item.Icon"></i>
+                                    <div class="item-content">
+                                        <div class="item-title">@item.Title</div>
+                                        @if (!string.IsNullOrEmpty(item.Description))
+                                        {
+                                            <div class="item-desc">@item.Description</div>
+                                        }
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(item.Shortcut))
+                                    {
+                                        <div class="item-shortcut">@item.Shortcut</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="palette-empty">
+                        <i class="bi bi-search-heart"></i>
+                        <div class="empty-title">@L("Search.NoResultsTitle")</div>
+                        <div class="empty-desc">@L("Search.NoResultsDesc", _searchText)</div>
+                    </div>
+                }
+            </div>
+
+            <div class="palette-footer" @onclick:stopPropagation>
+                <div class="footer-hint">
+                    <span><kbd>↑</kbd><kbd>↓</kbd> @L("Search.Navigate")</span>
+                    <span><kbd>↵</kbd> @L("Search.Select")</span>
+                    <span><kbd>ESC</kbd> @L("Search.Close")</span>
+                </div>
+                <div class="footer-brand">
+                    @L("Search.PoweredBy") <strong>Antigravity Search</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+}

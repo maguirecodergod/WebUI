@@ -18,6 +18,13 @@ public abstract class LhaComponentBase : ComponentBase, IDisposable
     [Inject] protected IThemeService ThemeService { get; set; } = default!;
     [Inject] protected ThemeState ThemeState { get; set; } = default!;
 
+    protected string L(string key) => Localizer.L(key);
+    protected string L(string key, params object[] args)
+    {
+        var translation = Localizer.L(key);
+        return string.Format(translation, args);
+    }
+
     protected override void OnInitialized()
     {
         Localizer.OnLanguageChanged += ReRender;

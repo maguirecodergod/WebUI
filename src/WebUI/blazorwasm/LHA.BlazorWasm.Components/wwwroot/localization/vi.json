@@ -165,6 +165,33 @@
         "Config": "Cấu hình",
         "ApiTest": "Kiểm thử API"
     },
+    "Topbar": {
+        "SearchPlaceholder": "Tìm kiếm hoặc nhập lệnh..."
+    },
+    "Search": {
+        "CommandPalettePlaceholder": "Bạn đang tìm kiếm gì?",
+        "Suggestions": "Gợi ý",
+        "NoResultsTitle": "Không tìm thấy kết quả",
+        "NoResultsDesc": "Chúng tôi không thể tìm thấy gì khớp với \"{0}\"",
+        "Navigate": "để điều hướng",
+        "Select": "để chọn",
+        "Close": "để đóng",
+        "PoweredBy": "Phát triển bởi",
+        "GoToHome": "Đi tới Trang chủ",
+        "GoToHomeDesc": "Quay lại màn hình chính của ứng dụng",
+        "MyProfile": "Thông tin cá nhân",
+        "MyProfileDesc": "Xem và chỉnh sửa thông tin của bạn",
+        "Settings": "Cài đặt",
+        "SettingsDesc": "Quản lý tùy chọn ứng dụng",
+        "Notifications": "Thông báo",
+        "NotificationsDesc": "Kiểm tra các cảnh báo và tin nhắn",
+        "ChangeTheme": "Thay đổi giao diện",
+        "ChangeThemeDesc": "Chuyển đổi giữa chế độ sáng và tối",
+        "ChangeLanguage": "Thay đổi ngôn ngữ",
+        "ChangeLanguageDesc": "Chọn ngôn ngữ ứng dụng ưu thích",
+        "Logout": "Đăng xuất",
+        "LogoutDesc": "Thoát khỏi phiên làm việc hiện tại"
+    },
     "Emoji": {
         "SearchPlaceholder": "Tìm kiếm emoji..."
     },
