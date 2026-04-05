@@ -7,13 +7,13 @@
     --z-index-deep: 1;
     --z-index-content: 2;
     --z-index-floating: 100;
+    --z-index-overlay: 998;
     --z-index-topbar: 999;
     --z-index-sidebar: 1005;
     --z-index-sticky: 1020;
     --z-index-toast: 1055;
     --z-index-tooltip: 1060;
     --z-index-dropdown: 2000;
-    --z-index-overlay: 2100;
     --z-index-modal: 2200;
     --z-index-fullscreen: 999999;
     --z-index-max: 2147483647;
