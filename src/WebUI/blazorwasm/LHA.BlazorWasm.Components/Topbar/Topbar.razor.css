@@ -1,45 +1,26 @@
-:root {
-    --topbar-height: 64px;
-    --topbar-bg: rgba(255, 255, 255, 0.85);
-    --topbar-border: rgba(0, 0, 0, 0.08);
-    --topbar-text: #1f2937;
-    --topbar-text-muted: #6b7280;
-    --topbar-accent: #3b82f6;
-    --topbar-z-index: var(--z-index-topbar);
-    --topbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    --radius-full: 9999px;
-    --radius-lg: 16px;
-    --radius-md: 12px;
-}
-
-.theme-dark {
-    --topbar-bg: rgba(17, 24, 39, 0.85);
-    --topbar-border: rgba(255, 255, 255, 0.1);
-    --topbar-text: #f3f4f6;
-    --topbar-text-muted: #9ca3af;
-    --topbar-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
 .topbar {
     height: var(--topbar-height);
     background: var(--topbar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--topbar-border);
+    box-shadow: var(--topbar-shadow);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     position: relative;
-    z-index: var(--z-index-topbar);
+    z-index: var(--topbar-z-index);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--topbar-text);
+    width: 100%;
 }
 
 .topbar.sticky {
     position: sticky;
     top: 0;
 }
+
 
 /* Sections */
 .topbar-section {
@@ -141,7 +122,8 @@
 }
 
 .search-trigger {
-    display: none; /* Mobile first */
+    display: none;
+    /* Mobile first */
     align-items: center;
     justify-content: space-between;
     width: 100%;
@@ -450,11 +432,6 @@
 /* --- Large Screens --- */
 @media (min-width: 1536px) {
     .topbar {
-        max-width: 1440px;
-        margin: 1.5rem auto;
-        border-radius: var(--radius-lg);
-        border: 1px solid var(--topbar-border);
-        box-shadow: var(--topbar-shadow);
-        width: calc(100% - 4rem);
+        padding: 0 2rem;
     }
 }

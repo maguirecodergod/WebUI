@@ -169,11 +169,12 @@
 
 .lha-sidebar__header {
     flex-shrink: 0;
-    padding: 16px var(--sidebar-padding-x);
+    padding: 0 var(--sidebar-padding-x);
     border-bottom: 1px solid var(--sidebar-divider);
     display: flex;
     align-items: center;
-    min-height: 56px;
+    height: var(--topbar-height, 64px);
+    box-sizing: border-box;
     transition: padding var(--sidebar-transition-speed) ease;
 }
 
@@ -259,12 +260,12 @@
     min-height: 28px !important;
     border-radius: 50% !important;
     background-color: var(--sidebar-bg) !important;
-    border: 1px solid var(--sidebar-border) !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid var(--sidebar-text-muted) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    color: var(--sidebar-text-muted) !important;
+    color: var(--sidebar-text) !important;
     cursor: pointer;
     z-index: var(--z-index-floating);
     transition: transform 0.2s, background-color 0.2s, color 0.2s, opacity 0.2s;

@@ -9,6 +9,31 @@ body {
     overflow: hidden; /* Prevent body scroll, container should handle it */
 }
 
+/* Global Topbar Variables */
+:root {
+    --topbar-height: 64px;
+    --topbar-bg: #ffffff;
+    --topbar-border: rgba(0, 0, 0, 0.08); /* slightly darker border */
+    --topbar-text: #111827;
+    --topbar-text-muted: #6b7280;
+    --topbar-accent: #3b82f6;
+    --topbar-z-index: 1000;
+    --z-index-sidebar: 1010;
+    --z-index-floating: 1020;
+    --topbar-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --radius-full: 9999px;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+}
+
+.theme-dark {
+    --topbar-bg: #111827; /* Dark background */
+    --topbar-border: rgba(255, 255, 255, 0.1);
+    --topbar-text: #f3f4f6;
+    --topbar-text-muted: #9ca3af;
+    --topbar-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
 /* Remove default Blazor outlines that clash with custom designs */
 .valid.modified:not([type=checkbox]),
 .invalid,
