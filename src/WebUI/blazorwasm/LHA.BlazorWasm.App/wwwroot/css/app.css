@@ -6,28 +6,55 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Prevent body scroll, container should handle it */
+    overflow: hidden;
+    /* Prevent body scroll, container should handle it */
 }
 
 /* Global Topbar Variables */
 :root {
+    /* Topbar */
     --topbar-height: 64px;
     --topbar-bg: #ffffff;
-    --topbar-border: rgba(0, 0, 0, 0.08); /* slightly darker border */
+    --topbar-border: rgba(0, 0, 0, 0.08);
     --topbar-text: #111827;
     --topbar-text-muted: #6b7280;
     --topbar-accent: #3b82f6;
     --topbar-z-index: 1000;
     --z-index-sidebar: 1010;
     --z-index-floating: 1020;
-    --topbar-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --topbar-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    
+    /* Sidebar */
+    --sidebar-bg: #ffffff;
+    --sidebar-bg-hover: rgba(0, 0, 0, 0.04);
+    --sidebar-bg-active: rgba(59, 130, 246, 0.08);
+    --sidebar-text: #334155;
+    --sidebar-text-muted: #94a3b8;
+    --sidebar-text-active: #2563eb;
+    --sidebar-border: rgba(0, 0, 0, 0.08); /* harmonized border color */
+    --sidebar-divider: rgba(0, 0, 0, 0.08); /* harmonized border color */
+    --sidebar-badge-bg: #ef4444;
+    --sidebar-badge-text: #ffffff;
+    --sidebar-overlay-bg: rgba(0, 0, 0, 0.5);
+    --sidebar-scrollbar-thumb: #cbd5e1;
+    --sidebar-scrollbar-track: transparent;
+    --sidebar-shadow: 4px 0 32px rgba(0, 0, 0, 0.05); /* Softer shadow for light mode */
+    --sidebar-resize-handle: #cbd5e1;
+    --sidebar-resize-handle-active: #2563eb;
+    --sidebar-transition-speed: 250ms;
+    --sidebar-icon-size: 20px;
+    --sidebar-item-radius: 8px;
+    --sidebar-item-height: 42px;
+    --sidebar-padding-x: 12px;
+    --sidebar-indent: 16px;
     --radius-full: 9999px;
     --radius-lg: 16px;
     --radius-md: 12px;
 }
 
 .theme-dark {
-    --topbar-bg: #111827; /* Dark background */
+    --topbar-bg: #111827;
+    /* Dark background */
     --topbar-border: rgba(255, 255, 255, 0.1);
     --topbar-text: #f3f4f6;
     --topbar-text-muted: #9ca3af;
