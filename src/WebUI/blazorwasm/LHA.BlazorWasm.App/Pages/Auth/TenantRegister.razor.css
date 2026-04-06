@@ -93,17 +93,30 @@
 }
 
 .register-container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background-color: var(--reg-bg);
   font-family: 'Inter', system-ui, sans-serif;
   color: var(--reg-text);
-  padding: 2rem;
+  padding: 2.5rem 1rem;
   transition: all 0.5s ease;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+.register-bg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ── Ambient Background Glows ── */
@@ -113,7 +126,7 @@
   height: 600px;
   border-radius: 50%;
   filter: blur(140px);
-  z-index: var(--z-index-base);
+  z-index: 1;
   opacity: 0.5;
   animation: pulse-glow 8s ease-in-out infinite alternate;
 }
@@ -146,9 +159,10 @@
 /* ── Main Panel ── */
 .register-glass-panel {
   position: relative;
-  z-index: var(--z-index-content);
+  z-index: 2;
   width: 100%;
   max-width: 900px;
+  margin: auto;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);

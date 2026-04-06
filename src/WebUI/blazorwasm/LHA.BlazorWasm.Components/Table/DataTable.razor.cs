@@ -141,7 +141,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
     private bool _columnToggleOpen;
     private bool _filterSidebarOpen;
     private string? _searchInput;
-    private string? _dummyFilter; // Required for dynamically generated CInput ValueExpression
+    private string? _dummyFilter { get; set; } // Required for dynamically generated CInput ValueExpression
 
     // Active filter count for badge
     private int ActiveFilterCount => _request.Filters.Count(f => f.IsActive);

@@ -11,10 +11,14 @@
 @inject ILocalizationService Localizer
 
 <div class="empty-layout @ThemeService.ThemeClass">
-    <div class="layout-controls">
-        <ThemeSwitch Variant="CThemeSwitchVariant.Toggle" />
-        <LanguageSelector Mode="CLanguageSelectorMode.Dropdown"
-                          ShowFlags="true" ShowNames="false" />
+    <div class="layout-controls-pill">
+        <div class="control-item theme-toggle" @onclick:stopPropagation>
+            <ThemeSwitch Variant="CThemeSwitchVariant.Icon" />
+        </div>
+        <div class="control-divider"></div>
+        <div class="control-item lang-selector" @onclick:stopPropagation>
+            <LanguageSelector Mode="CLanguageSelectorMode.Dropdown" ShowFlags="true" ShowNames="false" />
+        </div>
     </div>
 
     @Body
@@ -23,44 +27,97 @@
 
 <style>
     .empty-layout {
-        --lha-bg-body: #030308;
+        --lha-bg-body: #05050a;
         --lha-text-primary: #ffffff;
-        --controls-bg: rgba(255, 255, 255, 0.05);
-        --controls-border: rgba(255, 255, 255, 0.1);
-        
+        --pill-bg: rgba(255, 255, 255, 0.03);
+        --pill-border: rgba(255, 255, 255, 0.08);
+        --pill-hover-bg: rgba(255, 255, 255, 0.08);
+        --pill-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         background-color: var(--lha-bg-body);
         color: var(--lha-text-primary);
         position: relative;
-        transition: all 0.5s ease;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-x: hidden;
     }
 
     .empty-layout.theme-light {
-        --lha-bg-body: #f8fafc;
-        --lha-text-primary: #1e293b;
-        --controls-bg: rgba(255, 255, 255, 0.85);
-        --controls-border: rgba(0, 0, 0, 0.08);
+        --lha-bg-body: #f1f5f9;
+        --lha-text-primary: #0f172a;
+        --pill-bg: rgba(255, 255, 255, 0.8);
+        --pill-border: rgba(0, 0, 0, 0.08);
+        --pill-hover-bg: #ffffff;
+        --pill-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
-    .layout-controls {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
+    .layout-controls-pill {
+        position: fixed;
+        top: 2rem;
+        right: 2.5rem;
         display: flex;
         align-items: center;
         gap: 0.25rem;
-        z-index: var(--z-index-topbar);
-        background: var(--controls-bg);
-        backdrop-filter: blur(10px);
-        padding: 0.15rem 0.25rem;
-        border-radius: 8px;
-        border: 1px solid var(--controls-border);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        z-index: 2000;
+        background: var(--pill-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 0.4rem 0.6rem;
+        border-radius: 100px;
+        border: 1px solid var(--pill-border);
+        box-shadow: var(--pill-shadow);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity: 0.8;
+    }
+
+    .layout-controls-pill:hover {
+        opacity: 1;
+        transform: translateY(-2px);
+        background: var(--pill-hover-bg);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .control-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.3s ease;
-        transform: scale(0.85);
-        transform-origin: top right;
+        padding: 0.15rem;
+    }
+
+    .control-divider {
+        width: 1px;
+        height: 14px;
+        background: var(--pill-border);
+        margin: 0 0.4rem;
+        opacity: 0.5;
+    }
+
+    ::deep .theme-toggle .theme-switch {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        font-size: 1.1rem;
+    }
+
+    ::deep .lang-selector .lang-dropdown-toggle {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+
+    @@media (max-width: 768px) {
+        .layout-controls-pill {
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.5rem;
+        }
     }
 </style>
 
