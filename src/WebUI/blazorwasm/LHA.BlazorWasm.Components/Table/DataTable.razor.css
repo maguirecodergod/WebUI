@@ -107,6 +107,30 @@
     overflow: auto;
     background: var(--dt-bg);
     flex: none; /* Do not grow, stay tight to table */
+
+    /* Scrollbar Styling - Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--dt-text-muted) transparent;
+}
+
+/* Scrollbar Styling - Chrome/Edge/Safari */
+.dt-wrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.dt-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dt-wrapper::-webkit-scrollbar-thumb {
+    background: var(--dt-border);
+    border-radius: 10px;
+    transition: var(--dt-transition);
+}
+
+.dt-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--dt-text-muted);
 }
 
 .dt-table {
@@ -252,6 +276,28 @@
     padding: 1.5rem;
     flex: 1;
     overflow-y: auto;
+
+    /* Scrollbar Styling - Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--dt-border) transparent;
+}
+
+.dt-sidebar-body::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.dt-sidebar-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dt-sidebar-body::-webkit-scrollbar-thumb {
+    background: var(--dt-border);
+    border-radius: 10px;
+}
+
+.dt-sidebar-body::-webkit-scrollbar-thumb:hover {
+    background: var(--dt-text-muted);
 }
 
 .dt-sidebar-footer {

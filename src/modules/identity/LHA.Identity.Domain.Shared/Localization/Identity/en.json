@@ -2,5 +2,11 @@
     "Identity_ClaimType_Cannot_Modify_Static_Error_Message_Entry": "Cannot modify static claim type '{0}'.",
     "Identity_User_UserName_Duplicate_Error_Message_Entry": "A user with user name '{0}' already exists.",
     "Identity_User_Email_Duplicate_Error_Message_Entry": "A user with email '{0}' already exists.",
-    "Identity_Role_Duplicate_Name_Error_Message_Entry": "A role with name '{0}' already exists."
+    "Identity_Role_Duplicate_Name_Error_Message_Entry": "A role with name '{0}' already exists.",
+    "Identity_Auth_InvalidUserNameOrEmail_Error_Message_Entry": "Invalid user name or email.",
+    "Identity_Auth_UserAccountNotActive_Error_Message_Entry": "User account is not active.",
+    "Identity_Auth_UserAccountLockedUntil_Error_Message_Entry": "User account is locked until {0}.",
+    "Identity_Auth_InvalidPassword_Error_Message_Entry": "Invalid password.",
+    "Identity_Auth_UserNoAccessTenant_Error_Message_Entry": "User does not have access to the current tenant '{0}'.",
+    "Identity_Auth_InvalidOrExpiredRefreshToken_Error_Message_Entry": "Invalid or expired refresh token."
 }

@@ -12,7 +12,7 @@
     "DataTable.AllDatasetSelected": "Đã chọn tất cả {0} mục từ tất cả các trang.",
     "DataTable.ClearSelection": "Huỷ chọn",
     "DataTable.RowsPerPage": "Số dòng trên mỗi trang:",
-    "DataTable.ShowingEntries": "Hiển thị {0} đến {1} trong tổng số {2} mục",
+    "DataTable.ShowingEntries": "{0}-{1} trên {2}",
     "DataTable.GoToPage": "Đến trang",
     "DataTable.First": "Trang đầu",
     "DataTable.Last": "Trang cuối",

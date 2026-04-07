@@ -15,27 +15,12 @@
             }
             <span>@string.Format(Localizer.L("DataTable.ShowingEntries"), from, to, TotalCount)</span>
         </div>
-        
+
         <div class="dt-pager-size">
             <span>@Localizer.L("DataTable.RowsPerPage")</span>
-            <div class="dt-custom-select-wrapper">
-                <button type="button" class="dt-custom-select-trigger" @onclick="TogglePageSizeDropdown">
-                    @PageSize
-                    <i class="bi bi-chevron-down ms-1 dt-select-arrow @(_pageSizeDropdownOpen ? "rotated" : "")"></i>
-                </button>
-                @if (_pageSizeDropdownOpen)
-                {
-                    <div class="dt-custom-select-list">
-                        @foreach (var size in PageSizes)
-                        {
-                            <div class="dt-custom-select-item @(size == PageSize ? "active" : "")" 
-                                 @onclick="() => SelectPageSize(size)">
-                                @size
-                            </div>
-                        }
-                    </div>
-                    <div class="dt-custom-select-overlay" @onclick="TogglePageSizeDropdown"></div>
-                }
+            <div class="dt-pager-select-wrapper">
+                <Select TValue="int" Options="@_pageSizeOptions" Value="PageSize" ValueChanged="SelectPageSize" 
+                        ShowClear="false" Class="dt-pager-select" Placement="CSelectPlacement.Top" />
             </div>
         </div>
 
@@ -45,36 +30,50 @@
     <div class="dt-pager-column">
         <div class="dt-pager-nav">
             @* Previous block *@
-            <button class="dt-pager-btn" disabled="@(PageNumber <= 1)"
-                    @onclick="() => GoTo(1)" title="@Localizer.L("DataTable.First")">«</button>
-            <button class="dt-pager-btn" disabled="@(PageNumber <= 1)"
-                    @onclick="() => GoTo(PageNumber - 1)" title="@Localizer.L("Common.Prev")">‹</button>
+            <Tooltip Text="@Localizer.L("DataTable.First")" Placement="CTooltipPlacement.Top">
+                <Button Class="dt-pager-btn" Disabled="@(PageNumber <= 1)" Style="CButtonStyle.Light"
+                        OnClick="() => GoTo(1)">«</Button>
+            </Tooltip>
+
+            <Tooltip Text="@Localizer.L("Common.Prev")" Placement="CTooltipPlacement.Top">
+                <Button Class="dt-pager-btn" Disabled="@(PageNumber <= 1)" Style="CButtonStyle.Light"
+                        OnClick="() => GoTo(PageNumber - 1)">‹</Button>
+            </Tooltip>
 
             @* Page Numbers *@
             @foreach (var item in GetPageItems())
             {
                 if (item.IsEllipsis)
                 {
-                    <span class="dt-pager-btn" style="cursor: default; opacity: 0.6;">…</span>
+                    <span class="dt-pager-btn-ellipsis">…</span>
                 }
                 else
                 {
-                    <button class="dt-pager-btn @(item.Page == PageNumber ? "dt-pager-active" : "")"
-                            @onclick="() => GoTo(item.Page)">@item.Page</button>
+                    <Button Class="@($"dt-pager-btn {(item.Page == PageNumber ? "dt-pager-active" : "")}")"
+                            Style="@(item.Page == PageNumber ? CButtonStyle.Primary : CButtonStyle.Light)"
+                            OnClick="() => GoTo(item.Page)">
+                        @item.Page
+                    </Button>
                 }
             }
 
             @* Next block *@
-            <button class="dt-pager-btn" disabled="@(PageNumber >= TotalPages)"
-                    @onclick="() => GoTo(PageNumber + 1)" title="@Localizer.L("Common.Next")">›</button>
-            <button class="dt-pager-btn" disabled="@(PageNumber >= TotalPages)"
-                    @onclick="() => GoTo(TotalPages)" title="@Localizer.L("DataTable.Last")">»</button>
+            <Tooltip Text="@Localizer.L("Common.Next")" Placement="CTooltipPlacement.Top">
+                <Button Class="dt-pager-btn" Disabled="@(PageNumber >= TotalPages)" Style="CButtonStyle.Light"
+                        OnClick="() => GoTo(PageNumber + 1)">›</Button>
+            </Tooltip>
+
+            <Tooltip Text="@Localizer.L("DataTable.Last")" Placement="CTooltipPlacement.Top">
+                <Button Class="dt-pager-btn" Disabled="@(PageNumber >= TotalPages)" Style="CButtonStyle.Light"
+                        OnClick="() => GoTo(TotalPages)">»</Button>
+            </Tooltip>
         </div>
+
 
         <div class="dt-pager-jump">
             <span>@Localizer.L("DataTable.GoToPage")</span>
-            <input type="number" min="1" max="@TotalPages" value="@PageNumber"
-                   @onchange="OnJumpChange" class="dt-pager-jump-input" />
+            <input type="number" min="1" max="@TotalPages" value="@PageNumber" @onchange="OnJumpChange"
+                   class="dt-pager-jump-input" />
         </div>
     </div>
 </div>
@@ -86,6 +85,13 @@
     [Parameter] public int[] PageSizes { get; set; } = [10, 25, 50, 100];
     [Parameter] public EventCallback<int> OnPageChanged { get; set; }
     [Parameter] public EventCallback<int> OnPageSizeChanged { get; set; }
+
+    private List<SelectOption<int>> _pageSizeOptions = new();
+
+    protected override void OnInitialized()
+    {
+        _pageSizeOptions = PageSizes.Select(s => new SelectOption<int> { Value = s, Label = s.ToString() }).ToList();
+    }
 
     private bool _pageSizeDropdownOpen;
 

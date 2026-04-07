@@ -5,9 +5,10 @@ using LHA.EventBus;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
 using LHA.Shared.Domain.Identity;
-using LHA.Identity.Domain.Shared;
 using LHA.MultiTenancy;
 using LHA.UnitOfWork;
+using Microsoft.Extensions.Localization;
+using LHA.Identity.Domain.Shared.Localization;
 
 namespace LHA.Identity.Application;
 
@@ -30,6 +31,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private readonly IPermissionStore _permissionStore;
     private readonly ITenantManagerBridge _tenantManagerBridge;
     private readonly ICurrentTenant _currentTenant;
+    private readonly IStringLocalizer<IdentityResource> L;
 
     public const string SystemSuperAdminRole = "SystemSuperAdmin";
     public const string TenantAdminRole = "TenantAdmin";
@@ -48,7 +50,8 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         IUserTenantLookupService userTenantLookupService,
         IPermissionStore permissionStore,
         ITenantManagerBridge tenantManagerBridge,
-        ICurrentTenant currentTenant)
+        ICurrentTenant currentTenant,
+        IStringLocalizer<IdentityResource> l)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -64,6 +67,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         _permissionStore = permissionStore;
         _tenantManagerBridge = tenantManagerBridge;
         _currentTenant = currentTenant;
+        L = l;
     }
 
     /// <inheritdoc />
@@ -83,7 +87,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             await _eventBus.PublishAsync(new LoginFailedEto(
                 input.UserNameOrEmail, "InvalidUserNameOrEmail", null, DateTimeOffset.UtcNow), ct);
 
-            throw new UnauthorizedAccessException("Invalid user name or email.");
+            throw new UnauthorizedAccessException(L["Identity_Auth_InvalidUserNameOrEmail_Error_Message_Entry"]);
         }
 
         // Check status
@@ -92,7 +96,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             await RecordSecurityLogAsync("Login", IdentitySecurityLogActionConsts.LoginNotAllowed,
                 user.Id, user.UserName, ct);
 
-            throw new UnauthorizedAccessException("User account is not active.");
+            throw new UnauthorizedAccessException(L["Identity_Auth_UserAccountNotActive_Error_Message_Entry"]);
         }
 
         // Check lockout
@@ -101,8 +105,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             await RecordSecurityLogAsync("Login", IdentitySecurityLogActionConsts.LoginLockedout,
                 user.Id, user.UserName, ct);
 
-            throw new UnauthorizedAccessException(
-                $"User account is locked until {user.LockoutEnd:O}.");
+            throw new UnauthorizedAccessException(L["Identity_Auth_UserAccountLockedUntil_Error_Message_Entry", user.LockoutEnd?.ToString("O") ?? string.Empty]);
         }
 
         // Verify password
@@ -115,7 +118,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             await _eventBus.PublishAsync(new LoginFailedEto(
                 input.UserNameOrEmail, "InvalidPassword", user.TenantId, DateTimeOffset.UtcNow), ct);
 
-            throw new UnauthorizedAccessException("Invalid password.");
+            throw new UnauthorizedAccessException(L["Identity_Auth_InvalidPassword_Error_Message_Entry"]);
         }
 
         // Success — reset failed count
@@ -170,7 +173,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
                     Tenants = userTenants
                 };
             }
-            
+
             // If user only has one tenant, we should probably redirect/re-login for that tenant if context is Host
             if (userTenants.Count == 1 && userTenants[0].Id != targetTenantId)
             {
@@ -183,7 +186,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             // Validate user actually has access to the current tenant resolved from context
             if (!user.Roles.Any(r => r.TenantId == _currentTenant.Id))
             {
-                throw new UnauthorizedAccessException($"User does not have access to the current tenant '{_currentTenant.Id}'.");
+                throw new UnauthorizedAccessException(L["Identity_Auth_UserNoAccessTenant_Error_Message_Entry", _currentTenant.Id.ToString() ?? string.Empty]);
             }
         }
 
@@ -291,7 +294,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             input.RefreshToken, ct);
 
         if (user is null)
-            throw new UnauthorizedAccessException("Invalid or expired refresh token.");
+            throw new UnauthorizedAccessException(L["Identity_Auth_InvalidOrExpiredRefreshToken_Error_Message_Entry"]);
 
         // Check status
         if (user.Status != CMasterStatus.Active)

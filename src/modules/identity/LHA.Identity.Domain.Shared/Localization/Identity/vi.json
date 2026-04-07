@@ -2,5 +2,11 @@
     "Identity_ClaimType_Cannot_Modify_Static_Error_Message_Entry": "Không thể sửa đổi loại claim tĩnh '{0}'.",
     "Identity_User_UserName_Duplicate_Error_Message_Entry": "Một người dùng với tên người dùng '{0}' đã tồn tại.",
     "Identity_User_Email_Duplicate_Error_Message_Entry": "Một người dùng với email '{0}' đã tồn tại.",
-    "Identity_Role_Duplicate_Name_Error_Message_Entry": "Một vai trò với tên '{0}' đã tồn tại."
+    "Identity_Role_Duplicate_Name_Error_Message_Entry": "Một vai trò với tên '{0}' đã tồn tại.",
+    "Identity_Auth_InvalidUserNameOrEmail_Error_Message_Entry": "Tên đăng nhập hoặc email không hợp lệ.",
+    "Identity_Auth_UserAccountNotActive_Error_Message_Entry": "Tài khoản người dùng chưa được kích hoạt.",
+    "Identity_Auth_UserAccountLockedUntil_Error_Message_Entry": "Tài khoản người dùng bị khóa cho đến {0}.",
+    "Identity_Auth_InvalidPassword_Error_Message_Entry": "Mật khẩu không hợp lệ.",
+    "Identity_Auth_UserNoAccessTenant_Error_Message_Entry": "Người dùng không có quyền truy cập vào không gian làm việc '{0}'.",
+    "Identity_Auth_InvalidOrExpiredRefreshToken_Error_Message_Entry": "Token làm mới không hợp lệ hoặc đã hết hạn."
 }

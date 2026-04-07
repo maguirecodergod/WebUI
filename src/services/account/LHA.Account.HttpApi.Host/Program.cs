@@ -81,12 +81,10 @@ builder.Services.AddLHAGrpcServer();
 var app = builder.Build();
 
 // ── Middleware ────────────────────────────────────────────────────
-app.UseLHAExceptionHandler();
+app.UseLHAAspNetCore();
 
 // Apply chosen Audit Middlewares via the Facade (must match earlier setup)
 app.UseLHAAuditLogging(mode: CAuditingMode.DataAudit);
-
-app.UseLHAUnitOfWork();
 app.UseLHASwagger();
 app.UseAuthentication();
 app.UseAuthorization();

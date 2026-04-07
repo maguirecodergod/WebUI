@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\Ddd\LHA.Ddd.Domain\LHA.Ddd.Domain.csproj" />
     <ProjectReference Include="..\..\Localization\LHA.Localization\LHA.Localization.csproj" />
     <ProjectReference Include="..\..\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

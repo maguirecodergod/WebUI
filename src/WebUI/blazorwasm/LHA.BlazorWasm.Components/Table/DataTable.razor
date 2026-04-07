@@ -71,9 +71,11 @@
                 </div>
             }
 
-            <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="RefreshAsync" IsLoading="@_isLoading">
-                <i class="bi bi-arrow-clockwise"></i>
-            </Button>
+            <Tooltip Text="@Localizer.L("DataTable.Refresh")" Placement="CTooltipPlacement.Top">
+                <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="RefreshAsync" IsLoading="@_isLoading">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </Button>
+            </Tooltip>
         </div>
     }
 

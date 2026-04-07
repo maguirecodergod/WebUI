@@ -56,12 +56,16 @@
                     <DataTableColumn TItem="WeatherForecast" Title="Actions" Width="100px" Alignment="ColumnAlignment.Right">
                         <CellTemplate>
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn-icon" title="View Details">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button class="btn-icon" title="Edit Station">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
+                                <Tooltip Text="View Details" Placement="CTooltipPlacement.Top">
+                                    <button class="btn-icon">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </Tooltip>
+                                <Tooltip Text="Edit Station" Placement="CTooltipPlacement.Top">
+                                    <button class="btn-icon">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                </Tooltip>
                             </div>
                         </CellTemplate>
                     </DataTableColumn>

@@ -1,4 +1,4 @@
-@baseUrl = https://localhost:7100
+@baseUrl = https://localhost:7150
 @apiVersion = 1
 
 ### 1. Register a new user
@@ -34,6 +34,7 @@ Content-Type: application/json
 ### 3. Login (New User)
 # @name Login
 POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/login
+Accept-Language: vi
 Content-Type: application/json
 
 {

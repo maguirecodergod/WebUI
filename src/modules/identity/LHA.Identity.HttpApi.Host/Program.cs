@@ -82,15 +82,6 @@ builder.Services.AddIdentityEntityFrameworkCore(options =>
 var app = builder.Build();
 
 // ── Middleware ────────────────────────────────────────────────────
-// RequestLocalization MUST come before the exception handler so that
-// CultureInfo.CurrentUICulture is already set when error messages are resolved.
-app.UseRequestLocalization(opts =>
-{
-    opts.AddSupportedCultures("en", "vi");
-    opts.AddSupportedUICultures("en", "vi");
-    opts.SetDefaultCulture("en");
-});
-
 app.UseLHAAspNetCore();
 
 // Audit pipeline middleware — after exception handler, before auth

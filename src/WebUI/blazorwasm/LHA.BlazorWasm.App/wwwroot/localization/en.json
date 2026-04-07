@@ -30,7 +30,7 @@
     "DataTable.AllDatasetSelected": "All {0} items selected from all pages.",
     "DataTable.ClearSelection": "Clear",
     "DataTable.RowsPerPage": "Rows per page:",
-    "DataTable.ShowingEntries": "Showing {0} to {1} of {2} entries",
+    "DataTable.ShowingEntries": "{0}-{1} of {2}",
     "DataTable.GoToPage": "Go to page",
     "DataTable.First": "First Page",
     "DataTable.Last": "Last Page",

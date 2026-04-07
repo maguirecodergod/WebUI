@@ -3,6 +3,7 @@ using LHA.AspNetCore.Security;
 using LHA.Auditing;
 using LHA.Core.Users;
 using LHA.Localization;
+using LHA.Shared.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -163,8 +164,45 @@ public static class LhaAspNetCoreApplicationBuilderExtensions
         return app;
     }
 
+    /// <summary>
+    /// Adds the standard LHA request localization middleware using typed language enums.
+    /// Supports 'en', 'vi', and 'vi-VN' by default if no languages are specified.
+    /// </summary>
+    public static WebApplication UseLHALocalization(this WebApplication app, params CLanguageType[] languages)
+    {
+        var languageList = languages.Length > 0
+            ? languages
+            : Enum.GetValues<CLanguageType>();
+
+        var supportedCultures = languageList
+            .Select(l => l.ToCultureCode())
+            .Distinct()
+            .ToList();
+
+        // Add vi-VN if vi is present for broader browser compatibility
+        if (supportedCultures.Contains("vi") && !supportedCultures.Contains("vi-VN"))
+        {
+            supportedCultures.Add("vi-VN");
+        }
+
+        var cultures = supportedCultures.ToArray();
+
+        app.UseRequestLocalization(opts =>
+        {
+            opts.AddSupportedCultures(cultures);
+            opts.AddSupportedUICultures(cultures);
+            opts.SetDefaultCulture(cultures[0]);
+        });
+        return app;
+    }
+
+    /// <summary>
+    /// Adds the core LHA middleware pipeline: 
+    /// Localization (Default: EN, VI), Exception Handling, and Unit-of-Work.
+    /// </summary>
     public static WebApplication UseLHAAspNetCore(this WebApplication app)
     {
+        app.UseLHALocalization();
         app.UseLHAExceptionHandler();
         app.UseLHAUnitOfWork();
         return app;
