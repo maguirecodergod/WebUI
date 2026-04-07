@@ -6,26 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LHA Platform</title>
     <base href="/" />
-    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/lib/outfit.css" />
-    <link rel="preload" id="webassembly" />
-    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/lib/bootstrap-icons/bootstrap-icons.min.css" />
-    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/lib/font-awesome/css/all.min.css" />
-    <link rel="stylesheet" href="css/app.css" />
-    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/css/theme.css" />
-    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/css/pickers.css" />
-    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/RichTextEditor/css/richTextEditor.css" />
-    <script src="_content/LHA.BlazorWasm.Components/RichTextEditor/lib/highlight/highlight.min.js"></script>
-    <script src="_content/LHA.BlazorWasm.Components/js/emojiPicker.js"></script>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="alternate icon" type="image/svg+xml" href="favicon.svg" />
-    <link href="LHA.BlazorWasm.App.styles.css" rel="stylesheet" />
-    <script type="importmap"></script>
-    
-    <!-- Floating UI for smart Tooltip/Popover positioning -->
-    <script src="_content/LHA.BlazorWasm.Components/lib/floating-ui/core.js"></script>
-    <script src="_content/LHA.BlazorWasm.Components/lib/floating-ui/dom.js"></script>
+    <!-- ─── Immediate Background to prevent white flash ─── -->
+    <style>body { background-color: #0a0f1e; margin: 0; padding: 0; }</style>
 
+    <!-- ─── Boot Loader Critical Styles (Inline) ─── -->
     <style>
         /* ─── Boot Loader Reset ─────────────────────────────────────────── */
         #boot-loader *,
@@ -407,6 +391,25 @@
             }
         }
     </style>
+
+    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/lib/outfit.css" />
+    <link rel="preload" id="webassembly" />
+    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/lib/bootstrap-icons/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/lib/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/css/theme.css" />
+    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/css/pickers.css" />
+    <link rel="stylesheet" href="_content/LHA.BlazorWasm.Components/RichTextEditor/css/richTextEditor.css" />
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" type="image/svg+xml" href="favicon.svg" />
+    <link href="LHA.BlazorWasm.App.styles.css" rel="stylesheet" />
+    <script type="importmap"></script>
+    
+    <!-- Floating UI scripts moved to end of body for performance -->
+
+
 </head>
 
 <body>
@@ -558,7 +561,14 @@
         })();
     </script>
 
+    <!-- ── Non-critical Scripts ── -->
+    <script src="_content/LHA.BlazorWasm.Components/RichTextEditor/lib/highlight/highlight.min.js"></script>
+    <script src="_content/LHA.BlazorWasm.Components/js/emojiPicker.js"></script>
+    <script src="_content/LHA.BlazorWasm.Components/lib/floating-ui/core.js"></script>
+    <script src="_content/LHA.BlazorWasm.Components/lib/floating-ui/dom.js"></script>
+
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+
 </body>
 
 </html>
