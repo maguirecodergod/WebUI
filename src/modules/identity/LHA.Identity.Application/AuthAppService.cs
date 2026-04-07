@@ -4,6 +4,7 @@ using LHA.Ddd.Application;
 using LHA.EventBus;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
+using LHA.Ddd.Domain;
 using LHA.Shared.Domain.Identity;
 using LHA.MultiTenancy;
 using LHA.UnitOfWork;
@@ -87,7 +88,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             await _eventBus.PublishAsync(new LoginFailedEto(
                 input.UserNameOrEmail, "InvalidUserNameOrEmail", null, DateTimeOffset.UtcNow), ct);
 
-            throw new UnauthorizedAccessException(L["Identity_Auth_InvalidUserNameOrEmail_Error_Message_Entry"]);
+            throw new ValidationException("userNameOrEmail", L["Identity_Auth_InvalidUserNameOrEmail_Error_Message_Entry"]);
         }
 
         // Check status
@@ -118,7 +119,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             await _eventBus.PublishAsync(new LoginFailedEto(
                 input.UserNameOrEmail, "InvalidPassword", user.TenantId, DateTimeOffset.UtcNow), ct);
 
-            throw new UnauthorizedAccessException(L["Identity_Auth_InvalidPassword_Error_Message_Entry"]);
+            throw new ValidationException("password", L["Identity_Auth_InvalidPassword_Error_Message_Entry"]);
         }
 
         // Success — reset failed count

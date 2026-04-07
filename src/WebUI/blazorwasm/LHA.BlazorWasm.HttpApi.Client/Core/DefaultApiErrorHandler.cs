@@ -1,4 +1,4 @@
-using System.Net.Http.Json;
+using System.Text.Json;
 using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.HttpApi.Client.Serialization;
 
@@ -23,17 +23,45 @@ public class DefaultApiErrorHandler : IApiErrorHandler
 
                 var contentType = responseMessage.Content.Headers.ContentType?.MediaType;
 
-                if (!string.IsNullOrWhiteSpace(rawResponse))
+                if (!string.IsNullOrWhiteSpace(rawResponse) && 
+                    (string.Equals(contentType, "application/json", StringComparison.OrdinalIgnoreCase) || 
+                     string.Equals(contentType, "application/problem+json", StringComparison.OrdinalIgnoreCase)))
                 {
-                    if (string.Equals(contentType, "application/problem+json", StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(contentType, "application/json", StringComparison.OrdinalIgnoreCase))
+                    // Try to parse our standard ApiResponse envelope
+                    var envelope = JsonSerializer.Deserialize<LHA.Ddd.Application.ApiResponse<object>>(rawResponse, JsonOptionsProvider.Default);
+                    if (envelope?.Result != null && !envelope.Result.Success)
                     {
-                        apiError = await responseMessage.Content.ReadFromJsonAsync<ApiError>(JsonOptionsProvider.Default, cancellationToken).ConfigureAwait(false);
+                        var validationErrors = new Dictionary<string, string[]>();
+                        
+                        foreach (var error in envelope.Result.Errors)
+                        {
+                            var target = error.Target ?? string.Empty; // Empty string for model-level errors
+                            if (validationErrors.TryGetValue(target, out var existing))
+                            {
+                                validationErrors[target] = [.. existing, error.Message];
+                            }
+                            else
+                            {
+                                validationErrors[target] = [error.Message];
+                            }
+                        }
+
+                        apiError = new ApiError
+                        {
+                            Code = envelope.Result.Errors.FirstOrDefault()?.Code ?? responseMessage.StatusCode.ToString(),
+                            Message = envelope.Result.Errors.FirstOrDefault()?.Message ?? "API Error",
+                            ValidationErrors = validationErrors
+                        };
                     }
                     else
                     {
-                        apiError = new ApiError { Message = rawResponse, Code = responseMessage.StatusCode.ToString() };
+                        // Fallback to direct ApiError parsing (e.g. standard ProblemDetails)
+                        apiError = JsonSerializer.Deserialize<ApiError>(rawResponse, JsonOptionsProvider.Default);
                     }
+                }
+                else if (!string.IsNullOrWhiteSpace(rawResponse))
+                {
+                    apiError = new ApiError { Message = rawResponse, Code = responseMessage.StatusCode.ToString() };
                 }
             }
             catch

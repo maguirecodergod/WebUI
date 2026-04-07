@@ -128,17 +128,26 @@
         catch (ApiException ex)
         {
             if (ex.StatusCode == System.Net.HttpStatusCode.BadRequest ||
-                ex.StatusCode == System.Net.HttpStatusCode.UnprocessableEntity)
+                ex.StatusCode == System.Net.HttpStatusCode.UnprocessableEntity ||
+                ex.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                if (ex.ApiError?.ValidationErrors != null)
+                if (ex.ApiError?.ValidationErrors != null && ex.ApiError.ValidationErrors.Any())
                 {
                     _serverValidator.DisplayErrors(ex.ApiError.ValidationErrors);
+                }
+                else if (!string.IsNullOrWhiteSpace(ex.ApiError?.Message))
+                {
+                    // If it's a general unauthorized/forbidden error without specific field targets, show toast
+                    ToastNotification.Error(ex.ApiError.Message);
                 }
             }
         }
         catch (Exception)
         {
             // Transient faults handled centrally by ToastApiErrorHandler
+            // But we can add a local generic toast if needed:
+            ToastNotification.Error(L("Login.GenericError"));
         }
         finally
         {

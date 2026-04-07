@@ -38,8 +38,8 @@ Accept-Language: vi
 Content-Type: application/json
 
 {
-    "userNameOrEmail": "newuser",
-    "password": "Password123!"
+    "userNameOrEmail": "admin",
+    "password": "Admin123456"
 }
 
 ###
