@@ -13,8 +13,8 @@
     </div>
 
     @* Premium DataTable Integration *@
-    <div class="card shadow-sm border-0 rounded-3">
-        <div class="card-body p-0">
+    <div class="dt-container-outer">
+
             <DataTable TItem="WeatherForecast" Items="_forecasts" Mode="DataTableMode.ClientSide"
                        TableId="@DataTableIds.Weather"
                        Searchable="true" ShowToolbar="true" ShowPager="true" DefaultPageSize="5">
@@ -30,42 +30,61 @@
                         </CellTemplate>
                     </DataTableColumn>
 
-                    <DataTableColumn TItem="WeatherForecast" Title="Station Temperature (C)" Property="@(x => x.TemperatureC)" 
-                                   Alignment="ColumnAlignment.Left" Sortable Filterable />
+                    <DataTableColumn TItem="WeatherForecast" Title="Station Temp (C)" Property="@(x => x.TemperatureC)" 
+                                   Alignment="ColumnAlignment.Right" Sortable Filterable>
+                        <CellTemplate>
+                            <span class="dt-text-right">@context.TemperatureC°C</span>
+                        </CellTemplate>
+                    </DataTableColumn>
+                        
+                    <DataTableColumn TItem="WeatherForecast" Title="Station Temp (F)" Property="@(x => x.TemperatureF)" 
+                                   Alignment="ColumnAlignment.Right" Sortable Filterable>
+                        <CellTemplate>
+                            <span class="dt-text-right text-muted">@context.TemperatureF°F</span>
+                        </CellTemplate>
+                    </DataTableColumn>
 
-                    <DataTableColumn TItem="WeatherForecast" Title="Station Temperature (F)" Property="@(x => x.TemperatureF)" 
-                                   Alignment="ColumnAlignment.Left" Sortable Filterable />
 
                     <DataTableColumn TItem="WeatherForecast" Title="Environmental Summary" Width="auto" Property="@(x => x.Summary)" 
-                                   Sortable Filterable CellStyle='_ => "background: var(--warning-bg, #fffcf0);"'>
+                                   Sortable Filterable>
                         <CellTemplate>
-                            <div class="text-dark fw-bold small">@context.Summary</div>
+                            <span class="badge @GetBadgeClass(context.Summary)">@context.Summary</span>
                         </CellTemplate>
                     </DataTableColumn>
 
-                    <DataTableColumn TItem="WeatherForecast" Title="Actions" Width="80px" Alignment="ColumnAlignment.Right">
+
+                    <DataTableColumn TItem="WeatherForecast" Title="Actions" Width="100px" Alignment="ColumnAlignment.Right">
                         <CellTemplate>
-                            <button class="btn btn-sm btn-icon-replica">
-                                <i class="bi bi-eye"></i>
-                            </button>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn-icon" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Edit Station">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
                         </CellTemplate>
                     </DataTableColumn>
+
                 </ChildContent>
             </DataTable>
-        </div>
     </div>
+
 </div>
 
-<style>
-    .btn-icon-replica {
-        width: 30px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center;
-        background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; color: #64748b; transition: all 0.2s;
-    }
-    .btn-icon-replica:hover { background: #f8fafc; color: #4f46e5; border-color: #cbd5e1; }
-</style>
+
 
 @code {
     private List<WeatherForecast> _forecasts = new();
+
+    private string GetBadgeClass(string? summary) => summary switch
+    {
+        "Freezing" or "Chilly" or "Cool" => "badge-cold",
+        "Bracing" or "Balmy" or "Mild" => "badge-neutral",
+        "Warm" => "badge-warm",
+        "Hot" or "Sweltering" or "Scorching" => "badge-hot",
+        _ => "badge-neutral"
+    };
 
     protected override async Task OnInitializedAsync()
     {

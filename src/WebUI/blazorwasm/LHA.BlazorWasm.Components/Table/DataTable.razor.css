@@ -1,354 +1,320 @@
 /* ═══════════════════════════════════════════════════════════════════
-   DataTable — System Themed Design
+   DataTable — Premium Dark Theme (Designer-Grade)
    ═══════════════════════════════════════════════════════════════════ */
 
 :host {
     display: block;
     width: 100%;
+    --dt-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ── Global Tokens (Adaptive) ── */
+.dt-container, .dt-sidebar {
+    --dt-bg: #0c0e14;
+    --dt-sidebar-bg: #0f111a;
+    --dt-border: rgba(255, 255, 255, 0.08);
+    --dt-row-hover: rgba(255, 255, 255, 0.03);
+    --dt-header-bg: rgba(12, 14, 20, 0.9);
+    --dt-accent: #6366f1;
+    --dt-accent-glow: rgba(99, 102, 241, 0.15);
+    --dt-text-primary: #f8fafc;
+    --dt-text-secondary: #94a3b8;
+    --dt-text-muted: #64748b;
+    --dt-radius: 12px;
+}
+
+.dt-container.theme-light, .dt-sidebar.theme-light {
+    --dt-bg: #ffffff;
+    --dt-sidebar-bg: #ffffff;
+    --dt-border: #eaecf0;
+    --dt-row-hover: #f9fafb;
+    --dt-header-bg: #f8fafc;
+    --dt-accent: #4f46e5;
+    --dt-accent-glow: rgba(79, 70, 229, 0.08);
+    --dt-text-primary: #101828;
+    --dt-text-secondary: #475467;
+    --dt-text-muted: #667085;
+}
+
+/* ── Container ── */
 .dt-container {
-    background: var(--card-bg, #fff);
-    border-radius: 8px;
-    box-shadow: var(--card-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
-    border: 1px solid var(--border-color, #e2e8f0);
-    overflow: hidden;
+    background: var(--dt-bg);
+    border-radius: var(--dt-radius);
+    border: 1px solid var(--dt-border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     display: flex;
     flex-direction: column;
-    height: fit-content;
-    align-self: flex-start;
-    min-height: 0 !important;
     width: 100%;
-    font-family: var(--font-family, inherit);
-    font-size: 0.875rem;
-    color: var(--text-color, #1e293b);
-    transition: background 0.3s, border-color 0.3s, color 0.3s;
+    color: var(--dt-text-primary);
+    font-family: 'Inter', 'Outfit', sans-serif;
+    position: relative;
+    overflow: hidden;
+    height: auto; /* Strictly auto to prevent gaps */
+    min-height: min-content;
 }
 
 /* ── Toolbar ── */
 .dt-toolbar {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1.25rem;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    border-bottom: 1px solid var(--border-color, #f1f5f9);
+    gap: 1rem;
+    border-bottom: 1px solid var(--dt-border);
+    background: linear-gradient(to bottom, rgba(255,255,255,0.01), transparent);
     flex-wrap: wrap;
 }
 
-.dt-toolbar-start {
-    margin-right: auto;
-    font-size: 0.75rem;
-    color: var(--text-muted, #64748b);
+.dt-toolbar-start { margin-right: auto; }
+
+/* ── Search Bar ── */
+::deep .dt-search .c-input-container {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-color: var(--dt-border) !important;
+    border-radius: 8px !important;
+    min-width: 240px;
+    height: 36px !important;
 }
 
-/* ── Search ── */
-.dt-search {
-    position: relative;
-    width: 200px;
+.theme-light ::deep .dt-search .c-input-container {
+    background: #ffffff !important;
 }
 
-.dt-search-icon {
-    position: absolute;
-    left: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted, #94a3b8);
-    pointer-events: none;
-    width: 14px;
-    height: 14px;
-}
-
-.dt-search-input {
-    width: 100%;
-    height: 36px;
-    padding: 0 0.75rem 0 2.25rem;
-    background: var(--input-bg, #fff);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 6px;
-    font-size: 0.8125rem;
-    color: var(--text-color, inherit);
-    outline: none;
-    transition: all 0.2s;
-}
-
-.dt-search-input:focus {
-    border-color: var(--primary-color, #6366f1);
-    box-shadow: 0 0 0 3px var(--range-bg, rgba(99, 102, 241, 0.1));
-}
-
-/* ── Toolbar Buttons ── */
-.dt-toolbar-btn {
-    height: 36px;
-    padding: 0 0.75rem;
+/* ── Buttons ── */
+::deep .dt-toolbar-btn {
+    background: transparent !important;
+    border: 1px solid var(--dt-border) !important;
+    color: var(--dt-text-secondary) !important;
+    border-radius: 8px !important;
+    padding: 0 0.875rem !important;
+    height: 36px !important;
+    font-weight: 500 !important;
+    font-size: 0.8125rem !important;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: var(--input-bg, #fff);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 6px;
-    color: var(--text-color, #475569);
-    font-size: 0.8125rem;
-    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: var(--dt-transition) !important;
 }
 
-.dt-toolbar-btn:hover {
-    background: var(--hover-bg, #f8fafc);
-    border-color: var(--text-muted, #cbd5e1);
+::deep .dt-toolbar-btn:hover {
+    background: var(--dt-row-hover) !important;
+    color: var(--dt-text-primary) !important;
 }
 
-.dt-toolbar-btn-active {
-    background: var(--range-bg, rgba(99, 102, 241, 0.08)) !important;
-    border-color: var(--primary-color, #6366f1) !important;
-    color: var(--primary-color, #6366f1) !important;
-}
-
-.dt-toolbar-btn-active svg {
-    color: var(--primary-color, #6366f1) !important;
-}
-
-.dt-toolbar-btn svg {
-    color: var(--text-muted, #475569);
-}
-
-/* ── Table & Headers ── */
+/* ── Table Wrapper ── */
 .dt-wrapper {
     width: 100%;
-    overflow-x: auto;
-    overflow-y: auto;
-    flex: 0 1 auto;
-    max-height: 700px;
+    overflow: auto;
+    background: var(--dt-bg);
+    flex: none; /* Do not grow, stay tight to table */
 }
 
 .dt-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: auto;
 }
 
+/* ── Headers ── */
 ::deep .dt-header-cell {
     position: sticky;
     top: 0;
-    z-index: var(--z-index-content);
-    padding: 0.75rem 1rem;
+    z-index: 10;
+    padding: 0.875rem 1.25rem;
+    background: var(--dt-header-bg);
     text-align: left;
-    background: var(--hover-bg, #f8fafc);
     font-weight: 600;
-    color: var(--text-muted, #475569);
-    font-size: 0.75rem;
-    border-bottom: 2px solid var(--border-color, #edf2f7); /* Strengthened for visibility */
+    font-size: 0.725rem;
+    color: var(--dt-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--dt-border);
     white-space: nowrap;
 }
 
-::deep .dt-sort-icon {
-    display: inline-flex;
-    margin-left: 0.4rem;
-    font-size: 0.65rem;
-    color: var(--text-muted, #cbd5e1);
-}
-
+/* ── Body ── */
 ::deep .dt-cell {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border-color, #f1f5f9);
-    line-height: 1.4;
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--dt-border);
+    font-size: 0.84rem;
+    color: var(--dt-text-primary);
     vertical-align: middle;
-    color: var(--text-color, inherit);
 }
 
 ::deep .dt-row-hoverable:hover {
-    background: var(--hover-bg, #f1f5f9);
+    background: var(--dt-row-hover);
 }
 
-::deep .dt-row-selected {
-    background: var(--range-bg, #eff6ff) !important;
-}
-
-::deep .dt-col-select { width: 40px; }
-::deep .dt-col-expand { width: 40px; }
-
-::deep .dt-skeleton {
-    height: 1rem;
-    background: var(--border-color, #f1f5f9);
-    border-radius: 4px;
-    opacity: 0.5;
-}
-
-/* ── Sidebar (Filters) ── */
-.dt-sidebar {
-    position: fixed;
-    top: 0;
-    right: -340px;
-    width: 340px;
-    height: 100vh;
-    background: var(--popup-bg, #fff);
-    box-shadow: var(--popup-shadow, -4px 0 20px rgba(0,0,0,0.08));
-    z-index: var(--z-index-sidebar);
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-    display: none;
-    flex-direction: column;
-    border-left: 1px solid var(--border-color, #f1f5f9);
-    opacity: 0;
-}
-
-.dt-sidebar-open { 
-    right: 0; 
-    display: flex;
-    opacity: 1;
-}
-
-.dt-sidebar-header {
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--border-color, #f1f5f9);
-    display: flex;
+/* ── Action Buttons ── */
+::deep .btn-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--dt-text-secondary);
+    transition: var(--dt-transition);
+    cursor: pointer;
 }
 
-.dt-sidebar-title {
-    font-size: 1rem;
+::deep .btn-icon:hover {
+    background: var(--dt-row-hover);
+    color: var(--dt-accent);
+    border-color: var(--dt-border);
+}
+
+/* ── Badges ── */
+::deep .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 0.7rem;
     font-weight: 600;
-    color: var(--text-color, #1e293b);
+}
+
+::deep .badge-cold { background: rgba(59, 130, 246, 0.08); color: #60a5fa; }
+::deep .badge-warm { background: rgba(245, 158, 11, 0.08); color: #fbbf24; }
+::deep .badge-hot { background: rgba(239, 68, 68, 0.08); color: #f87171; }
+::deep .badge-neutral { background: rgba(148, 163, 184, 0.08); color: #cbd5e1; }
+
+.dt-container.theme-light ::deep .badge-cold { background: #eff6ff; color: #3b82f6; }
+.dt-container.theme-light ::deep .badge-warm { background: #fffbeb; color: #d97706; }
+.dt-container.theme-light ::deep .badge-hot { background: #fef2f2; color: #dc2626; }
+
+/* ── Column Dropdown ── */
+.dt-col-toggle-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--dt-sidebar-bg);
+    border: 1px solid var(--dt-border);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    list-style: none;
+    padding: 0.5rem 0;
+    min-width: 200px;
+    z-index: 1100;
+}
+
+.dt-col-toggle-item {
+    padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--dt-text-secondary);
+    cursor: pointer;
+    transition: var(--dt-transition);
+}
+
+.dt-col-toggle-item:hover {
+    background: var(--dt-row-hover);
+    color: var(--dt-accent);
+}
+
+.dt-col-toggle-item input[type="checkbox"] {
+    cursor: pointer;
+    accent-color: var(--dt-accent);
+}
+
+.dt-sidebar {
+
+    position: fixed;
+    top: 0;
+    right: -380px;
+    width: 380px;
+    height: 100vh;
+    background: var(--dt-sidebar-bg) !important;
+    border-left: 1px solid var(--dt-border);
+    box-shadow: -10px 0 50px rgba(0, 0, 0, 0.2);
+    z-index: 1200;
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.dt-sidebar-open { right: 0; }
+
+.dt-sidebar-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--dt-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--dt-sidebar-bg);
 }
 
 .dt-sidebar-body {
     padding: 1.5rem;
     flex: 1;
     overflow-y: auto;
-    background: var(--background-color, #fff);
 }
 
 .dt-sidebar-footer {
-    padding: 1.25rem;
-    border-top: 1px solid var(--border-color, #f1f5f9);
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--dt-border);
     display: flex;
-    gap: 0.75rem;
-    background: var(--popup-bg, #fff);
+    gap: 1rem;
+    background: var(--dt-sidebar-bg);
 }
+
+/* ── Sidebar Inputs ── */
+.dt-sidebar ::deep .c-input-container {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-color: var(--dt-border) !important;
+}
+
+.theme-light.dt-sidebar ::deep .c-input-container {
+    background: #ffffff !important;
+}
+
+.dt-sidebar-filter-group { margin-bottom: 1.5rem; }
 
 .dt-sidebar-label {
     display: block;
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: var(--text-muted, #64748b);
-    text-transform: uppercase;
+    font-size: 0.725rem;
+    font-weight: 600;
+    color: var(--dt-text-secondary);
     margin-bottom: 0.5rem;
-    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
 }
 
 .dt-filter-input {
     width: 100%;
     height: 38px;
-    background: var(--input-bg, #fff);
-    color: var(--text-color, inherit);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--dt-border);
+    border-radius: 8px;
     padding: 0 0.75rem;
-    font-size: 0.8125rem;
+    color: var(--dt-text-primary);
     outline: none;
 }
 
-.dt-filter-input:focus { 
-    border-color: var(--primary-color, #6366f1);
-}
+.theme-light .dt-filter-input { background: #ffffff; }
+
+.dt-filter-input:focus { border-color: var(--dt-accent); }
 
 .dt-sidebar-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(2px);
-    z-index: var(--z-index-overlay);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1150;
 }
 
-/* ── Dropdowns ── */
-.dt-col-toggle-list {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 4px;
-    background: var(--popup-bg, #fff);
-    border: 1px solid var(--popup-border, #e2e8f0);
-    border-radius: 6px;
-    box-shadow: var(--popup-shadow, 0 4px 6px -1px rgba(0,0,0,0.1));
-    list-style: none;
-    padding: 0.5rem 0;
-    min-width: 160px;
-    z-index: var(--z-index-dropdown);
-}
+/* ── Alignments ── */
+::deep .dt-text-right { text-align: right; font-variant-numeric: tabular-nums; }
+::deep .dt-text-center { text-align: center; }
 
-.dt-col-toggle-item {
-    padding: 0.375rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8125rem;
-    color: var(--text-color, #475569);
-    cursor: pointer;
-}
-
-.dt-col-toggle-item:hover { background: var(--hover-bg, #f8fafc); }
-
-.dt-col-toggle-item input[type="checkbox"] {
-    accent-color: var(--primary-color, #4f46e5);
-}
-
-/* ── Expand Control ── */
-::deep .dt-expand-btn {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--input-bg, transparent);
-    border: 1px solid var(--border-color, #e2e8f0);
+/* ── Skeleton ── */
+::deep .dt-skeleton {
+    height: 1.25rem;
+    background: rgba(255, 255, 255, 0.04);
     border-radius: 4px;
-    color: var(--text-muted, #64748b);
-    cursor: pointer;
-    transition: all 0.2s;
 }
 
-::deep .dt-expand-btn.dt-expanded {
-    transform: rotate(90deg);
-    background: var(--primary-color, #6366f1);
-    color: #fff;
-    border-color: var(--primary-color, #6366f1);
-}
-
-/* ── Selection Message Bar ── */
-.dt-selection-msg-row {
-    background: var(--range-bg, #eff6ff);
-}
-
-.dt-selection-msg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--primary-color, #4f46e5);
-}
-
-.dt-selection-link {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    font-weight: 700;
-    color: var(--primary-color, #4f46e5);
-    text-decoration: underline;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-.dt-selection-link:hover {
-    opacity: 0.8;
-}

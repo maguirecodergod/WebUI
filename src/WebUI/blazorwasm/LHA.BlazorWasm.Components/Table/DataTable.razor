@@ -29,9 +29,9 @@
             @if (Searchable)
             {
                 <div class="dt-search" style="min-width: 260px;">
-                    <CInput TValue="string" Value="@_searchInput" ValueChanged="OnSearchValueChanged" 
-                           ValueExpression="@(() => _searchInput)"
-                           Placeholder="@Localizer.L("DataTable.Search")" Clearable="true" Size="CInputSize.Small">
+                    <CInput TValue="string" Value="@_searchInput" ValueChanged="OnSearchValueChanged"
+                            ValueExpression="@(() => _searchInput)" Placeholder="@Localizer.L("DataTable.Search")" Clearable="true"
+                            Size="CInputSize.Small">
                         <IconLeft>
                             <i class="bi bi-search"></i>
                         </IconLeft>
@@ -142,156 +142,160 @@
                             <div class="dt-selection-msg">
                                 @if (!_allEntireDatasetSelected)
                                 {
-                                    <span>@string.Format(Localizer.L("DataTable.AllPageItemsSelected"), _displayItems.Count)</span>
-                                    <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
-                                            OnClick="SelectAllEntireDataset">
-                                        @string.Format(Localizer.L("DataTable.SelectAllItems"), _totalCount)
-                                    </Button>
-                                }
+                                    <span>@string.Format(Localizer.L("DataTable.AllPageItemsSelected"),
+                                                                                                                                                        _displayItems.Count)</span>
+                                        <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
+                                                OnClick="SelectAllEntireDataset">
+                                            @string.Format(Localizer.L("DataTable.SelectAllItems"), _totalCount)
+                                        </Button>
+                                    }
                                 else
-                                {
-                                    <span>@string.Format(Localizer.L("DataTable.AllItemsSelected"), _totalCount)</span>
-                                    <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
-                                            OnClick="ClearSelection">
-                                        @Localizer.L("DataTable.ClearSelection")
-                                    </Button>
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                }
-
-                @if (_isLoading && _displayItems.Count == 0)
-                {
-                    @for (var i = 0; i < 5; i++)
-                    {
-                        <tr class="dt-row">
-                            @for (var j = 0; j < (visibleCols.Count + (SelectionMode != SelectionMode.None ? 1 : 0) + (ExpandedRowTemplate is not null ? 1 : 0)); j++)
-                            {
-                                <td class="dt-cell">
-                                    <Skeleton Height="1.25rem" Width="100%" />
-                                </td>
-                            }
+                                    {
+                                        <span>@string.Format(Localizer.L("DataTable.AllItemsSelected"), _totalCount)</span>
+                                        <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
+                                                OnClick="ClearSelection">
+                                            @Localizer.L("DataTable.ClearSelection")
+                                        </Button>
+                                    }
+                                </div>
+                            </td>
                         </tr>
                     }
-                }
-                else if (_displayItems.Count == 0)
-                {
-                    <tr>
-                        <td colspan="@_totalColumns" class="dt-cell" style="text-align: center; padding: 3rem;">
-                            @if (EmptyTemplate is not null)
-                            {
-                                @EmptyTemplate
-                            }
-                            else
-                            {
-                                <text>@Localizer.L("DataTable.NoData")</text>
-                            }
-                        </td>
-                    </tr>
-                }
-                else
-                {
-                    @foreach (var item in _displayItems)
+
+                    @if (_isLoading && _displayItems.Count == 0)
                     {
-                        <tr class="dt-row dt-row-hoverable @(IsSelected(item) ? "dt-row-selected" : "")"
-                            @onclick="async () => await HandleRowClickInternal(item)">
-
-                            @if (SelectionMode != SelectionMode.None)
-                            {
-                                <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
-                                    @if (SelectionMode == SelectionMode.Multiple)
-                                    {
-                                        <input type="checkbox" checked="@IsSelected(item)"
-                                               @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" checked="@IsSelected(item)"
-                                               @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
-                                    }
-                                </td>
-                            }
-
-                            @if (ExpandedRowTemplate is not null)
-                            {
-                                <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
-                                    <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : "")"
-                                            @onclick="() => ToggleExpand(item)"><i class="bi bi-chevron-right"></i></button>
-                                </td>
-                            }
-
-                            @foreach (var col in visibleCols)
-                            {
-                                <td class="dt-cell @col.GetCellCss(item)" style="@GetCellInlineStyle(col, item)">
-                                    @if (col.CellTemplate is not null)
-                                    {
-                                        @col.CellTemplate(item)
-                                    }
-                                    else
-                                    {
-                                        @col.GetDisplayValue(item)
-                                    }
-                                </td>
-                            }
-                        </tr>
-                        @if (IsExpanded(item) && ExpandedRowTemplate is not null)
+                        @for (var i = 0; i < 5; i++)
                         {
-                            <tr class="dt-expanded-row">
-                                <td colspan="@_totalColumns" style="padding: 0;">@ExpandedRowTemplate(item)</td>
+                            <tr class="dt-row">
+                                @for (var j = 0; j < (visibleCols.Count + (SelectionMode != SelectionMode.None ? 1 : 0) +
+                        (ExpandedRowTemplate is not null ? 1 : 0)); j++)
+                                {
+                                    <td class="dt-cell">
+                                        <Skeleton Height="1.25rem" Width="100%" />
+                                    </td>
+                                }
                             </tr>
                         }
                     }
-                }
-            </tbody>
-        </table>
-    </div>
+                    else if (_displayItems.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="@_totalColumns" class="dt-cell" style="text-align: center; padding: 3rem;">
+                                @if (EmptyTemplate is not null)
+                                {
+                                    @EmptyTemplate
+                                }
+                                else
+                                {
+                                    <text>@Localizer.L("DataTable.NoData")</text>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in _displayItems)
+                        {
+                            <tr class="dt-row dt-row-hoverable @(IsSelected(item) ? "dt-row-selected" : "")"
+                                @onclick="async () => await HandleRowClickInternal(item)">
 
-    @* ════════════ PAGER ════════════ *@
-    @if (ShowPager)
-    {
-        <DataTablePager PageNumber="@_request.PageNumber" PageSize="@_request.PageSize" TotalCount="@_totalCount"
-                        PageSizes="@PageSizes" OnPageChanged="HandlePageChanged" OnPageSizeChanged="HandlePageSizeChanged" />
-    }
-</div>
+                                @if (SelectionMode != SelectionMode.None)
+                                {
+                                    <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
+                                        @if (SelectionMode == SelectionMode.Multiple)
+                                        {
+                                            <input type="checkbox" checked="@IsSelected(item)"
+                                                   @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" checked="@IsSelected(item)"
+                                                   @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
+                                        }
+                                    </td>
+                                }
 
-@if (_filterSidebarOpen)
-{
-    <div class="dt-sidebar-overlay" @onclick="CloseFilterSidebar"></div>
-}
+                                @if (ExpandedRowTemplate is not null)
+                                {
+                                    <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
+                                        <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : "")"
+                                                @onclick="() => ToggleExpand(item)"><i class="bi bi-chevron-right"></i></button>
+                                    </td>
+                                }
 
-<aside class="dt-sidebar @ThemeClass @(_filterSidebarOpen ? "dt-sidebar-open" : "")">
-    <div class="dt-sidebar-header">
-        <h3 class="dt-sidebar-title">
-            <i class="bi bi-filter"></i>
-            @Localizer.L("DataTable.Filters")
-        </h3>
-        <button type="button" @onclick="CloseFilterSidebar" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
-    </div>
-    <div class="dt-sidebar-body">
-        @foreach (var col in _columns.Where(c => c.Filterable))
+                                @foreach (var col in visibleCols)
+                                {
+                                    <td class="dt-cell @col.GetCellCss(item)" style="@GetCellInlineStyle(col, item)">
+                                        @if (col.CellTemplate is not null)
+                                        {
+                                            @col.CellTemplate(item)
+                                        }
+                                        else
+                                        {
+                                            @col.GetDisplayValue(item)
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                            @if (IsExpanded(item) && ExpandedRowTemplate is not null)
+                            {
+                                <tr class="dt-expanded-row">
+                                    <td colspan="@_totalColumns" style="padding: 0;">@ExpandedRowTemplate(item)</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @* ════════════ PAGER ════════════ *@
+        @if (ShowPager)
         {
-            <div class="dt-sidebar-filter-group">
-                <label class="dt-sidebar-label">@col.Title</label>
-                @RenderFilterInput(col)
-            </div>
+            <DataTablePager PageNumber="@_request.PageNumber" PageSize="@_request.PageSize" TotalCount="@_totalCount"
+                            PageSizes="@PageSizes" OnPageChanged="HandlePageChanged" OnPageSizeChanged="HandlePageSizeChanged" />
         }
     </div>
-    <div class="dt-sidebar-footer">
-        <Button Style="CButtonStyle.Light" Size="CButtonSize.Medium" OnClick="ClearAllFiltersAsync" Class="flex-grow-1">
-            @Localizer.L("DataTable.Clear")
-        </Button>
-        <Button Style="CButtonStyle.Primary" Size="CButtonSize.Medium" OnClick="ApplyFiltersAsync" Class="flex-grow-1">
-            @Localizer.L("DataTable.Apply")
-        </Button>
-    </div>
-</aside>
 
-<div style="display:none">
-    <CascadingValue Value="this" IsFixed="true">
-        @ChildContent
-    </CascadingValue>
-</div>
+    @if (_filterSidebarOpen)
+    {
+        <div class="dt-sidebar-overlay" @onclick="CloseFilterSidebar"></div>
+    }
+
+    <aside class="dt-sidebar @ThemeClass @(_filterSidebarOpen ? "dt-sidebar-open" : "")">
+        <div class="dt-sidebar-header">
+            <h3 class="dt-sidebar-title">
+                <i class="bi bi-filter"></i>
+                @Localizer.L("DataTable.Filters")
+            </h3>
+            <button type="button" @onclick="CloseFilterSidebar"
+                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+        </div>
+        <div class="dt-sidebar-body">
+            @foreach (var col in _columns.Where(c => c.Filterable))
+            {
+                <div class="dt-sidebar-filter-group">
+                    <label class="dt-sidebar-label">@col.Title</label>
+                    @RenderFilterInput(col)
+                </div>
+            }
+        </div>
+        <div class="dt-sidebar-footer">
+            <Button Style="CButtonStyle.Light" Size="CButtonSize.Small" OnClick="ClearAllFiltersAsync" Class="flex-grow-1">
+                @Localizer.L("DataTable.Clear")
+            </Button>
+            <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="ApplyFiltersAsync" Class="flex-grow-1">
+                @Localizer.L("DataTable.Apply")
+            </Button>
+        </div>
+
+    </aside>
+
+    <div style="display:none">
+        <CascadingValue Value="this" IsFixed="true">
+            @ChildContent
+        </CascadingValue>
+    </div>
 
 @code {
     private RenderFragment RenderFilterInput(ColumnDefinition<TItem> col) => __builder =>
@@ -299,10 +303,9 @@
         switch (col.FilterType)
         {
             case FilterType.Text:
-                <CInput TValue="string" Value="@GetStagedFilterValue(col.Field)" 
-                       ValueChanged="@(v => SetStagedFilter(col.Field, v, FilterType.Text))" 
-                       ValueExpression="@(() => _dummyFilter)"
-                       Placeholder="@col.Title" Clearable="true" Size="CInputSize.Small" />
+                <CInput TValue="string" Value="@GetStagedFilterValue(col.Field)"
+                        ValueChanged="@(v => SetStagedFilter(col.Field, v, FilterType.Text))" ValueExpression="@(() => _dummyFilter)"
+                        Placeholder="@col.Title" Clearable="true" Size="CInputSize.Small" />
                 break;
             case FilterType.Select:
                 <select class="dt-filter-input" value="@GetStagedFilterValue(col.Field)"

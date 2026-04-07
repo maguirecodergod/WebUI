@@ -1,13 +1,14 @@
 /* ── Pagination (The Pager) ── */
 .dt-pager {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1.25rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--card-bg, #fff);
-    border-top: 1px solid var(--border-color, #f1f5f9);
-    font-family: var(--font-family, inherit);
-    transition: background 0.3s, border-color 0.3s;
+    background: transparent;
+    border-top: 1px solid var(--dt-border);
+    font-family: inherit;
+    transition: var(--dt-transition);
+    min-height: 52px; /* Tight constraints */
 }
 
 .dt-pager-column {
@@ -17,27 +18,99 @@
 }
 
 .dt-pager-info {
-    font-size: 0.75rem;
-    color: var(--text-muted, #64748b);
+    font-size: 0.8125rem;
+    color: var(--dt-text-secondary);
+    font-weight: 500;
 }
 
 .dt-pager-size {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--text-muted, #64748b);
+    gap: 0.625rem;
+    font-size: 0.8125rem;
+    color: var(--dt-text-secondary);
 }
 
-.dt-pager-size select {
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 4px;
-    padding: 2px 4px;
-    font-size: 0.75rem;
-    outline: none;
-    background: var(--input-bg, #fff);
-    color: var(--text-color, inherit);
+/* --- Custom Select --- */
+.dt-custom-select-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
+
+.dt-custom-select-trigger {
+    background: var(--dt-bg) !important;
+    color: var(--dt-text-primary) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px;
+    height: 32px;
+    padding: 0 10px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--dt-transition);
+    min-width: 50px;
+    justify-content: space-between;
+}
+
+.dt-custom-select-trigger:hover {
+    border-color: var(--dt-accent) !important;
+    background: var(--dt-row-hover) !important;
+}
+
+.dt-select-arrow {
+    font-size: 0.6rem;
+    transition: transform 0.2s ease;
+    opacity: 0.7;
+}
+
+.dt-select-arrow.rotated {
+    transform: rotate(180deg);
+}
+
+.dt-custom-select-list {
+    position: absolute;
+    bottom: calc(100% + 5px);
+    left: 0;
+    width: 60px;
+    background: var(--dt-sidebar-bg);
+    border: 1px solid var(--dt-border);
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    z-index: 2000;
+    overflow: hidden;
+    padding: 4px 0;
+}
+
+.dt-custom-select-item {
+    padding: 6px 12px;
+    font-size: 0.8125rem;
+    color: var(--dt-text-secondary);
+    cursor: pointer;
+    transition: var(--dt-transition);
+    text-align: center;
+}
+
+.dt-custom-select-item:hover {
+    background: var(--dt-row-hover);
+    color: var(--dt-accent);
+}
+
+.dt-custom-select-item.active {
+    background: var(--dt-accent-glow);
+    color: var(--dt-accent);
+    font-weight: 700;
+}
+
+.dt-custom-select-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1900;
+    background: transparent;
+}
+
 
 .dt-pager-nav {
     display: flex;
@@ -51,18 +124,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
-    color: var(--text-muted, #64748b);
-    border-radius: 4px;
-    border: none;
+    font-size: 0.8125rem;
+    color: var(--dt-text-secondary);
+    border-radius: 6px;
+    border: 1px solid transparent;
     background: transparent;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: var(--dt-transition);
     padding: 0 4px;
 }
 
 .dt-pager-btn:hover:not(:disabled) {
-    background: var(--hover-bg, #f1f5f9);
+    background: var(--dt-row-hover);
+    color: var(--dt-text-primary);
+    border-color: var(--dt-border);
 }
 
 .dt-pager-btn:disabled {
@@ -71,28 +146,43 @@
 }
 
 .dt-pager-active {
-    background: var(--primary-color, #4f46e5) !important;
-    color: #fff !important;
+    background: var(--dt-accent-glow) !important;
+    color: var(--dt-accent) !important;
+    border-color: var(--dt-accent) !important;
     font-weight: 600;
-    box-shadow: 0 4px 6px -1px var(--range-bg, rgba(0,0,0,0.1));
 }
 
 .dt-pager-jump {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--text-muted, #64748b);
+    gap: 0.625rem;
+    font-size: 0.8125rem;
+    color: var(--dt-text-secondary);
 }
 
 .dt-pager-jump-input {
     width: 40px;
     height: 28px;
     text-align: center;
-    background: var(--input-bg, #fff);
-    color: var(--text-color, inherit);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 4px;
-    font-size: 0.75rem;
+    background: var(--dt-bg);
+    color: var(--dt-text-primary);
+    border: 1px solid var(--dt-border);
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    font-weight: 600;
     outline: none;
+    transition: var(--dt-transition);
+    appearance: textfield;
 }
+
+.dt-pager-jump-input::-webkit-outer-spin-button,
+.dt-pager-jump-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.dt-pager-jump-input:focus {
+    border-color: var(--dt-accent);
+    background: var(--dt-row-hover);
+}
+
