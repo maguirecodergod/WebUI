@@ -12,8 +12,8 @@ public sealed class ColumnDefinition<TItem>
 {
     // ── Identity ─────────────────────────────────────────────
     public string Id { get; init; } = Guid.NewGuid().ToString("N")[..8];
-    public string Field { get; set; } = "";
-    public string Title { get; set; } = "";
+    public string Field { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
 
     // ── Value Access ─────────────────────────────────────────
     public Func<TItem, object?>? ValueSelector { get; set; }
@@ -58,10 +58,10 @@ public sealed class ColumnDefinition<TItem>
     public string GetDisplayValue(TItem item)
     {
         var val = ValueSelector?.Invoke(item);
-        if (val is null) return "";
+        if (val is null) return string.Empty;
         if (!string.IsNullOrEmpty(Format) && val is IFormattable f)
             return f.ToString(Format, null);
-        return val.ToString() ?? "";
+        return val.ToString() ?? string.Empty;
     }
 
     /// <summary>Compute CSS classes for a data cell.</summary>

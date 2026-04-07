@@ -3,7 +3,7 @@
 
 @if (IsVisible)
 {
-    <div class="command-palette-wrapper @(IsVisible ? "show" : "")">
+    <div class="command-palette-wrapper @(IsVisible ? "show" : string.Empty)">
         <div class="palette-overlay" @onclick="ClosePalette"></div>
         
         <div class="command-palette-container">
@@ -27,7 +27,7 @@
                         <div class="palette-section-title">@L("Search.Suggestions")</div>
                         @foreach (var item in Suggestions)
                         {
-                            <div class="palette-item @(item.IsActive ? "active" : "")" @onclick="() => SelectItem(item)">
+                            <div class="palette-item @(item.IsActive ? "active" : string.Empty)" @onclick="() => SelectItem(item)">
                                 <i class="@item.Icon"></i>
                                 <div class="item-content">
                                     <div class="item-title">@item.Title</div>
@@ -49,7 +49,7 @@
                             <div class="palette-section-title">@group.Key</div>
                             @foreach (var item in group)
                             {
-                                <div class="palette-item @(item.IsActive ? "active" : "")" @onclick="() => SelectItem(item)">
+                                <div class="palette-item @(item.IsActive ? "active" : string.Empty)" @onclick="() => SelectItem(item)">
                                     <i class="@item.Icon"></i>
                                     <div class="item-content">
                                         <div class="item-title">@item.Title</div>
@@ -84,7 +84,7 @@
                     <span><kbd>ESC</kbd> @L("Search.Close")</span>
                 </div>
                 <div class="footer-brand">
-                    @L("Search.PoweredBy") <strong>Antigravity Search</strong>
+                    @L("Search.PoweredBy") <strong>Tâm Hoàng</strong>
                 </div>
             </div>
         </div>

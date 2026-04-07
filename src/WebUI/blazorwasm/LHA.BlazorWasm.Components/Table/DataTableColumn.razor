@@ -79,7 +79,7 @@
 
     private ColumnDefinition<TItem> BuildDefinition()
     {
-        var field = Field ?? "";
+        var field = Field ?? string.Empty;
         Func<TItem, object?>? selector = null;
 
         if (Property is not null)
@@ -91,7 +91,7 @@
         return new ColumnDefinition<TItem>
         {
             Field = field,
-            Title = Title ?? (field.Length > 0 ? ColumnDefinition<TItem>.Humanize(field) : ""),
+            Title = Title ?? (field.Length > 0 ? ColumnDefinition<TItem>.Humanize(field) : string.Empty),
             ValueSelector = selector,
             Format = Format,
             Sortable = Sortable,

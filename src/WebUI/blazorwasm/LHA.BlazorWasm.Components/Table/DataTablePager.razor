@@ -49,7 +49,7 @@
                 }
                 else
                 {
-                    <Button Class="@($"dt-pager-btn {(item.Page == PageNumber ? "dt-pager-active" : "")}")"
+                    <Button Class="@($"dt-pager-btn {(item.Page == PageNumber ? "dt-pager-active" : string.Empty)}")"
                             Style="@(item.Page == PageNumber ? CButtonStyle.Primary : CButtonStyle.Light)"
                             OnClick="() => GoTo(item.Page)">
                         @item.Page
