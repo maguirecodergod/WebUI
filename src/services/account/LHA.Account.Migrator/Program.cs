@@ -5,7 +5,6 @@ using LHA.Auditing;
 using LHA.Core.Users;
 using LHA.Identity.Domain;
 using LHA.MultiTenancy;
-using LHA.PermissionManagement.Domain;
 using LHA.TenantManagement.Domain;
 using LHA.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +17,9 @@ using LHA.DistributedLocking;
 using LHA.PermissionManagement.Domain.PermissionTemplates;
 using LHA.PermissionManagement.Domain.PermissionGroups;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.Localization;
+using LHA.Identity.Domain.Shared.Localization;
+using LHA.Account.Domain.Shared.Localization;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -35,6 +37,13 @@ builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHAInMemoryEventBus();
 builder.Services.AddLHADistributedLocking();
 builder.Services.AddSingleton<IClientInfoProvider, NullClientInfoProvider>();
+
+// ── Localization ─────────────────────────────────────────────────
+builder.Services.AddLHALocalization(options =>
+{
+    options.AddResource<IdentityResource>();
+    options.AddResource<AccountResource>();
+});
 
 // ── Module services (Application + EF Core) ──────────────────────
 builder.Services.AddAccountApplication();

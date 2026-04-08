@@ -19,7 +19,22 @@ Content-Type: application/json
 
 ###
 
-### 2. Login (Admin)
+### 2. Register Tenant
+# @name RegisterTenant
+POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/register-tenant
+Content-Type: application/json
+
+{
+    "tenantName": "Lien Hoa Group",
+    "adminUserName": "lienhoatenantadmin",
+    "adminEmail": "admin@lienhoagroup.com",
+    "adminPassword": "Admin@123456",
+    "databaseStyle": 1
+}
+
+###
+
+### 3. Login (Admin)
 # @name LoginAdmin
 POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/login
 Content-Type: application/json
@@ -31,7 +46,7 @@ Content-Type: application/json
 
 ###
 
-### 3. Login (New User)
+### 4. Login (New User)
 # @name Login
 POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/login
 Accept-Language: vi
@@ -47,7 +62,7 @@ Content-Type: application/json
 @accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJMaWVuSG9hQXBwIiwiaXNzIjoiTGllbkhvYUFwcC5BY2NvdW50IiwiZXhwIjoxNzc0NDMzOTMzLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDIiLCJqdGkiOiIwMTlkMjQ2NS1hMGFhLTc1YjMtODUyMi0xM2E4NGI1Mjk0NGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBsaWVuaG9hYXBwLmNvbSIsInJvbGVzIjpbImFkbWluIl0sInBlcm1pc3Npb25zIjpbImlkZW50aXR5LnVzZXJzLnJlYWQiLCJpZGVudGl0eS51c2Vycy5jcmVhdGUiLCJpZGVudGl0eS51c2Vycy51cGRhdGUiLCJpZGVudGl0eS51c2Vycy5kZWxldGUiLCJpZGVudGl0eS5yb2xlcy5jcmVhdGUiLCJpZGVudGl0eS5yb2xlcy5yZWFkIiwiaWRlbnRpdHkucm9sZXMudXBkYXRlIiwiaWRlbnRpdHkucm9sZXMuZGVsZXRlIiwiaWRlbnRpdHkuY2xhaW0tdHlwZXMucmVhZCIsImlkZW50aXR5LmNsYWltLXR5cGVzLmNyZWF0ZSIsImlkZW50aXR5LmNsYWltLXR5cGVzLnVwZGF0ZSIsImlkZW50aXR5LmNsYWltLXR5cGVzLmRlbGV0ZSIsImlkZW50aXR5LnNlY3VyaXR5LWxvZ3MucmVhZCIsInRlbmFudHMucmVhZCIsInRlbmFudHMuY3JlYXRlIiwidGVuYW50cy51cGRhdGUiLCJ0ZW5hbnRzLmRlbGV0ZSIsImF1ZGl0LWxvZ3MucmVhZCIsInBlcm1pc3Npb25zLmRlZmluaXRpb25zLm1hbmFnZSIsInBlcm1pc3Npb25zLmRlZmluaXRpb25zLnJlYWQiLCJwZXJtaXNzaW9ucy5ncm91cHMucmVhZCIsInBlcm1pc3Npb25zLmdyb3Vwcy5tYW5hZ2UiLCJwZXJtaXNzaW9ucy50ZW1wbGF0ZXMucmVhZCIsInBlcm1pc3Npb25zLnRlbXBsYXRlcy5tYW5hZ2UiLCJwZXJtaXNzaW9ucy5ncmFudHMucmVhZCIsInBlcm1pc3Npb25zLmdyYW50cy5tYW5hZ2UiXSwiaWF0IjoxNzc0NDMyMTMzLCJuYmYiOjE3NzQ0MzIxMzN9.mWr9Bq5I3s7fWXE4Qq5KkRGK0TMpwSXUdCkb8dvEr5M
 @refreshToken = {{Login.response.body.data.refreshToken}}
 
-### 4. Refresh Token
+### 5. Refresh Token
 # @name RefreshToken
 POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/refresh
 Content-Type: application/json
@@ -58,14 +73,14 @@ Content-Type: application/json
 
 ###
 
-### 5. Get Current User Info
+### 6. Get Current User Info
 # @name GetMe
 GET {{baseUrl}}/api/v{{apiVersion}}/identity/auth/me
 Authorization: Bearer {{accessToken}}
 
 
 
-### 6. Get Audit Logs
+### 7. Get Audit Logs
 # @name GetAuditLogs
 GET {{baseUrl}}/api/v{{apiVersion}}/audit-logs?skipCount=0&maxResultCount=100
 Authorization: Bearer {{accessToken}}

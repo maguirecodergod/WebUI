@@ -17,6 +17,7 @@
     <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
     <ProjectReference Include="..\..\..\frameworks\DistributedLocking\LHA.DistributedLocking.Abstraction\LHA.DistributedLocking.Abstraction.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Auditing\LHA.Auditing.Contracts\LHA.Auditing.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Localization\LHA.Localization\LHA.Localization.csproj" />
   </ItemGroup>
 
   <ItemGroup>
