@@ -77,9 +77,10 @@ using (var scope = host.Services.CreateScope())
     var uowManager = scope.ServiceProvider.GetRequiredService<IUnitOfWorkManager>();
 
     // Track the admin role ID for permission grant seeding later
-    Guid adminRoleId;
+    Guid systemSuperAdminRoleId;
+    Guid tenantAdminRoleId;
 
-    // ── 2a. Identity: admin role + admin user ────────────────────
+    // ── 2a. Identity: admin roles + admin user ───────────────────
     var roleManager = scope.ServiceProvider.GetRequiredService<IdentityRoleManager>();
     var roleRepository = scope.ServiceProvider.GetRequiredService<IIdentityRoleRepository>();
     var userManager = scope.ServiceProvider.GetRequiredService<IdentityUserManager>();
@@ -87,27 +88,45 @@ using (var scope = host.Services.CreateScope())
 
     using (var uow = uowManager.Begin(isTransactional: true))
     {
-        var existingRole = await roleRepository.FindByNormalizedNameAsync(
-            CurrentUserDefaults.AdminRoleName.ToUpperInvariant());
+        // ── SystemSuperAdmin Role ──
+        var existingSuperAdmin = await roleRepository.FindByNormalizedNameAsync(
+            CurrentUserDefaults.SystemSuperAdminRoleName.ToUpperInvariant());
 
-        IdentityRole adminRole;
-        if (existingRole is null)
+        IdentityRole systemSuperAdminRole;
+        if (existingSuperAdmin is null)
         {
-            adminRole = await roleManager.CreateAsync(
-                CurrentUserDefaults.AdminRoleName,
-                CurrentUserDefaults.AdminRoleId);
-            adminRole.SetIsDefault(false);
-            await roleRepository.InsertAsync(adminRole);
-            logger.LogInformation("Admin role '{RoleName}' created (ID: {RoleId}).",
-                adminRole.Name, adminRole.Id);
+            systemSuperAdminRole = await roleManager.CreateAsync(
+                CurrentUserDefaults.SystemSuperAdminRoleName,
+                isStatic: true,
+                isPublic: true);
+            await roleRepository.InsertAsync(systemSuperAdminRole);
+            logger.LogInformation("SystemSuperAdmin role created.");
         }
         else
         {
-            adminRole = existingRole;
-            logger.LogInformation("Admin role already exists, skipping.");
+            systemSuperAdminRole = existingSuperAdmin;
         }
+        systemSuperAdminRoleId = systemSuperAdminRole.Id;
 
-        adminRoleId = adminRole.Id;
+        // ── TenantAdmin Role ──
+        var existingTenantAdmin = await roleRepository.FindByNormalizedNameAsync(
+            CurrentUserDefaults.TenantAdminRoleName.ToUpperInvariant());
+
+        IdentityRole tenantAdminRole;
+        if (existingTenantAdmin is null)
+        {
+            tenantAdminRole = await roleManager.CreateAsync(
+                CurrentUserDefaults.TenantAdminRoleName,
+                isStatic: true,
+                isPublic: true);
+            await roleRepository.InsertAsync(tenantAdminRole);
+            logger.LogInformation("TenantAdmin role created.");
+        }
+        else
+        {
+            tenantAdminRole = existingTenantAdmin;
+        }
+        tenantAdminRoleId = tenantAdminRole.Id;
 
         var existingUser = await userRepository.FindByNormalizedUserNameAsync(
             CurrentUserDefaults.AdminUserName.ToUpperInvariant());
@@ -119,7 +138,8 @@ using (var scope = host.Services.CreateScope())
                 CurrentUserDefaults.AdminUserEmail,
                 CurrentUserDefaults.AdminUserDefaultPassword,
                 CurrentUserDefaults.AdminUserId);
-            adminUser.AddRole(adminRole.Id);
+            adminUser.AddRole(systemSuperAdminRoleId);
+            adminUser.AddRole(tenantAdminRoleId);
             await userRepository.InsertAsync(adminUser);
             logger.LogInformation("Admin user '{UserName}' created (ID: {UserId}).",
                 adminUser.UserName, adminUser.Id);
@@ -260,19 +280,35 @@ using (var scope = host.Services.CreateScope())
             logger.LogInformation("Permission template 'TenantAdmin' created.");
         }
 
-        // ── Grant all permissions to the admin role ──────────────
-        var adminRoleKey = adminRoleId.ToString();
+        // ── Grant all permissions to the SystemSuperAdmin role ──
+        var superAdminRoleKey = systemSuperAdminRoleId.ToString();
         foreach (var def in defEntities)
         {
-            var existing = await permGrantRepo.FindAsync(def.Name, "R", adminRoleKey);
+            var existing = await permGrantRepo.FindAsync(def.Name, "R", superAdminRoleKey);
             if (existing is null)
             {
                 var grant = new IdentityPermissionGrant(
-                    Guid.CreateVersion7(), def.Name, "R", adminRoleKey);
+                    Guid.CreateVersion7(), def.Name, "R", superAdminRoleKey);
                 await permGrantRepo.InsertAsync(grant);
             }
         }
-        logger.LogInformation("All permissions granted to 'admin' role (ID: {RoleId}).", adminRoleId);
+        logger.LogInformation("All permissions granted to 'SystemSuperAdmin' role.");
+
+        // ── Grant specific permissions to the TenantAdmin role ──
+        // For simplicity, we grant all permissions now, but in a real app
+        // we might filter only tenant-applicable ones.
+        var tenantAdminRoleKey = tenantAdminRoleId.ToString();
+        foreach (var def in defEntities)
+        {
+            var existing = await permGrantRepo.FindAsync(def.Name, "R", tenantAdminRoleKey);
+            if (existing is null)
+            {
+                var grant = new IdentityPermissionGrant(
+                    Guid.CreateVersion7(), def.Name, "R", tenantAdminRoleKey);
+                await permGrantRepo.InsertAsync(grant);
+            }
+        }
+        logger.LogInformation("All permissions granted to 'TenantAdmin' role.");
 
         await uow.CompleteAsync();
     }

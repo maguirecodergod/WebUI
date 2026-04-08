@@ -2,6 +2,7 @@ using LHA.Core;
 using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.Identity.Domain;
+using LHA.MultiTenancy;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.Identity.EntityFrameworkCore;
@@ -12,18 +13,27 @@ namespace LHA.Identity.EntityFrameworkCore;
 public sealed class EfCoreIdentityRoleRepository
     : EfCoreRepository<IdentityDbContext, IdentityRole, Guid>, IIdentityRoleRepository
 {
+    private readonly ICurrentTenant _currentTenant;
     private static readonly string[] SearchColumns = ["Name"];
 
-    public EfCoreIdentityRoleRepository(IDbContextProvider<IdentityDbContext> dbContextProvider)
-        : base(dbContextProvider) { }
+    public EfCoreIdentityRoleRepository(
+        IDbContextProvider<IdentityDbContext> dbContextProvider,
+        ICurrentTenant currentTenant)
+        : base(dbContextProvider)
+    {
+        _currentTenant = currentTenant;
+    }
 
     /// <inheritdoc />
     public override async Task<IdentityRole?> FindAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
-        return await dbSet
+        return await dbSet.IgnoreQueryFilters()
             .Include(r => r.Claims)
-            .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(r => 
+                (r.TenantId == _currentTenant.Id || r.TenantId == null) && 
+                r.Id == id, 
+                cancellationToken);
     }
 
     /// <inheritdoc />
@@ -31,9 +41,13 @@ public sealed class EfCoreIdentityRoleRepository
         string normalizedName, CancellationToken cancellationToken)
     {
         var dbSet = await GetDbSetAsync();
-        return await dbSet
+        // Ignore automatic tenant filter to allow finding global roles (TenantId == null)
+        return await dbSet.IgnoreQueryFilters()
             .Include(r => r.Claims)
-            .FirstOrDefaultAsync(r => r.NormalizedName == normalizedName, cancellationToken);
+            .FirstOrDefaultAsync(r => 
+                (r.TenantId == _currentTenant.Id || r.TenantId == null) && 
+                r.NormalizedName == normalizedName, 
+                cancellationToken);
     }
 
     /// <inheritdoc />
@@ -46,8 +60,9 @@ public sealed class EfCoreIdentityRoleRepository
     {
         var dbSet = await GetDbSetAsync();
 
-        return await dbSet
+        return await dbSet.IgnoreQueryFilters()
             .Include(r => r.Claims)
+            .Where(r => r.TenantId == _currentTenant.Id || r.TenantId == null)
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, r => r.Status == status!.Value)
             .SortByDynamic(sorter, defaultProperty: "Name")
@@ -62,7 +77,8 @@ public sealed class EfCoreIdentityRoleRepository
     {
         var dbSet = await GetDbSetAsync();
 
-        return await dbSet.AsQueryable()
+        return await dbSet.AsQueryable().IgnoreQueryFilters()
+            .Where(r => r.TenantId == _currentTenant.Id || r.TenantId == null)
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, r => r.Status == status!.Value)
             .LongCountAsync(cancellationToken);
@@ -72,8 +88,9 @@ public sealed class EfCoreIdentityRoleRepository
     public async Task<List<IdentityRole>> GetDefaultRolesAsync(CancellationToken cancellationToken)
     {
         var dbSet = await GetDbSetAsync();
-        return await dbSet
-            .Where(r => r.IsDefault && r.Status == CMasterStatus.Active)
+        return await dbSet.IgnoreQueryFilters()
+            .Where(r => (r.TenantId == _currentTenant.Id || r.TenantId == null) && 
+                        r.IsDefault && r.Status == CMasterStatus.Active)
             .ToListAsync(cancellationToken);
     }
 
@@ -85,8 +102,9 @@ public sealed class EfCoreIdentityRoleRepository
         if (idList.Count == 0) return [];
 
         var dbSet = await GetDbSetAsync();
-        return await dbSet
-            .Where(r => idList.Contains(r.Id))
+        // Ignore automatic tenant filter to allow finding global roles (TenantId == null)
+        return await dbSet.IgnoreQueryFilters()
+            .Where(r => (r.TenantId == _currentTenant.Id || r.TenantId == null) && idList.Contains(r.Id))
             .ToListAsync(cancellationToken);
     }
 }

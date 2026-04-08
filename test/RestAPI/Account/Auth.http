@@ -25,9 +25,9 @@ POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/register-tenant
 Content-Type: application/json
 
 {
-    "tenantName": "Lien Hoa Group",
-    "adminUserName": "lienhoatenantadmin",
-    "adminEmail": "admin@lienhoagroup.com",
+    "tenantName": "Li Ha Group",
+    "adminUserName": "litenantadmin",
+    "adminEmail": "admin@ligroup.com",
     "adminPassword": "Admin@123456",
     "databaseStyle": 1
 }

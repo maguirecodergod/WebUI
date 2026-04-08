@@ -1,5 +1,6 @@
 using LHA.EntityFrameworkCore;
 using LHA.Identity.Domain;
+using LHA.MultiTenancy;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.Identity.EntityFrameworkCore;
@@ -10,8 +11,15 @@ namespace LHA.Identity.EntityFrameworkCore;
 public sealed class EfCorePermissionGrantRepository
     : EfCoreRepository<IdentityDbContext, IdentityPermissionGrant, Guid>, IPermissionGrantRepository
 {
-    public EfCorePermissionGrantRepository(IDbContextProvider<IdentityDbContext> dbContextProvider)
-        : base(dbContextProvider) { }
+    private readonly ICurrentTenant _currentTenant;
+
+    public EfCorePermissionGrantRepository(
+        IDbContextProvider<IdentityDbContext> dbContextProvider,
+        ICurrentTenant currentTenant)
+        : base(dbContextProvider)
+    {
+        _currentTenant = currentTenant;
+    }
 
     /// <inheritdoc />
     public async Task<IdentityPermissionGrant?> FindAsync(
@@ -19,11 +27,13 @@ public sealed class EfCorePermissionGrantRepository
         CancellationToken cancellationToken)
     {
         var dbSet = await GetDbSetAsync();
-        return await dbSet.FirstOrDefaultAsync(
-            pg => pg.Name == name &&
-                  pg.ProviderName == providerName &&
-                  pg.ProviderKey == providerKey,
-            cancellationToken);
+        return await dbSet.IgnoreQueryFilters()
+            .FirstOrDefaultAsync(
+                pg => (pg.TenantId == _currentTenant.Id || pg.TenantId == null) &&
+                      pg.Name == name &&
+                      pg.ProviderName == providerName &&
+                      pg.ProviderKey == providerKey,
+                cancellationToken);
     }
 
     /// <inheritdoc />
@@ -32,8 +42,10 @@ public sealed class EfCorePermissionGrantRepository
         CancellationToken cancellationToken)
     {
         var dbSet = await GetDbSetAsync();
-        return await dbSet
-            .Where(pg => pg.ProviderName == providerName && pg.ProviderKey == providerKey)
+        return await dbSet.IgnoreQueryFilters()
+            .Where(pg => (pg.TenantId == _currentTenant.Id || pg.TenantId == null) &&
+                         pg.ProviderName == providerName && 
+                         pg.ProviderKey == providerKey)
             .ToListAsync(cancellationToken);
     }
 
@@ -42,8 +54,9 @@ public sealed class EfCorePermissionGrantRepository
         string name, CancellationToken cancellationToken)
     {
         var dbSet = await GetDbSetAsync();
-        return await dbSet
-            .Where(pg => pg.Name == name)
+        return await dbSet.IgnoreQueryFilters()
+            .Where(pg => (pg.TenantId == _currentTenant.Id || pg.TenantId == null) &&
+                         pg.Name == name)
             .ToListAsync(cancellationToken);
     }
 
@@ -52,9 +65,10 @@ public sealed class EfCorePermissionGrantRepository
         string name, string providerName, string providerKey,
         CancellationToken cancellationToken)
     {
-        var dbContext = await GetDbContextAsync();
-        await dbContext.Set<IdentityPermissionGrant>()
-            .Where(pg => pg.Name == name &&
+        var dbSet = await GetDbSetAsync();
+        await dbSet.IgnoreQueryFilters()
+            .Where(pg => (pg.TenantId == _currentTenant.Id || pg.TenantId == null) &&
+                         pg.Name == name &&
                          pg.ProviderName == providerName &&
                          pg.ProviderKey == providerKey)
             .ExecuteDeleteAsync(cancellationToken);
@@ -66,8 +80,10 @@ public sealed class EfCorePermissionGrantRepository
         CancellationToken cancellationToken)
     {
         var dbSet = await GetDbSetAsync();
-        return await dbSet
-            .Where(pg => pg.ProviderName == providerName && providerKeys.Contains(pg.ProviderKey))
+        return await dbSet.IgnoreQueryFilters()
+            .Where(pg => (pg.TenantId == _currentTenant.Id || pg.TenantId == null) &&
+                         pg.ProviderName == providerName && 
+                         providerKeys.Contains(pg.ProviderKey))
             .ToListAsync(cancellationToken);
     }
 }

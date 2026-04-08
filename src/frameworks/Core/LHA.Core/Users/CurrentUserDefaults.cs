@@ -93,9 +93,19 @@ public static class CurrentUserDefaults
         new("00000000-0000-0000-0002-000000000001");
 
     /// <summary>
-    /// The default admin role name.
+    /// The default admin role name. (Deprecated: use SystemSuperAdminRoleName or TenantAdminRoleName)
     /// </summary>
     public const string AdminRoleName = "admin";
+
+    /// <summary>
+    /// The system super admin role name (Host context).
+    /// </summary>
+    public const string SystemSuperAdminRoleName = "SystemSuperAdmin";
+
+    /// <summary>
+    /// The tenant admin role name.
+    /// </summary>
+    public const string TenantAdminRoleName = "TenantAdmin";
 
     // ─── Helper methods ─────────────────────────────────────────
 
