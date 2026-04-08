@@ -3,6 +3,7 @@
    ═══════════════════════════════════════════════════════════════════ *@
 @namespace LHA.BlazorWasm.Components.Table
 @using LHA.BlazorWasm.Components.Form
+@using LHA.BlazorWasm.Components.Tooltip
 @inherits LhaComponentBase
 @typeparam TItem
 @implements IDisposable
@@ -41,21 +42,23 @@
 
             @if (_columns.Any(c => c.Filterable))
             {
-                <Button Class="@($"dt-toolbar-btn {(_filterSidebarOpen ? "dt-toolbar-btn-active" : "")}")"
-                        Style="CButtonStyle.Light" OnClick="ToggleFilterSidebar">
-                    <i class="bi bi-filter"></i>
-                    @Localizer.L("DataTable.Filters")
-                </Button>
+                <Tooltip Text="@Localizer.L("DataTable.Filters")" Placement="CTooltipPlacement.Top">
+                    <Button Class="@($"dt-toolbar-btn {(_filterSidebarOpen ? "dt-toolbar-btn-active" : string.Empty)}")"
+                            Style="CButtonStyle.Light" OnClick="ToggleFilterSidebar">
+                        <i class="bi bi-filter"></i>
+                    </Button>
+                </Tooltip>
             }
 
             @if (ShowColumnToggle && _columns.Count > 0)
             {
                 <div style="position: relative;">
-                    <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="ToggleColumnDropdown"
-                            OnClick:stopPropagation="true">
-                        <i class="bi bi-columns-gap"></i>
-                        @Localizer.L("DataTable.Columns")
-                    </Button>
+                    <Tooltip Text="@Localizer.L("DataTable.Columns")" Placement="CTooltipPlacement.Top">
+                        <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="ToggleColumnDropdown"
+                                OnClick:stopPropagation="true">
+                            <i class="bi bi-columns-gap"></i>
+                        </Button>
+                    </Tooltip>
                     @if (_columnToggleOpen)
                     {
                         <div class="dt-col-toggle-list" @onclick:stopPropagation>
@@ -80,7 +83,7 @@
     }
 
     @* ════════════ TABLE ════════════ *@
-    <div class="dt-wrapper" style="@(MaxHeight is not null ? $"max-height:{MaxHeight};" : "")">
+    <div class="dt-wrapper" style="@(MaxHeight is not null ? $"max-height:{MaxHeight};" : string.Empty)">
         <table class="dt-table">
             <thead>
                 <tr class="dt-header-row">
@@ -102,7 +105,7 @@
                     @foreach (var col in visibleCols)
                     {
                         var sort = GetSort(col.Field);
-                        <th class="dt-header-cell @(col.Sortable ? "dt-sortable" : "")" style="@col.GetColumnStyle()"
+                        <th class="dt-header-cell @(col.Sortable ? "dt-sortable" : string.Empty)" style="@col.GetColumnStyle()"
                             @onclick="async () => { if (col.Sortable) await ToggleSort(col.Field); }">
 
                             @if (col.HeaderTemplate is not null)
@@ -144,8 +147,7 @@
                             <div class="dt-selection-msg">
                                 @if (!_allEntireDatasetSelected)
                                 {
-                                    <span>@string.Format(Localizer.L("DataTable.AllPageItemsSelected"),
-                                                                                                                                                        _displayItems.Count)</span>
+                                    <span>@string.Format(Localizer.L("DataTable.AllPageItemsSelected"), _displayItems.Count)</span>
                                         <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
                                                 OnClick="SelectAllEntireDataset">
                                             @string.Format(Localizer.L("DataTable.SelectAllItems"), _totalCount)
@@ -198,7 +200,7 @@
                     {
                         @foreach (var item in _displayItems)
                         {
-                            <tr class="dt-row dt-row-hoverable @(IsSelected(item) ? "dt-row-selected" : "")"
+                            <tr class="dt-row dt-row-hoverable @(IsSelected(item) ? "dt-row-selected" : string.Empty)"
                                 @onclick="async () => await HandleRowClickInternal(item)">
 
                                 @if (SelectionMode != SelectionMode.None)
@@ -220,7 +222,7 @@
                                 @if (ExpandedRowTemplate is not null)
                                 {
                                     <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
-                                        <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : "")"
+                                        <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : string.Empty)"
                                                 @onclick="() => ToggleExpand(item)"><i class="bi bi-chevron-right"></i></button>
                                     </td>
                                 }
@@ -264,7 +266,7 @@
         <div class="dt-sidebar-overlay" @onclick="CloseFilterSidebar"></div>
     }
 
-    <aside class="dt-sidebar @ThemeClass @(_filterSidebarOpen ? "dt-sidebar-open" : "")">
+    <aside class="dt-sidebar @ThemeClass @(_filterSidebarOpen ? "dt-sidebar-open" : string.Empty)">
         <div class="dt-sidebar-header">
             <h3 class="dt-sidebar-title">
                 <i class="bi bi-filter"></i>

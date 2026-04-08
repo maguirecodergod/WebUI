@@ -1,7 +1,5 @@
 using LHA.BlazorWasm.Services.Storage;
 using Microsoft.AspNetCore.Components;
-using LHA.BlazorWasm.Components;
-using LHA.BlazorWasm.Components.Form;
 
 namespace LHA.BlazorWasm.Components.Table;
 

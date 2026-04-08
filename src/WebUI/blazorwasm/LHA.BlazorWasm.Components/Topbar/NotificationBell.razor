@@ -7,7 +7,7 @@
         }
     </button>
 
-    <div class="topbar-dropdown notification-dropdown @(_isOpen ? "show" : "")">
+    <div class="topbar-dropdown notification-dropdown @(_isOpen ? "show" : string.Empty)">
         <div class="dropdown-header">
             <h3>Notifications</h3>
             <button @onclick="MarkAllAsRead">Mark all as read</button>
