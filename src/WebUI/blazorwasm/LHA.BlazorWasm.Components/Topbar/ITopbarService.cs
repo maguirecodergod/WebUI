@@ -20,4 +20,7 @@ public interface ITopbarService
     
     void RegisterDynamicItem(TopbarItemModel item);
     void UnregisterDynamicItem(string itemId);
+
+    Task LoadUserProfileAsync();
+    Task LogoutAsync();
 }

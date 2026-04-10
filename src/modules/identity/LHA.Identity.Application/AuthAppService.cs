@@ -23,6 +23,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private readonly IIdentityRoleRepository _roleRepository;
     private readonly IPermissionGrantRepository _permissionGrantRepository;
     private readonly IdentityUserManager _userManager;
+    private readonly IdentityRoleManager _roleManager;
     private readonly ILookupNormalizer _lookupNormalizer;
     private readonly JwtTokenService _jwtTokenService;
     private readonly IUnitOfWorkManager _uowManager;
@@ -43,6 +44,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         IIdentityRoleRepository roleRepository,
         IPermissionGrantRepository permissionGrantRepository,
         IdentityUserManager userManager,
+        IdentityRoleManager roleManager,
         ILookupNormalizer lookupNormalizer,
         JwtTokenService jwtTokenService,
         IUnitOfWorkManager uowManager,
@@ -59,6 +61,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         _roleRepository = roleRepository;
         _permissionGrantRepository = permissionGrantRepository;
         _userManager = userManager;
+        _roleManager = roleManager;
         _lookupNormalizer = lookupNormalizer;
         _jwtTokenService = jwtTokenService;
         _uowManager = uowManager;
@@ -185,8 +188,10 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         }
         else if (_currentTenant.Id != null)
         {
-            // Validate user actually has access to the current tenant resolved from context
-            if (!user.Roles.Any(r => r.TenantId == _currentTenant.Id))
+            // Validate user actually has access to the current tenant resolved from context.
+            // A user has access if they are owned by this tenant OR have a role assigned in this tenant.
+            var hasAccess = (user.TenantId == _currentTenant.Id) || user.Roles.Any(r => r.TenantId == _currentTenant.Id);
+            if (!hasAccess)
             {
                 throw new UnauthorizedAccessException(L["Identity_Auth_UserNoAccessTenant_Error_Message_Entry", _currentTenant.Id.ToString() ?? string.Empty]);
             }
@@ -237,16 +242,39 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         {
             await using (var uow = _uowManager.Begin(new UnitOfWorkOptions { IsTransactional = true }, requiresNew: true))
             {
+                // IMPORTANT: Use named parameter to avoid C# overload resolution ambiguity.
+                // Without it, Guid matches the 'id' param (Guid) of the 5-arg overload
+                // instead of the 'tenantId' param (Guid?) of the 4-arg overload.
                 var user = await _userManager.CreateAsync(
                     input.AdminUserName,
                     input.AdminEmail,
                     input.AdminPassword,
-                    tenantId);
+                    tenantId: tenantId);
 
                 // 3. Assign TenantAdmin role to the new user
+                Guid? assignedRoleId = null;
                 if (role != null)
                 {
-                    user.AddRole(role.Id);
+                    assignedRoleId = role.Id;
+                    // For isolated databases, the role record must exist in the tenant's own IdentityRoles table.
+                    var tenantRole = await _roleRepository.FindAsync(role.Id, ct);
+                    if (tenantRole == null)
+                    {
+                        tenantRole = await _roleManager.CreateAsync(role.Name, role.Id, tenantId, isStatic: true, isPublic: true);
+                        await _roleRepository.InsertAsync(tenantRole, ct);
+                    }
+                }
+                else
+                {
+                    // Fallback: Create a local TenantAdmin role if Host role is missing
+                    var tenantRole = await _roleManager.CreateAsync(TenantAdminRole, tenantId, isStatic: true, isPublic: true);
+                    await _roleRepository.InsertAsync(tenantRole, ct);
+                    assignedRoleId = tenantRole.Id;
+                }
+
+                if (assignedRoleId.HasValue)
+                {
+                    user.AddRole(assignedRoleId.Value);
                 }
 
                 await _userRepository.InsertAsync(user, ct);
@@ -338,15 +366,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         var user = await _userRepository.GetAsync(userId, ct);
         var (roleIds, roleNames) = await GetRolesAsync(user, user.TenantId, ct);
 
-        List<string> permissions;
-        if (roleNames.Contains(SystemSuperAdminRole) && user.TenantId == null)
-        {
-            permissions = await _permissionStore.GetAllPermissionsAsync(ct);
-        }
-        else
-        {
-            permissions = await ResolvePermissionsAsync(user.Id, roleIds, user.TenantId, ct);
-        }
+        var permissions = await ResolvePermissionsAsync(user.Id, roleIds, user.TenantId, ct);
 
         return new CurrentUserDto
         {
@@ -398,9 +418,10 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private async Task<(List<Guid> Ids, List<string> Names)> GetRolesAsync(
         IdentityUser user, Guid? tenantId, CancellationToken ct)
     {
-        // Filter roles by specifically requested tenant, or user's base tenant
+        // Get all role IDs from the user's Roles navigation property.
+        // No need to filter by TenantId here — EF's global query filter already
+        // ensures only roles belonging to the current tenant context are loaded.
         var roleIds = user.Roles
-            .Where(r => r.TenantId == tenantId)
             .Select(r => r.RoleId)
             .ToList();
 
@@ -418,6 +439,22 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private async Task<List<string>> ResolvePermissionsAsync(
         Guid userId, List<Guid> roleIds, Guid? tenantId, CancellationToken ct)
     {
+        // 0. Fetch role names to check for special roles
+        var roles = await _roleRepository.GetListByIdsAsync(roleIds, ct);
+        var roleNames = roles.ConvertAll(r => r.Name);
+
+        // System Super Admin (Host only) gets absolute everything
+        if (roleNames.Contains(SystemSuperAdminRole) && tenantId == null)
+        {
+            return await _permissionStore.GetAllPermissionsAsync(ct);
+        }
+
+        // Tenant Admin gets all permissions (scoped to their tenant)
+        if (roleNames.Contains(TenantAdminRole))
+        {
+            return await _permissionStore.GetAllPermissionsAsync(ct);
+        }
+
         // 1. Role-based grants (ProviderName="R", ProviderKey=roleId)
         var roleResult = new Dictionary<string, bool>(StringComparer.Ordinal);
         if (roleIds.Count > 0)

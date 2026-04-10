@@ -1,16 +1,30 @@
 using LHA.BlazorWasm.Components.Breadcrumb;
+using LHA.BlazorWasm.HttpApi.Client.Clients;
+using LHA.BlazorWasm.Services.Auth;
 using LHA.BlazorWasm.Services.Toast;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace LHA.BlazorWasm.Components.Topbar;
 
 public class TopbarService : ITopbarService
 {
     private readonly IToastService _toastService;
+    private readonly AuthApiClient _authApiClient;
+    private readonly ApiAuthenticationStateProvider _authStateProvider;
+    private readonly IPermissionService _permissionService;
+
     public TopbarState State { get; } = new();
 
-    public TopbarService(IToastService toastService)
+    public TopbarService(
+        IToastService toastService,
+        AuthApiClient authApiClient,
+        AuthenticationStateProvider authStateProvider,
+        IPermissionService permissionService)
     {
         _toastService = toastService;
+        _authApiClient = authApiClient;
+        _authStateProvider = (ApiAuthenticationStateProvider)authStateProvider;
+        _permissionService = permissionService;
     }
 
     public void ToggleSidebar()
@@ -81,6 +95,36 @@ public class TopbarService : ITopbarService
     {
         State.DynamicItems.RemoveAll(i => i.Id == itemId);
         State.NotifyStateChanged();
+    }
+
+    public async Task LoadUserProfileAsync()
+    {
+        try
+        {
+            SetLoading(true);
+            var currentUser = await _authApiClient.GetCurrentUserAsync();
+            if (currentUser != null)
+            {
+                SetUser(new UserInfoModel
+                {
+                    DisplayName = currentUser.Name ?? currentUser.UserName,
+                    Email = currentUser.Email,
+                    Role = currentUser.Roles.FirstOrDefault() // Just take the first one for now
+                });
+
+                _permissionService.SetPermissions(currentUser.Permissions);
+            }
+        }
+        finally
+        {
+            SetLoading(false);
+        }
+    }
+
+    public async Task LogoutAsync()
+    {
+        await _authStateProvider.MarkUserAsLoggedOutAsync();
+        _toastService.Show("Logged out successfully", CToastLevel.Info);
     }
 
     private CToastLevel MapSeverity(NotificationSeverity severity) => severity switch

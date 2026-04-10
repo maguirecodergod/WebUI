@@ -11,6 +11,7 @@
 @using LHA.BlazorWasm.Components.Form
 @inject AuthApiClient AuthClient
 @inject ApiAuthenticationStateProvider AuthStateProvider
+@inject LHA.BlazorWasm.Components.Topbar.ITopbarService TopbarService
 <PageTitle>@Localizer.L("Login.Title")</PageTitle>
 
 <div class="register-container @ThemeService.ThemeClass">
@@ -120,6 +121,9 @@
             if (authResult != null && !string.IsNullOrWhiteSpace(authResult.AccessToken))
             {
                 await AuthStateProvider.MarkUserAsAuthenticatedAsync(authResult);
+
+                // Load profile and permissions before redirecting
+                await TopbarService.LoadUserProfileAsync();
 
                 var redirectUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? "/" : Uri.UnescapeDataString(ReturnUrl);
                 Navigation.NavigateTo(redirectUrl);

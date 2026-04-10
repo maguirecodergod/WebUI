@@ -87,6 +87,7 @@ app.UseLHAAspNetCore();
 app.UseLHAAuditLogging(mode: CAuditingMode.DataAudit);
 app.UseLHASwagger();
 app.UseAuthentication();
+app.UseJwtTenantResolve(); // Resolve tenant from JWT tenant_id claim
 app.UseAuthorization();
 
 // ── Endpoints ────────────────────────────────────────────────────

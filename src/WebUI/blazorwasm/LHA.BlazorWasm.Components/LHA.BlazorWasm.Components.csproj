@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.BlazorWasm.Services\LHA.BlazorWasm.Services.csproj" />
+    <ProjectReference Include="..\LHA.BlazorWasm.HttpApi.Client\LHA.BlazorWasm.HttpApi.Client.csproj" />
   </ItemGroup>
 
 </Project>

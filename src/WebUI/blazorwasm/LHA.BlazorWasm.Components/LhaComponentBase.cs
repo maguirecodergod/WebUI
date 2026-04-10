@@ -2,6 +2,7 @@ using LHA.BlazorWasm.Shared.Abstractions.Localization;
 using LHA.BlazorWasm.Services.Toast;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using LHA.BlazorWasm.Services.Auth;
 using LHA.BlazorWasm.Services.Theme;
 
 namespace LHA.BlazorWasm.Components;
@@ -17,6 +18,7 @@ public abstract class LhaComponentBase : ComponentBase, IDisposable
     [Inject] protected NavigationManager Navigation { get; set; } = default!;
     [Inject] protected IThemeService ThemeService { get; set; } = default!;
     [Inject] protected ThemeState ThemeState { get; set; } = default!;
+    [Inject] protected IPermissionService PermissionService { get; set; } = default!;
 
     protected string L(string key) => Localizer.L(key);
     protected string L(string key, params object[] args)

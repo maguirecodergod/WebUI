@@ -88,6 +88,12 @@ public sealed class SidebarItemModel
     public int Order { get; set; }
 
     /// <summary>
+    /// Optional permission requirement for this item.
+    /// If set, the item will only be visible if the user has this permission.
+    /// </summary>
+    public string? RequiredPermission { get; set; }
+
+    /// <summary>
     /// Optional match mode for route-based active state detection.
     /// When <see cref="NavLinkMatch.All"/>, only exact matches highlight.
     /// When <see cref="NavLinkMatch.Prefix"/>, prefix matches also highlight (default).

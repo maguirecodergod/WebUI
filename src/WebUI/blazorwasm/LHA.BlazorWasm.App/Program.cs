@@ -10,7 +10,6 @@ using LHA.BlazorWasm.Components;
 using LHA.BlazorWasm.Services.StatusBadge;
 using LHA.BlazorWasm.HttpApi.Client.Extensions;
 using LHA.BlazorWasm.HttpApi.Client.Abstractions;
-using LHA.BlazorWasm.App.Services;
 using LHA.BlazorWasm.Services.Auth;
 using FluentValidation;
 using LHA.Shared.Contracts.Identity.Auth;
@@ -51,8 +50,8 @@ builder.Services.AddLhaHttpApiClient(options =>
     options.MaxRetries = 3;
 });
 
-// Mock service for testing authentication in API Client
-builder.Services.AddSingleton<IAccessTokenProvider, MockAccessTokenProvider>();
+// Real service for authentication in API Client
+builder.Services.AddScoped<IAccessTokenProvider, StorageAccessTokenProvider>();
 
 // Integrate IToastService into API error handling
 builder.Services.AddTransient<IApiErrorHandler, ToastApiErrorHandler>();

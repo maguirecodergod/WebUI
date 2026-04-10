@@ -207,4 +207,17 @@ public static class LhaAspNetCoreApplicationBuilderExtensions
         app.UseLHAUnitOfWork();
         return app;
     }
+
+    /// <summary>
+    /// Adds middleware that resolves the current tenant from the JWT <c>tenant_id</c> claim.
+    /// <para>
+    /// Must be placed <b>after</b> <c>UseAuthentication()</c> so that
+    /// <c>HttpContext.User</c> is populated.
+    /// </para>
+    /// </summary>
+    public static WebApplication UseJwtTenantResolve(this WebApplication app)
+    {
+        app.UseMiddleware<Security.JwtTenantResolveMiddleware>();
+        return app;
+    }
 }

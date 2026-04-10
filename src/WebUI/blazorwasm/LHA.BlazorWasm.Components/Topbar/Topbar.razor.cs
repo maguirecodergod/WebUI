@@ -29,6 +29,12 @@ public partial class Topbar : LhaComponentBase, IDisposable
         TopbarService.State.OnStateChanged += StateHasChanged;
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await TopbarService.LoadUserProfileAsync();
+    }
+
     // private async Task HandleSidebarToggle()
     // {
     //     TopbarService.ToggleSidebar();
@@ -51,6 +57,12 @@ public partial class Topbar : LhaComponentBase, IDisposable
         _isProfileOpen = !_isProfileOpen;
         _isNotificationOpen = false;
         _isSearchOpen = false;
+    }
+
+    private async Task HandleLogout()
+    {
+        await TopbarService.LogoutAsync();
+        Navigation.NavigateTo("/login");
     }
 
 

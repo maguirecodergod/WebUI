@@ -35,4 +35,13 @@ public class AuthApiClient : ApiClientBase
         var response = await PostAsync<LoginInput, AuthResultDto>($"{BaseUrl}/login", input);
         return response.Result.Data;
     }
+
+    /// <summary>
+    /// Gets the current authenticated user's profile.
+    /// </summary>
+    public async Task<CurrentUserDto?> GetCurrentUserAsync()
+    {
+        var response = await GetAsync<CurrentUserDto>($"{BaseUrl}/me");
+        return response.Result.Data;
+    }
 }

@@ -714,8 +714,7 @@
         return userOptions.Where(o => o.Label.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 
-    private async Task<(IEnumerable<SelectOption<int>> Items, int TotalCount)> LoadLargeDataAsync(int startIndex, int count,
-string? searchText)
+    private async Task<(IEnumerable<SelectOption<int>> Items, int TotalCount)> LoadLargeDataAsync(int startIndex, int count, string? searchText)
     {
         // NO Task.Delay here for maximum performance test
         // Use pre-generated list to avoid GC pressure
@@ -728,7 +727,7 @@ string? searchText)
 
         var total = query.Count();
         var items = query.Skip(startIndex).Take(count).ToList();
-
+        await Task.CompletedTask;
         return (items, total);
     }
 
