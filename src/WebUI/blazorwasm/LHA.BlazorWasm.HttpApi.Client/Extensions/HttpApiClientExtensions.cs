@@ -56,6 +56,10 @@ public static class HttpApiClientExtensions
         services.AddScoped<IAuditLogAppService>(sp => sp.GetRequiredService<AuditLogApiClient>());
 
         RegisterTypedClient<AuthApiClient>(services);
+        RegisterTypedClient<RoleApiClient>(services);
+        RegisterTypedClient<UserApiClient>(services);
+        RegisterTypedClient<PermissionApiClient>(services);
+        RegisterTypedClient<LHA.BlazorWasm.HttpApi.Client.Clients.PermissionManagement.PermissionGroupApiClient>(services);
 
         return services;
     }

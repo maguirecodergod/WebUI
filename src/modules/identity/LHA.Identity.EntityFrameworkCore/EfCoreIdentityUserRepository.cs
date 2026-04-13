@@ -2,6 +2,7 @@ using LHA.Core;
 using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.Identity.Domain;
+using LHA.MultiTenancy;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.Identity.EntityFrameworkCore;
@@ -13,17 +14,27 @@ namespace LHA.Identity.EntityFrameworkCore;
 public sealed class EfCoreIdentityUserRepository
     : EfCoreRepository<IdentityDbContext, IdentityUser, Guid>, IIdentityUserRepository
 {
+    private readonly ICurrentTenant _currentTenant;
     private static readonly string[] SearchColumns = ["UserName", "Email", "Name", "Surname"];
 
-    public EfCoreIdentityUserRepository(IDbContextProvider<IdentityDbContext> dbContextProvider)
-        : base(dbContextProvider) { }
+    public EfCoreIdentityUserRepository(
+        IDbContextProvider<IdentityDbContext> dbContextProvider,
+        ICurrentTenant currentTenant)
+        : base(dbContextProvider)
+    {
+        _currentTenant = currentTenant;
+    }
 
     /// <inheritdoc />
     public override async Task<IdentityUser?> FindAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
         return await IncludeAll(dbSet)
-            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(u => 
+                (_currentTenant.Id == null || u.TenantId == _currentTenant.Id) && 
+                u.Id == id, 
+                cancellationToken);
     }
 
     /// <inheritdoc />
@@ -32,7 +43,11 @@ public sealed class EfCoreIdentityUserRepository
     {
         var dbSet = await GetDbSetAsync();
         return await IncludeAll(dbSet)
-            .FirstOrDefaultAsync(u => u.NormalizedUserName == normalizedUserName, cancellationToken);
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(u => 
+                (_currentTenant.Id == null || u.TenantId == _currentTenant.Id) && 
+                u.NormalizedUserName == normalizedUserName, 
+                cancellationToken);
     }
 
     /// <inheritdoc />
@@ -41,7 +56,11 @@ public sealed class EfCoreIdentityUserRepository
     {
         var dbSet = await GetDbSetAsync();
         return await IncludeAll(dbSet)
-            .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail, cancellationToken);
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(u => 
+                (_currentTenant.Id == null || u.TenantId == _currentTenant.Id) && 
+                u.NormalizedEmail == normalizedEmail, 
+                cancellationToken);
     }
 
     /// <inheritdoc />
@@ -80,6 +99,8 @@ public sealed class EfCoreIdentityUserRepository
         var dbSet = await GetDbSetAsync();
 
         return await IncludeAll(dbSet)
+            .IgnoreQueryFilters()
+            .Where(u => _currentTenant.Id == null || u.TenantId == _currentTenant.Id)
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, u => u.Status == status!.Value)
             .WhereIf(roleId.HasValue, u => u.Roles.Any(r => r.RoleId == roleId!.Value))
@@ -96,6 +117,8 @@ public sealed class EfCoreIdentityUserRepository
         var dbSet = await GetDbSetAsync();
 
         return await dbSet.AsQueryable()
+            .IgnoreQueryFilters()
+            .Where(u => _currentTenant.Id == null || u.TenantId == _currentTenant.Id)
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, u => u.Status == status!.Value)
             .WhereIf(roleId.HasValue, u => u.Roles.Any(r => r.RoleId == roleId!.Value))

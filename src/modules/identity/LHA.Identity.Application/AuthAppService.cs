@@ -129,10 +129,9 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         // Success — reset failed count
         user.ResetAccessFailedCount();
 
-        // 1. Determine target tenant from current context (resolved by ICurrentTenant)
-        // If _currentTenant.Id is null, the request is at the Host level.
-        var targetTenantId = _currentTenant.Id;
-
+        // 1. Determine target tenant. Prioritize the user's own tenant if none specified in request.
+        var targetTenantId = _currentTenant.Id ?? user.TenantId;
+        
         // 2. Fetch roles for the target tenant
         var (roleIds, roleNames) = await GetRolesAsync(user, targetTenantId, ct);
 
@@ -418,17 +417,18 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private async Task<(List<Guid> Ids, List<string> Names)> GetRolesAsync(
         IdentityUser user, Guid? tenantId, CancellationToken ct)
     {
-        // Get all role IDs from the user's Roles navigation property.
-        // No need to filter by TenantId here — EF's global query filter already
-        // ensures only roles belonging to the current tenant context are loaded.
-        var roleIds = user.Roles
-            .Select(r => r.RoleId)
-            .ToList();
+        using (_currentTenant.Change(tenantId))
+        {
+            // Get all role IDs from the user's Roles navigation property.
+            var roleIds = user.Roles
+                .Select(r => r.RoleId)
+                .ToList();
 
-        if (roleIds.Count == 0) return ([], []);
+            if (roleIds.Count == 0) return ([], []);
 
-        var roles = await _roleRepository.GetListByIdsAsync(roleIds, ct);
-        return (roleIds, roles.ConvertAll(r => r.Name));
+            var roles = await _roleRepository.GetListByIdsAsync(roleIds, ct);
+            return (roleIds, roles.ConvertAll(r => r.Name));
+        }
     }
 
     /// <summary>
@@ -439,54 +439,57 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private async Task<List<string>> ResolvePermissionsAsync(
         Guid userId, List<Guid> roleIds, Guid? tenantId, CancellationToken ct)
     {
-        // 0. Fetch role names to check for special roles
-        var roles = await _roleRepository.GetListByIdsAsync(roleIds, ct);
-        var roleNames = roles.ConvertAll(r => r.Name);
-
-        // System Super Admin (Host only) gets absolute everything
-        if (roleNames.Contains(SystemSuperAdminRole) && tenantId == null)
+        using (_currentTenant.Change(tenantId))
         {
-            return await _permissionStore.GetAllPermissionsAsync(ct);
-        }
+            // 0. Fetch role names to check for special roles
+            var roles = await _roleRepository.GetListByIdsAsync(roleIds, ct);
+            var roleNames = roles.ConvertAll(r => r.Name);
 
-        // Tenant Admin gets all permissions (scoped to their tenant)
-        if (roleNames.Contains(TenantAdminRole))
-        {
-            return await _permissionStore.GetAllPermissionsAsync(ct);
-        }
-
-        // 1. Role-based grants (ProviderName="R", ProviderKey=roleId)
-        var roleResult = new Dictionary<string, bool>(StringComparer.Ordinal);
-        if (roleIds.Count > 0)
-        {
-            var roleKeys = roleIds.ConvertAll(id => id.ToString());
-            var roleGrants = await _permissionGrantRepository
-                .GetGrantsByProvidersAsync("R", roleKeys, ct);
-
-            foreach (var g in roleGrants)
+            // System Super Admin (Host only) gets absolute everything
+            if (roleNames.Contains(SystemSuperAdminRole) && tenantId == null)
             {
-                // Among roles: deny wins (if any role denies, the permission is denied)
-                if (roleResult.TryGetValue(g.Name, out var existing))
+                return await _permissionStore.GetAllPermissionsAsync(ct);
+            }
+
+            // Tenant Admin gets all permissions (scoped to their tenant)
+            if (roleNames.Contains(TenantAdminRole))
+            {
+                return await _permissionStore.GetAllPermissionsAsync(ct);
+            }
+
+            // 1. Role-based grants (ProviderName="R", ProviderKey=roleId)
+            var roleResult = new Dictionary<string, bool>(StringComparer.Ordinal);
+            if (roleIds.Count > 0)
+            {
+                var roleKeys = roleIds.ConvertAll(id => id.ToString());
+                var roleGrants = await _permissionGrantRepository
+                    .GetGrantsByProvidersAsync("R", roleKeys, ct);
+
+                foreach (var g in roleGrants)
                 {
-                    if (!g.IsGranted) roleResult[g.Name] = false;
-                }
-                else
-                {
-                    roleResult[g.Name] = g.IsGranted;
+                    // Among roles: deny wins (if any role denies, the permission is denied)
+                    if (roleResult.TryGetValue(g.Name, out var existing))
+                    {
+                        if (!g.IsGranted) roleResult[g.Name] = false;
+                    }
+                    else
+                    {
+                        roleResult[g.Name] = g.IsGranted;
+                    }
                 }
             }
+
+            // 2. User-specific grants (ProviderName="U", ProviderKey=userId)
+            var userGrants = await _permissionGrantRepository
+                .GetGrantsByProvidersAsync("U", [userId.ToString()], ct);
+
+            // 3. Merge: user overrides role
+            var final = new Dictionary<string, bool>(roleResult, StringComparer.Ordinal);
+            foreach (var g in userGrants)
+                final[g.Name] = g.IsGranted;
+
+            return final.Where(kv => kv.Value).Select(kv => kv.Key).ToList();
         }
-
-        // 2. User-specific grants (ProviderName="U", ProviderKey=userId)
-        var userGrants = await _permissionGrantRepository
-            .GetGrantsByProvidersAsync("U", [userId.ToString()], ct);
-
-        // 3. Merge: user overrides role
-        var final = new Dictionary<string, bool>(roleResult, StringComparer.Ordinal);
-        foreach (var g in userGrants)
-            final[g.Name] = g.IsGranted;
-
-        return final.Where(kv => kv.Value).Select(kv => kv.Key).ToList();
     }
 
     private async Task RecordSecurityLogAsync(

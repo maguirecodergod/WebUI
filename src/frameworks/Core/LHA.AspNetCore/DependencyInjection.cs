@@ -204,6 +204,10 @@ public static class LhaAspNetCoreApplicationBuilderExtensions
     {
         app.UseLHALocalization();
         app.UseLHAExceptionHandler();
+        
+        // MultiTenancy middleware runs before UoW and Auth
+        app.UseMiddleware<Security.MultiTenancyMiddleware>();
+        
         app.UseLHAUnitOfWork();
         return app;
     }

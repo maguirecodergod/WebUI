@@ -10,23 +10,43 @@ namespace LHA.BlazorWasm.Services.Auth;
 public class StorageAccessTokenProvider : IAccessTokenProvider
 {
     private readonly ILocalStorageService _localStorage;
+    private readonly AuthTokenCache _cache;
+    private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
     private const string AuthStorageKey = "auth_result";
 
-    public StorageAccessTokenProvider(ILocalStorageService localStorage)
+    public StorageAccessTokenProvider(ILocalStorageService localStorage, AuthTokenCache cache)
     {
         _localStorage = localStorage;
+        _cache = cache;
     }
 
     public async ValueTask<string?> GetTokenAsync(CancellationToken cancellationToken = default)
     {
+        if (_cache.IsInitialized)
+        {
+            return _cache.AccessToken;
+        }
+
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
+            if (_cache.IsInitialized)
+            {
+                return _cache.AccessToken;
+            }
+
             var authResult = await _localStorage.GetAsync<AuthResultDto>(AuthStorageKey);
-            return authResult?.AccessToken;
+            _cache.SetToken(authResult?.AccessToken);
         }
         catch
         {
-            return null;
+            _cache.SetToken(null);
         }
+        finally
+        {
+            _semaphore.Release();
+        }
+
+        return _cache.AccessToken;
     }
 }

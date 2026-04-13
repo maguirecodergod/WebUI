@@ -10,6 +10,7 @@ public static class AuthServiceExtensions
     {
         services.AddAuthorizationCore();
         services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
+        services.AddSingleton<AuthTokenCache>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
         

@@ -31,7 +31,7 @@ public sealed class EfCoreIdentityRoleRepository
         return await dbSet.IgnoreQueryFilters()
             .Include(r => r.Claims)
             .FirstOrDefaultAsync(r => 
-                (r.TenantId == _currentTenant.Id || r.TenantId == null) && 
+                (r.TenantId == _currentTenant.Id || (r.TenantId == null && r.IsPublic)) && 
                 r.Id == id, 
                 cancellationToken);
     }
@@ -45,7 +45,7 @@ public sealed class EfCoreIdentityRoleRepository
         return await dbSet.IgnoreQueryFilters()
             .Include(r => r.Claims)
             .FirstOrDefaultAsync(r => 
-                (r.TenantId == _currentTenant.Id || r.TenantId == null) && 
+                (r.TenantId == _currentTenant.Id || (r.TenantId == null && r.IsPublic)) && 
                 r.NormalizedName == normalizedName, 
                 cancellationToken);
     }
@@ -62,7 +62,7 @@ public sealed class EfCoreIdentityRoleRepository
 
         return await dbSet.IgnoreQueryFilters()
             .Include(r => r.Claims)
-            .Where(r => r.TenantId == _currentTenant.Id || r.TenantId == null)
+            .Where(r => r.TenantId == _currentTenant.Id || (r.TenantId == null && r.IsPublic))
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, r => r.Status == status!.Value)
             .SortByDynamic(sorter, defaultProperty: "Name")
@@ -78,7 +78,7 @@ public sealed class EfCoreIdentityRoleRepository
         var dbSet = await GetDbSetAsync();
 
         return await dbSet.AsQueryable().IgnoreQueryFilters()
-            .Where(r => r.TenantId == _currentTenant.Id || r.TenantId == null)
+            .Where(r => r.TenantId == _currentTenant.Id || (r.TenantId == null && r.IsPublic))
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, r => r.Status == status!.Value)
             .LongCountAsync(cancellationToken);
@@ -89,7 +89,7 @@ public sealed class EfCoreIdentityRoleRepository
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet.IgnoreQueryFilters()
-            .Where(r => (r.TenantId == _currentTenant.Id || r.TenantId == null) && 
+            .Where(r => (r.TenantId == _currentTenant.Id || (r.TenantId == null && r.IsPublic)) && 
                         r.IsDefault && r.Status == CMasterStatus.Active)
             .ToListAsync(cancellationToken);
     }
@@ -104,7 +104,7 @@ public sealed class EfCoreIdentityRoleRepository
         var dbSet = await GetDbSetAsync();
         // Ignore automatic tenant filter to allow finding global roles (TenantId == null)
         return await dbSet.IgnoreQueryFilters()
-            .Where(r => (r.TenantId == _currentTenant.Id || r.TenantId == null) && idList.Contains(r.Id))
+            .Where(r => (r.TenantId == _currentTenant.Id || (r.TenantId == null && r.IsPublic)) && idList.Contains(r.Id))
             .ToListAsync(cancellationToken);
     }
 }

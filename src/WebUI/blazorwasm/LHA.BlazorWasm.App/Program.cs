@@ -56,6 +56,10 @@ builder.Services.AddScoped<IAccessTokenProvider, StorageAccessTokenProvider>();
 // Integrate IToastService into API error handling
 builder.Services.AddTransient<IApiErrorHandler, ToastApiErrorHandler>();
 
+// Override default context provider with a persistent one (Singleton)
+builder.Services.AddSingleton<PersistentClientContextProvider>();
+builder.Services.AddSingleton<IClientContextProvider>(sp => sp.GetRequiredService<PersistentClientContextProvider>());
+
 var host = builder.Build();
 
 // Register module-specific enum mappings
@@ -64,5 +68,10 @@ host.Services.RegisterPaymentModuleMappings();
 
 var themeService = host.Services.GetRequiredService<IThemeService>();
 await themeService.InitializeAsync();
+
+// Initialize persistent tenant context from local storage
+var storage = host.Services.GetRequiredService<ILocalStorageService>();
+var tenantId = await storage.GetAsync<string>("current_tenant_id");
+host.Services.GetRequiredService<PersistentClientContextProvider>().SetTenantId(tenantId);
 
 await host.RunAsync();

@@ -20,7 +20,10 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAMultiTenancy();
+builder.Services.AddLHAMultiTenancy(options =>
+{
+    options.TenantResolvers.Add(new LHA.AspNetCore.Security.HttpHeaderTenantResolveContributor());
+});
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
 builder.Services.AddLHAInMemoryEventBus();

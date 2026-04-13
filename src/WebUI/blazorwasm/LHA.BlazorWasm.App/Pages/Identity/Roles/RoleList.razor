@@ -1,0 +1,136 @@
+@page "/identity/roles"
+@using LHA.Shared.Contracts.Identity
+@using LHA.Shared.Contracts.Identity.Roles
+@using LHA.BlazorWasm.HttpApi.Client.Clients
+@inherits LhaComponentBase
+
+<PageTitle>Nhóm quyền</PageTitle>
+
+<div class="roles-page container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h4 mb-1 fw-bold text-dark">Nhóm quyền</h1>
+        </div>
+        <div class="d-flex gap-2">
+            <Button Style="CButtonStyle.Primary" Size="CButtonSize.Medium" OnClick="@(() => Navigation.NavigateTo("/identity/roles/create"))">
+                <i class="bi bi-plus-circle me-1"></i> Tạo nhóm quyền
+            </Button>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="card-body p-0">
+            <DataTable TItem="IdentityRoleDto" Items="_roles" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
+                       ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="20" Searchable="true" ShowToolbar="true"
+                       KeySelector="@(x => x.Id)" TableId="DataTableIds.IdentityRoles" SearchPlaceholder="Tìm kiếm theo tên nhóm quyền"
+                       OnSearchContentChanged="OnSearchChanged">
+
+                <ChildContent>
+                    <DataTableColumn TItem="IdentityRoleDto" Title="Tên" Width="auto" Sortable Filterable Property="@(x => x.Name)">
+                        <CellTemplate>
+                            <span class="text-dark">@context.Name</span>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="IdentityRoleDto" Title="Thao tác" Width="120px" Alignment="ColumnAlignment.Center">
+                        <CellTemplate>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button class="btn btn-sm text-primary p-0 border-0 bg-transparent" @onclick="() => NavigateToEdit(context.Id)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                @if (!context.IsStatic)
+                                {
+                                    <button class="btn btn-sm text-danger p-0 border-0 bg-transparent" @onclick="() => ShowDeleteDialog(context.Id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                }
+                            </div>
+                        </CellTemplate>
+                    </DataTableColumn>
+                </ChildContent>
+            </DataTable>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject] private RoleApiClient RoleService { get; set; } = default!;
+    
+    private List<IdentityRoleDto> _roles = new();
+    private GetIdentityRolesInput _input = new()
+    {
+        PageSize = 20,
+        PageNumber = 1
+    };
+    private long _totalCount;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRolesAsync();
+    }
+
+    private async Task LoadRolesAsync()
+    {
+        try
+        {
+            var result = await RoleService.GetListAsync(_input);
+            if (result != null)
+            {
+                _roles = result.Items.ToList();
+                _totalCount = result.TotalCount;
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastNotification.Error("Lỗi: " + ex.Message);
+        }
+    }
+
+    private async Task<DataTableResponse<IdentityRoleDto>> GetDataTableResponseAsync(DataTableRequest request)
+    {
+        _input = new GetIdentityRolesInput 
+        { 
+            PageNumber = request.PageNumber, 
+            PageSize = request.PageSize,
+            Filter = _input.Filter
+        };
+        await LoadRolesAsync();
+        return new DataTableResponse<IdentityRoleDto> { Items = _roles, TotalCount = (int)_totalCount };
+    }
+
+    private async Task OnSearchChanged(string searchText)
+    {
+        _input = new GetIdentityRolesInput 
+        { 
+            Filter = searchText, 
+            PageNumber = 1, 
+            PageSize = _input.PageSize 
+        };
+        await LoadRolesAsync();
+        // The DataTable component will typically refresh itself if items are bound,
+        // but since we're using ServerSide, we might just rely on DataTable's built-in search triggering the request.
+        // Wait, if DataTable does the trigger, then we might not need this.
+    }
+
+    private void NavigateToEdit(Guid id)
+    {
+        Navigation.NavigateTo($"/identity/roles/{id}");
+    }
+
+    private async Task ShowDeleteDialog(Guid id)
+    {
+        if (await JS.InvokeAsync<bool>("confirm", "Bạn có chắc chắn muốn xóa nhóm quyền này?"))
+        {
+            try
+            {
+                await RoleService.DeleteAsync(id);
+                ToastNotification.Success("Xóa thành công.");
+                await LoadRolesAsync();
+            }
+            catch (Exception ex)
+            {
+                ToastNotification.Error("Lỗi xóa: " + ex.Message);
+            }
+        }
+    }
+}

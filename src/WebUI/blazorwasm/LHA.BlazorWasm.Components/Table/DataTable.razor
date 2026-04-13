@@ -147,15 +147,15 @@
                             <div class="dt-selection-msg">
                                 @if (!_allEntireDatasetSelected)
                                 {
-                                    <span>@string.Format(Localizer.L("DataTable.AllPageItemsSelected"), _displayItems.Count)</span>
+                                    <span>@string.Format(Localizer.L("DataTable.AllPageSelected"), _displayItems.Count)</span>
                                         <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
                                                 OnClick="SelectAllEntireDataset">
-                                            @string.Format(Localizer.L("DataTable.SelectAllItems"), _totalCount)
+                                            @string.Format(Localizer.L("DataTable.SelectAllDataset"), _totalCount)
                                         </Button>
                                     }
                                 else
                                     {
-                                        <span>@string.Format(Localizer.L("DataTable.AllItemsSelected"), _totalCount)</span>
+                                        <span>@string.Format(Localizer.L("DataTable.AllDatasetSelected"), _totalCount)</span>
                                         <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
                                                 OnClick="ClearSelection">
                                             @Localizer.L("DataTable.ClearSelection")
@@ -221,7 +221,7 @@
 
                                 @if (ExpandedRowTemplate is not null)
                                 {
-                                    <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
+                                    <td class="dt-cell dt-col-expand" style="text-align: center;" @onclick:stopPropagation>
                                         <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : string.Empty)"
                                                 @onclick="() => ToggleExpand(item)"><i class="bi bi-chevron-right"></i></button>
                                     </td>
