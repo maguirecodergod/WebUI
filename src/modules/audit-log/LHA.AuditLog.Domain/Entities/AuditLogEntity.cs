@@ -12,6 +12,7 @@ namespace LHA.AuditLog.Domain;
 /// <c>IAuditingStore</c> during request processing.
 /// </para>
 /// </summary>
+[DisableAuditing]
 public sealed class AuditLogEntity : Entity<Guid>, IMultiTenant, IHasCreationTime
 {
     private readonly List<AuditLogActionEntity> _actions = [];

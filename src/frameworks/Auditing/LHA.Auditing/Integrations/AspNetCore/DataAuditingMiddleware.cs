@@ -24,10 +24,16 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
             return;
         }
 
+        if (ShouldSkipAuditing(context))
+        {
+            await _next(context);
+            return;
+        }
+
         var sw = Stopwatch.StartNew();
-        
+
         await using var saveHandle = auditingManager.BeginScope();
-        
+
         var log = auditingManager.Current?.Log;
         if (log is not null)
         {
@@ -93,7 +99,7 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
                 {
                     log.HttpStatusCode = context.Response.StatusCode;
                 }
-                
+
                 log.ExecutionDuration = (int)sw.ElapsedMilliseconds;
 
                 // Add at least one action to the log to satisfy AuditLogActionEntity requirements
@@ -109,7 +115,7 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
                     });
                 }
             }
-            
+
             await saveHandle.SaveAsync();
         }
     }
@@ -130,5 +136,35 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
         using var reader = new StreamReader(bodyStream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: 1024, leaveOpen: true);
         var body = await reader.ReadToEndAsync();
         return body;
+    }
+
+    private static bool ShouldSkipAuditing(HttpContext context)
+    {
+        var endpoint = context.GetEndpoint();
+        if (endpoint is null)
+            return false;
+
+        // 1. Check DisableAuditing trực tiếp trên endpoint
+        if (endpoint.Metadata.GetMetadata<DisableAuditingAttribute>() is not null)
+            return true;
+
+        // 2. Check controller/action (MVC)
+        var actionDescriptor = endpoint.Metadata
+            .GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>();
+
+        if (actionDescriptor is not null)
+        {
+            // Method
+            if (actionDescriptor.MethodInfo
+                .GetCustomAttributes(typeof(DisableAuditingAttribute), true).Any())
+                return true;
+
+            // Class
+            if (actionDescriptor.ControllerTypeInfo
+                .GetCustomAttributes(typeof(DisableAuditingAttribute), true).Any())
+                return true;
+        }
+
+        return false;
     }
 }

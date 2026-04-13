@@ -1,4 +1,3 @@
-using LHA.Account.Domain.Repositories;
 using LHA.AuditLog.Domain;
 using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;

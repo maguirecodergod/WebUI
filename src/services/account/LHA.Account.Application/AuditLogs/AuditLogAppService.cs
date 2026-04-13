@@ -2,9 +2,11 @@ using LHA.Shared.Contracts.AuditLog;
 using LHA.Account.Domain.Repositories;
 using LHA.AuditLog.Domain;
 using LHA.Ddd.Application;
+using LHA.Auditing;
 
 namespace LHA.Account.Application.AuditLogs;
 
+[DisableAuditing]
 public class AuditLogAppService : ApplicationService, IAuditLogAppService
 {
     private readonly LHA.Account.Domain.Repositories.IAuditLogRepository _auditLogRepository;

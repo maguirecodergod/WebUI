@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using LHA.Account.Application.Contracts.Permissions;
+using LHA.Auditing;
 
 namespace LHA.Account.HttpApi;
 
@@ -13,7 +14,8 @@ public static class AccountAuditLogEndpoints
     {
         var group = endpoints.MapVersionedGroup("Account", "/api/v{version:apiVersion}/account/audit-logs")
             .WithTags("AccountAuditLogs")
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithMetadata(new DisableAuditingAttribute()); ;
 
         group.MapGet("/", async (
             [AsParameters] GetAuditLogsInput input,

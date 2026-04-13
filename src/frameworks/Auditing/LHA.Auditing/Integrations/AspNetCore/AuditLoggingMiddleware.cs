@@ -47,6 +47,12 @@ internal sealed class AuditLoggingMiddleware
             return;
         }
 
+        if (ShouldSkipAuditing(context))
+        {
+            await _next(context);
+            return;
+        }
+
         // Skip excluded paths
         var path = context.Request.Path.Value ?? string.Empty;
         if (opts.ExcludedPaths.Contains(path))
@@ -192,4 +198,35 @@ internal sealed class AuditLoggingMiddleware
         _ when ex.GetType().Name == "DbUpdateConcurrencyException" => StatusCodes.Status409Conflict,
         _ => StatusCodes.Status500InternalServerError
     };
+
+
+    private static bool ShouldSkipAuditing(HttpContext context)
+    {
+        var endpoint = context.GetEndpoint();
+        if (endpoint is null)
+            return false;
+
+        // 1. Check DisableAuditing trực tiếp trên endpoint
+        if (endpoint.Metadata.GetMetadata<DisableAuditingAttribute>() is not null)
+            return true;
+
+        // 2. Check controller/action (MVC)
+        var actionDescriptor = endpoint.Metadata
+            .GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>();
+
+        if (actionDescriptor is not null)
+        {
+            // Method
+            if (actionDescriptor.MethodInfo
+                .GetCustomAttributes(typeof(DisableAuditingAttribute), true).Any())
+                return true;
+
+            // Class
+            if (actionDescriptor.ControllerTypeInfo
+                .GetCustomAttributes(typeof(DisableAuditingAttribute), true).Any())
+                return true;
+        }
+
+        return false;
+    }
 }
