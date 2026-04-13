@@ -138,7 +138,8 @@ public class EfCoreAuditLogRepository
             query = query
                 .Include(x => x.Actions)
                 .Include(x => x.EntityChanges)
-                .ThenInclude(x => x.PropertyChanges);
+                .ThenInclude(x => x.PropertyChanges)
+                .AsSplitQuery();
         }
         return query;
     }

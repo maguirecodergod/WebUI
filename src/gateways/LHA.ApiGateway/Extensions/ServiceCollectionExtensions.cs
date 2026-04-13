@@ -39,18 +39,22 @@ public static class ServiceCollectionExtensions
             });
 
         // 3. Authentication & JWT Integration
+        var jwtSection = configuration.GetSection("Jwt");
+        var secretKey = jwtSection["SecretKey"] ?? "YourSuperSecretKeyThatIsAtLeast32CharsLong!!";
+
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.Authority = configuration["Authentication:Authority"];
-                options.Audience = configuration["Authentication:Audience"];
-                options.RequireHttpsMetadata = configuration.GetValue<bool>("Authentication:RequireHttpsMetadata");
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
+                    ValidIssuer = jwtSection["Issuer"] ?? "LienHoaApp.Account",
                     ValidateAudience = true,
+                    ValidAudience = jwtSection["Audience"] ?? "LienHoaApp",
                     ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey)),
+                    ClockSkew = TimeSpan.FromMinutes(1)
                 };
             });
 

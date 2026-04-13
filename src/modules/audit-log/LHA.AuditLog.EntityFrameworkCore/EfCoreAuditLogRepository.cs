@@ -26,6 +26,7 @@ public sealed class EfCoreAuditLogRepository
             .Include(x => x.Actions)
             .Include(x => x.EntityChanges)
                 .ThenInclude(c => c.PropertyChanges)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
@@ -60,6 +61,7 @@ public sealed class EfCoreAuditLogRepository
             .Include(x => x.Actions)
             .Include(x => x.EntityChanges)
                 .ThenInclude(c => c.PropertyChanges)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 

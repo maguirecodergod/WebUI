@@ -86,7 +86,7 @@ internal sealed class AuditingManager : IAuditingManager
         }
     }
 
-    private async Task SaveAsync(AuditLogEntry entry, Stopwatch stopwatch)
+    private Task SaveAsync(AuditLogEntry entry, Stopwatch stopwatch)
     {
         stopwatch.Stop();
         entry.ExecutionDuration = (int)stopwatch.ElapsedMilliseconds;
@@ -94,21 +94,29 @@ internal sealed class AuditingManager : IAuditingManager
         ExecuteContributors(entry, preContribute: false);
         entry.MergeEntityChanges();
 
-        try
+        var serviceScopeFactory = _serviceProvider.GetRequiredService<IServiceScopeFactory>();
+        _ = Task.Run(async () =>
         {
-            await _auditingStore.SaveAsync(entry);
-        }
-        catch (Exception ex)
-        {
-            if (_options.HideErrors)
+            try
             {
-                _logger.LogWarning(ex, "Failed to save audit log entry.");
+                using var scope = serviceScopeFactory.CreateScope();
+                var backgroundStore = scope.ServiceProvider.GetRequiredService<IAuditingStore>();
+                await backgroundStore.SaveAsync(entry);
             }
-            else
+            catch (Exception ex)
             {
-                throw;
+                if (_options.HideErrors)
+                {
+                    _logger.LogWarning(ex, "Failed to save audit log entry.");
+                }
+                else
+                {
+                    _logger.LogError(ex, "Failed to background save audit log entry.");
+                }
             }
-        }
+        });
+
+        return Task.CompletedTask;
     }
 
     private sealed class AuditLogScope(AuditLogEntry log) : IAuditLogScope
