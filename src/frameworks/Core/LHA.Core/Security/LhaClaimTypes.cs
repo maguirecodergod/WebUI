@@ -1,4 +1,4 @@
-namespace LHA.AspNetCore.Security;
+namespace LHA.Core.Security;
 
 /// <summary>
 /// Standard and custom claim types used throughout the LHA platform.

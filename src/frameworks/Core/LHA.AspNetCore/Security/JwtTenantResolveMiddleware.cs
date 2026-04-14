@@ -1,5 +1,6 @@
 using LHA.MultiTenancy;
 using Microsoft.AspNetCore.Http;
+using LHA.Core.Security;
 
 namespace LHA.AspNetCore.Security;
 

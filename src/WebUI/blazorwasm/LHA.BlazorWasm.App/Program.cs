@@ -65,6 +65,7 @@ var host = builder.Build();
 // Register module-specific enum mappings
 host.Services.RegisterOrderModuleMappings();
 host.Services.RegisterPaymentModuleMappings();
+host.Services.RegisterGeneralMappings();
 
 var themeService = host.Services.GetRequiredService<IThemeService>();
 await themeService.InitializeAsync();

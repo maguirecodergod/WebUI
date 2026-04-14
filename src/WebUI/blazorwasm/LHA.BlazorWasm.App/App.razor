@@ -1,7 +1,7 @@
 @inject ILocalizationService Localizer
 <CascadingAuthenticationState>
     <GlobalErrorBoundary>
-        <Router AppAssembly="@typeof(App).Assembly">
+        <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] { typeof(LHA.BlazorWasm.Modules.LhaModuleMarker).Assembly }">
             <Found Context="routeData">
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                     <NotAuthorized>

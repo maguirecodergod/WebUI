@@ -27,7 +27,13 @@
         "Advanced": "Advanced",
         "Logs": "Logs",
         "Config": "Configuration",
-        "ApiTest": "API Test"
+        "ApiTest": "API Test",
+        "HostManagement": "Host Management",
+        "Tenants": "Tenants",
+        "GlobalAuditLogs": "Global Audit Logs",
+        "Management": "Management",
+        "Users": "Users",
+        "AuditLogs": "Audit Logs"
     },
     "Errors": {
         "NotFound": {

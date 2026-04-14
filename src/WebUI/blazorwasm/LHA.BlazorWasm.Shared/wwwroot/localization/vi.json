@@ -27,7 +27,13 @@
         "Advanced": "Nâng cao",
         "Logs": "Nhật ký",
         "Config": "Cấu hình",
-        "ApiTest": "Kiểm thử API"
+        "ApiTest": "Kiểm thử API",
+        "HostManagement": "Quản trị hệ thống",
+        "Tenants": "Khách hàng (Tenants)",
+        "GlobalAuditLogs": "Nhật ký hệ thống",
+        "Management": "Quản lý",
+        "Users": "Người dùng",
+        "AuditLogs": "Hoạt động"
     },
     "Errors": {
         "NotFound": {

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using LHA.Core.Users;
+using LHA.Core.Security;
 using Microsoft.AspNetCore.Http;
 
 namespace LHA.AspNetCore.Security;

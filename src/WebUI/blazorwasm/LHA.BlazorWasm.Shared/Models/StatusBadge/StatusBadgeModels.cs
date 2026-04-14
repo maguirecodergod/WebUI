@@ -1,5 +1,3 @@
-using System;
-
 namespace LHA.BlazorWasm.Shared.Models.StatusBadge;
 
 public enum CBadgeStyle
@@ -32,7 +30,7 @@ public class StatusBadgeAttribute : Attribute
     public string? Tooltip { get; set; }
 
     public StatusBadgeAttribute() { }
-    
+
     public StatusBadgeAttribute(CBadgeStyle style)
     {
         Style = style;

@@ -86,11 +86,11 @@ var app = builder.Build();
 // ── Middleware ────────────────────────────────────────────────────
 app.UseLHAAspNetCore();
 
-// Apply chosen Audit Middlewares via the Facade (must match earlier setup)
-app.UseLHAAuditLogging(mode: CAuditingMode.DataAudit);
 app.UseLHASwagger();
 app.UseAuthentication();
 app.UseJwtTenantResolve(); // Resolve tenant from JWT tenant_id claim
+// Apply chosen Audit Middlewares via the Facade (must match earlier setup)
+app.UseLHAAuditLogging(mode: CAuditingMode.DataAudit);
 app.UseAuthorization();
 
 // ── Endpoints ────────────────────────────────────────────────────

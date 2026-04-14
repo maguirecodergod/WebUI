@@ -27,4 +27,15 @@ public static class StatusBadgeModuleRegistration
             builder.Map(CPaymentStatus.Refunded, m => { m.Style = CBadgeStyle.Info; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-arrow-counterclockwise"; m.Tooltip = "Amount returned to customer"; });
         });
     }
+
+    public static void RegisterGeneralMappings(this IServiceProvider serviceProvider)
+    {
+        serviceProvider.RegisterBadgeMappings<CGeneralStatus>(builder =>
+        {
+            builder.Map(CGeneralStatus.Success, m => { m.Style = CBadgeStyle.Success; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-check-circle"; });
+            builder.Map(CGeneralStatus.Error, m => { m.Style = CBadgeStyle.Danger; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-exclamation-circle"; });
+            builder.Map(CGeneralStatus.Info, m => { m.Style = CBadgeStyle.Info; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-info-circle"; });
+            builder.Map(CGeneralStatus.Warning, m => { m.Style = CBadgeStyle.Warning; m.Variant = CBadgeVariant.Soft; m.Icon = "bi bi-exclamation-triangle"; });
+        });
+    }
 }

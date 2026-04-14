@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using LHA.Core.Security;
 
 namespace LHA.Identity.Application;
 
@@ -65,20 +66,20 @@ public sealed class JwtTokenService
 
         var claims = new Dictionary<string, object>
         {
-            [JwtRegisteredClaimNames.Sub] = userId.ToString(),
+            [LhaClaimTypes.Subject] = userId.ToString(),
             [JwtRegisteredClaimNames.Jti] = Guid.CreateVersion7().ToString(),
-            ["username"] = userName,
-            ["email"] = email,
+            [LhaClaimTypes.PreferredUserName] = userName,
+            [LhaClaimTypes.Email] = email,
         };
 
         if (tenantId.HasValue)
-            claims["tenant_id"] = tenantId.Value.ToString();
+            claims[LhaClaimTypes.TenantId] = tenantId.Value.ToString();
 
         if (roles.Count > 0)
-            claims["roles"] = roles.ToArray();
+            claims[LhaClaimTypes.Role] = roles.ToArray();
 
         if (permissions.Count > 0)
-            claims["permissions"] = permissions.ToArray();
+            claims[LhaClaimTypes.Permission] = permissions.ToArray();
 
         var descriptor = new SecurityTokenDescriptor
         {

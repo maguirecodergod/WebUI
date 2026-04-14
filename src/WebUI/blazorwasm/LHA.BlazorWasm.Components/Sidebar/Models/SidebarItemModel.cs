@@ -11,6 +11,11 @@ public sealed class SidebarItemModel
     /// and deduplication during rendering.
     /// </summary>
     public string Id { get; set; } = Guid.NewGuid().ToString("N");
+    
+    /// <summary>
+    /// Optional group name for this item. Used for header sections in the sidebar.
+    /// </summary>
+    public string? GroupName { get; set; }
 
     /// <summary>
     /// The localization key for the item's display title.
