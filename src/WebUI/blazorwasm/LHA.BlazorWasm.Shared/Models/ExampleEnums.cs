@@ -23,8 +23,16 @@ public enum COrderStatus
 /// </summary>
 public enum CPaymentStatus
 {
+    [StatusBadge(CBadgeStyle.Secondary, Variant = CBadgeVariant.Soft, Icon = "bi bi-cash", Tooltip = "Awaiting payment")]
     Unpaid,
+
+    [StatusBadge(CBadgeStyle.Success, Variant = CBadgeVariant.Soft, Icon = "bi bi-currency-dollar", Tooltip = "Payment confirmed")]
     Paid,
+
+    [StatusBadge(CBadgeStyle.Danger, Variant = CBadgeVariant.Soft, Icon = "bi bi-exclamation-triangle-fill", Tooltip = "Transaction failed")]
     Failed,
+
+    [StatusBadge(CBadgeStyle.Info, Variant = CBadgeVariant.Soft, Icon = "bi bi-arrow-counterclockwise", Tooltip = "Amount returned to customer")]
     Refunded
 }
+

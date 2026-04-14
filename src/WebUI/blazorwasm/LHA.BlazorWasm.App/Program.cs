@@ -7,7 +7,7 @@ using LHA.BlazorWasm.Services.Theme;
 using LHA.BlazorWasm.Services.Toast;
 using LHA.BlazorWasm.Services.ErrorHandling;
 using LHA.BlazorWasm.Components;
-using LHA.BlazorWasm.Services.StatusBadge;
+
 using LHA.BlazorWasm.HttpApi.Client.Extensions;
 using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.Services.Auth;
@@ -36,7 +36,7 @@ builder.Services.AddAppLocalization(options =>
 builder.Services.AddThemeService();
 builder.Services.AddToastService();
 builder.Services.AddErrorReporting();
-builder.Services.AddStatusBadgeServices();
+
 builder.Services.AddBlazorWasmComponents();
 builder.Services.AddAppAuthentication();
 builder.Services.AddScoped<IValidator<LoginInput>, LoginInputValidator>();
@@ -62,10 +62,7 @@ builder.Services.AddSingleton<IClientContextProvider>(sp => sp.GetRequiredServic
 
 var host = builder.Build();
 
-// Register module-specific enum mappings
-host.Services.RegisterOrderModuleMappings();
-host.Services.RegisterPaymentModuleMappings();
-host.Services.RegisterGeneralMappings();
+
 
 var themeService = host.Services.GetRequiredService<IThemeService>();
 await themeService.InitializeAsync();

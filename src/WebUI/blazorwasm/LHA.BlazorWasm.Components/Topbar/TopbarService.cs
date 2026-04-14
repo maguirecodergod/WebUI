@@ -97,8 +97,12 @@ public class TopbarService : ITopbarService
         State.NotifyStateChanged();
     }
 
-    public async Task LoadUserProfileAsync()
+    public async Task LoadUserProfileAsync(bool forceRefresh = false)
     {
+        // Don't refresh if user is already loaded unless explicitly requested
+        if (!forceRefresh && State.User != null) return;
+
+
         try
         {
             SetLoading(true);
@@ -124,8 +128,10 @@ public class TopbarService : ITopbarService
     public async Task LogoutAsync()
     {
         await _authStateProvider.MarkUserAsLoggedOutAsync();
+        SetUser(null!); // Clear user state in Topbar
         _toastService.Show("Logged out successfully", CToastLevel.Info);
     }
+
 
     private CToastLevel MapSeverity(NotificationSeverity severity) => severity switch
     {

@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Components;
-using LHA.BlazorWasm.Services.StatusBadge;
 using LHA.BlazorWasm.Shared.Models.StatusBadge;
+using System.Reflection;
+using System.Collections.Concurrent;
 
 namespace LHA.BlazorWasm.Components.Badges;
 
 public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct, Enum
 {
-    [Inject] private IStatusBadgeService StatusBadgeService { get; set; } = default!;
+    private static readonly ConcurrentDictionary<(Type, object), StatusBadgeMetadata> _cache = new();
 
     [Parameter, EditorRequired] public TEnum Status { get; set; }
 
@@ -22,7 +23,60 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
 
     protected override void OnParametersSet()
     {
-        _metadata = StatusBadgeService.GetMetadata(Status);
+        _metadata = GetMetadata(Status);
+    }
+
+    private StatusBadgeMetadata GetMetadata(TEnum value)
+    {
+        return _cache.GetOrAdd((typeof(TEnum), value), _ => ResolveMetadata(value));
+    }
+
+    private StatusBadgeMetadata ResolveMetadata(TEnum value)
+    {
+        var metadata = new StatusBadgeMetadata();
+        
+        // 1. Check for StatusBadgeAttribute
+        var memInfo = typeof(TEnum).GetMember(value.ToString());
+        var attribute = memInfo.Length > 0 ? memInfo[0].GetCustomAttribute<StatusBadgeAttribute>() : null;
+
+        if (attribute != null)
+        {
+            metadata.Style = attribute.Style;
+            metadata.Variant = attribute.Variant;
+            metadata.Icon = attribute.Icon;
+            metadata.IsPulse = attribute.IsPulse;
+            metadata.IsPill = attribute.IsPill;
+            metadata.Tooltip = attribute.Tooltip;
+        }
+        else
+        {
+            // 2. Fallback to convention
+            var name = value.ToString().ToLower();
+            if (name.Contains("success") || name.Contains("paid") || name.Contains("completed") || name.Contains("active"))
+            {
+                metadata.Style = CBadgeStyle.Success;
+                metadata.Variant = CBadgeVariant.Soft;
+            }
+            else if (name.Contains("error") || name.Contains("fail") || name.Contains("cancel") || name.Contains("deleted"))
+            {
+                metadata.Style = CBadgeStyle.Danger;
+                metadata.Variant = CBadgeVariant.Soft;
+            }
+            else if (name.Contains("pending") || name.Contains("warning") || name.Contains("processing"))
+            {
+                metadata.Style = CBadgeStyle.Warning;
+                metadata.Variant = CBadgeVariant.Soft;
+            }
+            else
+            {
+                metadata.Style = CBadgeStyle.Secondary;
+            }
+        }
+
+        // 3. Localization
+        metadata.Text = L(value.ToString());
+
+        return metadata;
     }
 
     private string GetBadgeClass()
@@ -60,3 +114,4 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
         };
     }
 }
+
