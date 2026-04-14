@@ -1,0 +1,46 @@
+@inherits LHALayoutComponentBase
+@using LHA.BlazorWasm.Components.Sidebar
+@using LHA.BlazorWasm.Components.Sidebar.Models
+@using LHA.BlazorWasm.Components.Topbar
+
+<div class="page @ThemeService.ThemeClass layout-super-admin">
+
+    @* Super Admin Dark-mode / High Contrast Sidebar *@
+    <Sidebar @ref="_sidebar" Items="@_sidebarItems" State="@(TopbarService.State.IsSidebarCollapsed ? CSidebarState.Mini : CSidebarState.Expanded)"
+             Resizable="true" ExpandOnHover="false" OnItemClick="OnSidebarItemClick">
+        <HeaderTemplate>
+            <div class="sidebar-brand brand-glow">
+                <svg class="sidebar-brand__logo" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <div class="brand-titles">
+                    <span class="sidebar-brand__text">LHA CORE</span>
+                    <span class="sidebar-brand__sub">Super Admin</span>
+                </div>
+            </div>
+        </HeaderTemplate>
+        <FooterTemplate>
+            <div class="sidebar-footer-info user-card">
+                <div class="avatar-sa">SA</div>
+                <div class="user-details">
+                    <span class="user-name">System Admin</span>
+                    <span class="user-role">Host Access</span>
+                </div>
+            </div>
+        </FooterTemplate>
+    </Sidebar>
+
+    <div class="page-content">
+        <Topbar AppName="Global Dashboard" />
+
+        <main class="content-wrapper">
+            <article class="content-box">
+                @Body
+            </article>
+        </main>
+    </div>
+
+    <LHA.BlazorWasm.Components.Toast.ToastContainer />
+</div>

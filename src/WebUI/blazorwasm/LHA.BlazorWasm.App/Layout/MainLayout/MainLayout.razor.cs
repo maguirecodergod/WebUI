@@ -1,53 +1,19 @@
-@inherits LayoutComponentBase
-@implements IDisposable
-@using LHA.BlazorWasm.Services.Theme
-@using LHA.BlazorWasm.Components.Sidebar
-@using LHA.BlazorWasm.Components.Sidebar.Models
-@inject IThemeService ThemeService
-@inject ThemeState ThemeState
-@using LHA.BlazorWasm.Components.Topbar
-@inject ITopbarService TopbarService
+using LHA.BlazorWasm.App.Components.Base;
+using LHA.BlazorWasm.Components.Sidebar.Models;
+using LHA.BlazorWasm.Components.Sidebar;
+using LHA.BlazorWasm.Components.Topbar;
+using Microsoft.AspNetCore.Components;
+using LHA.BlazorWasm.Services.Theme;
 
-<div class="page @ThemeService.ThemeClass">
+namespace LHA.BlazorWasm.App.Layout.MainLayout;
 
-    @* ── New Enterprise Sidebar ── *@
-    <Sidebar @ref="_sidebar" Items="@_sidebarItems" State="@(TopbarService.State.IsSidebarCollapsed ? CSidebarState.Mini : CSidebarState.Expanded)" Resizable="true" ExpandOnHover="false"
-             OnItemClick="OnSidebarItemClick">
-        <HeaderTemplate>
-            <div class="sidebar-brand">
-                <svg class="sidebar-brand__logo" viewBox="0 0 24 24" width="28" height="28" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
-                    <line x1="12" y1="22" x2="12" y2="15.5"></line>
-                    <polyline points="22 8.5 12 15.5 2 8.5"></polyline>
-                    <polyline points="2 15.5 12 8.5 22 15.5"></polyline>
-                    <line x1="12" y1="2" x2="12" y2="8.5"></line>
-                </svg>
-                <span class="sidebar-brand__text">LHA WebUI</span>
-            </div>
-        </HeaderTemplate>
-        <FooterTemplate>
-            <div class="sidebar-footer-info">
-                <span>v2.1.0</span>
-            </div>
-        </FooterTemplate>
-    </Sidebar>
+public partial class MainLayout : LHALayoutComponentBase
+{
+    [Inject] protected ITopbarService TopbarService { get; set; } = default!;
 
-    <div class="page-content">
-        <Topbar AppName="LHA WebUI" />
+    protected Sidebar? _sidebar;
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </div>
-
-    <LHA.BlazorWasm.Components.Toast.ToastContainer />
-</div>
-
-@code {
-    private Sidebar? _sidebar;
-
-    private List<SidebarItemModel> _sidebarItems = new()
+    protected List<SidebarItemModel> _sidebarItems = new()
     {
         new()
         {
@@ -143,14 +109,14 @@
         }
     };
 
-    private void OnSidebarItemClick(SidebarItemModel item)
+    protected void OnSidebarItemClick(SidebarItemModel item)
     {
         // Optional: handle additional sidebar item click logic
     }
 
     protected override void OnInitialized()
     {
-        ThemeState.OnThemeChanged += OnThemeChanged;
+        base.OnInitialized();
         
         // Initialize Topbar sample data
         TopbarService.SetUser(new UserInfoModel 
@@ -168,16 +134,6 @@
         });
 
         // Simulate async loading finish
-        Task.Delay(2000).ContinueWith(_ => TopbarService.SetLoading(false));
-    }
-
-    private void OnThemeChanged(CThemeMode mode)
-    {
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        ThemeState.OnThemeChanged -= OnThemeChanged;
+        _ = Task.Delay(2000).ContinueWith(_ => TopbarService.SetLoading(false));
     }
 }

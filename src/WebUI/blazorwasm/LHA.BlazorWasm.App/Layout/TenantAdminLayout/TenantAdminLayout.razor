@@ -1,0 +1,47 @@
+@inherits LHALayoutComponentBase
+@using LHA.BlazorWasm.Components.Sidebar
+@using LHA.BlazorWasm.Components.Sidebar.Models
+@using LHA.BlazorWasm.Components.Topbar
+
+<div class="page @ThemeService.ThemeClass layout-tenant-admin">
+
+    @* Tenant Admin Sidebar - Application Level *@
+    <Sidebar @ref="_sidebar" Items="@_sidebarItems" State="@(TopbarService.State.IsSidebarCollapsed ? CSidebarState.Mini : CSidebarState.Expanded)"
+             Resizable="true" ExpandOnHover="false" OnItemClick="OnSidebarItemClick">
+        <HeaderTemplate>
+            <div class="sidebar-brand">
+                <svg class="sidebar-brand__logo" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <path d="M3 9h18"></path>
+                    <path d="M9 21V9"></path>
+                </svg>
+                <div class="brand-titles">
+                    <span class="sidebar-brand__text">Organization</span>
+                    <span class="sidebar-brand__sub">Acme Corp.</span>
+                </div>
+            </div>
+        </HeaderTemplate>
+        <FooterTemplate>
+            <div class="sidebar-footer-info user-card">
+                <div class="avatar-ta">AD</div>
+                <div class="user-details">
+                    <span class="user-name">Tenant Admin</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+            </div>
+        </FooterTemplate>
+    </Sidebar>
+
+    <div class="page-content">
+        <Topbar AppName="Organization Workspace" />
+
+        <main class="content-wrapper">
+            <article class="content-box">
+                @Body
+            </article>
+        </main>
+    </div>
+
+    <LHA.BlazorWasm.Components.Toast.ToastContainer />
+</div>

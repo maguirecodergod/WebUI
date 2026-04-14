@@ -1,0 +1,18 @@
+@inherits LHALayoutComponentBase
+@using LHA.BlazorWasm.Components.ThemeSwitch
+@using LHA.BlazorWasm.Components.LanguageSelector
+
+<div class="empty-layout @ThemeService.ThemeClass">
+    <div class="layout-controls-pill">
+        <div class="control-item theme-toggle" @onclick:stopPropagation>
+            <ThemeSwitch Variant="CThemeSwitchVariant.Icon" />
+        </div>
+        <div class="control-divider"></div>
+        <div class="control-item lang-selector" @onclick:stopPropagation>
+            <LanguageSelector Mode="CLanguageSelectorMode.Dropdown" ShowFlags="true" ShowNames="false" />
+        </div>
+    </div>
+
+    @Body
+    <LHA.BlazorWasm.Components.Toast.ToastContainer />
+</div>
