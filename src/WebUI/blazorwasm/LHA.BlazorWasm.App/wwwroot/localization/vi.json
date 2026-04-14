@@ -34,5 +34,8 @@
     "Login.Submit": "ĐĂNG NHẬP HỆ THỐNG",
     "Login.NoAccount": "Bạn chưa có không gian làm việc?",
     "Login.RegisterTenant": "Khởi tạo Tenant mới ngay",
-    "Login.GenericError": "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau."
+    "Login.GenericError": "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.",
+    "Sidebar.Home": "Trang chủ",
+    "Sidebar.Management": "Quản trị hệ thống",
+    "Sidebar.AuditLogs": "Nhật ký vận hành"
 }

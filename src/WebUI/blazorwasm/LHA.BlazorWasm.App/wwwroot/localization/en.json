@@ -34,5 +34,8 @@
     "Login.Submit": "SIGN IN SYSTEM",
     "Login.NoAccount": "Don't have a workspace yet?",
     "Login.RegisterTenant": "Create a new Tenant now",
-    "Login.GenericError": "An unknown error occurred. Please try again later."
+    "Login.GenericError": "An unknown error occurred. Please try again later.",
+    "Sidebar.Home": "Home",
+    "Sidebar.Management": "Management",
+    "Sidebar.AuditLogs": "Audit Logs"
 }
