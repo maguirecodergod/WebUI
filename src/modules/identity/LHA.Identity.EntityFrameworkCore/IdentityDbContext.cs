@@ -53,10 +53,11 @@ public sealed class IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ConfigureIdentity();
         modelBuilder.TryConfigureEventBus<IdentityDbContext>();
         
         // Apply global query filters (IMultiTenant, ISoftDelete) after entities are added
-        base.OnModelCreating(modelBuilder);
+        ApplyGlobalFilters(modelBuilder);
     }
 }

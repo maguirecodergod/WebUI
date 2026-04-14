@@ -69,7 +69,14 @@ public abstract class LhaDbContext<TDbContext> : DbContext, IHasCurrentUnitOfWor
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+    }
 
+    /// <summary>
+    /// Derived DbContexts MUST call this method at the VERY END of their OnModelCreating
+    /// after all entities have been configured on the ModelBuilder.
+    /// </summary>
+    protected void ApplyGlobalFilters(ModelBuilder modelBuilder)
+    {
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             ConfigureGlobalFilters(modelBuilder, entityType);

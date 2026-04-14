@@ -38,10 +38,11 @@ public sealed class PermissionManagementDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ConfigurePermissionManagement();
         modelBuilder.TryConfigureEventBus<PermissionManagementDbContext>();
         
         // Apply global query filters (IMultiTenant, ISoftDelete) after entities are added
-        base.OnModelCreating(modelBuilder);
+        ApplyGlobalFilters(modelBuilder);
     }
 }
