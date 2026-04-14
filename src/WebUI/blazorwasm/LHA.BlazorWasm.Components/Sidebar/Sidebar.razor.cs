@@ -183,6 +183,28 @@ public partial class Sidebar : LhaComponentBase, IAsyncDisposable
     }
 
     #endregion
+    
+    #region ── Authorization ──
+    
+    private bool IsAuthorized(SidebarItemModel item)
+    {
+        if (!item.IsVisible) return false;
+        if (item.IsDivider) return true;
+        
+        // 1. Check direct permission
+        if (!string.IsNullOrEmpty(item.RequiredPermission) && !PermissionService.HasPermission(item.RequiredPermission))
+            return false;
+            
+        // 2. If it's a group (no Href), it must have at least one authorized child to be visible
+        if (string.IsNullOrEmpty(item.Href) && item.Children.Any())
+        {
+            return item.Children.Any(IsAuthorized);
+        }
+        
+        return true;
+    }
+    
+    #endregion
 
     #region ── Lifecycle ──
 

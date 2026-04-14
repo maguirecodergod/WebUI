@@ -3,6 +3,7 @@ using LHA.BlazorWasm.Components.Sidebar.Models;
 using LHA.BlazorWasm.Components.Sidebar;
 using LHA.BlazorWasm.Components.Topbar;
 using Microsoft.AspNetCore.Components;
+using LHA.Shared.Contracts.AuditLog;
 
 namespace LHA.BlazorWasm.App.Layout.MainLayout;
 
@@ -35,7 +36,8 @@ public partial class MainLayout : LHALayoutComponentBase
                     Id = "logs", 
                     TitleKey = "Sidebar.AuditLogs", 
                     Href = "/audit-logs", 
-                    Icon = """<i class="bi bi-journal-text"></i>""" 
+                    Icon = """<i class="bi bi-journal-text"></i>""",
+                    RequiredPermission = AuditLogPermissions.AuditLogs.Read
                 }
             }
         }

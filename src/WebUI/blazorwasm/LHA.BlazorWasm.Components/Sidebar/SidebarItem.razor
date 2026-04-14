@@ -50,7 +50,7 @@ else
                 }
 
                 @* Expand/Collapse Chevron *@
-                @if (Item.HasChildren && CurrentState != CSidebarState.Mini)
+                @if (HasAuthorizedChildren && CurrentState != CSidebarState.Mini)
                 {
                     <span class="lha-sidebar-item__chevron @(IsExpanded ? "lha-sidebar-item__chevron--open" : "")"
                           aria-hidden="true">
@@ -61,11 +61,11 @@ else
         </Tooltip>
 
         @* ── Children (Collapsible) ── *@
-        @if (Item.HasChildren)
+        @if (HasAuthorizedChildren)
         {
             <div class="lha-sidebar-item__children @(IsExpanded && CurrentState != CSidebarState.Mini ? "lha-sidebar-item__children--open" : "")">
                 <div class="lha-sidebar-item__children-inner">
-                    @foreach (var child in Item.Children.Where(c => c.IsVisible).OrderBy(c => c.Order))
+                    @foreach (var child in Item.Children.Where(CanShowItem).OrderBy(c => c.Order))
                     {
                         <SidebarItem Item="@child"
                                      Depth="@(Depth + 1)"

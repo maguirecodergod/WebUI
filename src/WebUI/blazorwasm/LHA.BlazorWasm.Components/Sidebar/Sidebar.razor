@@ -27,7 +27,7 @@
         <div class="lha-sidebar__content">
             @if (Items != null)
             {
-                @foreach (var item in Items.Where(i => i.IsVisible && (string.IsNullOrEmpty(i.RequiredPermission) || PermissionService.HasPermission(i.RequiredPermission))).OrderBy(i => i.Order))
+                @foreach (var item in Items.Where(IsAuthorized).OrderBy(i => i.Order))
                 {
                     <SidebarItem Item="@item" Depth="0" CurrentState="@EffectiveState" ExpandedIds="@_expandedIds"
                                  ActiveItemId="@_activeItemId" OnToggleExpand="@HandleToggleExpand" OnItemClicked="@HandleItemClick" />

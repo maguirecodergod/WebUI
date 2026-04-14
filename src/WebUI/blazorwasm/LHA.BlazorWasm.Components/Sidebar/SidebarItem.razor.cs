@@ -68,8 +68,26 @@ public partial class SidebarItem : LhaComponentBase
     private string DepthClass => $"lha-sidebar-item--depth-{Math.Min(Depth, 5)}";
 
     private string ActiveClass => IsActive ? "lha-sidebar-item--active" : "";
-
     private string DisabledClass => Item.IsDisabled ? "lha-sidebar-item--disabled" : "";
+
+    private bool HasAuthorizedChildren => Item.Children.Any(CanShowItem);
+
+    private bool CanShowItem(SidebarItemModel item)
+    {
+        if (!item.IsVisible) return false;
+        
+        // Check direct permission
+        if (!string.IsNullOrEmpty(item.RequiredPermission) && !PermissionService.HasPermission(item.RequiredPermission))
+            return false;
+
+        // If it's a group (no Href), it must have at least one sub-item that can be shown
+        if (string.IsNullOrEmpty(item.Href) && item.Children.Any())
+        {
+            return item.Children.Any(CanShowItem);
+        }
+        
+        return true;
+    }
 
     #endregion
 
@@ -79,7 +97,9 @@ public partial class SidebarItem : LhaComponentBase
     {
         if (Item.IsDisabled) return;
 
-        if (Item.HasChildren)
+        bool hasChildren = HasAuthorizedChildren;
+
+        if (hasChildren)
         {
             // Toggle expand/collapse
             await OnToggleExpand.InvokeAsync(Item.Id);
@@ -100,7 +120,7 @@ public partial class SidebarItem : LhaComponentBase
 
             await OnItemClicked.InvokeAsync(Item);
         }
-        else if (!Item.HasChildren)
+        else if (!hasChildren)
         {
             // Leaf item without Href (action-only item)
             await OnItemClicked.InvokeAsync(Item);
