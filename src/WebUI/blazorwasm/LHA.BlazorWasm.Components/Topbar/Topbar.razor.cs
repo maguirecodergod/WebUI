@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 
 
@@ -7,6 +8,7 @@ namespace LHA.BlazorWasm.Components.Topbar;
 public partial class Topbar : LhaComponentBase, IDisposable
 {
     [Inject] public ITopbarService TopbarService { get; set; } = default!;
+    [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
 
     [Parameter] public RenderFragment? LeftContent { get; set; }
     [Parameter] public RenderFragment? CenterContent { get; set; }
@@ -32,7 +34,12 @@ public partial class Topbar : LhaComponentBase, IDisposable
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await TopbarService.LoadUserProfileAsync();
+        
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity?.IsAuthenticated == true)
+        {
+            await TopbarService.LoadUserProfileAsync();
+        }
     }
 
     // private async Task HandleSidebarToggle()

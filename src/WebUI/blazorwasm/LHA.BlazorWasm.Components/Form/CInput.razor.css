@@ -6,11 +6,11 @@
     --input-placeholder: var(--lha-input-placeholder, rgba(255, 255, 255, 0.4));
     --input-accent: var(--lha-primary, #00f0ff);
     --input-accent-glow: var(--lha-primary-glow, rgba(0, 240, 255, 0.2));
-    
+
     --input-error: var(--lha-danger, #ff4d4f);
     --input-success: var(--lha-success, #52c41a);
     --input-warning: var(--lha-warning, #faad14);
-    
+
     position: relative;
     width: 100%;
     font-family: inherit;
@@ -18,7 +18,8 @@
 
 .lha-input-wrapper {
     display: flex;
-    align-items: stretch; /* Ensure icons and input have same height */
+    align-items: stretch;
+    /* Ensure icons and input have same height */
     width: 100%;
     background: var(--input-bg);
     border: 1px solid var(--input-border);
@@ -30,9 +31,20 @@
 }
 
 /* Sizing */
-.lha-input-size-small .lha-input-wrapper { border-radius: 8px; min-height: 36px; }
-.lha-input-size-medium .lha-input-wrapper { border-radius: 12px; min-height: 48px; }
-.lha-input-size-large .lha-input-wrapper { border-radius: 14px; min-height: 56px; }
+.lha-input-size-small .lha-input-wrapper {
+    border-radius: 8px;
+    min-height: 36px;
+}
+
+.lha-input-size-medium .lha-input-wrapper {
+    border-radius: 12px;
+    min-height: 48px;
+}
+
+.lha-input-size-large .lha-input-wrapper {
+    border-radius: 14px;
+    min-height: 56px;
+}
 
 /* Focus and States */
 .lha-input-wrapper.is-focused {
@@ -41,11 +53,21 @@
     background: color-mix(in srgb, var(--input-bg), var(--input-accent) 2%);
 }
 
-.lha-input-wrapper.status-error { border-color: var(--input-error); }
-.lha-input-wrapper.status-error.is-focused { box-shadow: 0 0 0 4px color-mix(in srgb, var(--input-error), transparent 80%); }
+.lha-input-wrapper.status-error {
+    border-color: var(--input-error);
+}
 
-.lha-input-wrapper.status-success { border-color: var(--input-success); }
-.lha-input-wrapper.status-warning { border-color: var(--input-warning); }
+.lha-input-wrapper.status-error.is-focused {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--input-error), transparent 80%);
+}
+
+.lha-input-wrapper.status-success {
+    border-color: var(--input-success);
+}
+
+.lha-input-wrapper.status-warning {
+    border-color: var(--input-warning);
+}
 
 /* Field Input */
 .lha-input-field {
@@ -61,8 +83,15 @@
     min-width: 0;
 }
 
-.lha-input-size-small .lha-input-field { font-size: 0.875rem; padding: 0 0.75rem; }
-.lha-input-size-large .lha-input-field { font-size: 1.125rem; padding: 0 1.25rem; }
+.lha-input-size-small .lha-input-field {
+    font-size: 0.875rem;
+    padding: 0 0.75rem;
+}
+
+.lha-input-size-large .lha-input-field {
+    font-size: 1.125rem;
+    padding: 0 1.25rem;
+}
 
 .lha-input-field::placeholder {
     color: var(--input-placeholder);
@@ -84,8 +113,13 @@
     flex-shrink: 0;
 }
 
-.lha-input-icon-left { padding-left: 1rem; }
-.lha-input-icon-right { padding-right: 1rem; }
+.lha-input-icon-left {
+    padding-left: 1rem;
+}
+
+.lha-input-icon-right {
+    padding-right: 1rem;
+}
 
 .lha-input-wrapper.is-focused .lha-input-icon {
     color: var(--input-accent);
@@ -96,7 +130,8 @@
     filter: drop-shadow(0 0 5px var(--input-accent-glow));
 }
 
-.lha-input-prefix, .lha-input-suffix {
+.lha-input-prefix,
+.lha-input-suffix {
     padding: 0 1rem;
     background: rgba(255, 255, 255, 0.03);
     display: flex;
@@ -121,7 +156,8 @@
 }
 
 /* Interactive Buttons */
-.lha-input-clear-btn, .lha-input-password-toggle {
+.lha-input-clear-btn,
+.lha-input-password-toggle {
     background: transparent;
     border: none;
     color: var(--input-placeholder);
@@ -134,7 +170,8 @@
     transition: all 0.2s;
 }
 
-.lha-input-clear-btn:hover, .lha-input-password-toggle:hover {
+.lha-input-clear-btn:hover,
+.lha-input-password-toggle:hover {
     color: var(--input-text);
     background: rgba(255, 255, 255, 0.08);
 }
@@ -154,13 +191,22 @@
 }
 
 @keyframes lha-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Autofill */
-.lha-input-field:-webkit-autofill {
+/* Autofill - Use background-clip to keep the input transparent and prevent browser colors */
+.lha-input-field:-webkit-autofill,
+.lha-input-field:-webkit-autofill:hover,
+.lha-input-field:-webkit-autofill:focus,
+.lha-input-field:-webkit-autofill:active {
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
     -webkit-text-fill-color: var(--input-text) !important;
-    -webkit-box-shadow: 0 0 0px 1000px color-mix(in srgb, var(--input-bg), black 20%) inset !important;
+    caret-color: var(--input-text);
+    /* Transition to prevent sudden background flash */
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 /* Disabled & Readonly */

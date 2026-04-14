@@ -41,7 +41,7 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
 
-            _authTokenCache.SetToken(authResult.AccessToken);
+            _authTokenCache.SetToken(authResult.AccessToken, authResult.RefreshToken, authResult.ExpiresIn);
 
             var claims = ParseClaimsFromJwt(authResult.AccessToken);
             var identity = new ClaimsIdentity(claims, "jwt");
@@ -67,7 +67,7 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
     public async Task MarkUserAsAuthenticatedAsync(AuthResultDto authResult)
     {
         await _localStorage.SetAsync(AuthStorageKey, authResult);
-        _authTokenCache.SetToken(authResult.AccessToken);
+        _authTokenCache.SetToken(authResult.AccessToken, authResult.RefreshToken, authResult.ExpiresIn);
 
         var claims = ParseClaimsFromJwt(authResult.AccessToken!);
         var identity = new ClaimsIdentity(claims, "jwt");

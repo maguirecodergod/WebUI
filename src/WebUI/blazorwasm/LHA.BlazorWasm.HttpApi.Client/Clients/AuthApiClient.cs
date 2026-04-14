@@ -44,4 +44,13 @@ public class AuthApiClient : ApiClientBase
         var response = await GetAsync<CurrentUserDto>($"{BaseUrl}/me");
         return response.Result.Data;
     }
+
+    /// <summary>
+    /// Refreshes the access token using a refresh token.
+    /// </summary>
+    public async Task<AuthResultDto?> RefreshTokenAsync(RefreshTokenInput input)
+    {
+        var response = await PostAsync<RefreshTokenInput, AuthResultDto>($"{BaseUrl}/refresh", input);
+        return response.Result.Data;
+    }
 }
