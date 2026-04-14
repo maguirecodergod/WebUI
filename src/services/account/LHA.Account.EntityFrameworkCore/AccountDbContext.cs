@@ -50,8 +50,6 @@ public sealed class AccountDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-
         // Determine the audit mode configured in DI (fallback to All)
         var auditOptions = _serviceProvider?.GetService<Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>>();
         var auditMode = auditOptions?.Value.Mode ?? AuditLogStoreMode.All;
@@ -98,5 +96,8 @@ public sealed class AccountDbContext
         // Event Bus
         modelBuilder.Entity<OutboxMessage>().ToTable(DbSchemeConsts.Event.Outbox);
         modelBuilder.Entity<InboxMessage>().ToTable(DbSchemeConsts.Event.Inbox);
+
+        // Apply global query filters after all entities are configured in the ModelBuilder
+        base.OnModelCreating(modelBuilder);
     }
 }

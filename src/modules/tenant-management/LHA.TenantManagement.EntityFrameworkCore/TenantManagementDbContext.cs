@@ -40,9 +40,10 @@ public sealed class TenantManagementDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-
         modelBuilder.ConfigureTenantManagement();
         modelBuilder.TryConfigureEventBus<TenantManagementDbContext>();
+        
+        // Apply global query filters (IMultiTenant, ISoftDelete) after entities are added
+        base.OnModelCreating(modelBuilder);
     }
 }

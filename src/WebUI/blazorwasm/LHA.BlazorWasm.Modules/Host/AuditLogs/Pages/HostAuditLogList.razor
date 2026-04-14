@@ -58,6 +58,15 @@
                                 </CellTemplate>
                             </DataTableColumn>
 
+                            <DataTableColumn TItem="AuditLogDto" Title="Service & Action" Width="auto">
+                                <CellTemplate>
+                                    <div>
+                                        <div class="fw-bold small" style="color: var(--dt-text-primary);">@(context.ServiceName ?? "N/A")</div>
+                                        <div class="small" style="color: var(--dt-text-secondary);">@(context.MethodName ?? context.ActionName ?? "N/A")</div>
+                                    </div>
+                                </CellTemplate>
+                            </DataTableColumn>
+
                             <DataTableColumn TItem="AuditLogDto" Title="User Name" Width="180px" Sortable Filterable
                                              Property="@(x => x.UserName)">
                                 <CellTemplate>

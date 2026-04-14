@@ -132,10 +132,12 @@ public class EfCoreAuditLogRepository
     protected virtual async Task<IQueryable<AuditLogEntity>> GetQueryableAsync(bool includeDetails)
     {
         IQueryable<AuditLogEntity> query = await GetDbSetAsync();
+        
+        query = query.Include(x => x.Actions);
+
         if (includeDetails)
         {
             query = query
-                .Include(x => x.Actions)
                 .Include(x => x.EntityChanges)
                 .ThenInclude(x => x.PropertyChanges)
                 .AsSplitQuery();

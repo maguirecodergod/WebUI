@@ -33,6 +33,9 @@ public sealed class AuditLogDto : EntityDto<Guid>
 
     public List<AuditLogActionDto> Actions { get; init; } = [];
     public List<EntityChangeDto> EntityChanges { get; init; } = [];
+
+    public string? ServiceName => Actions.FirstOrDefault()?.ServiceName;
+    public string? MethodName => Actions.FirstOrDefault()?.MethodName;
 }
 
 /// <summary>

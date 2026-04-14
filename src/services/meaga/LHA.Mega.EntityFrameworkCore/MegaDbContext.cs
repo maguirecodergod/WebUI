@@ -24,8 +24,10 @@ public sealed class MegaDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
         modelBuilder.ConfigureMega();
         modelBuilder.TryConfigureEventBus<MegaDbContext>();
+        
+        // Apply global query filters (IMultiTenant, ISoftDelete) after entities are added
+        base.OnModelCreating(modelBuilder);
     }
 }

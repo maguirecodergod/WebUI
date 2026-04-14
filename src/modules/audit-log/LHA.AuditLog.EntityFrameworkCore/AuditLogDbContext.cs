@@ -43,7 +43,9 @@ public sealed class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
         modelBuilder.ConfigureAuditLog(_options?.Value.Mode ?? AuditLogStoreMode.All);
+        
+        // Apply global query filters (IMultiTenant, ISoftDelete) after entities are added
+        base.OnModelCreating(modelBuilder);
     }
 }
