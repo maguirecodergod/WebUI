@@ -33,6 +33,13 @@ public class EfCoreAuditLogRepository
         AuditLogGetListInput input,
         CancellationToken cancellationToken = default)
     {
+        if (input.DisableTenantFilter)
+        {
+            var dbContext = await GetDbContextAsync();
+            if (dbContext is LhaDbContext<AccountDbContext> lhaDb)
+                lhaDb.IsMultiTenantFilterEnabled = false;
+        }
+
         var query = await GetQueryableAsync(input.IncludeDetails);
 
         query = ApplyFilter(query, input);
@@ -47,6 +54,13 @@ public class EfCoreAuditLogRepository
         AuditLogGetListInput input,
         CancellationToken cancellationToken = default)
     {
+        if (input.DisableTenantFilter)
+        {
+            var dbContext = await GetDbContextAsync();
+            if (dbContext is LhaDbContext<AccountDbContext> lhaDb)
+                lhaDb.IsMultiTenantFilterEnabled = false;
+        }
+
         IQueryable<AuditLogEntity> query = await GetDbSetAsync();
 
         query = ApplyFilter(query, input);

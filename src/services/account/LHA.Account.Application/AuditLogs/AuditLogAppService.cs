@@ -52,7 +52,8 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
                 MaxExecutionDuration = input.MaxExecutionDuration,
                 HasException = input.HasException
             },
-            IncludeDetails = false
+            IncludeDetails = false,
+            DisableTenantFilter = input.DisableTenantFilter
         };
 
         var logs = await _auditLogRepository.GetListAsync(repoInput);
@@ -64,6 +65,12 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
             input.PageNumber,
             input.PageSize
         );
+    }
+
+    public virtual async Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input)
+    {
+        input.DisableTenantFilter = true;
+        return await GetListAsync(input);
     }
 
     public virtual async Task<AuditLogDto> GetAsync(Guid id)

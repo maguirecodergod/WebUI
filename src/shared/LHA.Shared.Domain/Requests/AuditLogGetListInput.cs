@@ -5,6 +5,12 @@ namespace LHA.Shared.Domain.Requests;
 public class AuditLogGetListInput : PagedAndSortedResultRequestDto<AuditLogFilter>
 {
     public bool IncludeDetails { get; set; } = false;
+
+    /// <summary>
+    /// When true, disables the multi-tenant global query filter to return ALL logs cross-tenant.
+    /// Only used by host-level (super admin) queries.
+    /// </summary>
+    public bool DisableTenantFilter { get; set; } = false;
 }
 
 public class AuditLogFilter

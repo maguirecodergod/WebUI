@@ -15,7 +15,13 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         private long _totalCount;
         private DateRange<DateTimeOffset?> _executionTimeRange = new();
 
-        private List<SelectOption<string>> _httpMethodOptions => Enum.GetValues<CHttpMethodType>().Select(x => new SelectOption<string> { Value = x.ToString(), Label = x.ToString() }).ToList();
+        private List<SelectOption<string>> _httpMethodOptions => Enum.GetValues<CHttpMethodType>()
+            .Select(x => new SelectOption<string>
+            {
+                Value = x.ToString(),
+                Label = char.ToUpper(x.ToString().ToLower()[0]) + x.ToString().ToLower().Substring(1)
+            })
+            .ToList();
 
         private GetAuditLogsInput _input = new()
         {
@@ -36,7 +42,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 _input.StartTime = _executionTimeRange.Start?.ToUniversalTime();
                 _input.EndTime = _executionTimeRange.End?.ToUniversalTime();
 
-                var result = await AuditLogService.GetListAsync(_input);
+                var result = await AuditLogService.GetHostListAsync(_input);
                 _logs = result.Items.ToList();
                 _totalCount = result.TotalCount;
             }
@@ -53,6 +59,20 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 
             // Map global search term
             _input.SearchQuery = string.IsNullOrEmpty(request.SearchTerm) ? null : request.SearchTerm;
+
+            // Map sort state from DataTable column headers
+            if (request.Sorts is { Count: > 0 })
+            {
+                var sort = request.Sorts[0]; // Primary sort
+                _input.SorterKey = sort.Field;
+                _input.SorterIsAsc = sort.Direction == SortDirection.Ascending;
+            }
+            else
+            {
+                // Reset to default sort when user clears sorting
+                _input.SorterKey = nameof(AuditLogDto.ExecutionTime);
+                _input.SorterIsAsc = false;
+            }
 
             // Note: Sidebar filters are already bound to _input via @bind-Value in FilterTemplates.
             await LoadLogsAsync();

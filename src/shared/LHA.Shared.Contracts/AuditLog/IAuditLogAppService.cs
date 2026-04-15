@@ -6,6 +6,9 @@ public interface IAuditLogAppService : IApplicationService
 {
     Task<PagedResultDto<AuditLogDto>> GetListAsync(GetAuditLogsInput input);
 
+    /// <summary>Host-level: returns ALL audit logs cross-tenant.</summary>
+    Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input);
+
     Task<AuditLogDto> GetAsync(Guid id);
 
     Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(GetAuditLogActionsInput input);

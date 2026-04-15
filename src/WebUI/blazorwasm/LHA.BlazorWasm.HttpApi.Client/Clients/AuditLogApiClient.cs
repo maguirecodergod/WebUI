@@ -22,6 +22,13 @@ public class AuditLogApiClient : ApiClientBase, IAuditLogAppService
         return response.Result.Data!;
     }
 
+    public async Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input)
+    {
+        var url = BuildQueryString($"{BaseUrl}/host", input);
+        var response = await GetAsync<PagedResultDto<AuditLogDto>>(url);
+        return response.Result.Data!;
+    }
+
     public async Task<AuditLogDto> GetAsync(Guid id)
     {
         var response = await GetAsync<AuditLogDto>($"{BaseUrl}/{id}");

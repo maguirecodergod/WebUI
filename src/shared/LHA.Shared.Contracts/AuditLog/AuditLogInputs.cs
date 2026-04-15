@@ -46,6 +46,12 @@ public sealed class GetAuditLogsInput : PagedAndSortedResultRequestDto
 
     /// <summary>Filter by whether exceptions occurred. <c>null</c> returns all.</summary>
     public bool? HasException { get; set; }
+
+    /// <summary>
+    /// When true, disables the multi-tenant filter to return ALL logs cross-tenant.
+    /// Set by the host-level endpoint only; never exposed to client query strings directly.
+    /// </summary>
+    public bool DisableTenantFilter { get; set; } = false;
 }
 
 /// <summary>

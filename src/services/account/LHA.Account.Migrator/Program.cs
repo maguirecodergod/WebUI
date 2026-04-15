@@ -215,6 +215,7 @@ using (var scope = host.Services.CreateScope())
             (AccountPermissions.TenantManagement.Delete,              AccountPermissions.TenantManagement.L.Delete,     "TenantManagement", AccountPermissions.TenantManagement.GroupName, MultiTenancySides.Host),
             // Audit Logs
             (AccountPermissions.AuditLogManagement.Read,             AccountPermissions.AuditLogManagement.L.Read,    "AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.AuditLogManagement.HostRead,         AccountPermissions.AuditLogManagement.L.HostRead,"AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Host),
             // Permission Management
             (AccountPermissions.PermissionMgmt.DefinitionsRead,   AccountPermissions.PermissionMgmt.L.DefinitionsRead,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
             (AccountPermissions.PermissionMgmt.DefinitionsManage, AccountPermissions.PermissionMgmt.L.DefinitionsManage, "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),

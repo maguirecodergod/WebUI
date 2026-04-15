@@ -106,10 +106,14 @@ public static class AccountPermissions
         public const string GroupName = "AuditLogManagement";
         public const string Read = AuditLogPermissions.AuditLogs.Read;
 
+        /// <summary>Host-level permission to view ALL audit logs cross-tenant.</summary>
+        public const string HostRead = AuditLogPermissions.AuditLogs.HostRead;
+
         public static class L
         {
             public const string Group = "Permissions.AuditLogManagement.Group";
             public const string Read = "Permissions.AuditLogManagement.Read";
+            public const string HostRead = "Permissions.AuditLogManagement.HostRead";
         }
     }
 

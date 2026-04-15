@@ -17,10 +17,24 @@ public static class AccountAuditLogEndpoints
             .RequireAuthorization()
             .WithMetadata(new DisableAuditingAttribute()); ;
 
+        // Host-level endpoint: returns ALL logs cross-tenant (requires HostRead permission)
+        group.MapGet("/host", async (
+            [AsParameters] GetAuditLogsInput input,
+            IAuditLogAppService service) =>
+        {
+            input.DisableTenantFilter = true;
+            var result = await service.GetListAsync(input);
+            return Results.Ok(ApiResponse<PagedResultDto<AuditLogDto>>.Ok(result));
+        })
+        .RequireAuthorization(AccountPermissions.AuditLogManagement.HostRead)
+        .WithName("GetHostAuditLogs")
+        .WithSummary("Returns paged audit logs across ALL tenants for host admin.");
+
         group.MapGet("/", async (
             [AsParameters] GetAuditLogsInput input,
             IAuditLogAppService service) =>
         {
+            input.DisableTenantFilter = false; // Security: always enforce tenant filter on tenant-level endpoint
             var result = await service.GetListAsync(input);
             return Results.Ok(ApiResponse<PagedResultDto<AuditLogDto>>.Ok(result));
         })

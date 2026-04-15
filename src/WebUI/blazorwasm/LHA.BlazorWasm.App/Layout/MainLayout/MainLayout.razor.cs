@@ -35,7 +35,7 @@ public partial class MainLayout : LHALayoutComponentBase
             Children = new()
             {
                 new() { Id = "host-tenants", TitleKey = "Sidebar.Tenants", Href = "/host/tenants", Icon = """<i class="bi bi-building"></i>""", RequiredPermission = TenantManagementPermissions.Tenants.Read },
-                new() { Id = "host-logs", TitleKey = "Sidebar.GlobalAuditLogs", Href = "/host/audit-logs", Icon = """<i class="bi bi-shield-check"></i>""", RequiredPermission = AuditLogPermissions.AuditLogs.Read }
+                new() { Id = "host-logs", TitleKey = "Sidebar.GlobalAuditLogs", Href = "/host/audit-logs", Icon = """<i class="bi bi-shield-check"></i>""", RequiredPermission = AuditLogPermissions.AuditLogs.HostRead }
             }
         },
         new()
