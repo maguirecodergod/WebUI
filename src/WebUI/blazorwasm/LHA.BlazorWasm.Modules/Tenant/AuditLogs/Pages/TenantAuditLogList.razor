@@ -2,83 +2,86 @@
 @namespace LHA.BlazorWasm.Modules.Tenant.AuditLogs.Pages
 @inherits LhaComponentBase
 
-<PageTitle>My Audit Logs</PageTitle>
+<PageTitle>@L("AuditLog.PageTitle")</PageTitle>
 
 <div class="audit-log-page container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h4 mb-1 fw-bold" style="color: var(--dt-text-primary, inherit);">Activity Logs</h1>
-            <div class="small" style="color: var(--dt-text-secondary, inherit); opacity: 0.8;">Review your tenant's
-                activity and security events.</div>
+            <h1 class="h4 mb-1 fw-bold" style="color: var(--dt-text-primary, inherit);">@L("AuditLog.Title")</h1>
+            <div class="small" style="color: var(--dt-text-secondary, inherit); opacity: 0.8;">@L("AuditLog.Subtitle")
             </div>
-            <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Medium" OnClick="RefreshAsync">
-                <i class="bi bi-arrow-clockwise me-1"></i> Refresh
-            </Button>
         </div>
+        <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Medium" OnClick="RefreshAsync">
+            <i class="bi bi-arrow-clockwise me-1"></i> @L("Common.Refresh")
+        </Button>
+    </div>
 
-        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
-            <div class="card-body p-0">
-                <DataTable TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
-                           ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10" Searchable="true" ShowToolbar="true"
-                           KeySelector="@(x => x.Id)" TableId="@DataTableIds.AuditLogs">
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="card-body p-0">
+            <DataTable TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
+                       ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10" Searchable="true" ShowToolbar="true"
+                       KeySelector="@(x => x.Id)" TableId="@DataTableIds.AuditLogs">
 
-                    <ChildContent>
-                        <DataTableColumn TItem="AuditLogDto" Title="Time" Width="180px" Sortable
-                                         Property="@(x => x.ExecutionTime)">
-                            <CellTemplate>
-                                <span class="small">@context.ExecutionTime.ToString("yyyy-MM-dd HH:mm")</span>
-                            </CellTemplate>
-                        </DataTableColumn>
+                <ChildContent>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ExecutionTime")" Width="180px" Sortable
+                                     Property="@(x => x.ExecutionTime)">
+                        <CellTemplate>
+                            <span class="small">@context.ExecutionTime.ToString("yyyy-MM-dd HH:mm")</span>
+                        </CellTemplate>
+                    </DataTableColumn>
 
-                        <DataTableColumn TItem="AuditLogDto" Title="Action" Width="auto" Sortable Property="@(x => x.Url)">
-                            <CellTemplate>
-                                <div class="fw-medium small">@context.Url</div>
-                            </CellTemplate>
-                        </DataTableColumn>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Url")" Width="auto" Sortable
+                                     Property="@(x => x.Url)">
+                        <CellTemplate>
+                            <div class="fw-medium small">@context.Url</div>
+                        </CellTemplate>
+                    </DataTableColumn>
 
-                        <DataTableColumn TItem="AuditLogDto" Title="Service & Action" Width="auto">
-                            <CellTemplate>
-                                <div>
-                                    <div class="fw-bold small" style="color: var(--dt-text-primary);">@(context.ServiceName
-                                                                            ?? "N/A")</div>
-                                        <div class="small" style="color: var(--dt-text-secondary);">@(context.MethodName ??
-                                                                                context.ActionName ?? "N/A")</div>
-                                        </div>
-                                    </CellTemplate>
-                                </DataTableColumn>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ResourceTrace")" Width="auto">
+                        <CellTemplate>
+                            <div>
+                                <div class="fw-bold small" style="color: var(--dt-text-primary);">@(context.ServiceName
+                                                                                                                ?? "N/A")</div>
+                                    <div class="small" style="color: var(--dt-text-secondary);">@(context.MethodName ??
+                                                                                                                         context.ActionName ?? "N/A")</div>
+                                    </div>
+                                </CellTemplate>
+                            </DataTableColumn>
 
-                                <DataTableColumn TItem="AuditLogDto" Title="User" Width="150px" Sortable
-                                                 Property="@(x => x.UserName)">
-                                    <CellTemplate>
-                                        <span class="small">@context.UserName</span>
-                                    </CellTemplate>
-                                </DataTableColumn>
+                            <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.User")" Width="150px" Sortable
+                                             Property="@(x => x.UserName)">
+                                <CellTemplate>
+                                    <span class="small">@context.UserName</span>
+                                </CellTemplate>
+                             </DataTableColumn>
 
-                                <DataTableColumn TItem="AuditLogDto" Title="Status" Width="100px">
-                                    <CellTemplate>
-                                        @if (string.IsNullOrEmpty(context.Exceptions))
-                                        {
-                                            <StatusBadge Status="CGeneralStatus.Success">Success</StatusBadge>
-                                        }
-                                        else
-                                        {
-                                            <StatusBadge Status="CGeneralStatus.Error">Error</StatusBadge>
-                                        }
-                                    </CellTemplate>
-                                </DataTableColumn>
+                            <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Status")" Width="100px">
+                                <CellTemplate>
+                                    @if (string.IsNullOrEmpty(context.Exceptions))
+                                    {
+                                        <StatusBadge Status="CGeneralStatus.Success" Style="min-width: 65px; justify-content: center;">@L("Common.Yes")</StatusBadge>
+                                    }
+                                    else
+                                    {
+                                        <StatusBadge Status="CGeneralStatus.Error" Style="min-width: 65px; justify-content: center;">@L("Common.No")</StatusBadge>
+                                    }
+                                </CellTemplate>
+                            </DataTableColumn>
 
-                                <DataTableColumn TItem="AuditLogDto" Title="" Width="50px" Alignment="ColumnAlignment.Right">
-                                    <CellTemplate>
-                                        <button class="btn btn-sm btn-link p-0" @onclick="() => ViewDetails(context)">
-                                            <i class="bi bi-info-circle"></i>
-                                        </button>
-                                    </CellTemplate>
-                                </DataTableColumn>
-                            </ChildContent>
-                        </DataTable>
-                    </div>
+                            <DataTableColumn TItem="AuditLogDto" Title="@L("Common.Operations")" Width="50px"
+                                             Alignment="ColumnAlignment.Right">
+                                <CellTemplate>
+                                    <button class="btn btn-sm btn-link p-0" @onclick="() => ViewDetails(context)"
+                                            title="@L("Common.ViewDetails")">
+                                        <i class="bi bi-info-circle"></i>
+                                    </button>
+                                </CellTemplate>
+                            </DataTableColumn>
+                        </ChildContent>
+                    </DataTable>
                 </div>
             </div>
+        </div>
 
 @code {
     [Inject] private IAuditLogAppService AuditLogService { get; set; } = default!;

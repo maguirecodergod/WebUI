@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Shared.Models.StatusBadge;
 using System.Reflection;
 using System.Collections.Concurrent;
+using LHA.BlazorWasm.Shared.Helpers;
 
 namespace LHA.BlazorWasm.Components.Badges;
 
@@ -13,8 +14,10 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
 
     [Parameter] public string? Class { get; set; }
 
+    [Parameter] public string? Style { get; set; }
+
     [Parameter] public bool? IsPill { get; set; }
-    
+
     [Parameter] public bool? IsPulse { get; set; }
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -34,14 +37,27 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
     private StatusBadgeMetadata ResolveMetadata(TEnum value)
     {
         var metadata = new StatusBadgeMetadata();
-        
-        // 1. Check for StatusBadgeAttribute
+
         var memInfo = typeof(TEnum).GetMember(value.ToString());
         var attribute = memInfo.Length > 0 ? memInfo[0].GetCustomAttribute<StatusBadgeAttribute>() : null;
 
         if (attribute != null)
         {
-            metadata.Style = attribute.Style;
+            // Ưu tiên Style override
+            if (attribute.Style.HasValue)
+            {
+                metadata.Style = attribute.Style.Value;
+            }
+            // Nếu không có → dùng Semantic
+            else if (attribute.Semantic.HasValue)
+            {
+                metadata.Style = attribute.Semantic.Value.ToStyle();
+            }
+            else
+            {
+                metadata.Style = CBadgeStyle.Secondary;
+            }
+
             metadata.Variant = attribute.Variant;
             metadata.Icon = attribute.Icon;
             metadata.IsPulse = attribute.IsPulse;
@@ -50,30 +66,22 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
         }
         else
         {
-            // 2. Fallback to convention
-            var name = value.ToString().ToLower();
-            if (name.Contains("success") || name.Contains("paid") || name.Contains("completed") || name.Contains("active"))
+            // fallback thông minh hơn
+            var intValue = Convert.ToInt32(value);
+
+            metadata.Style = intValue switch
             {
-                metadata.Style = CBadgeStyle.Success;
-                metadata.Variant = CBadgeVariant.Soft;
-            }
-            else if (name.Contains("error") || name.Contains("fail") || name.Contains("cancel") || name.Contains("deleted"))
-            {
-                metadata.Style = CBadgeStyle.Danger;
-                metadata.Variant = CBadgeVariant.Soft;
-            }
-            else if (name.Contains("pending") || name.Contains("warning") || name.Contains("processing"))
-            {
-                metadata.Style = CBadgeStyle.Warning;
-                metadata.Variant = CBadgeVariant.Soft;
-            }
-            else
-            {
-                metadata.Style = CBadgeStyle.Secondary;
-            }
+                >= 100 and < 200 => CBadgeSemantic.Http1xx.ToStyle(),
+                >= 200 and < 300 => CBadgeSemantic.Http2xx.ToStyle(),
+                >= 300 and < 400 => CBadgeSemantic.Http3xx.ToStyle(),
+                >= 400 and < 500 => CBadgeSemantic.Http4xx.ToStyle(),
+                >= 500 => CBadgeSemantic.Http5xx.ToStyle(),
+                _ => CBadgeStyle.Muted
+            };
+
+            metadata.Variant = CBadgeVariant.Soft;
         }
 
-        // 3. Localization
         metadata.Text = L(value.ToString());
 
         return metadata;
@@ -92,8 +100,8 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
             _ => GetSolidClass(_metadata.Style)
         };
 
-        var pillClass = (IsPill ?? _metadata.IsPill) ? "rounded-pill" : "";
-        var pulseClass = (IsPulse ?? _metadata.IsPulse) ? "status-pulse" : "";
+        var pillClass = (IsPill ?? _metadata.IsPill) ? "rounded-pill" : string.Empty;
+        var pulseClass = (IsPulse ?? _metadata.IsPulse) ? "status-pulse" : string.Empty;
 
         return $"badge {variantClass} {pillClass} {pulseClass} {_metadata.CustomClass} {Class}".Trim();
     }
@@ -102,6 +110,7 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
     {
         return style switch
         {
+            // Core palette
             CBadgeStyle.Primary => "bg-primary",
             CBadgeStyle.Secondary => "bg-secondary",
             CBadgeStyle.Success => "bg-success",
@@ -110,8 +119,24 @@ public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct,
             CBadgeStyle.Info => "bg-info text-dark",
             CBadgeStyle.Light => "bg-light text-dark",
             CBadgeStyle.Dark => "bg-dark",
+
+            // Extended palette
+            CBadgeStyle.Purple => "bg-purple text-white",
+            CBadgeStyle.Pink => "bg-pink text-white",
+            CBadgeStyle.Orange => "bg-orange text-white",
+            CBadgeStyle.Teal => "bg-teal text-white",
+            CBadgeStyle.Indigo => "bg-indigo text-white",
+            CBadgeStyle.Cyan => "bg-cyan text-dark",
+            CBadgeStyle.Lime => "bg-lime text-dark",
+            CBadgeStyle.Amber => "bg-amber text-dark",
+            CBadgeStyle.Slate => "bg-slate text-white",
+
+            // Neutral
+            CBadgeStyle.Muted => "bg-secondary text-white",
+            CBadgeStyle.Subtle => "bg-light text-muted",
+            CBadgeStyle.Contrast => "bg-dark text-white",
+
             _ => "bg-secondary"
         };
     }
 }
-

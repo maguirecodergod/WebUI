@@ -1,0 +1,53 @@
+.filter-panel-glass {
+    background: var(--dt-bg);
+    border: 1px solid var(--dt-border) !important;
+}
+
+.form-select-replica {
+    border: 1px solid var(--dt-input-border, #e2e8f0);
+    border-radius: 8px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.875rem;
+    background-color: var(--dt-input-bg, #fff);
+    color: var(--dt-text-primary);
+    transition: border-color 0.2s;
+}
+
+.form-select-replica:focus {
+    border-color: var(--dt-accent);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+    outline: none;
+}
+
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+    background: var(--dt-accent-glow);
+    color: var(--dt-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.btn-icon-replica {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dt-card-bg);
+    border: 1px solid var(--dt-border-color);
+    border-radius: 8px;
+    color: var(--dt-text-secondary);
+    transition: all 0.2s;
+}
+
+.btn-icon-replica:hover {
+    background: var(--dt-row-hover);
+    color: var(--dt-accent);
+    border-color: var(--dt-accent-glow);
+}

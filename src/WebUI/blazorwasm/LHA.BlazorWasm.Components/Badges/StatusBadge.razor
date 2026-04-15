@@ -1,23 +1,44 @@
+@using LHA.BlazorWasm.Components.Tooltip
 @typeparam TEnum where TEnum : struct, Enum
 
 @if (_metadata != null)
 {
-    <span class="@GetBadgeClass()" 
-          title="@_metadata.Tooltip" 
-          data-bs-toggle="@(string.IsNullOrEmpty(_metadata.Tooltip) ? "" : "tooltip")">
-        
-        @if (!string.IsNullOrEmpty(_metadata.Icon))
-        {
-            <i class="@_metadata.Icon me-1"></i>
-        }
+    @if (!string.IsNullOrEmpty(_metadata.Tooltip))
+    {
+        <Tooltip Text="@L($"{_metadata.Tooltip}")">
+            <span class="@GetBadgeClass()" style="@Style">
+                @if (!string.IsNullOrEmpty(_metadata.Icon))
+                {
+                    <i class="@_metadata.Icon me-1"></i>
+                }
 
-        @if (ChildContent != null)
-        {
-            @ChildContent
-        }
-        else
-        {
-            @(_metadata.Text ?? Status.ToString())
-        }
-    </span>
+                @if (ChildContent != null)
+                {
+                    @ChildContent
+                }
+                else
+                {
+                    @(_metadata.Text ?? Status.ToString())
+                }
+            </span>
+        </Tooltip>
+    }
+    else
+    {
+        <span class="@GetBadgeClass()" style="@Style">
+            @if (!string.IsNullOrEmpty(_metadata.Icon))
+            {
+                <i class="@_metadata.Icon me-1"></i>
+            }
+
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+            else
+            {
+                @(_metadata.Text ?? Status.ToString())
+            }
+        </span>
+    }
 }

@@ -95,7 +95,7 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
             {
                 // Only overwrite if it was 200/null (indicating no exception guessed it yet)
                 // or if the response actually has a real status code set by another middleware
-                if (log.HttpStatusCode is null or 200 && context.Response.StatusCode != 200)
+                if (log.HttpStatusCode is null)
                 {
                     log.HttpStatusCode = context.Response.StatusCode;
                 }
