@@ -451,10 +451,10 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
                 return await _permissionStore.GetAllPermissionsAsync(ct);
             }
 
-            // Tenant Admin gets all permissions (scoped to their tenant)
+            // Tenant Admin gets all tenant-scoped permissions (excludes host-only like tenant CRUD)
             if (roleNames.Contains(TenantAdminRole))
             {
-                return await _permissionStore.GetAllPermissionsAsync(ct);
+                return await _permissionStore.GetTenantPermissionsAsync(ct);
             }
 
             // 1. Role-based grants (ProviderName="R", ProviderKey=roleId)

@@ -1,162 +1,280 @@
 @page "/host/audit-logs"
 @namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 @inherits LhaComponentBase
+@using LHA.BlazorWasm.Components.Badges
+@using LHA.BlazorWasm.Components.Buttons
+@using LHA.BlazorWasm.Components.Form
+@using LHA.BlazorWasm.Components.Pickers.Core
+@using LHA.BlazorWasm.Components.Pickers.DateTimeRangePicker
+@using LHA.BlazorWasm.Components.Select
+@using LHA.BlazorWasm.Components.Table
+@using Microsoft.JSInterop
 
-<PageTitle>Audit Trails</PageTitle>
+<PageTitle>@L("AuditLog.PageTitle")</PageTitle>
 
 <div class="audit-log-page container-fluid p-4">
     @* Page Header *@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h4 mb-1 fw-bold" style="color: var(--dt-text-primary, inherit);">Audit Trails</h1>
-            <div class="small" style="color: var(--dt-text-secondary, inherit); opacity: 0.8;">Monitor and inspect
-                system-wide activity logs.</div>
-            </div>
-            <div class="d-flex gap-2">
-                <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Medium" OnClick="RefreshAsync">
-                    <i class="bi bi-arrow-clockwise me-1"></i> Refresh
-                </Button>
-                <Button Style="CButtonStyle.Danger" Size="CButtonSize.Medium" OnClick="ShowDeleteDialog">
-                    <i class="bi bi-trash me-1"></i> Purge Logs
-                </Button>
-            </div>
+            <h1 class="h4 mb-1 fw-bold" style="color: var(--dt-text-primary);">@L("AuditLog.Title")</h1>
+            <div class="small" style="color: var(--dt-text-secondary); opacity: 0.8;">@L("AuditLog.Subtitle")</div>
         </div>
+        <div class="d-flex gap-2">
+            <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Medium" OnClick="RefreshAsync">
+                <i class="bi bi-arrow-clockwise me-1"></i> @L("Common.Refresh")
+            </Button>
+            <Button Style="CButtonStyle.Danger" Size="CButtonSize.Medium" OnClick="ShowDeleteDialog">
+                <i class="bi bi-trash me-1"></i> @L("AuditLog.PurgeLogs")
+            </Button>
+        </div>
+    </div>
 
-        @* Data Table Card *@
-        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
-            <div class="card-body p-0">
-                <DataTable TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
-                           ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10" Searchable="true" ShowToolbar="true"
-                           SelectionMode="SelectionMode.Multiple" KeySelector="@(x => x.Id)" TableId="@DataTableIds.AuditLogs">
 
-                    <ToolbarTemplate>
-                        <div class="small py-2 px-1" style="color: var(--dt-text-secondary);">API: service.audit.lha.io
-                        </div>
-                    </ToolbarTemplate>
 
-                    <ChildContent>
-                        <DataTableColumn TItem="AuditLogDto" Title="Identity (ID)" Width="100px" Sortable Filterable
-                                         Property="@(x => x.Id)">
-                            <CellTemplate>
-                                <span class="fw-bold font-monospace small"
-                                      style="color: var(--dt-accent);">@context.Id.ToString()[..8]...</span>
-                            </CellTemplate>
-                        </DataTableColumn>
+    @* Data Table Card *@
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="card-body p-0">
+            <DataTable TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
+                       ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10" Searchable="false" ShowToolbar="true"
+                       SelectionMode="SelectionMode.Multiple" KeySelector="@(x => x.Id)" TableId="@DataTableIds.AuditLogs">
 
-                        <DataTableColumn TItem="AuditLogDto" Title="User ID" Width="100px" Sortable Filterable
-                                         Property="@(x => x.UserId)">
-                            <CellTemplate>
-                                <span class="small" style="color: var(--dt-text-muted);">@(context.UserId?.ToString()[..4]
-                                                                    ?? "ANON")</span>
-                                </CellTemplate>
-                            </DataTableColumn>
+                <ToolbarTemplate>
+                    <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom" 
+                         style="background: transparent; border-color: var(--dt-border-color) !important;">
+                         <div class="small d-flex align-items-center gap-2" style="color: var(--dt-text-secondary);">
+                            <span>@L("AuditLog.TraceSource"):</span>
+                            <span class="badge" style="background: var(--dt-accent-soft); color: var(--dt-accent);">service.identity.lha.io</span>
+                         </div>
+                         <div class="d-flex gap-2 align-items-center">
+                             <CInput TValue="string" @bind-Value="_input.SearchQuery" Placeholder="@L("Common.GlobalSearch")" Size="CInputSize.Small" Style="width: 250px;">
+                                 <IconLeft><i class="bi bi-search"></i></IconLeft>
+                             </CInput>
+                         </div>
+                    </div>
+                </ToolbarTemplate>
 
-                            <DataTableColumn TItem="AuditLogDto" Title="Operation (Path)" Width="auto" Sortable Filterable
-                                             Property="@(x => x.Url)">
-                                <CellTemplate>
-                                    <div class="fw-bold small" style="color: var(--dt-text-primary);">@context.Url</div>
-                                </CellTemplate>
-                            </DataTableColumn>
+                <ChildContent>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Id")" Width="120px" Sortable
+                                     Property="@(x => x.Id)">
+                        <CellTemplate>
+                            <span class="fw-bold font-monospace small"
+                                  style="color: var(--dt-accent);">@context.Id.ToString()[..8]...</span>
+                        </CellTemplate>
+                    </DataTableColumn>
 
-                            <DataTableColumn TItem="AuditLogDto" Title="Service & Action" Width="auto">
-                                <CellTemplate>
-                                    <div>
-                                        <div class="fw-bold small" style="color: var(--dt-text-primary);">@(context.ServiceName ?? "N/A")</div>
-                                        <div class="small" style="color: var(--dt-text-secondary);">@(context.MethodName ?? context.ActionName ?? "N/A")</div>
-                                    </div>
-                                </CellTemplate>
-                            </DataTableColumn>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ExecutionTime")" Width="180px" Sortable Filterable
+                                     Property="@(x => x.ExecutionTime)">
+                        <CellTemplate>
+                            <div class="small fw-semibold" style="color: var(--dt-text-primary);">@context.ExecutionTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</div>
+                            <div class="small" style="color: var(--dt-text-muted);">@context.ExecutionTime.ToLocalTime().ToString("dddd")</div>
+                        </CellTemplate>
+                        <FilterTemplate>
+                            <div class="p-2" style="min-width: 320px;">
+                                <DateTimeRangePicker TInner="DateTimeOffset" @bind-Value="_executionTimeRange" Placeholder="@L("AuditLog.SelectDateRange")" ShowClear />
+                            </div>
+                        </FilterTemplate>
+                    </DataTableColumn>
 
-                            <DataTableColumn TItem="AuditLogDto" Title="User Name" Width="180px" Sortable Filterable
-                                             Property="@(x => x.UserName)">
-                                <CellTemplate>
-                                    <div class="small" style="color: var(--dt-text-secondary);">@context.UserName</div>
-                                </CellTemplate>
-                            </DataTableColumn>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ApplicationName")" Width="140px" Sortable Filterable
+                                     Property="@(x => x.ApplicationName)">
+                        <FilterTemplate>
+                             <CInput TValue="string" @bind-Value="_input.ApplicationName" Placeholder="@L("AuditLog.ApplicationName")" Clearable />
+                        </FilterTemplate>
+                    </DataTableColumn>
 
-                            <DataTableColumn TItem="AuditLogDto" Title="Summary Preview" Width="auto">
-                                <CellTemplate>
-                                    <div class="text-truncate small" style="max-width: 300px; color: var(--dt-text-muted);">
-                                        @(string.IsNullOrEmpty(context.Exceptions) ? "Transaction completed successfully..." :
-                                        context.Exceptions)
-                                    </div>
-                                </CellTemplate>
-                            </DataTableColumn>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.HttpMethod")" Width="90px" Sortable Filterable
+                                     Property="@(x => x.HttpMethod)">
+                         <CellTemplate>
+                            <StatusBadge Status="@GetMethodEnum(context.HttpMethod)" IsPill="false">
+                                @context.HttpMethod
+                            </StatusBadge>
+                         </CellTemplate>
+                         <FilterTemplate>
+                             <Select TValue="string" @bind-Value="_input.HttpMethod" Options="_httpMethodOptions" Placeholder="@L("Common.All")" ShowClear />
+                         </FilterTemplate>
+                    </DataTableColumn>
 
-                            <DataTableColumn TItem="AuditLogDto" Title="Operation" Width="100px"
-                                             Alignment="ColumnAlignment.Right">
-                                <CellTemplate>
-                                    <div class="d-flex justify-content-end gap-1">
-                                        <button class="btn btn-sm btn-icon-replica" @onclick="() => ViewDetails(context)"
-                                                @onclick:stopPropagation>
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-icon-replica">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </button>
-                                    </div>
-                                </CellTemplate>
-                            </DataTableColumn>
-                        </ChildContent>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Url")" Width="auto" Sortable Filterable
+                                     Property="@(x => x.Url)">
+                        <FilterTemplate>
+                             <CInput TValue="string" @bind-Value="_input.Url" Placeholder="@L("AuditLog.Url")" Clearable />
+                        </FilterTemplate>
+                        <CellTemplate>
+                            <div class="fw-bold small text-truncate" style="max-width: 300px; color: var(--dt-text-primary);" title="@context.Url">@context.Url</div>
+                        </CellTemplate>
+                    </DataTableColumn>
 
-                        <ExpandedRowTemplate>
-                            <div class="p-4" style="background: var(--dt-sidebar-bg);">
-                                <h6 class="fw-bold mb-3" style="color: var(--dt-text-primary);">Resource Trace (@context.Id)
-                                </h6>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label class="small d-block" style="color: var(--dt-text-muted);">IP Address</label>
-                                        <span style="color: var(--dt-text-secondary);">@context.ClientIpAddress</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="small d-block" style="color: var(--dt-text-muted);">Browser Info</label>
-                                        <span class="small" style="color: var(--dt-text-secondary);">@context.BrowserInfo</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="small d-block" style="color: var(--dt-text-muted);">Execution Time</label>
-                                        <span
-                                        style="color: var(--dt-text-secondary);">@context.ExecutionTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
-                                    </div>
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.User")" Width="180px" Sortable Filterable
+                                     Property="@(x => x.UserName)">
+                        <FilterTemplate>
+                             <CInput TValue="string" @bind-Value="_input.UserName" Placeholder="@L("AuditLog.UserName")" Clearable />
+                        </FilterTemplate>
+                        <CellTemplate>
+                           @* ... User cell template existing ... *@
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar-sm">@context.UserName?[..1].ToUpper()</div>
+                                <div>
+                                    <div class="fw-bold small" style="color: var(--dt-text-primary);">@(context.UserName ?? L("AuditLog.Anonymous"))</div>
+                                    <div class="small" style="color: var(--dt-text-muted);">@context.ClientIpAddress</div>
                                 </div>
                             </div>
-                        </ExpandedRowTemplate>
-                    </DataTable>
-                </div>
-            </div>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Status")" Width="110px" Sortable Filterable
+                                     Property="@(x => x.HttpStatusCode)">
+                        <FilterTemplate>
+                             <div class="d-flex gap-2">
+                                 <CInput TValue="int?" @bind-Value="_input.MinStatusCode" Type="number" Placeholder="Min" />
+                                 <CInput TValue="int?" @bind-Value="_input.MaxStatusCode" Type="number" Placeholder="Max" />
+                             </div>
+                        </FilterTemplate>
+                        <CellTemplate>
+                            <StatusBadge Status="@GetStatusEnum(context.HttpStatusCode)">
+                                @context.HttpStatusCode
+                            </StatusBadge>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Duration")" Width="100px" Sortable Filterable
+                                     Property="@(x => x.ExecutionDuration)">
+                         <FilterTemplate>
+                             <div class="d-flex gap-2">
+                                 <CInput TValue="int?" @bind-Value="_input.MinExecutionDuration" Type="number" Placeholder="Min" />
+                                 <CInput TValue="int?" @bind-Value="_input.MaxExecutionDuration" Type="number" Placeholder="Max" />
+                             </div>
+                         </FilterTemplate>
+                         <CellTemplate>
+                             <div class="small text-center" style="color: var(--dt-text-muted);">@context.ExecutionDuration ms</div>
+                         </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ExtraFilters")" Filterable Visible="false">
+                        <FilterTemplate>
+                            <div class="d-flex flex-column gap-3 mt-2">
+                                <FormField Label="@L("AuditLog.CorrelationId")">
+                                    <CInput TValue="string" @bind-Value="_input.CorrelationId" Placeholder="Correlation ID" Clearable />
+                                </FormField>
+                                <FormField Label="@L("AuditLog.ErrorsOnly")">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <Switch @bind-Value="_input.HasException" Size="CSwitchSize.Small" />
+                                        <span class="small text-muted">@L("AuditLog.OnlyExceptions")</span>
+                                    </div>
+                                </FormField>
+                            </div>
+                        </FilterTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="AuditLogDto" Title="@L("Common.Operations")" Width="100px"
+                                     Alignment="ColumnAlignment.Right">
+                        <CellTemplate>
+                            <div class="d-flex justify-content-end gap-1">
+                                <button class="btn btn-sm btn-icon-replica" @onclick="() => ViewDetails(context)"
+                                        title="@L("Common.ViewDetails")" @onclick:stopPropagation>
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </CellTemplate>
+                    </DataTableColumn>
+                </ChildContent>
+
+                <ExpandedRowTemplate>
+                    <div class="p-4" style="background: var(--dt-card-bg-secondary, #fafafa); border-top: 1px solid var(--dt-border-color);">
+                        <h6 class="fw-bold mb-3" style="color: var(--dt-text-primary);">@L("AuditLog.ResourceTrace") (@context.Id)</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="small d-block" style="color: var(--dt-text-muted);">@L("AuditLog.ClientIp")</label>
+                                <span style="color: var(--dt-text-secondary);">@context.ClientIpAddress</span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="small d-block" style="color: var(--dt-text-muted);">@L("AuditLog.Browser")</label>
+                                <span class="small" style="color: var(--dt-text-secondary);">@context.BrowserInfo</span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="small d-block" style="color: var(--dt-text-muted);">@L("AuditLog.FullDate")</label>
+                                <span style="color: var(--dt-text-secondary);">@context.ExecutionTime.ToLocalTime().ToString("F")</span>
+                            </div>
+                        </div>
+                    </div>
+                </ExpandedRowTemplate>
+            </DataTable>
         </div>
+    </div>
+</div>
 
-        <style>
-            .btn-icon-replica {
-                width: 30px;
-                height: 30px;
-                padding: 0;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                background: #fff;
-                border: 1px solid #e2e8f0;
-                border-radius: 6px;
-                color: #64748b;
-                transition: all 0.2s;
-            }
+<style>
+    .filter-panel-glass {
+        background: var(--dt-card-bg, #fff);
+        border: 1px solid var(--dt-border-color) !important;
+    }
+    .form-select-replica {
+        border: 1px solid var(--dt-input-border, #e2e8f0);
+        border-radius: 8px;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.875rem;
+        background-color: var(--dt-input-bg, #fff);
+        color: var(--dt-text-primary);
+        transition: border-color 0.2s;
+    }
+    .form-select-replica:focus {
+        border-color: var(--dt-accent);
+        box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        outline: none;
+    }
+    .avatar-sm {
+        width: 32px;
+        height: 32px;
+        background: var(--dt-accent-soft, #eef2ff);
+        color: var(--dt-accent, #4f46e5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.75rem;
+    }
+    
+    .btn-icon-replica {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--dt-card-bg);
+        border: 1px solid var(--dt-border-color);
+        border-radius: 8px;
+        color: var(--dt-text-secondary);
+        transition: all 0.2s;
+    }
 
-            .btn-icon-replica:hover {
-                background: #f8fafc;
-                color: #4f46e5;
-                border-color: #cbd5e1;
-            }
-        </style>
+    .btn-icon-replica:hover {
+        background: var(--dt-sidebar-bg-hover, #f8fafc);
+        color: var(--dt-accent);
+        border-color: var(--dt-accent-soft);
+    }
+</style>
 
 @code {
     [Inject] private IAuditLogAppService AuditLogService { get; set; } = default!;
     private List<AuditLogDto> _logs = new();
+    private long _totalCount;
+    private DateRange<DateTimeOffset> _executionTimeRange = new();
+
+    private List<SelectOption<string>> _httpMethodOptions = new()
+    {
+        new () { Value = "GET", Label = "GET" },
+        new () { Value = "POST", Label = "POST" },
+        new () { Value = "PUT", Label = "PUT" },
+        new () { Value = "DELETE", Label = "DELETE" }
+    };
+
     private GetAuditLogsInput _input = new()
     {
         PageSize = 10,
         SorterKey = nameof(AuditLogDto.ExecutionTime),
         SorterIsAsc = false
     };
-    private long _totalCount;
 
     protected override async Task OnInitializedAsync()
     {
@@ -167,13 +285,16 @@
     {
         try
         {
+            _input.StartTime = _executionTimeRange.Start;
+            _input.EndTime = _executionTimeRange.End;
+
             var result = await AuditLogService.GetListAsync(_input);
             _logs = result.Items.ToList();
             _totalCount = result.TotalCount;
         }
         catch (Exception ex)
         {
-            ToastNotification.Error("Error: " + ex.Message);
+            ToastNotification.Error(L("AuditLog.LoadError") + ": " + ex.Message);
         }
     }
 
@@ -181,12 +302,37 @@
     {
         _input.PageNumber = request.PageNumber;
         _input.PageSize = request.PageSize;
-        // Search & Filter could be mapped here too
+        
+        // Map global search term
+        _input.SearchQuery = string.IsNullOrEmpty(request.SearchTerm) ? null : request.SearchTerm;
+
+        // Note: Sidebar filters are already bound to _input via @bind-Value in FilterTemplates.
         await LoadLogsAsync();
         return new DataTableResponse<AuditLogDto> { Items = _logs, TotalCount = (int)_totalCount };
     }
 
     private async Task RefreshAsync() => await LoadLogsAsync();
+
+    // Internal Enums for StatusBadge mapping
+    public enum AuditMethod { GET, POST, PUT, DELETE, Other }
+    public enum AuditStatus { Success, Warning, Error, Processing }
+
+    private AuditMethod GetMethodEnum(string? method) => method?.ToUpper() switch
+    {
+        "GET" => AuditMethod.GET,
+        "POST" => AuditMethod.POST,
+        "PUT" => AuditMethod.PUT,
+        "DELETE" => AuditMethod.DELETE,
+        _ => AuditMethod.Other
+    };
+
+    private AuditStatus GetStatusEnum(int? code) => code switch
+    {
+        >= 200 and < 300 => AuditStatus.Success,
+        >= 400 and < 500 => AuditStatus.Warning,
+        >= 500 => AuditStatus.Error,
+        _ => AuditStatus.Processing
+    };
 
     private void ViewDetails(AuditLogDto log)
     {
@@ -195,7 +341,7 @@
 
     private async Task ShowDeleteDialog()
     {
-        if (await JS.InvokeAsync<bool>("confirm", "Confirm log purge?"))
+        if (await JS.InvokeAsync<bool>("confirm", L("AuditLog.PurgeConfirm")))
         {
             // Purge
         }

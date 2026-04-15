@@ -38,11 +38,21 @@ public interface IUserTenantLookupService
 }
 
 /// <summary>
-/// Abstraction to fetch all available permissions from Permission module.
+/// Abstraction to fetch available permissions from Permission module.
 /// </summary>
 public interface IPermissionStore
 {
+    /// <summary>
+    /// Gets all permission names (no multi-tenancy filtering).
+    /// Intended for SystemSuperAdmin (Host).
+    /// </summary>
     Task<List<string>> GetAllPermissionsAsync(CancellationToken ct = default);
+
+    /// <summary>
+    /// Gets permission names available for tenant users.
+    /// Excludes host-only permissions (e.g., tenant management CRUD).
+    /// </summary>
+    Task<List<string>> GetTenantPermissionsAsync(CancellationToken ct = default);
 }
 
 /// <summary>

@@ -2,6 +2,7 @@ using LHA.Identity.Domain;
 using LHA.TenantManagement.Domain;
 using Microsoft.Extensions.DependencyInjection;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.Shared;
 using LHA.Shared.Domain.TenantManagement;
 
 namespace LHA.Account.Application;
@@ -71,5 +72,15 @@ public sealed class AccountPermissionStore : IPermissionStore
 
         var all = await repo.GetListAsync(cancellationToken: ct);
         return all.ConvertAll(p => p.Name);
+    }
+
+    public async Task<List<string>> GetTenantPermissionsAsync(CancellationToken ct = default)
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var repo = scope.ServiceProvider.GetRequiredService<IPermissionDefinitionRepository>();
+
+        var tenantPermissions = await repo.GetListByMultiTenancySideAsync(
+            MultiTenancySides.Tenant, ct);
+        return tenantPermissions.ConvertAll(p => p.Name);
     }
 }

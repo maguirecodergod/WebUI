@@ -5,6 +5,7 @@ using LHA.PermissionManagement.Domain;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
 using LHA.PermissionManagement.Domain.PermissionGroups;
 using LHA.PermissionManagement.Domain.PermissionTemplates;
+using LHA.PermissionManagement.Domain.Shared;
 using LHA.PermissionManagement.EntityFrameworkCore;
 using LHA.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -92,7 +93,7 @@ using (var seedScope = host.Services.CreateScope())
         }
     }
 
-    // Seed tenant management permissions
+    // Seed tenant management permissions (Host-only: not available to tenant users)
     var tenantPermissions = new (string Name, string DisplayName, string GroupName)[]
     {
         ("tenants.read", "View Tenants", "TenantManagement"),
@@ -107,13 +108,21 @@ using (var seedScope = host.Services.CreateScope())
         if (existing is null)
         {
             var def = new PermissionDefinitionEntity(
-                Guid.NewGuid(), name, displayName, "TenantManagement", groupName, null);
+                Guid.NewGuid(), name, displayName, "TenantManagement", groupName, null,
+                multiTenancySide: MultiTenancySides.Host);
             await defRepo.InsertAsync(def);
             defEntities.Add(def);
-            logger.LogInformation("Permission '{Name}' created.", name);
+            logger.LogInformation("Permission '{Name}' created (Host-only).", name);
         }
         else
         {
+            // Fix existing records: ensure tenant management permissions are Host-only
+            if (existing.MultiTenancySide != MultiTenancySides.Host)
+            {
+                existing.SetMultiTenancySide(MultiTenancySides.Host);
+                await defRepo.UpdateAsync(existing);
+                logger.LogInformation("Permission '{Name}' updated to Host-only.", name);
+            }
             defEntities.Add(existing);
         }
     }

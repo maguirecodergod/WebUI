@@ -17,6 +17,7 @@ using LHA.DistributedLocking;
 using LHA.PermissionManagement.Domain.PermissionTemplates;
 using LHA.PermissionManagement.Domain.PermissionGroups;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
+using LHA.PermissionManagement.Domain.Shared;
 using LHA.Localization;
 using LHA.Identity.Domain.Shared.Localization;
 using LHA.Account.Domain.Shared.Localization;
@@ -188,53 +189,60 @@ using (var scope = host.Services.CreateScope())
     using (var uow = uowManager.Begin(isTransactional: true))
     {
         // ── All permission definitions ───────────────────────────
-        var allPermissions = new (string Name, string DisplayName, string Service, string GroupName)[]
+        var allPermissions = new (string Name, string DisplayName, string Service, string GroupName, MultiTenancySides Side)[]
         {
             // Identity — Users
-            (AccountPermissions.UserManagement.Read,         AccountPermissions.UserManagement.L.Read,         "Identity", AccountPermissions.UserManagement.GroupName),
-            (AccountPermissions.UserManagement.Create,       AccountPermissions.UserManagement.L.Create,       "Identity", AccountPermissions.UserManagement.GroupName),
-            (AccountPermissions.UserManagement.Update,       AccountPermissions.UserManagement.L.Update,       "Identity", AccountPermissions.UserManagement.GroupName),
-            (AccountPermissions.UserManagement.Delete,       AccountPermissions.UserManagement.L.Delete,       "Identity", AccountPermissions.UserManagement.GroupName),
+            (AccountPermissions.UserManagement.Read,         AccountPermissions.UserManagement.L.Read,         "Identity", AccountPermissions.UserManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.UserManagement.Create,       AccountPermissions.UserManagement.L.Create,       "Identity", AccountPermissions.UserManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.UserManagement.Update,       AccountPermissions.UserManagement.L.Update,       "Identity", AccountPermissions.UserManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.UserManagement.Delete,       AccountPermissions.UserManagement.L.Delete,       "Identity", AccountPermissions.UserManagement.GroupName, MultiTenancySides.Both),
             // Identity — Roles
-            (AccountPermissions.RoleManagement.Read,         AccountPermissions.RoleManagement.L.Read,         "Identity", AccountPermissions.RoleManagement.GroupName),
-            (AccountPermissions.RoleManagement.Create,       AccountPermissions.RoleManagement.L.Create,       "Identity", AccountPermissions.RoleManagement.GroupName),
-            (AccountPermissions.RoleManagement.Update,       AccountPermissions.RoleManagement.L.Update,       "Identity", AccountPermissions.RoleManagement.GroupName),
-            (AccountPermissions.RoleManagement.Delete,       AccountPermissions.RoleManagement.L.Delete,       "Identity", AccountPermissions.RoleManagement.GroupName),
+            (AccountPermissions.RoleManagement.Read,         AccountPermissions.RoleManagement.L.Read,         "Identity", AccountPermissions.RoleManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.RoleManagement.Create,       AccountPermissions.RoleManagement.L.Create,       "Identity", AccountPermissions.RoleManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.RoleManagement.Update,       AccountPermissions.RoleManagement.L.Update,       "Identity", AccountPermissions.RoleManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.RoleManagement.Delete,       AccountPermissions.RoleManagement.L.Delete,       "Identity", AccountPermissions.RoleManagement.GroupName, MultiTenancySides.Both),
             // Identity — Claim Types
-            (AccountPermissions.ClaimTypeManagement.Read,   AccountPermissions.ClaimTypeManagement.L.Read,   "Identity", AccountPermissions.ClaimTypeManagement.GroupName),
-            (AccountPermissions.ClaimTypeManagement.Create, AccountPermissions.ClaimTypeManagement.L.Create, "Identity", AccountPermissions.ClaimTypeManagement.GroupName),
-            (AccountPermissions.ClaimTypeManagement.Update, AccountPermissions.ClaimTypeManagement.L.Update, "Identity", AccountPermissions.ClaimTypeManagement.GroupName),
-            (AccountPermissions.ClaimTypeManagement.Delete, AccountPermissions.ClaimTypeManagement.L.Delete, "Identity", AccountPermissions.ClaimTypeManagement.GroupName),
+            (AccountPermissions.ClaimTypeManagement.Read,   AccountPermissions.ClaimTypeManagement.L.Read,   "Identity", AccountPermissions.ClaimTypeManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.ClaimTypeManagement.Create, AccountPermissions.ClaimTypeManagement.L.Create, "Identity", AccountPermissions.ClaimTypeManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.ClaimTypeManagement.Update, AccountPermissions.ClaimTypeManagement.L.Update, "Identity", AccountPermissions.ClaimTypeManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.ClaimTypeManagement.Delete, AccountPermissions.ClaimTypeManagement.L.Delete, "Identity", AccountPermissions.ClaimTypeManagement.GroupName, MultiTenancySides.Both),
             // Identity — Security Logs
-            (AccountPermissions.SecurityLogManagement.Read, AccountPermissions.SecurityLogManagement.L.Read, "Identity", AccountPermissions.SecurityLogManagement.GroupName),
-            // Tenant Management
-            (AccountPermissions.TenantManagement.Read,                AccountPermissions.TenantManagement.L.Read,       "TenantManagement", AccountPermissions.TenantManagement.GroupName),
-            (AccountPermissions.TenantManagement.Create,              AccountPermissions.TenantManagement.L.Create,     "TenantManagement", AccountPermissions.TenantManagement.GroupName),
-            (AccountPermissions.TenantManagement.Update,              AccountPermissions.TenantManagement.L.Update,     "TenantManagement", AccountPermissions.TenantManagement.GroupName),
-            (AccountPermissions.TenantManagement.Delete,              AccountPermissions.TenantManagement.L.Delete,     "TenantManagement", AccountPermissions.TenantManagement.GroupName),
+            (AccountPermissions.SecurityLogManagement.Read, AccountPermissions.SecurityLogManagement.L.Read, "Identity", AccountPermissions.SecurityLogManagement.GroupName, MultiTenancySides.Both),
+            // Tenant Management (Host Only)
+            (AccountPermissions.TenantManagement.Read,                AccountPermissions.TenantManagement.L.Read,       "TenantManagement", AccountPermissions.TenantManagement.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.TenantManagement.Create,              AccountPermissions.TenantManagement.L.Create,     "TenantManagement", AccountPermissions.TenantManagement.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.TenantManagement.Update,              AccountPermissions.TenantManagement.L.Update,     "TenantManagement", AccountPermissions.TenantManagement.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.TenantManagement.Delete,              AccountPermissions.TenantManagement.L.Delete,     "TenantManagement", AccountPermissions.TenantManagement.GroupName, MultiTenancySides.Host),
             // Audit Logs
-            (AccountPermissions.AuditLogManagement.Read,             AccountPermissions.AuditLogManagement.L.Read,    "AuditLog", AccountPermissions.AuditLogManagement.GroupName),
+            (AccountPermissions.AuditLogManagement.Read,             AccountPermissions.AuditLogManagement.L.Read,    "AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Both),
             // Permission Management
-            (AccountPermissions.PermissionMgmt.DefinitionsRead,   AccountPermissions.PermissionMgmt.L.DefinitionsRead,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
-            (AccountPermissions.PermissionMgmt.DefinitionsManage, AccountPermissions.PermissionMgmt.L.DefinitionsManage, "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
-            (AccountPermissions.PermissionMgmt.GroupsRead,        AccountPermissions.PermissionMgmt.L.GroupsRead,        "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
-            (AccountPermissions.PermissionMgmt.GroupsManage,      AccountPermissions.PermissionMgmt.L.GroupsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
-            (AccountPermissions.PermissionMgmt.TemplatesRead,     AccountPermissions.PermissionMgmt.L.TemplatesRead,     "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
-            (AccountPermissions.PermissionMgmt.TemplatesManage,   AccountPermissions.PermissionMgmt.L.TemplatesManage,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
-            (AccountPermissions.PermissionMgmt.GrantsRead,        AccountPermissions.PermissionMgmt.L.GrantsRead,        "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
-            (AccountPermissions.PermissionMgmt.GrantsManage,      AccountPermissions.PermissionMgmt.L.GrantsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName),
+            (AccountPermissions.PermissionMgmt.DefinitionsRead,   AccountPermissions.PermissionMgmt.L.DefinitionsRead,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.PermissionMgmt.DefinitionsManage, AccountPermissions.PermissionMgmt.L.DefinitionsManage, "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.PermissionMgmt.GroupsRead,        AccountPermissions.PermissionMgmt.L.GroupsRead,        "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.PermissionMgmt.GroupsManage,      AccountPermissions.PermissionMgmt.L.GroupsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.PermissionMgmt.TemplatesRead,     AccountPermissions.PermissionMgmt.L.TemplatesRead,     "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.PermissionMgmt.TemplatesManage,   AccountPermissions.PermissionMgmt.L.TemplatesManage,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.PermissionMgmt.GrantsRead,        AccountPermissions.PermissionMgmt.L.GrantsRead,        "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.PermissionMgmt.GrantsManage,      AccountPermissions.PermissionMgmt.L.GrantsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),
         };
 
         var defEntities = new List<PermissionDefinitionEntity>();
-        foreach (var (name, displayName, service, groupName) in allPermissions)
+        foreach (var (name, displayName, service, groupName, side) in allPermissions)
         {
             var def = await defRepo.FindByNameAsync(name);
             if (def is null)
             {
                 def = new PermissionDefinitionEntity(
-                    Guid.NewGuid(), name, displayName, service, groupName, null);
+                    Guid.NewGuid(), name, displayName, service, groupName, null,
+                    multiTenancySide: side);
                 await defRepo.InsertAsync(def);
-                logger.LogInformation("Permission '{Name}' created.", name);
+                logger.LogInformation("Permission '{Name}' created (Side: {Side}).", name, side);
+            }
+            else if (def.MultiTenancySide != side)
+            {
+                def.SetMultiTenancySide(side);
+                await defRepo.UpdateAsync(def);
+                logger.LogInformation("Permission '{Name}' updated to Side: {Side}.", name, side);
             }
             defEntities.Add(def);
         }
@@ -295,10 +303,13 @@ using (var scope = host.Services.CreateScope())
         logger.LogInformation("All permissions granted to 'SystemSuperAdmin' role.");
 
         // ── Grant specific permissions to the TenantAdmin role ──
-        // For simplicity, we grant all permissions now, but in a real app
-        // we might filter only tenant-applicable ones.
+        // Only grant permissions that belong to Tenant side (Both or Tenant)
         var tenantAdminRoleKey = tenantAdminRoleId.ToString();
-        foreach (var def in defEntities)
+        var tenantSidePermissions = defEntities
+            .Where(d => d.MultiTenancySide == MultiTenancySides.Both || d.MultiTenancySide == MultiTenancySides.Tenant)
+            .ToList();
+
+        foreach (var def in tenantSidePermissions)
         {
             var existing = await permGrantRepo.FindAsync(def.Name, "R", tenantAdminRoleKey);
             if (existing is null)
@@ -308,7 +319,7 @@ using (var scope = host.Services.CreateScope())
                 await permGrantRepo.InsertAsync(grant);
             }
         }
-        logger.LogInformation("All permissions granted to 'TenantAdmin' role.");
+        logger.LogInformation("Tenant-specific permissions granted to 'TenantAdmin' role.");
 
         await uow.CompleteAsync();
     }

@@ -1,6 +1,6 @@
 using LHA.AuditLog.Domain;
-using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
+using LHA.Shared.Domain.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.Account.EntityFrameworkCore.Repositories;
@@ -30,57 +30,26 @@ public class EfCoreAuditLogRepository
     }
 
     public virtual async Task<List<AuditLogEntity>> GetListAsync(
-        PagingParam paging,
-        SorterParam? sorter = null,
-        DateTimeOffset? startTime = null,
-        DateTimeOffset? endTime = null,
-        string? httpMethod = null,
-        string? url = null,
-        Guid? userId = null,
-        string? userName = null,
-        int? minStatusCode = null,
-        int? maxStatusCode = null,
-        string? applicationName = null,
-        string? correlationId = null,
-        int? minExecutionDuration = null,
-        int? maxExecutionDuration = null,
-        bool? hasException = null,
-        bool includeDetails = false,
+        AuditLogGetListInput input,
         CancellationToken cancellationToken = default)
     {
-        var query = await GetQueryableAsync(includeDetails);
+        var query = await GetQueryableAsync(input.IncludeDetails);
 
-        query = ApplyFilter(query, startTime, endTime, httpMethod, url, userId, userName, 
-            minStatusCode, maxStatusCode, applicationName, correlationId, 
-            minExecutionDuration, maxExecutionDuration, hasException);
+        query = ApplyFilter(query, input);
 
         return await query
-            .SortByDynamic(sorter, nameof(AuditLogEntity.ExecutionTime), false)
-            .PageBy(paging)
+            .SortByDynamic(input.Sorter, nameof(AuditLogEntity.ExecutionTime), false)
+            .PageBy(input)
             .ToListAsync(cancellationToken);
     }
 
     public virtual async Task<long> GetCountAsync(
-        DateTimeOffset? startTime = null,
-        DateTimeOffset? endTime = null,
-        string? httpMethod = null,
-        string? url = null,
-        Guid? userId = null,
-        string? userName = null,
-        int? minStatusCode = null,
-        int? maxStatusCode = null,
-        string? applicationName = null,
-        string? correlationId = null,
-        int? minExecutionDuration = null,
-        int? maxExecutionDuration = null,
-        bool? hasException = null,
+        AuditLogGetListInput input,
         CancellationToken cancellationToken = default)
     {
         IQueryable<AuditLogEntity> query = await GetDbSetAsync();
 
-        query = ApplyFilter(query, startTime, endTime, httpMethod, url, userId, userName, 
-            minStatusCode, maxStatusCode, applicationName, correlationId, 
-            minExecutionDuration, maxExecutionDuration, hasException);
+        query = ApplyFilter(query, input);
 
         return await query.LongCountAsync(cancellationToken);
     }
@@ -98,35 +67,30 @@ public class EfCoreAuditLogRepository
 
     protected virtual IQueryable<AuditLogEntity> ApplyFilter(
         IQueryable<AuditLogEntity> query,
-        DateTimeOffset? startTime = null,
-        DateTimeOffset? endTime = null,
-        string? httpMethod = null,
-        string? url = null,
-        Guid? userId = null,
-        string? userName = null,
-        int? minStatusCode = null,
-        int? maxStatusCode = null,
-        string? applicationName = null,
-        string? correlationId = null,
-        int? minExecutionDuration = null,
-        int? maxExecutionDuration = null,
-        bool? hasException = null)
+        AuditLogGetListInput input)
     {
+        var filter = input.Filter;
+        if (filter == null)
+        {
+            return query.SearchDynamic(input.SearchQuery, [nameof(AuditLogEntity.Url), nameof(AuditLogEntity.UserName), nameof(AuditLogEntity.ApplicationName)]);
+        }
+
         return query
-            .WhereIf(startTime.HasValue, x => x.ExecutionTime >= startTime)
-            .WhereIf(endTime.HasValue, x => x.ExecutionTime <= endTime)
-            .WhereIf(!string.IsNullOrWhiteSpace(httpMethod), x => x.HttpMethod == httpMethod)
-            .WhereIf(!string.IsNullOrWhiteSpace(url), x => x.Url != null && x.Url.Contains(url!))
-            .WhereIf(userId.HasValue, x => x.UserId == userId)
-            .WhereIf(!string.IsNullOrWhiteSpace(userName), x => x.UserName == userName)
-            .WhereIf(minStatusCode.HasValue, x => x.HttpStatusCode >= minStatusCode)
-            .WhereIf(maxStatusCode.HasValue, x => x.HttpStatusCode <= maxStatusCode)
-            .WhereIf(!string.IsNullOrWhiteSpace(applicationName), x => x.ApplicationName == applicationName)
-            .WhereIf(!string.IsNullOrWhiteSpace(correlationId), x => x.CorrelationId == correlationId)
-            .WhereIf(minExecutionDuration.HasValue, x => x.ExecutionDuration >= minExecutionDuration)
-            .WhereIf(maxExecutionDuration.HasValue, x => x.ExecutionDuration <= maxExecutionDuration)
-            .WhereIf(hasException.HasValue && hasException.Value, x => x.Exceptions != null && x.Exceptions != "" && x.Exceptions != "[]")
-            .WhereIf(hasException.HasValue && !hasException.Value, x => x.Exceptions == null || x.Exceptions == "" || x.Exceptions == "[]");
+            .WhereIf(filter.StartTime.HasValue, x => x.ExecutionTime >= filter.StartTime)
+            .WhereIf(filter.EndTime.HasValue, x => x.ExecutionTime <= filter.EndTime)
+            .WhereIf(!string.IsNullOrWhiteSpace(filter.HttpMethod), x => x.HttpMethod == filter.HttpMethod)
+            .WhereIf(!string.IsNullOrWhiteSpace(filter.Url), x => x.Url != null && x.Url.Contains(filter.Url!))
+            .WhereIf(filter.UserId.HasValue, x => x.UserId == filter.UserId)
+            .WhereIf(!string.IsNullOrWhiteSpace(filter.UserName), x => x.UserName == filter.UserName)
+            .WhereIf(filter.MinStatusCode.HasValue, x => x.HttpStatusCode >= filter.MinStatusCode)
+            .WhereIf(filter.MaxStatusCode.HasValue, x => x.HttpStatusCode <= filter.MaxStatusCode)
+            .WhereIf(!string.IsNullOrWhiteSpace(filter.ApplicationName), x => x.ApplicationName == filter.ApplicationName)
+            .WhereIf(!string.IsNullOrWhiteSpace(filter.CorrelationId), x => x.CorrelationId == filter.CorrelationId)
+            .WhereIf(filter.MinExecutionDuration.HasValue, x => x.ExecutionDuration >= filter.MinExecutionDuration)
+            .WhereIf(filter.MaxExecutionDuration.HasValue, x => x.ExecutionDuration <= filter.MaxExecutionDuration)
+            .WhereIf(filter.HasException.HasValue && filter.HasException.Value, x => x.Exceptions != null && x.Exceptions != "" && x.Exceptions != "[]")
+            .WhereIf(filter.HasException.HasValue && !filter.HasException.Value, x => x.Exceptions == null || x.Exceptions == "" || x.Exceptions == "[]")
+            .SearchDynamic(input.SearchQuery, [nameof(AuditLogEntity.Url), nameof(AuditLogEntity.UserName), nameof(AuditLogEntity.ApplicationName)]);
     }
 
     protected virtual async Task<IQueryable<AuditLogEntity>> GetQueryableAsync(bool includeDetails)

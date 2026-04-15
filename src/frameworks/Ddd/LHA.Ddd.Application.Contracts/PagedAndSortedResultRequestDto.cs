@@ -1,5 +1,3 @@
-using LHA.Ddd.Domain;
-
 namespace LHA.Ddd.Application;
 
 /// <summary>

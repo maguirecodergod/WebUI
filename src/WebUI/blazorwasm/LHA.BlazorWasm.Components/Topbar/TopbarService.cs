@@ -1,8 +1,10 @@
 using LHA.BlazorWasm.Components.Breadcrumb;
 using LHA.BlazorWasm.HttpApi.Client.Clients;
+using LHA.BlazorWasm.HttpApi.Client.Core;
 using LHA.BlazorWasm.Services.Auth;
 using LHA.BlazorWasm.Services.Toast;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Net;
 
 namespace LHA.BlazorWasm.Components.Topbar;
 
@@ -45,7 +47,7 @@ public class TopbarService : ITopbarService
     public void AddNotification(NotificationModel notification)
     {
         State.AddNotification(notification);
-        
+
         // Integrate with Toast system
         _toastService.Show(notification.Message, MapSeverity(notification.Severity), notification.Title);
     }
@@ -118,6 +120,14 @@ public class TopbarService : ITopbarService
 
                 _permissionService.SetPermissions(currentUser.Permissions);
             }
+        }
+        catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            // If the user entity is not found (e.g. database was dropped but token still exists),
+            // log out the user so they can log back in with a fresh identity.
+            await LogoutAsync();
+            // Do NOT re-throw here. By not throwing, we allow the component to finish 
+            // initialization in a "Logged Out" state, which is handled gracefully by UI.
         }
         finally
         {

@@ -24,11 +24,19 @@ public sealed class PermissionDefinitionEntity : Entity<Guid>
     /// <summary>Optional long description.</summary>
     public string? Description { get; private set; }
 
+    /// <summary>
+    /// Which multi-tenancy side(s) this permission applies to.
+    /// Host-only permissions (e.g. tenant CRUD) are NOT granted to tenant users.
+    /// Defaults to <see cref="MultiTenancySides.Both"/>.
+    /// </summary>
+    public MultiTenancySides MultiTenancySide { get; private set; } = MultiTenancySides.Both;
+
     private PermissionDefinitionEntity() { }
 
     public PermissionDefinitionEntity(
         Guid id, string name, string displayName,
-        string serviceName, string? groupName = null, string? description = null)
+        string serviceName, string? groupName = null, string? description = null,
+        MultiTenancySides multiTenancySide = MultiTenancySides.Both)
     {
         Id = id;
 
@@ -44,6 +52,7 @@ public sealed class PermissionDefinitionEntity : Entity<Guid>
         ServiceName = serviceName.Trim();
         GroupName = groupName?.Trim();
         Description = description;
+        MultiTenancySide = multiTenancySide;
     }
 
     public PermissionDefinitionEntity UpdateDisplayInfo(string displayName, string? description)
@@ -51,6 +60,12 @@ public sealed class PermissionDefinitionEntity : Entity<Guid>
         ArgumentException.ThrowIfNullOrWhiteSpace(displayName);
         DisplayName = displayName.Trim();
         Description = description;
+        return this;
+    }
+
+    public PermissionDefinitionEntity SetMultiTenancySide(MultiTenancySides side)
+    {
+        MultiTenancySide = side;
         return this;
     }
 }

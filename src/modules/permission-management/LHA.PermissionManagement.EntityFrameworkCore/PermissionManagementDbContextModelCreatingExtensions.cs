@@ -39,6 +39,9 @@ public static class PermissionManagementDbContextModelCreatingExtensions
             b.Property(x => x.Description)
                 .HasMaxLength(PermissionDefinitionConsts.MaxDescriptionLength);
 
+            b.Property(x => x.MultiTenancySide)
+                .HasDefaultValue(MultiTenancySides.Both);
+
             b.HasIndex(x => x.Name).IsUnique();
             b.HasIndex(x => x.ServiceName);
         });

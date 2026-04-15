@@ -4,6 +4,7 @@ using LHA.PermissionManagement.Domain;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
 using LHA.PermissionManagement.Domain.PermissionGroups;
 using LHA.PermissionManagement.Domain.PermissionGrants;
+using LHA.PermissionManagement.Domain.Shared;
 using LHA.PermissionManagement.Domain.PermissionTemplates;
 using Microsoft.EntityFrameworkCore;
 
@@ -75,6 +76,15 @@ public sealed class EfCorePermissionDefinitionRepository
             .WhereIf(!string.IsNullOrEmpty(serviceName), x => x.ServiceName == serviceName)
             .WhereIf(!string.IsNullOrEmpty(groupName), x => x.GroupName == groupName)
             .LongCountAsync(ct);
+    }
+
+    public async Task<List<PermissionDefinitionEntity>> GetListByMultiTenancySideAsync(
+        MultiTenancySides side, CancellationToken ct = default)
+    {
+        var dbSet = await GetDbSetAsync();
+        return await dbSet
+            .Where(x => x.MultiTenancySide == MultiTenancySides.Both || x.MultiTenancySide == side)
+            .ToListAsync(ct);
     }
 }
 

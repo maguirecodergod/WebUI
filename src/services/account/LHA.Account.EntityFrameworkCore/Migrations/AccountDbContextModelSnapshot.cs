@@ -973,7 +973,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.ToTable("Auth_UserToken", (string)null);
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionDefinition", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionDefinitions.PermissionDefinitionEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -991,6 +991,11 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.Property<string>("GroupName")
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
+
+                    b.Property<int>("MultiTenancySide")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1012,7 +1017,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.ToTable("Permission_Definition", (string)null);
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGrant", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGrants.PermissionGrantEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1048,7 +1053,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.ToTable("Permission_Grant", (string)null);
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGroup", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGroups.PermissionGroupEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1124,7 +1129,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.ToTable("Permission_Group", (string)null);
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGroupItem", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGroups.PermissionGroupItemEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1144,7 +1149,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.ToTable("Permission_GroupItem", (string)null);
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionTemplate", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionTemplates.PermissionTemplateEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1215,7 +1220,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.ToTable("Permission_Template", (string)null);
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionTemplateItem", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionTemplates.PermissionTemplateItemEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1411,18 +1416,18 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGroupItem", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGroups.PermissionGroupItemEntity", b =>
                 {
-                    b.HasOne("LHA.PermissionManagement.Domain.PermissionGroup", null)
+                    b.HasOne("LHA.PermissionManagement.Domain.PermissionGroups.PermissionGroupEntity", null)
                         .WithMany("Items")
                         .HasForeignKey("PermissionGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionTemplateItem", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionTemplates.PermissionTemplateItemEntity", b =>
                 {
-                    b.HasOne("LHA.PermissionManagement.Domain.PermissionTemplate", null)
+                    b.HasOne("LHA.PermissionManagement.Domain.PermissionTemplates.PermissionTemplateEntity", null)
                         .WithMany("Items")
                         .HasForeignKey("PermissionTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1466,12 +1471,12 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.Navigation("Tokens");
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGroup", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionGroups.PermissionGroupEntity", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionTemplate", b =>
+            modelBuilder.Entity("LHA.PermissionManagement.Domain.PermissionTemplates.PermissionTemplateEntity", b =>
                 {
                     b.Navigation("Items");
                 });

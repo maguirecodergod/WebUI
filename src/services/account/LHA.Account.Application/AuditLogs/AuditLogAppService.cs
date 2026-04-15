@@ -3,6 +3,7 @@ using LHA.Account.Domain.Repositories;
 using LHA.AuditLog.Domain;
 using LHA.Ddd.Application;
 using LHA.Auditing;
+using LHA.Shared.Domain.Requests;
 
 namespace LHA.Account.Application.AuditLogs;
 
@@ -28,39 +29,34 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
 
     public virtual async Task<PagedResultDto<AuditLogDto>> GetListAsync(GetAuditLogsInput input)
     {
-        var logs = await _auditLogRepository.GetListAsync(
-            input,
-            sorter: input.Sorter,
-            startTime: input.StartTime,
-            endTime: input.EndTime,
-            httpMethod: input.HttpMethod,
-            url: input.Url,
-            userId: input.UserId,
-            userName: input.UserName,
-            minStatusCode: input.MinStatusCode,
-            maxStatusCode: input.MaxStatusCode,
-            applicationName: input.ApplicationName,
-            correlationId: input.CorrelationId,
-            minExecutionDuration: input.MinExecutionDuration,
-            maxExecutionDuration: input.MaxExecutionDuration,
-            hasException: input.HasException
-        );
+        var repoInput = new AuditLogGetListInput
+        {
+            PageNumber = input.PageNumber,
+            PageSize = input.PageSize,
+            SearchQuery = input.SearchQuery,
+            SorterKey = input.SorterKey,
+            SorterIsAsc = input.SorterIsAsc,
+            Filter = new AuditLogFilter
+            {
+                StartTime = input.StartTime,
+                EndTime = input.EndTime,
+                HttpMethod = input.HttpMethod,
+                Url = input.Url,
+                UserId = input.UserId,
+                UserName = input.UserName,
+                MinStatusCode = input.MinStatusCode,
+                MaxStatusCode = input.MaxStatusCode,
+                ApplicationName = input.ApplicationName,
+                CorrelationId = input.CorrelationId,
+                MinExecutionDuration = input.MinExecutionDuration,
+                MaxExecutionDuration = input.MaxExecutionDuration,
+                HasException = input.HasException
+            },
+            IncludeDetails = false
+        };
 
-        var totalCount = await _auditLogRepository.GetCountAsync(
-            input.StartTime,
-            input.EndTime,
-            input.HttpMethod,
-            input.Url,
-            input.UserId,
-            input.UserName,
-            input.MinStatusCode,
-            input.MaxStatusCode,
-            input.ApplicationName,
-            input.CorrelationId,
-            input.MinExecutionDuration,
-            input.MaxExecutionDuration,
-            input.HasException
-        );
+        var logs = await _auditLogRepository.GetListAsync(repoInput);
+        var totalCount = await _auditLogRepository.GetCountAsync(repoInput);
 
         return new PagedResultDto<AuditLogDto>(
             totalCount,

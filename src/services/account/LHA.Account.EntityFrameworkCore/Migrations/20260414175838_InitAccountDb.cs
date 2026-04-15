@@ -253,7 +253,8 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     DisplayName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     ServiceName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     GroupName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Description = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true)
+                    Description = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    MultiTenancySide = table.Column<int>(type: "integer", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
