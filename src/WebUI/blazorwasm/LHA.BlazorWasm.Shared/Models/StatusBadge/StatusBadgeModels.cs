@@ -47,6 +47,17 @@ public enum CBadgeSemantic
     Http4xx,
     Http5xx,
 
+    // HTTP Method
+    HttpGet,
+    HttpPost,
+    HttpPut,
+    HttpPatch,
+    HttpDelete,
+    HttpHead,
+    HttpOptions,
+    HttpTrace,
+    HttpConnect,
+
     // Business
     Active,
     Inactive,

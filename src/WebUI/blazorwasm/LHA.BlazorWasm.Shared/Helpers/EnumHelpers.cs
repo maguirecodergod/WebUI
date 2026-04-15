@@ -22,6 +22,17 @@ namespace LHA.BlazorWasm.Shared.Helpers
             CBadgeSemantic.Http4xx => CBadgeStyle.Orange,
             CBadgeSemantic.Http5xx => CBadgeStyle.Danger,
 
+            // HTTP Method
+            CBadgeSemantic.HttpGet => CBadgeStyle.Success,
+            CBadgeSemantic.HttpPost => CBadgeStyle.Primary,
+            CBadgeSemantic.HttpPut => CBadgeStyle.Info,
+            CBadgeSemantic.HttpPatch => CBadgeStyle.Teal,
+            CBadgeSemantic.HttpDelete => CBadgeStyle.Danger,
+            CBadgeSemantic.HttpHead => CBadgeStyle.Secondary,
+            CBadgeSemantic.HttpOptions => CBadgeStyle.Indigo,
+            CBadgeSemantic.HttpTrace => CBadgeStyle.Pink,
+            CBadgeSemantic.HttpConnect => CBadgeStyle.Purple,
+
             // Business
             CBadgeSemantic.Active => CBadgeStyle.Success,
             CBadgeSemantic.Inactive => CBadgeStyle.Slate,

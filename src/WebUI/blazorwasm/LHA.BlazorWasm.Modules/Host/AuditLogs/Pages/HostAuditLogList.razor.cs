@@ -15,13 +15,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         private long _totalCount;
         private DateRange<DateTimeOffset?> _executionTimeRange = new();
 
-        private List<SelectOption<string>> _httpMethodOptions = new()
-    {
-        new () { Value = "GET", Label = "GET" },
-        new () { Value = "POST", Label = "POST" },
-        new () { Value = "PUT", Label = "PUT" },
-        new () { Value = "DELETE", Label = "DELETE" }
-    };
+        private List<SelectOption<string>> _httpMethodOptions => Enum.GetValues<CHttpMethodType>().Select(x => new SelectOption<string> { Value = x.ToString(), Label = x.ToString() }).ToList();
 
         private GetAuditLogsInput _input = new()
         {
@@ -65,19 +59,18 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             return new DataTableResponse<AuditLogDto> { Items = _logs, TotalCount = (int)_totalCount };
         }
 
-        private async Task RefreshAsync() => await LoadLogsAsync();
-
-        // Internal Enums for StatusBadge mapping
-        public enum AuditMethod { GET, POST, PUT, DELETE, Other }
-        public enum AuditStatus { Success, Warning, Error, Processing }
-
-        private AuditMethod GetMethodEnum(string? method) => method?.ToUpper() switch
+        private CHttpMethodType GetMethodEnum(string? method) => method?.ToUpper() switch
         {
-            "GET" => AuditMethod.GET,
-            "POST" => AuditMethod.POST,
-            "PUT" => AuditMethod.PUT,
-            "DELETE" => AuditMethod.DELETE,
-            _ => AuditMethod.Other
+            "GET" => CHttpMethodType.GET,
+            "POST" => CHttpMethodType.POST,
+            "PUT" => CHttpMethodType.PUT,
+            "DELETE" => CHttpMethodType.DELETE,
+            "PATCH" => CHttpMethodType.PATCH,
+            "HEAD" => CHttpMethodType.HEAD,
+            "OPTIONS" => CHttpMethodType.OPTIONS,
+            "TRACE" => CHttpMethodType.TRACE,
+            "CONNECT" => CHttpMethodType.CONNECT,
+            _ => CHttpMethodType.Other
         };
 
         private CHttpStatusCodeType GetStatusEnum(int? code)
