@@ -55,5 +55,6 @@ public static class CurrentUserExtensions
     /// Returns <c>true</c> if the current user is the built-in admin user.
     /// </summary>
     public static bool IsAdmin(this ICurrentUser user) =>
-        CurrentUserDefaults.IsAdminUser(user.Id) || user.IsInRole(CurrentUserDefaults.AdminRoleName);
+        CurrentUserDefaults.IsAdminUser(user.Id)
+            || user.IsInRole(CurrentUserDefaults.SystemSuperAdminRoleName);
 }

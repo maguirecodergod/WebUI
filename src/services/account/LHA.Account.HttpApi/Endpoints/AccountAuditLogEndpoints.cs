@@ -1,10 +1,15 @@
 using LHA.Shared.Contracts.AuditLog;
 using LHA.Ddd.Application;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Auditing;
+using LHA.MultiTenancy;
+using LHA.Core.Users;
 
 namespace LHA.Account.HttpApi;
 
@@ -15,32 +20,20 @@ public static class AccountAuditLogEndpoints
         var group = endpoints.MapVersionedGroup("Account", "/api/v{version:apiVersion}/account/audit-logs")
             .WithTags("AccountAuditLogs")
             .RequireAuthorization()
-            .WithMetadata(new DisableAuditingAttribute()); ;
+            .WithMetadata(new DisableAuditingAttribute());
 
-        // Host-level endpoint: returns ALL logs cross-tenant (requires HostRead permission)
-        group.MapGet("/host", async (
-            [AsParameters] GetAuditLogsInput input,
-            IAuditLogAppService service) =>
-        {
-            input.DisableTenantFilter = true;
-            var result = await service.GetListAsync(input);
-            return Results.Ok(ApiResponse<PagedResultDto<AuditLogDto>>.Ok(result));
-        })
-        .RequireAuthorization(AccountPermissions.AuditLogManagement.HostRead)
-        .WithName("GetHostAuditLogs")
-        .WithSummary("Returns paged audit logs across ALL tenants for host admin.");
-
+        // CHỈ CẦN 1 ENDPOINT DUY NHẤT:
+        // Hệ thống tự động nhận diện Host Admin tại DbContext level để ngắt tenant filter.
         group.MapGet("/", async (
             [AsParameters] GetAuditLogsInput input,
             IAuditLogAppService service) =>
         {
-            input.DisableTenantFilter = false; // Security: always enforce tenant filter on tenant-level endpoint
             var result = await service.GetListAsync(input);
             return Results.Ok(ApiResponse<PagedResultDto<AuditLogDto>>.Ok(result));
         })
         .RequireAuthorization(AccountPermissions.AuditLogManagement.Read)
         .WithName("GetAccountAuditLogs")
-        .WithSummary("Returns paged audit logs managed by Account service.");
+        .WithSummary("Returns paged audit logs. Automatically handles cross-tenant view for Host Admins via DbContext.");
 
         group.MapGet("/{id:guid}", async (
             Guid id,
@@ -93,7 +86,7 @@ public static class AccountAuditLogEndpoints
             await service.DeleteAsync(id);
             return Results.NoContent();
         })
-        .RequireAuthorization(AccountPermissions.AuditLogManagement.Read) // Should probably have a Delete permission but we'll use Read for now as per base or add a new one
+        .RequireAuthorization(AccountPermissions.AuditLogManagement.Read)
         .WithName("DeleteAccountAuditLog")
         .WithSummary("Deletes a specific audit log.");
 

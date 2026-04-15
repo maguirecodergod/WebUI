@@ -5,6 +5,7 @@ using LHA.Identity.EntityFrameworkCore;
 using LHA.MultiTenancy;
 using LHA.PermissionManagement.EntityFrameworkCore;
 using LHA.TenantManagement.EntityFrameworkCore;
+using LHA.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,8 +31,9 @@ public sealed class AccountDbContext
         DbContextOptions<AccountDbContext> options,
         IServiceProvider serviceProvider,
         IAuditPropertySetter? auditPropertySetter = null,
-        ICurrentTenant? currentTenant = null)
-        : base(options, auditPropertySetter, currentTenant)
+        ICurrentTenant? currentTenant = null,
+        ICurrentUser? currentUser = null)
+        : base(options, auditPropertySetter, currentTenant, currentUser)
     {
         _serviceProvider = serviceProvider;
     }

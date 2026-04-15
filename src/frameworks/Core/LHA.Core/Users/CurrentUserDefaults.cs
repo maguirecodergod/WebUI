@@ -95,6 +95,7 @@ public static class CurrentUserDefaults
     /// <summary>
     /// The default admin role name. (Deprecated: use SystemSuperAdminRoleName or TenantAdminRoleName)
     /// </summary>
+    [Obsolete("Use SystemSuperAdminRoleName or TenantAdminRoleName instead.")]
     public const string AdminRoleName = "admin";
 
     /// <summary>

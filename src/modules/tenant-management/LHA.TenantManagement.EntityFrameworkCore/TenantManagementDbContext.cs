@@ -1,6 +1,7 @@
 using LHA.Auditing;
 using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
+using LHA.Core.Users;
 using LHA.TenantManagement.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,8 +34,9 @@ public sealed class TenantManagementDbContext
     public TenantManagementDbContext(
         DbContextOptions<TenantManagementDbContext> options,
         IAuditPropertySetter? auditPropertySetter = null,
-        ICurrentTenant? currentTenant = null)
-        : base(options, auditPropertySetter, currentTenant)
+        ICurrentTenant? currentTenant = null,
+        ICurrentUser? currentUser = null)
+        : base(options, auditPropertySetter, currentTenant, currentUser)
     {
     }
 

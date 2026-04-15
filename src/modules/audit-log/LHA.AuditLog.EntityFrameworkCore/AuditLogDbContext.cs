@@ -2,6 +2,7 @@ using LHA.Auditing;
 using LHA.AuditLog.Domain;
 using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
+using LHA.Core.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.AuditLog.EntityFrameworkCore;
@@ -35,8 +36,9 @@ public sealed class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
         DbContextOptions<AuditLogDbContext> options,
         Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? auditOptions = null,
         IAuditPropertySetter? auditPropertySetter = null,
-        ICurrentTenant? currentTenant = null)
-        : base(options, auditPropertySetter, currentTenant)
+        ICurrentTenant? currentTenant = null,
+        ICurrentUser? currentUser = null)
+        : base(options, auditPropertySetter, currentTenant, currentUser)
     {
         _options = auditOptions;
     }

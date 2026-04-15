@@ -24,7 +24,7 @@ public class AuditLogApiClient : ApiClientBase, IAuditLogAppService
 
     public async Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input)
     {
-        var url = BuildQueryString($"{BaseUrl}/host", input);
+        var url = BuildQueryString($"{BaseUrl}", input);
         var response = await GetAsync<PagedResultDto<AuditLogDto>>(url);
         return response.Result.Data!;
     }
@@ -71,27 +71,34 @@ public class AuditLogApiClient : ApiClientBase, IAuditLogAppService
     private string BuildQueryString<T>(string baseUrl, T input) where T : class
     {
         if (input == null) return baseUrl;
-        
+
         var queryParams = new Dictionary<string, string?>();
         var properties = typeof(T).GetProperties();
-        
+
         foreach (var prop in properties)
         {
             var val = prop.GetValue(input);
             if (val != null)
             {
-                if (val is DateTimeOffset dto) {
-                     queryParams.Add(prop.Name, dto.ToString("o"));
-                } else if (val is bool b) {
-                     queryParams.Add(prop.Name, b.ToString().ToLower());
-                } else if (val is Guid g) {
-                     queryParams.Add(prop.Name, g.ToString());
-                } else {
-                     queryParams.Add(prop.Name, val.ToString());
+                if (val is DateTimeOffset dto)
+                {
+                    queryParams.Add(prop.Name, dto.ToString("o"));
+                }
+                else if (val is bool b)
+                {
+                    queryParams.Add(prop.Name, b.ToString().ToLower());
+                }
+                else if (val is Guid g)
+                {
+                    queryParams.Add(prop.Name, g.ToString());
+                }
+                else
+                {
+                    queryParams.Add(prop.Name, val.ToString());
                 }
             }
         }
-        
+
         return QueryHelpers.AddQueryString(baseUrl, queryParams);
     }
 }

@@ -2,6 +2,7 @@ using LHA.Auditing;
 using LHA.Ddd.Domain;
 using LHA.MultiTenancy;
 using LHA.UnitOfWork;
+using LHA.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -58,11 +59,21 @@ public abstract class LhaDbContext<TDbContext> : DbContext, IHasCurrentUnitOfWor
     protected LhaDbContext(
         DbContextOptions<TDbContext> options,
         IAuditPropertySetter? auditPropertySetter = null,
-        ICurrentTenant? currentTenant = null)
+        ICurrentTenant? currentTenant = null,
+        ICurrentUser? currentUser = null)
         : base(options)
     {
         _auditPropertySetter = auditPropertySetter;
         _currentTenant = currentTenant;
+
+        // TỰ ĐỘNG: Ngắt filter đa thuê đám nếu user là Admin của Host (Supper Admin Host)
+        // Điều này cho phép Host Admin nhìn thấy dữ liệu của tất cả Tenants mà không cần cấu hình thủ công.
+        if (_currentTenant != null && _currentTenant.Id == null
+            && currentUser != null && currentUser.IsAdmin()
+            && IsMultiTenantFilterEnabled)
+        {
+            IsMultiTenantFilterEnabled = false;
+        }
     }
 
     /// <inheritdoc />

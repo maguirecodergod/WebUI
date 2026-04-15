@@ -1,6 +1,7 @@
 using LHA.Auditing;
 using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
+using LHA.Core.Users;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
 using LHA.PermissionManagement.Domain.PermissionGrants;
 using LHA.PermissionManagement.Domain.PermissionGroups;
@@ -31,8 +32,9 @@ public sealed class PermissionManagementDbContext
     public PermissionManagementDbContext(
         DbContextOptions<PermissionManagementDbContext> options,
         IAuditPropertySetter? auditPropertySetter = null,
-        ICurrentTenant? currentTenant = null)
-        : base(options, auditPropertySetter, currentTenant)
+        ICurrentTenant? currentTenant = null,
+        ICurrentUser? currentUser = null)
+        : base(options, auditPropertySetter, currentTenant, currentUser)
     {
     }
 

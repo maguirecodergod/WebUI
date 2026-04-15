@@ -2,6 +2,7 @@ using LHA.Auditing;
 using LHA.EntityFrameworkCore;
 using LHA.Identity.Domain;
 using LHA.MultiTenancy;
+using LHA.Core.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace LHA.Identity.EntityFrameworkCore;
@@ -46,8 +47,9 @@ public sealed class IdentityDbContext
     public IdentityDbContext(
         DbContextOptions<IdentityDbContext> options,
         IAuditPropertySetter? auditPropertySetter = null,
-        ICurrentTenant? currentTenant = null)
-        : base(options, auditPropertySetter, currentTenant)
+        ICurrentTenant? currentTenant = null,
+        ICurrentUser? currentUser = null)
+        : base(options, auditPropertySetter, currentTenant, currentUser)
     {
     }
 
