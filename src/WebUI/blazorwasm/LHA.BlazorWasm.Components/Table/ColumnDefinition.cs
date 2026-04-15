@@ -49,6 +49,7 @@ public sealed class ColumnDefinition<TItem>
     // ── Templates ────────────────────────────────────────────
     public RenderFragment<TItem>? CellTemplate { get; set; }
     public RenderFragment? HeaderTemplate { get; set; }
+    public RenderFragment? FilterTemplate { get; set; }
 
     // ═══════════════════════════════════════════════════════════
     // HELPERS

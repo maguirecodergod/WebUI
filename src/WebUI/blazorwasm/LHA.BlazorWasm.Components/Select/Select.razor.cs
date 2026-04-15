@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
+using LHA.BlazorWasm.Components.Form;
 
 namespace LHA.BlazorWasm.Components.Select;
 
@@ -34,6 +35,8 @@ public partial class Select<TValue> : LhaComponentBase
     [Parameter] public string MaxDropdownHeight { get; set; } = "300px";
     [Parameter] public string? Class { get; set; }
     [Parameter] public string? Style { get; set; }
+    [Parameter] public CInputSize Size { get; set; } = CInputSize.Medium;
+
     [Parameter] public bool ShowClear { get; set; } = true;
 
     [Parameter] public RenderFragment<SelectOption<TValue>>? OptionTemplate { get; set; }

@@ -40,7 +40,6 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    max-width: 280px;
     font-family: var(--font-family);
 }
 
@@ -49,23 +48,40 @@
     position: relative;
     display: flex;
     align-items: center;
-    border: 1.5px solid var(--border-color);
-    border-radius: 10px;
-    background-color: var(--input-bg);
+    border: 1px solid var(--input-border, rgba(255, 255, 255, 0.1));
+    border-radius: 12px;
+    background-color: var(--input-bg, rgba(255, 255, 255, 0.05));
+    color: var(--input-text, #fff);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     min-height: 48px;
-    /* Standardize height */
+    backdrop-filter: blur(8px);
+}
+
+/* Sizing */
+.lha-picker-size-small .picker-input-container {
+    min-height: 36px !important;
+    border-radius: 8px !important;
+}
+
+.lha-picker-size-small .picker-input {
+    font-size: 0.8125rem !important;
+    padding: 0 0.75rem !important;
+}
+
+.lha-picker-size-small .picker-icon,
+.lha-picker-size-small .picker-clear {
+    font-size: 0.875rem !important;
 }
 
 .picker-input-container:hover {
-    border-color: var(--primary-color);
-    background-color: var(--hover-bg);
+    border-color: var(--input-accent);
+    background-color: color-mix(in srgb, var(--input-bg), var(--input-accent) 2%);
 }
 
 .picker-input-container.active {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px var(--range-bg);
+    border-color: var(--input-accent, #00f0ff);
+    box-shadow: 0 0 0 4px var(--input-accent-glow, rgba(0, 240, 255, 0.2));
     outline: 0;
 }
 
@@ -609,9 +625,9 @@
     }
 
     .picker-popup {
-        left: 50%;
-        transform: translateX(-50%);
-        transform-origin: top center;
+        left: 0;
+        transform: none;
+        transform-origin: top left;
         min-width: 320px;
     }
 

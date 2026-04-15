@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using LHA.BlazorWasm.Components.Form;
 
 namespace LHA.BlazorWasm.Components.Pickers.Core;
 
@@ -38,6 +39,8 @@ public abstract class PickerBase<TValue> : LhaComponentBase, IDisposable
 
     [Parameter] public string? Class { get; set; }
     [Parameter] public string? Style { get; set; }
+    [Parameter] public CInputSize Size { get; set; } = CInputSize.Medium;
+
 
     [Parameter] public CValidationStatus CValidationStatus { get; set; } = CValidationStatus.None;
     [Parameter] public string? ValidationMessage { get; set; }

@@ -304,6 +304,14 @@
 @code {
     private RenderFragment RenderFilterInput(ColumnDefinition<TItem> col) => __builder =>
     {
+        // ── Custom template takes priority ────────────────────
+        if (col.FilterTemplate is not null)
+        {
+            @col.FilterTemplate
+            return;
+        }
+
+        // ── Built-in defaults ────────────────────────────────
         switch (col.FilterType)
         {
             case FilterType.Text:

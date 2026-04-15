@@ -3,7 +3,7 @@
     position: relative;
     display: inline-block;
     vertical-align: middle;
-    width: auto;
+    width: 100%;
     min-width: 0;
     font-family: inherit;
     user-select: none;
@@ -13,19 +13,34 @@
     position: relative;
     display: flex;
     align-items: center;
-    min-height: 2.5rem;
-    padding: 2px 0.75rem;
-    border: 1px solid var(--border-color, #ced4da);
-    border-radius: 4px;
-    background-color: var(--background-color, #fff);
+    min-height: 48px;
+    padding: 2px 1rem;
+    border: 1px solid var(--input-border, rgba(255, 255, 255, 0.1));
+    border-radius: 12px;
+    background-color: var(--input-bg, rgba(255, 255, 255, 0.05));
+    color: var(--input-text, #fff);
     cursor: pointer;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+}
+
+/* Sizing */
+.lha-select-size-small .select-input-container {
+    min-height: 36px !important;
+    border-radius: 8px !important;
+    padding: 0 0.75rem !important;
+}
+
+.lha-select-size-small .select-value {
+    font-size: 0.8125rem !important;
 }
 
 .select-input-container.active {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    border-color: var(--input-accent, #00f0ff);
+    box-shadow: 0 0 0 4px var(--input-accent-glow, rgba(0, 240, 255, 0.2));
+    background: color-mix(in srgb, var(--input-bg), var(--input-accent) 2%);
 }
+
 
 .select-input-container.disabled {
     background-color: var(--hover-bg, #e9ecef);

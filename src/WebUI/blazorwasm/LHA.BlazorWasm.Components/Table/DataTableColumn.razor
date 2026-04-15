@@ -58,6 +58,7 @@
     // ── Templates ────────────────────────────────────────────
     [Parameter] public RenderFragment<TItem>? CellTemplate { get; set; }
     [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+    [Parameter] public RenderFragment? FilterTemplate { get; set; }
 
     // ── Internal ─────────────────────────────────────────────
     private ColumnDefinition<TItem>? _definition;
@@ -109,6 +110,7 @@
             CellStyle = CellStyle,
             CellTemplate = CellTemplate,
             HeaderTemplate = HeaderTemplate,
+            FilterTemplate = FilterTemplate,
         };
     }
 

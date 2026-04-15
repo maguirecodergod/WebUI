@@ -7,6 +7,7 @@
 @using LHA.BlazorWasm.Components.Pickers.Core
 @using LHA.BlazorWasm.Components.Pickers.DateTimeRangePicker
 @using LHA.BlazorWasm.Components.Select
+@using LHA.BlazorWasm.Components.Switch
 @using LHA.BlazorWasm.Components.Table
 @using Microsoft.JSInterop
 
@@ -69,16 +70,14 @@
                             <div class="small" style="color: var(--dt-text-muted);">@context.ExecutionTime.ToLocalTime().ToString("dddd")</div>
                         </CellTemplate>
                         <FilterTemplate>
-                            <div class="p-2" style="min-width: 320px;">
-                                <DateTimeRangePicker TInner="DateTimeOffset" @bind-Value="_executionTimeRange" Placeholder="@L("AuditLog.SelectDateRange")" ShowClear />
-                            </div>
+                            <DateTimeRangePicker TInner="DateTimeOffset?" @bind-Value="_executionTimeRange" Placeholder="@L("AuditLog.SelectDateRange")" Size="CInputSize.Small" ShowClear />
                         </FilterTemplate>
                     </DataTableColumn>
 
                     <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ApplicationName")" Width="140px" Sortable Filterable
                                      Property="@(x => x.ApplicationName)">
                         <FilterTemplate>
-                             <CInput TValue="string" @bind-Value="_input.ApplicationName" Placeholder="@L("AuditLog.ApplicationName")" Clearable />
+                             <CInput TValue="string" @bind-Value="_input.ApplicationName" Placeholder="@L("AuditLog.ApplicationName")" Clearable Size="CInputSize.Small" />
                         </FilterTemplate>
                     </DataTableColumn>
 
@@ -90,14 +89,14 @@
                             </StatusBadge>
                          </CellTemplate>
                          <FilterTemplate>
-                             <Select TValue="string" @bind-Value="_input.HttpMethod" Options="_httpMethodOptions" Placeholder="@L("Common.All")" ShowClear />
+                             <Select TValue="string" @bind-Value="_input.HttpMethod" Options="_httpMethodOptions" Placeholder="@L("Common.All")" Size="CInputSize.Small" ShowClear />
                          </FilterTemplate>
                     </DataTableColumn>
 
                     <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Url")" Width="auto" Sortable Filterable
                                      Property="@(x => x.Url)">
                         <FilterTemplate>
-                             <CInput TValue="string" @bind-Value="_input.Url" Placeholder="@L("AuditLog.Url")" Clearable />
+                             <CInput TValue="string" @bind-Value="_input.Url" Placeholder="@L("AuditLog.Url")" Clearable Size="CInputSize.Small" />
                         </FilterTemplate>
                         <CellTemplate>
                             <div class="fw-bold small text-truncate" style="max-width: 300px; color: var(--dt-text-primary);" title="@context.Url">@context.Url</div>
@@ -107,7 +106,7 @@
                     <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.User")" Width="180px" Sortable Filterable
                                      Property="@(x => x.UserName)">
                         <FilterTemplate>
-                             <CInput TValue="string" @bind-Value="_input.UserName" Placeholder="@L("AuditLog.UserName")" Clearable />
+                             <CInput TValue="string" @bind-Value="_input.UserName" Placeholder="@L("AuditLog.UserName")" Clearable Size="CInputSize.Small" />
                         </FilterTemplate>
                         <CellTemplate>
                            @* ... User cell template existing ... *@
@@ -124,9 +123,13 @@
                     <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Status")" Width="110px" Sortable Filterable
                                      Property="@(x => x.HttpStatusCode)">
                         <FilterTemplate>
-                             <div class="d-flex gap-2">
-                                 <CInput TValue="int?" @bind-Value="_input.MinStatusCode" Type="number" Placeholder="Min" />
-                                 <CInput TValue="int?" @bind-Value="_input.MaxStatusCode" Type="number" Placeholder="Max" />
+                             <div class="row g-2">
+                                 <div class="col-6">
+                                    <CInput TValue="int?" @bind-Value="_input.MinStatusCode" Type="number" Placeholder="Min" Size="CInputSize.Small" />
+                                 </div>
+                                 <div class="col-6">
+                                    <CInput TValue="int?" @bind-Value="_input.MaxStatusCode" Type="number" Placeholder="Max" Size="CInputSize.Small" />
+                                 </div>
                              </div>
                         </FilterTemplate>
                         <CellTemplate>
@@ -139,9 +142,13 @@
                     <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Duration")" Width="100px" Sortable Filterable
                                      Property="@(x => x.ExecutionDuration)">
                          <FilterTemplate>
-                             <div class="d-flex gap-2">
-                                 <CInput TValue="int?" @bind-Value="_input.MinExecutionDuration" Type="number" Placeholder="Min" />
-                                 <CInput TValue="int?" @bind-Value="_input.MaxExecutionDuration" Type="number" Placeholder="Max" />
+                             <div class="row g-2">
+                                 <div class="col-6">
+                                    <CInput TValue="int?" @bind-Value="_input.MinExecutionDuration" Type="number" Placeholder="Min" Size="CInputSize.Small" />
+                                 </div>
+                                 <div class="col-6">
+                                    <CInput TValue="int?" @bind-Value="_input.MaxExecutionDuration" Type="number" Placeholder="Max" Size="CInputSize.Small" />
+                                 </div>
                              </div>
                          </FilterTemplate>
                          <CellTemplate>
@@ -151,16 +158,14 @@
 
                     <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ExtraFilters")" Filterable Visible="false">
                         <FilterTemplate>
-                            <div class="d-flex flex-column gap-3 mt-2">
+                            <div class="d-flex flex-column gap-3 mt-1">
                                 <FormField Label="@L("AuditLog.CorrelationId")">
-                                    <CInput TValue="string" @bind-Value="_input.CorrelationId" Placeholder="Correlation ID" Clearable />
+                                    <CInput TValue="string" @bind-Value="_input.CorrelationId" Placeholder="Correlation ID" Clearable Size="CInputSize.Small" />
                                 </FormField>
-                                <FormField Label="@L("AuditLog.ErrorsOnly")">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <Switch @bind-Value="_input.HasException" Size="CSwitchSize.Small" />
-                                        <span class="small text-muted">@L("AuditLog.OnlyExceptions")</span>
-                                    </div>
-                                </FormField>
+                                <div class="d-flex align-items-center justify-content-between px-1">
+                                    <span class="small text-muted">@L("AuditLog.OnlyExceptions")</span>
+                                    <Switch Value="_input.HasException ?? false" ValueChanged="@(v => _input.HasException = v)" Size="CSwitchSize.Small" />
+                                </div>
                             </div>
                         </FilterTemplate>
                     </DataTableColumn>
@@ -259,7 +264,7 @@
     [Inject] private IAuditLogAppService AuditLogService { get; set; } = default!;
     private List<AuditLogDto> _logs = new();
     private long _totalCount;
-    private DateRange<DateTimeOffset> _executionTimeRange = new();
+    private DateRange<DateTimeOffset?> _executionTimeRange = new();
 
     private List<SelectOption<string>> _httpMethodOptions = new()
     {
@@ -285,8 +290,8 @@
     {
         try
         {
-            _input.StartTime = _executionTimeRange.Start;
-            _input.EndTime = _executionTimeRange.End;
+            _input.StartTime = _executionTimeRange.Start?.ToUniversalTime();
+            _input.EndTime = _executionTimeRange.End?.ToUniversalTime();
 
             var result = await AuditLogService.GetListAsync(_input);
             _logs = result.Items.ToList();
