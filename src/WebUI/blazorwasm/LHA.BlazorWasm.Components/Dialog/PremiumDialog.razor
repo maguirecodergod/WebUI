@@ -1,0 +1,62 @@
+@inherits LhaComponentBase
+@using LHA.BlazorWasm.Components.Dialog
+@using LHA.BlazorWasm.Components.Buttons
+
+@if (IsVisible)
+{
+    <div class="premium-dialog-overlay @(IsClosing ? "fade-out" : "fade-in")" @onclick="HandleOverlayClick">
+        <div class="premium-dialog-container @GetSizeClass() @GetTypeClass() @(IsClosing ? "scale-out" : "scale-in")" @onclick:stopPropagation>
+            
+            @if (ShowHeader)
+            {
+                <div class="premium-dialog-header">
+                    @if (HeaderContent != null)
+                    {
+                        @HeaderContent
+                    }
+                    else
+                    {
+                        <h3 class="premium-dialog-title display-font">@(string.IsNullOrEmpty(Title) ? "" : L(Title))</h3>
+                    }
+
+                    @if (ShowCloseButton)
+                    {
+                        <button class="premium-dialog-close-btn" @onclick="CloseAsync" aria-label="@L("Common_Close")">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    }
+                </div>
+            }
+
+            <div class="premium-dialog-content body-font">
+                @ChildContent
+            </div>
+
+            @if (ShowFooter)
+            {
+                <div class="premium-dialog-footer">
+                    @if (FooterContent != null)
+                    {
+                        @FooterContent
+                    }
+                    else
+                    {
+                        @if (ShowCancelButton)
+                        {
+                            <Button Style="CButtonStyle.Secondary" Class="btn-tertiary" OnClick="ExtendedCancelAsync">
+                                @L(CancelText)
+                            </Button>
+                        }
+                        
+                        <Button Style="CButtonStyle.Primary" Class="btn-primary primary-gradient" OnClick="ExtendedOkAsync">
+                            @L(OkText)
+                        </Button>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}

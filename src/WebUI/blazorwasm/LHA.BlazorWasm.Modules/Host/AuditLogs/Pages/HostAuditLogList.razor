@@ -12,12 +12,30 @@
 <PageTitle>@L("AuditLog.PageTitle")</PageTitle>
 
 <div class="audit-log-page container-fluid p-4">
+    <LHA.BlazorWasm.Components.Dialog.PremiumDialog @bind-IsVisible="_isDeleteDialogVisible" 
+                   Title="@L("Common.ConfirmDelete")"
+                   Type="LHA.BlazorWasm.Components.Dialog.DialogType.Error"
+                   Size="LHA.BlazorWasm.Components.Dialog.DialogSize.Small"
+                   ShowCancelButton="true"
+                   OnOk="ExecuteDeleteAsync">
+        <ChildContent>
+            @if (_itemToDelete != null)
+            {
+                @L("AuditLog.DeleteSingleConfirmation")
+            }
+            else if (_selectedLogs.Any())
+            {
+                @L("AuditLog.DeleteBulkConfirmation", _selectedLogs.Count)
+            }
+        </ChildContent>
+    </LHA.BlazorWasm.Components.Dialog.PremiumDialog>
     @* Data Table Card *@
     <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
         <div class="card-body p-0">
-            <DataTable TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
+            <DataTable @ref="_dataTable" TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
                        ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10" Searchable="false" ShowToolbar="true"
-                       SelectionMode="SelectionMode.Multiple" KeySelector="@(x => x.Id)" TableId="@DataTableIds.AuditLogs">
+                       SelectionMode="SelectionMode.Multiple" KeySelector="@(x => x.Id)" TableId="@DataTableIds.AuditLogs"
+                       OnSelectionChanged="(items) => _selectedLogs = items.ToList()">
 
                 <ToolbarTemplate>
                     <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
@@ -28,6 +46,12 @@
                                   style="background: var(--dt-accent-soft); color: var(--dt-accent);">service.identity.lha.io</span>
                         </div>
                         <div class="d-flex gap-2 align-items-center">
+                            @if (_selectedLogs.Any())
+                            {
+                                <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small" OnClick="ShowBulkDeleteDialog">
+                                    <i class="bi bi-trash"></i> @L("Common.DeleteSelected") (@_selectedLogs.Count)
+                                </Button>
+                            }
                             <CInput TValue="string" @bind-Value="_input.SearchQuery"
                                     Placeholder="@L("Common.GlobalSearch")" Size="CInputSize.Small" Style="width: 250px;">
                                 <IconLeft><i class="bi bi-search"></i></IconLeft>
@@ -178,6 +202,12 @@
                                                         <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
                                                                 Class="btn-icon-replica" OnClick="() => ViewDetails(context)">
                                                             <i class="bi bi-eye"></i>
+                                                        </Button>
+                                                    </Tooltip>
+                                                    <Tooltip Text="@L("Common.Delete")">
+                                                        <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small"
+                                                                Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
+                                                            <i class="bi bi-trash"></i>
                                                         </Button>
                                                     </Tooltip>
                                                 </div>

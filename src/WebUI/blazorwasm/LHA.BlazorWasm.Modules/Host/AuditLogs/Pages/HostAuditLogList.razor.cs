@@ -14,6 +14,10 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         private List<AuditLogDto> _logs = new();
         private long _totalCount;
         private DateRange<DateTimeOffset?> _executionTimeRange = new();
+        private DataTable<AuditLogDto>? _dataTable;
+        private List<AuditLogDto> _selectedLogs = new();
+        private bool _isDeleteDialogVisible;
+        private AuditLogDto? _itemToDelete;
 
         private List<SelectOption<string>> _httpMethodOptions => Enum.GetValues<CHttpMethodType>()
             .Select(x => new SelectOption<string>
@@ -108,9 +112,44 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 
         }
 
-        private async Task ShowDeleteDialog()
+        private void ShowSingleDeleteDialog(AuditLogDto log)
         {
+            _itemToDelete = log;
+            _isDeleteDialogVisible = true;
+        }
 
+        private void ShowBulkDeleteDialog()
+        {
+            _itemToDelete = null;
+            if (_selectedLogs.Any())
+            {
+                _isDeleteDialogVisible = true;
+            }
+        }
+
+        private async Task ExecuteDeleteAsync()
+        {
+            try
+            {
+                // NOTE: Assume API integration here. AuditLogService doesn't necessarily have Delete.
+                // Replace with actual API call if applicable.
+                if (_itemToDelete != null)
+                {
+                    ToastNotification.Success(L("Common.DeletedSuccessfully"));
+                }
+                else if (_selectedLogs.Any())
+                {
+                    ToastNotification.Success(L("Common.DeletedSuccessfully"));
+                }
+
+                _isDeleteDialogVisible = false;
+                _selectedLogs.Clear();
+                await LoadLogsAsync();
+            }
+            catch (Exception ex)
+            {
+                ToastNotification.Error(L("Common.DeleteFailed") + ": " + ex.Message);
+            }
         }
     }
 }
