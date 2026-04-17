@@ -43,6 +43,13 @@ internal sealed class LocalizationService : ILocalizationService
         return State.Translations.TryGetValue(key, out var value) ? value : key;
     }
 
+    public string L(string key, params object[] args)
+    {
+        if (string.IsNullOrWhiteSpace(key)) return string.Empty;
+
+        return State.Translations.TryGetValue(key, out var value) ? string.Format(value, args) : key;
+    }
+
     public async Task InitializeAsync()
     {
         // 1. Check local storage for existing preference

@@ -224,6 +224,11 @@
             "OopsMessage": "Đã xảy ra lỗi. Vui lòng thử lại sau.",
             "TryAgain": "Thử lại",
             "BackHome": "Quay lại trang chủ"
-        }
+        },
+        "InvalidNumberFormat": "Định dạng số không hợp lệ.",
+        "InvalidDecimalFormat": "Định dạng số thập phân không hợp lệ.",
+        "InvalidDoubleFormat": "Định dạng số thực không hợp lệ.",
+        "InvalidDateFormat": "Định dạng ngày không hợp lệ.",
+        "InvalidValue": "Giá trị '{0}' không hợp lệ cho {1}."
     }
 }

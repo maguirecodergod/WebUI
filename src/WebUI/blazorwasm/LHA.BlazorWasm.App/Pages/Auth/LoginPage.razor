@@ -1,0 +1,73 @@
+@page "/login"
+@layout EmptyLayout
+@inherits LhaComponentBase
+@using LHA.BlazorWasm.Components.Forms
+@using LHA.BlazorWasm.Components.Buttons
+@using LHA.BlazorWasm.Components.Form
+
+<PageTitle>@Localizer.L("Login.Title")</PageTitle>
+
+<div class="register-container @ThemeService.ThemeClass">
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <div class="register-glass-panel login-panel-reveal">
+        <div class="register-header">
+            <h1 class="brand-title">LHA<span class="brand-accent">App</span></h1>
+            <p class="subtitle">@Localizer.L("Login.Subtitle")</p>
+        </div>
+
+        <EditForm Model="@Model" OnValidSubmit="@HandleLogin">
+            <FluentValidationValidator />
+            <ServerSideValidator @ref="_serverValidator" />
+
+            <div class="login-fields-container">
+                <FormField Label="@Localizer.L("Login.UserNameOrEmail")" Required="true"
+                           ValueExpression="@(() => (object)Model.UserNameOrEmail)">
+                    <CInput @bind-Value="Model.UserNameOrEmail" Type="text" Placeholder="admin@lha.io">
+                        <IconLeft>
+                            <i class="bi bi-person"></i>
+                        </IconLeft>
+                    </CInput>
+                </FormField>
+
+                <FormField Label="@Localizer.L("Login.Password")" Required="true"
+                           ValueExpression="@(() => (object)Model.Password)">
+                    <CInput @bind-Value="Model.Password" Type="password" Placeholder="••••••••">
+                        <IconLeft>
+                            <i class="bi bi-lock"></i>
+                        </IconLeft>
+                    </CInput>
+                </FormField>
+            </div>
+
+            <div class="login-options">
+                <div class="remember-me-wrap">
+                    <LHA.BlazorWasm.Components.Switch.Switch @bind-Value="Model.RememberMe"
+                                                             Label="@Localizer.L("Login.RememberMe")"
+                                                             Size="LHA.BlazorWasm.Components.Switch.CSwitchSize.Small" />
+                </div>
+                <a href="/forgot-password" class="forgot-link">@Localizer.L("Login.ForgotPassword")</a>
+            </div>
+
+            <div class="login-actions">
+                <Button Type="CButtonType.Submit" Style="CButtonStyle.Primary" Size="CButtonSize.Large"
+                        IsLoading="IsLoading" FullWidth="true" Class="btn-neon-pulse">
+                    <span class="btn-text">@Localizer.L("Login.Submit")</span>
+                    <i class="bi bi-arrow-right btn-arrow"></i>
+                </Button>
+            </div>
+
+            <div class="login-footer">
+                <p>@Localizer.L("Login.NoAccount")</p>
+                <Button Type="CButtonType.Button" Style="CButtonStyle.Ghost" OnClick="GoToRegister"
+                        Class="btn-secondary-ghost">
+                    @Localizer.L("Login.RegisterTenant")
+                </Button>
+            </div>
+        </EditForm>
+    </div>
+
+    <div class="digital-grid"></div>
+</div>

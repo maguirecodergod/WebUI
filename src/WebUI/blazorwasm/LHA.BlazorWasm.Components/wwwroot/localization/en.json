@@ -193,7 +193,6 @@
         "LogoutDesc": "Safely exit your current session"
     },
     "Emoji": {
-
         "SearchPlaceholder": "Search emoji..."
     },
     "Errors": {
@@ -225,6 +224,11 @@
             "OopsMessage": "Something went wrong. Please try again later.",
             "TryAgain": "Try Again",
             "BackHome": "Back to Home"
-        }
+        },
+        "InvalidNumberFormat": "Invalid number format.",
+        "InvalidDecimalFormat": "Invalid decimal format.",
+        "InvalidDoubleFormat": "Invalid double format.",
+        "InvalidDateFormat": "Invalid date format.",
+        "InvalidValue": "The value '{0}' is not valid for {1}."
     }
 }

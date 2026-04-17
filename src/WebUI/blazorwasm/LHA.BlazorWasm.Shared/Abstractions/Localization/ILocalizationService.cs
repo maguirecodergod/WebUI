@@ -26,6 +26,14 @@ public interface ILocalizationService
     string L(string key);
 
     /// <summary>
+    /// Gets the translated string for the specified dot-notation key (e.g., "Common.Save").
+    /// </summary>
+    /// <param name="key">The translation key.</param>
+    /// <param name="args">The arguments to replace in the translation string.</param>
+    /// <returns>The localized string, or the key itself if no translation is found.</returns>
+    string L(string key, params object[] args);
+
+    /// <summary>
     /// Changes the active language dynamically.
     /// Connects to LocalStorage, fetches necessary module JSON resources, and triggers UI updates.
     /// </summary>
