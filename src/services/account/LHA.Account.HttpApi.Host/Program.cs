@@ -22,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 // ── Framework services ───────────────────────────────────────────
 builder.Services.AddLHAMultiTenancy(options =>
 {
+    options.TenantResolvers.Add(new LHA.AspNetCore.Security.DomainTenantResolveContributor());
     options.TenantResolvers.Add(new LHA.AspNetCore.Security.HttpHeaderTenantResolveContributor());
 });
 builder.Services.AddLHAUnitOfWork();
@@ -96,5 +97,12 @@ app.UseAuthorization();
 // ── Endpoints ────────────────────────────────────────────────────
 app.MapAccountEndpoints();
 app.MapLHAGrpcInfrastructure();
+
+// ── Auto Migration ───────────────────────────────────────────────
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AccountDbContext>();
+    await context.Database.MigrateAsync();
+}
 
 app.Run();

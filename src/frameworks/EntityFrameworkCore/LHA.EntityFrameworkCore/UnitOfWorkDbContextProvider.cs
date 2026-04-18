@@ -1,3 +1,4 @@
+using LHA.MultiTenancy;
 using LHA.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -17,6 +18,11 @@ namespace LHA.EntityFrameworkCore;
 /// registered in <see cref="LhaDbContextOptions.DbContextReplacements"/>, the replacement type
 /// is resolved instead. All module providers that share the same replacement type will receive
 /// the same DbContext instance within a Unit of Work.
+/// </para>
+/// <para>
+/// Supports multi-tenant connection string resolution: if the current tenant has a dedicated
+/// connection string (e.g., PerTenant database mode), the DbContext's connection is switched
+/// to the tenant's database before first use.
 /// </para>
 /// </summary>
 /// <typeparam name="TDbContext">The logical DbContext type to resolve.</typeparam>
@@ -50,8 +56,11 @@ public sealed class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider
         var actualType = _options.DbContextReplacements.GetValueOrDefault(
             typeof(TDbContext), typeof(TDbContext));
 
-        // Use the actual type for the UoW key so all replaced providers share one instance.
-        var dbContextKey = DbContextKey + actualType.FullName;
+        // Include tenant ID in the UoW key so each tenant gets its own DbContext instance.
+        // This is critical for PerTenant database mode where each tenant connects to a different database.
+        var currentTenant = unitOfWork.ServiceProvider.GetService<ICurrentTenant>();
+        var tenantKey = currentTenant?.Id?.ToString() ?? "host";
+        var dbContextKey = DbContextKey + actualType.FullName + "_" + tenantKey;
 
         var databaseApi = unitOfWork.FindDatabaseApi(dbContextKey);
         if (databaseApi is EfCoreDatabaseApi existingApi)
@@ -59,7 +68,7 @@ public sealed class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider
             return existingApi.DbContext;
         }
 
-        var dbContext = CreateDbContext(unitOfWork, actualType);
+        var dbContext = await CreateDbContextAsync(unitOfWork, actualType, currentTenant);
         unitOfWork.AddDatabaseApi(dbContextKey, new EfCoreDatabaseApi(dbContext));
 
         if (dbContext is IHasCurrentUnitOfWork hasUow)
@@ -69,20 +78,48 @@ public sealed class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider
 
         if (unitOfWork.Options.IsTransactional)
         {
-            await JoinTransactionAsync(unitOfWork, dbContext, actualType);
+            await JoinTransactionAsync(unitOfWork, dbContext, dbContextKey);
         }
 
         return dbContext;
     }
 
-    private static DbContext CreateDbContext(IUnitOfWork unitOfWork, Type actualType)
+    /// <summary>
+    /// Creates a new DbContext, optionally switching its connection to the tenant's
+    /// dedicated database if the current tenant has a custom connection string.
+    /// </summary>
+    private static async Task<DbContext> CreateDbContextAsync(
+        IUnitOfWork unitOfWork, Type actualType, ICurrentTenant? currentTenant)
     {
-        return (DbContext)unitOfWork.ServiceProvider.GetRequiredService(actualType);
+        var dbContext = (DbContext)unitOfWork.ServiceProvider.GetRequiredService(actualType);
+
+        // ── Multi-Tenant Connection Resolution ──────────────────────────────
+        // If the current tenant has a dedicated connection string (PerTenant mode),
+        // switch the DbContext to use that connection string instead of the default.
+        if (currentTenant is { IsAvailable: true })
+        {
+            var tenantStore = unitOfWork.ServiceProvider.GetService<ITenantStore>();
+            if (tenantStore is not null)
+            {
+                var tenantConfig = await tenantStore.FindAsync(currentTenant.Id!.Value);
+                if (tenantConfig is not null)
+                {
+                    // Check for a "Default" connection string override
+                    if (tenantConfig.ConnectionStrings.TryGetValue("Default", out var tenantConnectionString)
+                        && !string.IsNullOrWhiteSpace(tenantConnectionString))
+                    {
+                        dbContext.Database.SetConnectionString(tenantConnectionString);
+                    }
+                }
+            }
+        }
+
+        return dbContext;
     }
 
-    private static async Task JoinTransactionAsync(IUnitOfWork unitOfWork, DbContext dbContext, Type actualType)
+    private static async Task JoinTransactionAsync(IUnitOfWork unitOfWork, DbContext dbContext, string dbContextKey)
     {
-        var transactionKey = DbContextKey + "Transaction_" + actualType.FullName;
+        var transactionKey = DbContextKey + "Transaction_" + dbContextKey;
 
         var existingTransactionApi = unitOfWork.FindTransactionApi(transactionKey);
         if (existingTransactionApi is EfCoreTransactionApi efCoreTransactionApi)

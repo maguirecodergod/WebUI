@@ -44,9 +44,22 @@ public sealed class TenantDatabaseMigrator : ITenantDatabaseMigrator
             auditPropertySetter,
             currentTenant);
 
+        // ── PostgreSQL Schema Isolation Support ───────────────────────
+        // If the connection string specifies a SearchPath, ensure that schema exists first.
+        var resolvedConnectionString = dbContext.Database.GetConnectionString();
+        if (!string.IsNullOrWhiteSpace(resolvedConnectionString) && resolvedConnectionString.Contains("SearchPath=", StringComparison.OrdinalIgnoreCase))
+        {
+            var builder = new Npgsql.NpgsqlConnectionStringBuilder(resolvedConnectionString);
+            if (!string.IsNullOrWhiteSpace(builder.SearchPath))
+            {
+                // We create a separate connection to avoid interfering with the DbContext's state
+                await dbContext.Database.ExecuteSqlRawAsync($"CREATE SCHEMA IF NOT EXISTS {builder.SearchPath};", cancellationToken);
+            }
+        }
+
         // Executes schema creation (creates DB if not exists contextually via the connection string)
         await dbContext.Database.MigrateAsync(cancellationToken);
 
-        _logger.LogInformation("Successfully migrated new tenant database.");
+        _logger.LogInformation("Successfully migrated new tenant database/schema.");
     }
 }

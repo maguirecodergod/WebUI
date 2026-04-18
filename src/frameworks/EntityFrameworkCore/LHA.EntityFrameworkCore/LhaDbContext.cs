@@ -227,18 +227,65 @@ public abstract class LhaDbContext<TDbContext> : DbContext, IHasCurrentUnitOfWor
             return;
 
         var clrType = entityType.ClrType;
+        var isSoftDelete = clrType.IsAssignableTo(typeof(ISoftDelete));
+        var isMultiTenant = clrType.IsAssignableTo(typeof(IMultiTenant));
 
-        if (clrType.IsAssignableTo(typeof(ISoftDelete)))
+        if (!isSoftDelete && !isMultiTenant)
+            return;
+
+        System.Linq.Expressions.LambdaExpression? filterExpression = null;
+
+        if (isSoftDelete && isMultiTenant)
         {
-            modelBuilder.Entity(clrType).HasQueryFilter(
-                SoftDeleteQueryFilterExpression(clrType));
+            filterExpression = CombinedQueryFilterExpression(clrType);
+        }
+        else if (isSoftDelete)
+        {
+            filterExpression = SoftDeleteQueryFilterExpression(clrType);
+        }
+        else if (isMultiTenant)
+        {
+            filterExpression = MultiTenantQueryFilterExpression(clrType);
         }
 
-        if (clrType.IsAssignableTo(typeof(IMultiTenant)))
+        if (filterExpression != null)
         {
-            modelBuilder.Entity(clrType).HasQueryFilter(
-                MultiTenantQueryFilterExpression(clrType));
+            modelBuilder.Entity(clrType).HasQueryFilter(filterExpression);
         }
+    }
+
+    /// <summary>
+    /// Builds combined lambda: e => (!IsSoftDeleteFilterEnabled || !((ISoftDelete)e).IsDeleted) 
+    ///                         && (!IsMultiTenantFilterEnabled || ((IMultiTenant)e).TenantId == CurrentTenantId)
+    /// </summary>
+    private System.Linq.Expressions.LambdaExpression CombinedQueryFilterExpression(Type entityType)
+    {
+        var param = System.Linq.Expressions.Expression.Parameter(entityType, "e");
+        var dbContext = System.Linq.Expressions.Expression.Constant(this);
+
+        // Soft Delete part
+        var softDeleteFilterEnabled = System.Linq.Expressions.Expression.Property(dbContext, nameof(IsSoftDeleteFilterEnabled));
+        var isDeleted = System.Linq.Expressions.Expression.Property(
+            System.Linq.Expressions.Expression.Convert(param, typeof(ISoftDelete)),
+            nameof(ISoftDelete.IsDeleted));
+        var softDeleteBody = System.Linq.Expressions.Expression.OrElse(
+            System.Linq.Expressions.Expression.Not(softDeleteFilterEnabled),
+            System.Linq.Expressions.Expression.Not(isDeleted));
+
+        // Multi Tenant part
+        var multiTenantFilterEnabled = System.Linq.Expressions.Expression.Property(dbContext, nameof(IsMultiTenantFilterEnabled));
+        var tenantId = System.Linq.Expressions.Expression.Property(
+            System.Linq.Expressions.Expression.Convert(param, typeof(IMultiTenant)),
+            nameof(IMultiTenant.TenantId));
+        var currentTenantId = System.Linq.Expressions.Expression.Property(dbContext, nameof(CurrentTenantId));
+        var multiTenantBody = System.Linq.Expressions.Expression.OrElse(
+            System.Linq.Expressions.Expression.Not(multiTenantFilterEnabled),
+            System.Linq.Expressions.Expression.Equal(tenantId, currentTenantId));
+
+        // Combined: (SoftDelete) && (MultiTenant)
+        var body = System.Linq.Expressions.Expression.AndAlso(softDeleteBody, multiTenantBody);
+
+        return System.Linq.Expressions.Expression.Lambda(body, param);
     }
 
     /// <summary>

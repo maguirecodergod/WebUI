@@ -1,6 +1,6 @@
 :root {
     --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    
+
     /* Z-Index Design Tokens */
     --z-index-under: -1;
     --z-index-base: 0;
@@ -11,10 +11,10 @@
     --z-index-topbar: 999;
     --z-index-sidebar: 1005;
     --z-index-sticky: 1020;
-    --z-index-toast: 1055;
     --z-index-tooltip: 1060;
     --z-index-dropdown: 2000;
     --z-index-modal: 2200;
+    --z-index-toast: 2201;
     --z-index-fullscreen: 999999;
     --z-index-max: 2147483647;
 }
@@ -29,9 +29,10 @@
     --theme-toggle-track: #d0d5dd;
     --card-bg: rgba(255, 255, 255, 0.85);
     --card-shadow: 0 12px 16px -4px rgba(16, 24, 40, 0.1), 0 4px 6px -2px rgba(16, 24, 40, 0.05);
-    
+
     /* Picker Premium Palette */
-    --primary-color: #6366f1; /* Indigo */
+    --primary-color: #6366f1;
+    /* Indigo */
     --primary-hover: #4f46e5;
     --range-bg: rgba(99, 102, 241, 0.08);
     --input-bg: #ffffff;
@@ -44,7 +45,7 @@
     --day-other-month: #d0d5dd;
     --divider-color: #f2f4f7;
     --today-border: #6366f1;
-    
+
     /* Validation Colors */
     --success-color: #12b76a;
     --success-bg: rgba(18, 183, 106, 0.08);
@@ -77,7 +78,8 @@
     --card-shadow: 0 20px 24px -4px rgba(0, 0, 0, 0.3), 0 8px 8px -4px rgba(0, 0, 0, 0.2);
 
     /* Picker Premium Palette */
-    --primary-color: #818cf8; /* Lighter Indigo */
+    --primary-color: #818cf8;
+    /* Lighter Indigo */
     --primary-hover: #a5b4fc;
     --range-bg: rgba(129, 140, 248, 0.15);
     --input-bg: rgba(0, 0, 0, 0.25);
@@ -111,7 +113,8 @@
     --lha-input-autofill-text: #ffffff;
 }
 
-.theme-light, .theme-dark {
+.theme-light,
+.theme-dark {
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: var(--font-family);
@@ -119,7 +122,7 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.theme-light body, 
+.theme-light body,
 .theme-dark body {
     font-family: var(--font-family);
     color: var(--text-color);

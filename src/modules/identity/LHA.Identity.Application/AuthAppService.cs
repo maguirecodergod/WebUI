@@ -254,14 +254,15 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
                 Guid? assignedRoleId = null;
                 if (role != null)
                 {
-                    assignedRoleId = role.Id;
                     // For isolated databases, the role record must exist in the tenant's own IdentityRoles table.
                     var tenantRole = await _roleRepository.FindAsync(role.Id, ct);
                     if (tenantRole == null)
                     {
-                        tenantRole = await _roleManager.CreateAsync(role.Name, role.Id, tenantId, isStatic: true, isPublic: true);
+                        // Generate a NEW ID for the tenant-specific copy to avoid collisions in Shared Table mode.
+                        tenantRole = await _roleManager.CreateAsync(role.Name, tenantId, isStatic: true, isPublic: true);
                         await _roleRepository.InsertAsync(tenantRole, ct);
                     }
+                    assignedRoleId = tenantRole.Id;
                 }
                 else
                 {

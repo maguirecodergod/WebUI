@@ -12,6 +12,9 @@ public enum CMultiTenancyDatabaseStyle
     /// <summary>Each tenant has its own dedicated database.</summary>
     PerTenant = 2,
 
+    /// <summary>Each tenant has its own dedicated schema within a shared database.</summary>
+    PerSchema = 4,
+
     /// <summary>Mix of shared and per-tenant — some tenants have dedicated databases, others share.</summary>
-    Hybrid = Shared | PerTenant
+    Hybrid = Shared | PerTenant | PerSchema
 }

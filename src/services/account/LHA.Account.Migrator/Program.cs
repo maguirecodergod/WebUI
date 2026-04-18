@@ -218,13 +218,13 @@ using (var scope = host.Services.CreateScope())
             (AccountPermissions.AuditLogManagement.HostRead,         AccountPermissions.AuditLogManagement.L.HostRead,"AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Host),
             // Permission Management
             (AccountPermissions.PermissionMgmt.DefinitionsRead,   AccountPermissions.PermissionMgmt.L.DefinitionsRead,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
-            (AccountPermissions.PermissionMgmt.DefinitionsManage, AccountPermissions.PermissionMgmt.L.DefinitionsManage, "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.PermissionMgmt.DefinitionsManage, AccountPermissions.PermissionMgmt.L.DefinitionsManage, "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
             (AccountPermissions.PermissionMgmt.GroupsRead,        AccountPermissions.PermissionMgmt.L.GroupsRead,        "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
-            (AccountPermissions.PermissionMgmt.GroupsManage,      AccountPermissions.PermissionMgmt.L.GroupsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.PermissionMgmt.GroupsManage,      AccountPermissions.PermissionMgmt.L.GroupsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
             (AccountPermissions.PermissionMgmt.TemplatesRead,     AccountPermissions.PermissionMgmt.L.TemplatesRead,     "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
-            (AccountPermissions.PermissionMgmt.TemplatesManage,   AccountPermissions.PermissionMgmt.L.TemplatesManage,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.PermissionMgmt.TemplatesManage,   AccountPermissions.PermissionMgmt.L.TemplatesManage,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
             (AccountPermissions.PermissionMgmt.GrantsRead,        AccountPermissions.PermissionMgmt.L.GrantsRead,        "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
-            (AccountPermissions.PermissionMgmt.GrantsManage,      AccountPermissions.PermissionMgmt.L.GrantsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.PermissionMgmt.GrantsManage,      AccountPermissions.PermissionMgmt.L.GrantsManage,      "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
         };
 
         var defEntities = new List<PermissionDefinitionEntity>();

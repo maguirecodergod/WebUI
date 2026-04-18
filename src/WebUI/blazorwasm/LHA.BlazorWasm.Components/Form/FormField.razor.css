@@ -46,7 +46,7 @@
     align-items: center;
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--lha-text-secondary, rgba(255, 255, 255, 0.6));
+    color: var(--text-color, #1a1c21);
     margin-bottom: 0;
     line-height: 1.5;
     cursor: pointer;
@@ -87,7 +87,7 @@
 
 ::deep .form-help {
     font-size: 0.75rem;
-    color: var(--lha-text-muted, rgba(255, 255, 255, 0.4));
+    color: var(--text-muted, #5e6470);
     line-height: 1.4;
     margin-top: 0.25rem;
     padding-left: 4px;

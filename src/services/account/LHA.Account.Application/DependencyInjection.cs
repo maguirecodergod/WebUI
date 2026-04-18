@@ -40,6 +40,7 @@ public static class DependencyInjection
         // Tenant Provisioning Orchestration
         services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.SharedTenantProvisionerStrategy>();
         services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.PerTenantProvisionerStrategy>();
+        services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.PerSchemaTenantProvisionerStrategy>();
         services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.HybridTenantProvisionerStrategy>();
         services.AddTransient<TenantProvisioning.ITenantProvisioningOrchestrator, TenantProvisioning.TenantProvisioningOrchestrator>();
 

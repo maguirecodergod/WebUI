@@ -75,8 +75,8 @@ public sealed class IdentitySecurityLogDto : CreationAuditedEntityDto<Guid>
 /// <summary>DTO for a permission grant.</summary>
 public sealed class PermissionGrantDto
 {
-    public required string Name { get; init; }
-    public bool IsGranted { get; init; }
+    public required string Name { get; set; }
+    public bool IsGranted { get; set; }
 }
 
 /// <summary>DTO for permission grants organized by provider.</summary>

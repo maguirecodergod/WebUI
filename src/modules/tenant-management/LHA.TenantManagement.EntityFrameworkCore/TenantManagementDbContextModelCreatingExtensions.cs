@@ -22,7 +22,7 @@ public static class TenantManagementDbContextModelCreatingExtensions
 
         modelBuilder.Entity<TenantEntity>(b =>
         {
-            b.ToTable("Tenants");
+            b.ToTable("Tenant_Tenant");
             b.ConfigureByConvention(); // audit, soft-delete, concurrency stamp, etc.
 
             b.HasKey(t => t.Id);
@@ -60,7 +60,7 @@ public static class TenantManagementDbContextModelCreatingExtensions
 
         modelBuilder.Entity<TenantConnectionString>(b =>
         {
-            b.ToTable("TenantConnectionStrings");
+            b.ToTable("Tenant_ConnectionString");
             b.HasKey(cs => cs.Id);
 
             b.Property(cs => cs.Name)

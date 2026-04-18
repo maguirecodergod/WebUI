@@ -1,0 +1,15 @@
+.user-picker-list .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-color: var(--border-color) !important;
+}
+
+.user-picker-list .list-group-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.user-picker-list .form-check-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0;
+}

@@ -1,0 +1,50 @@
+@namespace LHA.BlazorWasm.Components.Identity
+@using LHA.BlazorWasm.Components.Dialog
+@using LHA.BlazorWasm.Components.Form
+
+<PremiumDialog @ref="_dialog" Title="@Title" OkText="@L("Common_Confirm")" CancelText="@L("Common_Cancel")"
+               Size="DialogSize.Medium" OnOk="ConfirmSelectionAsync" @bind-IsVisible="_isVisible">
+    <ChildContent>
+        <div class="d-flex flex-column gap-3">
+            <!-- Search bar -->
+            <CInput TValue="string" Value="@_searchText" ValueChanged="OnSearchChanged"
+                    ValueExpression="@(() => _searchText)" Placeholder="@L("Common.Search")" Debounce="500">
+                <IconLeft><i class="bi bi-search"></i></IconLeft>
+            </CInput>
+
+            <!-- User List -->
+            <div class="user-picker-list overflow-auto" style="max-height: 400px; min-height: 200px;">
+                @if (_isLoading)
+                {
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2 text-muted small">@L("Common.Loading")</p>
+                    </div>
+                }
+                else if (_users.Any())
+                {
+                    <div class="list-group list-group-flush border rounded-3">
+                        @foreach (var user in _users)
+                        {
+                            <label class="list-group-item list-group-item-action d-flex align-items-center gap-3 p-3">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" checked="@IsSelected(user.Id)"
+                                       @onchange="@(e => ToggleUser(user, e.Value is bool b && b))">
+                                <div class="d-flex flex-column">
+                                    <span class="fw-bold">@user.UserName</span>
+                                    <span class="text-muted small">@user.Email</span>
+                                </div>
+                            </label>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-person-slash display-4"></i>
+                        <p class="mt-2">@L("Common.NoData")</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </ChildContent>
+</PremiumDialog>
