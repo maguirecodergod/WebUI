@@ -1,86 +1,93 @@
-@baseUrl = https://localhost:7150
-@apiVersion = 1
+### LHA Multi-Tenancy Complete Test Suite
+@gatewayUrl = https://localhost:7100
+@accountUrl = https://localhost:7150
+@password = Admin@123456
 
-### 1. Register a new user
-# @name Register
-POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/register
+# =========================================================================
+# 1. HOST MANAGEMENT (Super Admin Actions)
+# =========================================================================
+
+### 1.1. Host Admin Login
+# @name host_login
+POST {{accountUrl}}/api/v1/identity/auth/login
 Content-Type: application/json
 
 {
-    "userName": "newuser",
-    "email": "newuser@example.com",
-    "password": "Password123!",
-    "name": "New",
-    "surname": "User",
-    "phoneNumber": "0987654321",
-    "lockoutEnabled": true,
-    "roleIds": []
+    "userNameOrEmail": "admin", 
+    "password": "{{password}}"
 }
 
 ###
 
-### 2. Register Tenant
-# @name RegisterTenant
-POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/register-tenant
+@hostToken = {{host_login.response.body.result.data.accessToken}}
+
+### 1.2. Query All Tenants (Host Side)
+GET {{accountUrl}}/api/v1/tenants?PageNumber=1&PageSize=10
+Authorization: Bearer {{hostToken}}
+
+###
+
+# =========================================================================
+# 2. TENANT REGISTRATION (Public/Host Side)
+# =========================================================================
+
+### 2.1. Register Per-Database Tenant
+POST {{accountUrl}}/api/v1/identity/auth/register-tenant
 Content-Type: application/json
 
 {
-    "tenantName": "Li Ha Group",
-    "adminUserName": "litenantadmin",
-    "adminEmail": "admin@ligroup.com",
-    "adminPassword": "Admin@123456",
-    "databaseStyle": 1
+    "tenantName": "tenant_per_db",
+    "adminUserName": "admin_db",
+    "adminEmail": "db@test.com",
+    "adminPassword": "{{password}}",
+    "databaseStyle": 2
 }
 
 ###
 
-### 3. Login (Admin)
-# @name LoginAdmin
-POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/login
+### 2.2. Register Per-Schema Tenant
+POST {{accountUrl}}/api/v1/identity/auth/register-tenant
 Content-Type: application/json
 
 {
-    "userNameOrEmail": "admin",
-    "password": "Admin@123456"
+    "tenantName": "tenant_per_schema",
+    "adminUserName": "admin_schema",
+    "adminEmail": "schema@test.com",
+    "adminPassword": "{{password}}",
+    "databaseStyle": 4
 }
 
 ###
 
-### 4. Login (New User)
-# @name Login
-POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/login
-Accept-Language: vi
+# =========================================================================
+# 3. TENANT-SPECIFIC ACTIONS (Data Isolation Test)
+# =========================================================================
+
+### 3.1. Login to Per-Database Tenant (Subdomain)
+# @name login_db
+POST {{accountUrl}}/api/v1/identity/auth/login
 Content-Type: application/json
+Host: tenant_per_db.localhost:7150
 
 {
-    "userNameOrEmail": "admin",
-    "password": "Admin123456"
+    "userNameOrEmail": "admin_db",
+    "password": "{{password}}"
 }
 
 ###
 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJMaWVuSG9hQXBwIiwiaXNzIjoiTGllbkhvYUFwcC5BY2NvdW50IiwiZXhwIjoxNzc0NDMzOTMzLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDIiLCJqdGkiOiIwMTlkMjQ2NS1hMGFhLTc1YjMtODUyMi0xM2E4NGI1Mjk0NGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBsaWVuaG9hYXBwLmNvbSIsInJvbGVzIjpbImFkbWluIl0sInBlcm1pc3Npb25zIjpbImlkZW50aXR5LnVzZXJzLnJlYWQiLCJpZGVudGl0eS51c2Vycy5jcmVhdGUiLCJpZGVudGl0eS51c2Vycy51cGRhdGUiLCJpZGVudGl0eS51c2Vycy5kZWxldGUiLCJpZGVudGl0eS5yb2xlcy5jcmVhdGUiLCJpZGVudGl0eS5yb2xlcy5yZWFkIiwiaWRlbnRpdHkucm9sZXMudXBkYXRlIiwiaWRlbnRpdHkucm9sZXMuZGVsZXRlIiwiaWRlbnRpdHkuY2xhaW0tdHlwZXMucmVhZCIsImlkZW50aXR5LmNsYWltLXR5cGVzLmNyZWF0ZSIsImlkZW50aXR5LmNsYWltLXR5cGVzLnVwZGF0ZSIsImlkZW50aXR5LmNsYWltLXR5cGVzLmRlbGV0ZSIsImlkZW50aXR5LnNlY3VyaXR5LWxvZ3MucmVhZCIsInRlbmFudHMucmVhZCIsInRlbmFudHMuY3JlYXRlIiwidGVuYW50cy51cGRhdGUiLCJ0ZW5hbnRzLmRlbGV0ZSIsImF1ZGl0LWxvZ3MucmVhZCIsInBlcm1pc3Npb25zLmRlZmluaXRpb25zLm1hbmFnZSIsInBlcm1pc3Npb25zLmRlZmluaXRpb25zLnJlYWQiLCJwZXJtaXNzaW9ucy5ncm91cHMucmVhZCIsInBlcm1pc3Npb25zLmdyb3Vwcy5tYW5hZ2UiLCJwZXJtaXNzaW9ucy50ZW1wbGF0ZXMucmVhZCIsInBlcm1pc3Npb25zLnRlbXBsYXRlcy5tYW5hZ2UiLCJwZXJtaXNzaW9ucy5ncmFudHMucmVhZCIsInBlcm1pc3Npb25zLmdyYW50cy5tYW5hZ2UiXSwiaWF0IjoxNzc0NDMyMTMzLCJuYmYiOjE3NzQ0MzIxMzN9.mWr9Bq5I3s7fWXE4Qq5KkRGK0TMpwSXUdCkb8dvEr5M
-@refreshToken = {{Login.response.body.data.refreshToken}}
+@dbToken = {{login_db.response.body.result.data.accessToken}}
 
-### 5. Refresh Token
-# @name RefreshToken
-POST {{baseUrl}}/api/v{{apiVersion}}/identity/auth/refresh
-Content-Type: application/json
-
-{
-    "refreshToken": "{{refreshToken}}"
-}
+### 3.2. Query Users of Per-Database Tenant
+GET {{accountUrl}}/api/v1/identity/users?PageNumber=1&PageSize=10
+Authorization: Bearer {{dbToken}}
+Host: tenant_per_db.localhost:7150
 
 ###
 
-### 6. Get Current User Info
-# @name GetMe
-GET {{baseUrl}}/api/v{{apiVersion}}/identity/auth/me
-Authorization: Bearer {{accessToken}}
-
-
-
-### 7. Get Audit Logs
-# @name GetAuditLogs
-GET {{baseUrl}}/api/v{{apiVersion}}/audit-logs?skipCount=0&maxResultCount=100
-Authorization: Bearer {{accessToken}}
+### 3.3. Query Users of Per-Schema Tenant
+# Note: Usually you need to login to schema tenant first to get a token
+# This is a sample query showing resolution
+GET {{accountUrl}}/api/v1/identity/users?PageNumber=1&PageSize=10
+Authorization: Bearer {{dbToken}} 
+Host: tenant_per_schema.localhost:7150
