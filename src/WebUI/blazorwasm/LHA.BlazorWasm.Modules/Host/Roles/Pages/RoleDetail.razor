@@ -1,310 +1,252 @@
 @page "/host/roles/{Id:guid}"
-@using LHA.Shared.Contracts.Identity.Users
-@using LHA.BlazorWasm.Modules.Host.Roles.Models
-@using LHA.Shared.Contracts.Identity.Roles
+@inherits LhaComponentBase
+@using LHA.Shared.Contracts.Identity
+@using LHA.BlazorWasm.Components.Tabs
+@using LHA.BlazorWasm.Components.Skeleton
+@using LHA.BlazorWasm.Components.Section
+@using LHA.BlazorWasm.Components.Form
 
-<div class="role-detail-container">
-    <div class="role-header">
-        <div class="header-main">
+<div class="role-detail-container pb-12 animate-fade-in">
+    @* --- Page Header with Sticky Info --- *@
+    <div class="role-header-premium sticky top-0 z-10 bg-[var(--p-bg)] bg-opacity-95 backdrop-blur-sm pb-4 pt-2 -mt-2">
+        <div class="header-left">
             <div class="role-title-row">
-                <h1>@(string.IsNullOrEmpty(_roleModel.Name) ? "Vai trò mới" : _roleModel.Name)</h1>
-                <div class="role-badges">
-                    @if (_roleModel.IsStatic)
-                    {
-                        <span class="badge badge-system">Hệ thống</span>
-                    }
-                    @if (_roleModel.IsDefault)
-                    {
-                        <span class="badge badge-default">Mặc định</span>
-                    }
-                    @if (_roleModel.IsPublic)
-                    {
-                        <span class="badge badge-public">Công khai</span>
-                    }
-                </div>
-            </div>
-            <p class="role-subtitle">ID: @Id.ToString().ToUpper()</p>
-        </div>
-        <div class="header-actions">
-            <button class="btn btn-outline" @onclick="GoBack">Quay lại</button>
-            <button class="btn btn-primary" @onclick="SaveRoleAsync" disabled="@_isSaving">
-                @(_isSaving ? "Đang lưu..." : "Lưu thay đổi")
-            </button>
-        </div>
-    </div>
+                <Button Style="CButtonStyle.Ghost" Icon="bi bi-arrow-left"
+                        OnClick='() => Navigation.NavigateTo("/host/roles")' Class="back-btn mr-2" />
+                <h1 class="text-3xl font-bold tracking-tight">@(_roleModel?.Name ?? L("Common.Loading"))</h1>
 
-    <div class="role-tabs">
-        <button class="tab-link @(ActiveTab == "permissions" ? "active" : "")" @onclick="@(() => ActiveTab = "permissions")">
-            Quyền hạn vai trò
-        </button>
-        <button class="tab-link @(ActiveTab == "users" ? "active" : "")" @onclick="@(() => ActiveTab = "users")">
-            Người dùng được gán (@_assignedUsers.Count)
-        </button>
-    </div>
-
-    <div class="tab-content">
-        @if (ActiveTab == "permissions")
-        {
-            <div class="permission-matrix-container">
-                <div class="matrix-toolbar">
-                    <div class="search-box">
-                        <i class="icon-search"></i>
-                        <input type="text" placeholder="Tìm kiếm quyền hạn..." @bind="_permissionFilter" @bind:event="oninput" />
-                    </div>
-                </div>
-
-                @if (_groups == null || _groups.Count == 0)
+                @if (_roleModel != null)
                 {
-                    <div class="empty-state">
-                        <p>Đang tải danh sách quyền hạn...</p>
-                    </div>
-                }
-                else
-                {
-                    <div class="permission-groups">
-                        @foreach (var group in _groups.Where(g => string.IsNullOrEmpty(_permissionFilter) || 
-                            g.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase) || 
-                            g.Permissions.Any(p => p.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase))))
+                    <div class="role-badges">
+                        @if (_roleModel.IsStatic)
                         {
-                            <div class="permission-group-card">
-                                <div class="group-header">
-                                    <h3>@group.DisplayName</h3>
-                                    <span class="group-service">@group.ServiceName</span>
-                                </div>
-                                <div class="permission-list">
-                                    @foreach (var p in group.Permissions.Where(p => string.IsNullOrEmpty(_permissionFilter) || 
-                                        p.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase)))
-                                    {
-                                        <div class="permission-item @(p.IsGranted ? "is-granted" : "")">
-                                            <div class="perm-info">
-                                                <div class="perm-name-row">
-                                                    <span class="perm-name">@p.DisplayName</span>
-                                                    @if (p.IsFromTemplate)
-                                                    {
-                                                        <span class="badge badge-template" title="Lấy từ bản mẫu hệ thống">Mặc định</span>
-                                                    }
-                                                </div>
-                                                <span class="perm-key">@p.Name</span>
-                                            </div>
-                                            <div class="perm-action">
-                                                <label class="switch">
-                                                    <input type="checkbox" checked="@p.IsGranted" @onchange="@((e) => { p.IsGranted = (bool)e.Value!; p.IsFromTemplate = false; })" />
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </div>
-                                        </div>
+                            <span class="badge badge-system glass-badge"><i class="bi bi-shield-lock"></i>
+                                @L("Roles.SystemRole")</span>
+                            }
+                            @if (_roleModel.IsDefault)
+                            {
+                                <span class="badge badge-default glass-badge"><i class="bi bi-check-circle"></i>
+                                    @L("Roles.DefaultRole")</span>
+                                }
+                                @if (_roleModel.IsPublic)
+                                {
+                                    <span class="badge badge-public glass-badge"><i class="bi bi-globe"></i>
+                                        @L("Roles.PublicRole")</span>
                                     }
                                 </div>
-                            </div>
-                        }
+                            }
+                        </div>
+                        <p class="role-subtitle mt-1 ml-12 text-sm text-[var(--p-text-muted)]">
+                            <i class="bi bi-fingerprint mr-1"></i> ID: @Id
+                        </p>
                     </div>
-                }
-            </div>
-        }
-        else if (ActiveTab == "users")
-        {
-            <div class="users-view-layout">
-                <div class="users-list-side">
-                    <div class="users-table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Người dùng</th>
-                                    <th>Email</th>
-                                    <th style="width: 100px"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (_assignedUsers.Count == 0)
-                                {
-                                    <tr>
-                                        <td colspan="3" class="text-center">Chưa có người dùng nào được gán vai trò này.</td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    @foreach (var user in _assignedUsers)
-                                    {
-                                        <tr class="@(_selectedUser?.Id == user.Id ? "selected-row" : "")" @onclick="() => SelectUser(user)">
-                                            <td>
-                                                <div class="user-cell">
-                                                    <div class="avatar">@user.UserName[0].ToString().ToUpper()</div>
-                                                    <span class="username">@user.UserName</span>
-                                                </div>
-                                            </td>
-                                            <td>@user.Email</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-ghost" @onclick:stopPropagation="true" @onclick="() => SelectUser(user)">
-                                                    Chi tiết quyền
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
+                    <div class="header-actions">
+                        <Button Style="CButtonStyle.Secondary" OnClick="@(() => InvokeAsync(StateHasChanged))"
+                                Icon="bi bi-arrow-clockwise" Class="mr-3 glass-btn">@L("Common.Refresh")</Button>
+                        <Button Style="CButtonStyle.Primary" IsLoading="_isSaving" OnClick="SaveRoleAsync" Icon="bi bi-save2"
+                                Class="shadow-lg shadow-indigo-500/30">@L("Common.Save")</Button>
                     </div>
                 </div>
 
-                @if (_selectedUser != null)
-                {
-                    <div class="user-permission-detail-side">
-                        <div class="detail-header">
-                            <div class="user-profile">
-                                <h3>Quyền hạn của @_selectedUser.UserName</h3>
-                                <p>Email: @_selectedUser.Email</p>
-                            </div>
-                            <button class="btn-close" @onclick="() => _selectedUser = null">&times;</button>
-                        </div>
+                @* ─────────────────────────────────────────────────
+       Tab Navigation — using the enterprise Tabs component
+       ───────────────────────────────────────────────── *@
+                <div class="role-tabs-wrapper" style="padding-top: 1rem;">
+                    <Tabs @bind-ActiveIndex="_activeTabIndex" Variant="CTabVariant.Pills" Position="CTabPosition.Top"
+                          Size="CTabSize.Medium" Scrollable="true" LazyLoad="true" OnTabChanged="OnTabChangedAsync"
+                          Class="role-detail-tabs">
 
-                        <div class="detail-body">
-                            @if (_isUserPermissionsLoading)
+                        <HeaderExtra>
+                            @if (_activeTabIndex == 0)
                             {
-                                <div class="loading-overlay">Đang phân tích quyền hạn...</div>
+                                <div class="search-box-system">
+                                    <CInput TValue="string" Value="@_permissionFilter"
+                                            ValueChanged="@((string val) => _permissionFilter = val)"
+                                            ValueExpression="@(() => _permissionFilter)" Placeholder="@L("Roles.SearchPermissions")"
+                                            Size="CInputSize.Medium" Class="glass-input">
+                                        <IconLeft><i class="bi bi-search"></i></IconLeft>
+                                    </CInput>
+                                </div>
                             }
-                            else
-                            {
-                                <div class="effective-permissions-list">
-                                    @foreach (var group in _userGroups)
-                                    {
-                                        <div class="effective-group">
-                                            <h4>@group.DisplayName</h4>
-                                            @foreach (var p in group.Permissions)
-                                            {
-                                                <div class="effective-item @(p.IsGranted ? "active" : "inactive")">
-                                                    <div class="eff-status">
-                                                        <i class="status-icon @(p.IsGranted ? "granted" : "denied")"></i>
+                        </HeaderExtra>
+
+                        <ChildContent>
+                            @* ── Tab 1: Permissions ── *@
+                            <TabItem Title="@L("Roles.Tab.Permissions")" Icon="bi bi-key">
+                                <Content>
+                                    <div class="permissions-view animate-fade-in mt-4">
+
+                                        @if (_groups == null || _groups.Count == 0)
+                                        {
+                                            <div class="permission-grid">
+                                                @for (int i = 0; i < 6; i++)
+                                                {
+                                                    <div class="skeleton-card-wrapper">
+                                                        <Skeleton Variant="CSkeletonVariant.Rounded" Height="220px" Width="100%" />
                                                     </div>
-                                                    <div class="eff-info">
-                                                        <span class="eff-name">@p.DisplayName</span>
-                                                        <div class="eff-origin">
-                                                            @if (p.IsInherited)
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="permission-grid">
+                                                @foreach (var group in _groups.Where(g =>
+                                                    string.IsNullOrEmpty(_permissionFilter) ||
+                                                    g.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase) ||
+                                                    g.Permissions.Any(p => p.DisplayName.Contains(_permissionFilter,
+                                            StringComparison.OrdinalIgnoreCase))))
+                                                {
+                                                    <Section Title="@L(group.DisplayName)" Icon="bi bi-collection" Collapsible="true">
+                                                        <div class="group-meta-tag">@group.ServiceName</div>
+                                                        <div class="permission-rows">
+                                                            @foreach (var p in group.Permissions.Where(p =>
+                                                                string.IsNullOrEmpty(_permissionFilter) ||
+                                                                p.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase)))
                                                             {
-                                                                <span class="origin-badge inherited" title="Kế thừa từ: @string.Join(", ", p.InheritedFrom)">
-                                                                    Kế thừa từ vai trò: @string.Join(", ", p.InheritedFrom)
-                                                                </span>
-                                                            }
-                                                            @if (p.IsDirectOverride)
-                                                            {
-                                                                <span class="origin-badge override">
-                                                                    Ghi đè thủ công
-                                                                </span>
+                                                                <div class="perm-row @(p.IsGranted ? "is-granted" : string.Empty)">
+                                                                    <div class="perm-info-p">
+                                                                        <div class="perm-top">
+                                                                            <span class="perm-name-p">@L(p.DisplayName)</span>
+                                                                            @if (p.IsFromTemplate)
+                                                                            {
+                                                                                <Tooltip Text="@L("Roles.InheritedFromTemplate")">
+                                                                                    <span class="badge-default-mini">@L("Roles.Default")</span>
+                                                                                </Tooltip>
+                                                                            }
+                                                                        </div>
+                                                                        <code class="perm-key-p">@p.Name</code>
+                                                                    </div>
+                                                                    <div class="perm-toggle-p">
+                                                                        <Switch Value="@p.IsGranted"
+                                                                                ValueChanged="@((val) => { p.IsGranted = val; p.IsFromTemplate = false; })"
+                                                                                Size="CSwitchSize.Medium" Tooltip="@L("Roles.TogglePermission")" />
+                                                                    </div>
+                                                                </div>
                                                             }
                                                         </div>
+                                                    </Section>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </Content>
+                            </TabItem>
+
+                            @* ── Tab 2: Users ── *@
+                            <TabItem Title="@L("Roles.Tab.Users")" Icon="bi bi-people"
+                                     Badge="@(_assignedUsers.Count > 0 ? _assignedUsers.Count.ToString() : null)">
+                                <Content>
+                                    <div class="users-view animate-slide-up">
+                                        <div class="view-layout-p">
+                                            <div class="users-list-p">
+                                                <div class="modern-card">
+                                                    <DataTable TItem="IdentityUserDto" Items="_assignedUsers" Hoverable="true"
+                                                               Striped="true" OnRowClick="@((u) => SelectUser(u))"
+                                                               KeySelector="@(u => u.Id)"
+                                                               RowClass="@(u => _selectedUser?.Id == u.Id ? "active-row" : string.Empty)">
+                                                        <ChildContent>
+                                                            <DataTableColumn TItem="IdentityUserDto" Title="@L("Roles.User")">
+                                                                <CellTemplate Context="item">
+                                                                    <div class="user-profile-cell">
+                                                                        <div class="u-avatar">@item.UserName[0].ToString().ToUpper()
+                                                                        </div>
+                                                                        <span class="u-name">@item.UserName</span>
+                                                                    </div>
+                                                                </CellTemplate>
+                                                            </DataTableColumn>
+                                                            <DataTableColumn TItem="IdentityUserDto" Property="@(u => u.Email)"
+                                                                             Title="@L("Roles.Email")" />
+                                                            <DataTableColumn TItem="IdentityUserDto" Title=""
+                                                                             Alignment="ColumnAlignment.Right">
+                                                                <CellTemplate>
+                                                                    <i class="bi bi-chevron-right text-muted"></i>
+                                                                </CellTemplate>
+                                                            </DataTableColumn>
+                                                        </ChildContent>
+                                                        <EmptyTemplate>
+                                                            <div class="empty-visual">
+                                                                <i class="bi bi-person-x"></i>
+                                                                <p>@L("Roles.NoUsersAssigned")</p>
+                                                            </div>
+                                                        </EmptyTemplate>
+                                                    </DataTable>
+                                                </div>
+                                            </div>
+
+                                            @if (_selectedUser != null)
+                                            {
+                                                <div class="user-rights-p animate-slide-left">
+                                                    <div class="rights-header">
+                                                        <div class="header-left">
+                                                            <h3>@L("Roles.EffectivePermissionsFor") @_selectedUser.UserName</h3>
+                                                            <p>@L("Roles.Email"): @_selectedUser.Email</p>
+                                                        </div>
+                                                        <Button Style="CButtonStyle.Ghost" OnClick="() => _selectedUser = null"
+                                                                Icon="bi bi-x-lg" />
                                                     </div>
-                                                    <div class="eff-toggle">
-                                                        <button class="btn-toggle @(p.IsGranted ? "btn-active" : "")" 
-                                                                @onclick="() => ToggleUserPermission(p, !p.IsGranted)">
-                                                            @(p.IsGranted ? "Kích hoạt" : "Vô hiệu")
-                                                        </button>
+
+                                                    <div class="rights-body">
+                                                        @if (_isUserPermissionsLoading)
+                                                        {
+                                                            <div class="rights-loading">
+                                                                <Skeleton Variant="CSkeletonVariant.Text" Count="5" Height="20px"
+                                                                          Width="100%" />
+                                                                <div class="mt-4">
+                                                                    <Skeleton Variant="CSkeletonVariant.Rounded" Height="140px"
+                                                                              Width="100%" />
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            @foreach (var group in _userGroups)
+                                                            {
+                                                                <div class="rights-group">
+                                                                    <div class="r-group-title">@L(group.DisplayName)</div>
+                                                                    @foreach (var p in group.Permissions)
+                                                                    {
+                                                                        <div class="r-item @(p.IsGranted ? "granted" : "denied")">
+                                                                            <div class="r-indicator"></div>
+                                                                            <div class="r-content">
+                                                                                <span class="r-name">@L(p.DisplayName)</span>
+                                                                                <div class="r-sources">
+                                                                                    @if (p.IsInherited)
+                                                                                    {
+                                                                                        <Tooltip
+                                                                                            Text="@(L("Roles.InheritedFromRole") + ": " + string.Join(", ", p.InheritedFrom.Select(x => L(x))))">
+                                                                                            <span class="source-tag S-inherited">
+                                                                                                <i class="bi bi-diagram-3"></i>
+                                                                                                @string.Join(", ", p.InheritedFrom.Select(L))
+                                                                                            </span>
+                                                                                        </Tooltip>
+                                                                                    }
+                                                                                    @if (p.IsDirectOverride)
+                                                                                    {
+                                                                                        <span class="source-tag S-override">
+                                                                                            <i class="bi bi-pencil-square"></i>
+                                                                                            @L("Roles.ManualOverride")
+                                                                                        </span>
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="r-action">
+                                                                                <Switch Value="@p.IsGranted"
+                                                                                        ValueChanged="@((val) => ToggleUserPermission(p, val))"
+                                                                                        Size="CSwitchSize.Small" />
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        }
                                                     </div>
                                                 </div>
                                             }
                                         </div>
-                                    }
-                                </div>
-                            }
-                        </div>
-                    </div>
-                }
+                                    </div>
+                                </Content>
+                            </TabItem>
+                        </ChildContent>
+                    </Tabs>
+                </div>
             </div>
-        }
-    </div>
-</div>
-
-<style>
-    .role-detail-container { padding: 24px; max-width: 1400px; margin: 0 auto; color: #333; }
-    .role-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
-    .role-title-row { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
-    .role-title-row h1 { margin: 0; font-size: 24px; font-weight: 700; color: #1a1a1a; }
-    .role-subtitle { margin: 0; color: #666; font-family: monospace; font-size: 13px; }
-    
-    .role-badges { display: flex; gap: 8px; }
-    .badge { padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
-    .badge-system { background: #e0f2fe; color: #0369a1; }
-    .badge-default { background: #ecfdf5; color: #047857; }
-    .badge-public { background: #fefce8; color: #a16207; }
-    .badge-template { background: #f3f4f6; color: #4b5563; font-size: 9px; padding: 2px 6px; border: 1px solid #d1d5db; border-radius: 4px; }
-    .perm-name-row { display: flex; align-items: center; gap: 8px; }
-
-    .role-tabs { display: flex; gap: 4px; border-bottom: 2px solid #eee; margin-bottom: 24px; }
-    .tab-link { padding: 12px 24px; border: none; background: none; font-weight: 600; color: #666; cursor: pointer; position: relative; font-size: 14px; }
-    .tab-link.active { color: #2563eb; }
-    .tab-link.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: #2563eb; }
-
-    .permission-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px; }
-    .permission-group-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .group-header { padding: 16px; background: #f8fafc; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
-    .group-header h3 { margin: 0; font-size: 15px; font-weight: 600; color: #334155; }
-    .group-service { font-size: 10px; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.05em; }
-    
-    .permission-list { padding: 8px 16px; }
-    .permission-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
-    .permission-item:last-child { border-bottom: none; }
-    .perm-name { display: block; font-size: 14px; font-weight: 500; color: #334155; }
-    .perm-key { display: block; font-size: 11px; color: #94a3b8; margin-top: 2px; }
-
-    .users-view-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
-    .users-view-layout:has(.user-permission-detail-side) { grid-template-columns: 450px 1fr; }
-
-    .data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; }
-    .data-table th { background: #f8fafc; padding: 12px 16px; text-align: left; font-size: 12px; text-transform: uppercase; color: #64748b; font-weight: 600; }
-    .data-table td { padding: 12px 16px; border-top: 1px solid #f1f5f9; cursor: pointer; font-size: 14px; }
-    .selected-row { background-color: #eff6ff; }
-
-    .user-cell { display: flex; align-items: center; gap: 12px; }
-    .avatar { width: 28px; height: 28px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
-    .username { font-weight: 500; }
-
-    .user-permission-detail-side { background: white; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; flex-direction: column; min-height: 600px; max-height: 85vh; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-    .detail-header { padding: 16px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; background: #fff; }
-    .detail-header h3 { margin: 0; font-size: 17px; }
-    .detail-header p { margin: 2px 0 0; font-size: 12px; color: #64748b; }
-    .detail-body { flex: 1; overflow-y: auto; padding: 20px; background: #fafafa; }
-
-    .effective-group { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed #e2e8f0; }
-    .effective-group:last-child { border-bottom: none; }
-    .effective-group h4 { font-size: 13px; color: #94a3b8; text-transform: uppercase; margin-bottom: 16px; letter-spacing: 0.05em; font-weight: 700; }
-    
-    .effective-item { display: flex; align-items: center; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; background: white; border: 1px solid #f1f5f9; }
-    .effective-item.active { border-left: 4px solid #10b981; }
-    .effective-item.inactive { border-left: 4px solid #ef4444; }
-    
-    .eff-status { margin-right: 16px; }
-    .status-icon { width: 10px; height: 10px; display: block; border-radius: 50%; }
-    .status-icon.granted { background: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.4); }
-    .status-icon.denied { background: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.4); }
-
-    .eff-info { flex: 1; }
-    .eff-name { font-weight: 600; font-size: 14px; display: block; color: #1e293b; }
-    
-    .origin-badge { font-size: 10px; padding: 2px 8px; border-radius: 4px; margin-right: 6px; display: inline-block; margin-top: 6px; font-weight: 500; }
-    .origin-badge.inherited { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-    .origin-badge.override { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-
-    .btn-toggle { padding: 6px 14px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; font-weight: 600; min-width: 90px; }
-    .btn-toggle:hover { background: #f8fafc; }
-    .btn-toggle.btn-active { background: #10b981; color: white; border-color: #10b981; }
-
-    .search-box { display: flex; align-items: center; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 16px; width: 320px; }
-    .search-box input { border: none; outline: none; margin-left: 10px; width: 100%; font-size: 14px; }
-
-    .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; border: none; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-primary { background: #2563eb; color: white; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-outline { background: white; border: 1px solid #e2e8f0; color: #475569; }
-    .btn-outline:hover { background: #f8fafc; }
-    .btn-ghost { background: transparent; color: #2563eb; padding: 6px 12px; font-size: 13px; }
-    .btn-ghost:hover { background: #eff6ff; }
-    
-    .btn-close { background: none; border: none; font-size: 24px; color: #94a3b8; cursor: pointer; line-height: 1; }
-    
-    .loading-overlay { display: flex; align-items: center; justify-content: center; height: 100%; color: #64748b; font-weight: 500; }
-    
-    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px; }
-    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-    input:checked + .slider { background-color: #2563eb; }
-    input:checked + .slider:before { transform: translateX(20px); }
-</style>

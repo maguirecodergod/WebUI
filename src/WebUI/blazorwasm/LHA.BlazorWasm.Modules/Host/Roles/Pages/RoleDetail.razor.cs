@@ -1,3 +1,4 @@
+using LHA.BlazorWasm.Components.Tabs;
 using LHA.BlazorWasm.HttpApi.Client.Clients;
 using LHA.BlazorWasm.HttpApi.Client.Clients.PermissionManagement;
 using LHA.BlazorWasm.Modules.Host.Roles.Models;
@@ -7,21 +8,18 @@ using LHA.Shared.Contracts.Identity.Roles;
 using LHA.Shared.Contracts.Identity.Users;
 using LHA.Shared.Contracts.PermissionManagement;
 using LHA.Shared.Domain.Identity;
-using LHA.BlazorWasm.Services.Toast;
 using Microsoft.AspNetCore.Components;
+using LHA.BlazorWasm.Components;
 
 namespace LHA.BlazorWasm.Modules.Host.Roles.Pages;
 
-public partial class RoleDetail
+public partial class RoleDetail : LhaComponentBase
 {
     [Parameter] public Guid Id { get; set; }
-
     [Inject] private RoleApiClient RoleAppService { get; set; } = default!;
     [Inject] private UserApiClient UserAppService { get; set; } = default!;
     [Inject] private PermissionGroupApiClient PermissionGroupAppService { get; set; } = default!;
     [Inject] private PermissionApiClient PermissionAppService { get; set; } = default!;
-    [Inject] private NavigationManager Navigation { get; set; } = default!;
-    [Inject] private IToastService ToastService { get; set; } = default!;
 
     private RoleEditViewModel _roleModel = new();
     private Guid? _roleTenantId;
@@ -30,10 +28,10 @@ public partial class RoleDetail
     private List<PermissionGroupViewModel> _userGroups = [];
     private IdentityUserDto? _selectedUser;
     private string _permissionFilter = string.Empty;
-    private string ActiveTab { get; set; } = "permissions";
+    /// <summary>Zero-based index tracking which tab is active (bound to Tabs @bind-ActiveIndex).</summary>
+    private int _activeTabIndex;
     private bool _isSaving;
     private bool _isUserPermissionsLoading;
-    private bool _isUserPermissionsVisible;
 
     protected override async Task OnInitializedAsync()
     {
@@ -46,15 +44,18 @@ public partial class RoleDetail
     private async Task LoadRoleAsync()
     {
         var role = await RoleAppService.GetAsync(Id);
-        _roleTenantId = role.TenantId;
-        _roleModel = new RoleEditViewModel
+        if (role != null)
         {
-            Name = role.Name,
-            IsDefault = role.IsDefault,
-            IsPublic = role.IsPublic,
-            IsStatic = role.IsStatic,
-            ConcurrencyStamp = role.ConcurrencyStamp
-        };
+            _roleTenantId = role.TenantId;
+            _roleModel = new RoleEditViewModel
+            {
+                Name = role.Name,
+                IsDefault = role.IsDefault,
+                IsPublic = role.IsPublic,
+                IsStatic = role.IsStatic,
+                ConcurrencyStamp = role.ConcurrencyStamp
+            };
+        }
     }
 
     private async Task LoadPermissionDefinitionsAsync()
@@ -65,12 +66,12 @@ public partial class RoleDetail
             _groups = groupsRes.Items.Select(g => new PermissionGroupViewModel
             {
                 Name = g.Name,
-                DisplayName = g.DisplayName,
+                DisplayName = L(g.DisplayName),
                 ServiceName = g.ServiceName,
                 Permissions = g.Permissions.Select(p => new PermissionDefinitionViewModel
                 {
                     Name = p.Name,
-                    DisplayName = p.DisplayName
+                    DisplayName = L(p.DisplayName)
                 }).ToList()
             }).ToList();
         }
@@ -146,6 +147,14 @@ public partial class RoleDetail
 
     private void GoBack() => Navigation.NavigateTo("/host/roles");
 
+    /// <summary>Fired by the Tabs component when the user switches tabs.</summary>
+    private Task OnTabChangedAsync(TabDefinition tab)
+    {
+        // Extend here if you need to react to specific tab activations,
+        // e.g. lazy-loading data, updating breadcrumb etc.
+        return Task.CompletedTask;
+    }
+
     private async Task SaveRoleAsync()
     {
         _isSaving = true;
@@ -176,11 +185,11 @@ public partial class RoleDetail
                 Permissions = permissions
             }, _roleTenantId);
 
-            ToastService.Success("Lưu thay đổi thành công!");
+            ToastNotification.Success("Lưu thay đổi thành công!");
         }
         catch (Exception ex)
         {
-            ToastService.Error($"Lỗi khi lưu: {ex.Message}");
+            ToastNotification.Error($"Lỗi khi lưu: {ex.Message}");
         }
         finally
         {
@@ -192,19 +201,18 @@ public partial class RoleDetail
     {
         _selectedUser = user;
         _isUserPermissionsLoading = true;
-        _isUserPermissionsVisible = true;
 
         if (_userGroups.Count == 0 && _groups.Count > 0)
         {
             _userGroups = _groups.Select(g => new PermissionGroupViewModel
             {
                 Name = g.Name,
-                DisplayName = g.DisplayName,
+                DisplayName = L(g.DisplayName),
                 ServiceName = g.ServiceName,
                 Permissions = g.Permissions.Select(p => new PermissionDefinitionViewModel
                 {
                     Name = p.Name,
-                    DisplayName = p.DisplayName
+                    DisplayName = L(p.DisplayName)
                 }).ToList()
             }).ToList();
         }

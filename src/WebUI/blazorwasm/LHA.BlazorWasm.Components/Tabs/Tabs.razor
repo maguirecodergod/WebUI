@@ -1,0 +1,103 @@
+@* ═══════════════════════════════════════════════════════════════════
+   Tabs — Enterprise-grade Tab container component.
+   ═══════════════════════════════════════════════════════════════════ *@
+@namespace LHA.BlazorWasm.Components.Tabs
+@inherits LhaComponentBase
+@implements IDisposable
+
+<div class="@GetRootClass()" @attributes="AdditionalAttributes">
+
+    @* ════════ TAB HEADER STRIP ════════ *@
+    <div class="tabs-header-wrapper" role="tablist" aria-orientation="@(IsVertical ? "vertical" : "horizontal")">
+        <div class="tabs-header-inner">
+            @foreach (var tab in _tabs.OrderBy(t => t.Order))
+            {
+                var isActive = tab.Id == _activeId;
+                <button type="button"
+                        id="tab-btn-@tab.Id"
+                        role="tab"
+                        aria-selected="@isActive.ToString().ToLower()"
+                        aria-controls="tab-panel-@tab.Id"
+                        disabled="@tab.Disabled"
+                        class="@GetTabHeaderClass(tab, isActive)"
+                        @onclick="() => ActivateTabAsync(tab)"
+                        @onclick:stopPropagation>
+
+                    @* Icon *@
+                    @if (!string.IsNullOrWhiteSpace(tab.Icon))
+                    {
+                        <i class="@tab.Icon tab-item-icon" aria-hidden="true"></i>
+                    }
+
+                    @* Label *@
+                    @if (!string.IsNullOrWhiteSpace(tab.Title))
+                    {
+                        <span class="tab-item-label">@tab.Title</span>
+                    }
+
+                    @* Badge *@
+                    @if (!string.IsNullOrWhiteSpace(tab.Badge))
+                    {
+                        <span class="tab-badge">@tab.Badge</span>
+                    }
+
+                    @* Close button *@
+                    @if (tab.Closable)
+                    {
+                        <span class="tab-close-btn" role="button" aria-label="Close tab"
+                              @onclick="() => CloseTabAsync(tab)"
+                              @onclick:stopPropagation>
+                            <i class="bi bi-x" aria-hidden="true"></i>
+                        </span>
+                    }
+                </button>
+            }
+
+            @* Extra header slot (e.g., "Add tab" button) *@
+            @if (HeaderExtra is not null)
+            {
+                <div class="tabs-header-extra">
+                    @HeaderExtra
+                </div>
+            }
+        </div>
+
+        @* Animated ink indicator (Line variant only) *@
+        @if (Variant == CTabVariant.Line)
+        {
+            <span class="tabs-ink-bar" style="@_inkStyle" aria-hidden="true"></span>
+        }
+    </div>
+
+    @* ════════ CONTENT PANELS ════════ *@
+    <div class="tabs-content">
+        @foreach (var tab in _tabs.OrderBy(t => t.Order))
+        {
+            var isActive = tab.Id == _activeId;
+
+            @* Lazy: skip render until first activation; after that preserve DOM *@
+            @if (!LazyLoad || tab.HasBeenRendered || isActive)
+            {
+                <div id="tab-panel-@tab.Id"
+                     role="tabpanel"
+                     aria-labelledby="tab-btn-@tab.Id"
+                     class="@GetPanelClass(tab, isActive)"
+                     hidden="@(!isActive)">
+                    @tab.Content
+                </div>
+            }
+        }
+    </div>
+
+    @* ════════ HIDDEN SLOT — child TabItem registration ════════ *@
+    <div style="display:none" aria-hidden="true">
+        <CascadingValue Value="this" IsFixed="true">
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>
+
+@code {
+    // ── Ink bar position is computed in C# and driven via inline style ──
+    private string _inkStyle = string.Empty;
+}

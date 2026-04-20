@@ -1,0 +1,508 @@
+/* --- Premium Root Variables (Dark Mode Compatible) --- */
+.role-detail-container {
+    --p-primary: #6366f1;
+    --p-primary-light: #818cf8;
+    --p-secondary: #64748b;
+    --p-bg: var(--surface-bg, #f8fafc);
+    --p-card-bg: var(--surface-bg, #ffffff);
+    --p-text: var(--surface-text, #1e293b);
+    --p-text-muted: var(--surface-text-muted, #64748b);
+    --p-border: var(--surface-border, rgba(0, 0, 0, 0.06));
+    --p-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    --p-radius: 16px;
+    --p-radius-sm: 10px;
+
+    color: var(--p-text);
+    background: var(--p-bg);
+    transition: all 0.3s ease;
+}
+
+/* --- Animations --- */
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+}
+
+.animate-slide-left {
+    animation: slideLeft 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* --- Navigation --- */
+.role-header-premium {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 20px;
+    margin-bottom: 40px;
+}
+
+.title-area h1 {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.badges-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.badge {
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-system-glow {
+    background: rgba(3, 105, 161, 0.1);
+    color: #0ea5e9;
+    border: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.badge-default-glow {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge-public-glow {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.id-tag {
+    font-size: 12px;
+    color: var(--p-text-muted);
+    background: var(--p-border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+
+/* --- Preimum Modern Layout Overrides --- */
+
+/* Tab customizations */
+::deep .role-detail-tabs.tabs-variant-pills .tabs-header-inner {
+    background: var(--p-card-bg);
+    border: 1px solid var(--p-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    border-radius: 16px;
+    padding: 6px;
+    gap: 6px;
+}
+
+::deep .role-detail-tabs.tabs-variant-pills .tab-item {
+    border-radius: 10px;
+    font-weight: 700;
+    padding: 10px 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::deep .role-detail-tabs.tabs-variant-pills .tab-item:not(.tab-item-active):hover {
+    background: rgba(128, 128, 128, 0.08);
+    /* Generic subtle hover */
+}
+
+/* Make active tab pop out like a modern macOS segmented control */
+::deep .role-detail-tabs.tabs-variant-pills .tab-item-active {
+    background: var(--p-primary) !important;
+    box-shadow: 0 4px 15px rgba(var(--tab-accent-rgb, 99, 102, 241), 0.35);
+}
+
+/* Search Box nicely integrated into header */
+.search-box-system {
+    width: 340px;
+    display: flex;
+    align-items: center;
+}
+
+::deep .search-box-system .lha-input {
+    border-radius: 12px;
+    background: transparent;
+    border: 1px solid var(--p-border);
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+::deep .search-box-system .lha-input:focus-within {
+    background: var(--p-card-bg);
+    border-color: var(--p-primary-light);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
+}
+
+/* Permissions Grid highly polished */
+.permissions-view {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.permission-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Section cards glassmorphism */
+::deep section {
+    background: var(--p-card-bg) !important;
+    border: 1px solid var(--p-border) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03) !important;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+::deep section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06) !important;
+    border-color: var(--p-primary-light) !important;
+}
+
+::deep .section-header {
+    padding: 22px 28px !important;
+    border-bottom: 1px solid var(--p-border) !important;
+    background: transparent !important;
+}
+
+::deep .section-title {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: var(--p-text) !important;
+    letter-spacing: 0.2px;
+}
+
+::deep .section-icon {
+    color: var(--p-primary) !important;
+    margin-right: 16px !important;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.02));
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.group-meta-tag {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--p-primary);
+    letter-spacing: 0.15em;
+    padding: 20px 28px 4px;
+    opacity: 0.8;
+}
+
+.permission-rows {
+    padding: 10px 20px 20px;
+}
+
+.perm-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 12px;
+    border-radius: 12px;
+    transition: background 0.2s;
+    border-bottom: 1px solid var(--p-border);
+}
+
+.perm-row:last-child {
+    border-bottom: none;
+}
+
+.perm-row:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.perm-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.perm-name-p {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--p-text);
+}
+
+.badge-default-mini {
+    font-size: 10px;
+    font-weight: 800;
+    background: var(--p-border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--p-text-muted);
+    border: 1px solid var(--p-border);
+}
+
+.perm-key-p {
+    font-size: 11px;
+    color: var(--p-text-muted);
+    opacity: 0.7;
+    display: block;
+    margin-top: 2px;
+}
+
+
+/* --- Users View --- */
+.view-layout-p {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.modern-card {
+    background: var(--p-card-bg);
+    border-radius: 24px;
+    border: 1px solid var(--p-border);
+    box-shadow: var(--p-shadow);
+    overflow: hidden;
+}
+
+
+.user-profile-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.u-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--p-primary), var(--p-primary-light));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+}
+
+.u-name {
+    font-weight: 700;
+    color: var(--p-text);
+}
+
+.u-email {
+    color: var(--p-text-muted);
+    font-size: 14px;
+}
+
+/* --- Sidebar Rights Panel --- */
+.user-rights-p {
+    background: var(--p-card-bg);
+    border-radius: 24px;
+    border: 1px solid var(--p-border);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: fit-content;
+}
+
+.rights-header {
+    padding: 25px;
+    border-bottom: 1px solid var(--p-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.rights-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.rights-header p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: var(--p-text-muted);
+}
+
+
+.rights-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+    background: rgba(0, 0, 0, 0.01);
+}
+
+.rights-loading {
+    padding: 40px;
+    text-align: center;
+    color: var(--p-text-muted);
+    font-weight: 700;
+}
+
+.rights-group {
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 15px;
+}
+
+.r-group-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--p-text-muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 5px;
+    border-left: 3px solid var(--p-primary);
+    padding-left: 12px;
+    grid-column: 1 / -1;
+}
+
+.r-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 16px;
+    background: var(--p-card-bg);
+    border: 1px solid var(--p-border);
+    margin-bottom: 0px;
+    transition: transform 0.2s;
+}
+
+.r-item:hover {
+    transform: translateX(5px);
+}
+
+.r-item.denied {
+    opacity: 0.8;
+}
+
+.r-indicator {
+    width: 4px;
+    height: 24px;
+    border-radius: 2px;
+    margin-right: 15px;
+}
+
+.granted .r-indicator {
+    background: #10b981;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.denied .r-indicator {
+    background: #ef4444;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+
+.r-content {
+    flex: 1;
+}
+
+.r-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--p-text);
+}
+
+.r-sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.source-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.S-inherited {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.S-override {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+
+/* --- Dark Mode Variables Overrides --- */
+.theme-dark .role-detail-container {
+    --p-bg: transparent;
+    /* Usually Blazor pages inherit from main body, making this transparent lets the body bg show, preventing weird boxiness */
+    --p-card-bg: #1e222b;
+    /* Slightly lighter card color for better depth rendering */
+    --p-border: rgba(255, 255, 255, 0.08);
+    /* More visible border */
+    --p-text: #f8fafc;
+    --p-text-muted: #94a3b8;
+    --p-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.theme-dark ::deep .section-header {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.theme-dark .perm-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.theme-dark .search-box-system :deep(.lha-input) {
+    background: #11141a;
+}
