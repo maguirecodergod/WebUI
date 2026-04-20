@@ -3,7 +3,6 @@ using LHA.BlazorWasm.Components.Table;
 using LHA.Shared.Contracts.Identity;
 using LHA.Shared.Contracts.Identity.Roles;
 using Microsoft.AspNetCore.Components;
-using LHA.BlazorWasm.Modules.Host.Roles.Components;
 
 using LHA.BlazorWasm.HttpApi.Client.Clients;
 
@@ -18,7 +17,6 @@ public partial class HostRoleList : LhaComponentBase
     private DataTable<IdentityRoleDto>? _dataTable;
     private bool _isDeleteDialogVisible;
     private IdentityRoleDto? _itemToDelete;
-    private HostRoleCreateEditModal _createEditModal = default!;
 
     private GetIdentityRolesInput _input = new()
     {

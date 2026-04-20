@@ -50,6 +50,16 @@ body {
     --radius-full: 9999px;
     --radius-lg: 16px;
     --radius-md: 12px;
+
+    /* Surface & Colors */
+    --surface-bg: #ffffff;
+    --surface-bg-alt: #f1f5f9;
+    --surface-text: #1e293b;
+    --surface-text-muted: #64748b;
+    --surface-border: rgba(0, 0, 0, 0.08);
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-glow: rgba(99, 102, 241, 0.2);
 }
 
 .theme-dark {
@@ -59,6 +69,13 @@ body {
     --topbar-text: #f3f4f6;
     --topbar-text-muted: #9ca3af;
     --topbar-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(0, 0, 0, 0.2);
+
+    /* Surface & Colors Dark */
+    --surface-bg: #1a1e26;
+    --surface-bg-alt: #11141a;
+    --surface-text: #ffffff;
+    --surface-text-muted: #94a3b8;
+    --surface-border: rgba(255, 255, 255, 0.08);
 }
 
 /* Remove default Blazor outlines that clash with custom designs */

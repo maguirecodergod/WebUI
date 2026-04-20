@@ -1,0 +1,188 @@
+/* Custom container overrides if needed */
+::deep .premium-dialog-container {
+    padding: 0;
+}
+
+::deep .premium-dialog-header {
+    padding: 24px 24px 16px 24px;
+}
+
+.header-content h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--surface-text);
+}
+
+.header-content p {
+    margin: 8px 0 0 0;
+    font-size: 14px;
+    color: var(--surface-text-muted);
+}
+
+.header-content p span {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.search-section {
+    padding: 0 24px 16px 24px;
+}
+
+/* Custom styling for system Input to match the premium design */
+::deep .search-box-custom .lha-input-container {
+    background: var(--surface-bg-alt) !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--surface-border) !important;
+}
+
+.user-list {
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 0 12px;
+}
+
+.user-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.user-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.user-list::-webkit-scrollbar-thumb {
+    background: var(--surface-border);
+    border-radius: 10px;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 4px;
+    border-radius: 12px;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.user-item:hover {
+    background: rgba(128, 128, 128, 0.05);
+}
+
+.user-item.selected {
+    background: var(--primary-glow);
+}
+
+.checkbox-container {
+    margin-right: 16px;
+}
+
+.custom-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--surface-text-muted);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.selected .custom-checkbox {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.custom-checkbox i {
+    color: white;
+    font-size: 12px;
+    display: none;
+}
+
+.selected .custom-checkbox i {
+    display: block;
+}
+
+.avatar-container {
+    position: relative;
+    margin-right: 12px;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--surface-bg-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--surface-text-muted);
+}
+
+.status-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--surface-bg);
+    background: var(--surface-text-muted);
+}
+
+.status-dot.online {
+    background: #10b981;
+}
+
+.user-info {
+    flex: 1;
+}
+
+.user-name {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--surface-text);
+}
+
+.user-email {
+    display: block;
+    font-size: 12px;
+    color: var(--surface-text-muted);
+}
+
+.role-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: var(--surface-bg-alt);
+    color: var(--surface-text-muted);
+    text-transform: uppercase;
+}
+
+.picker-footer-custom {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.selection-info {
+    font-size: 14px;
+    color: var(--surface-text-muted);
+}
+
+.footer-actions {
+    display: flex;
+    gap: 12px;
+}
+
+::deep .btn-assign-custom {
+    box-shadow: 0 0 15px var(--primary-glow);
+}

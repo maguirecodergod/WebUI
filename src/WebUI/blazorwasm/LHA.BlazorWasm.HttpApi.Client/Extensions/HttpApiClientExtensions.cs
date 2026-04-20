@@ -11,6 +11,7 @@ using LHA.Security.Encryption;
 using LHA.Security.Keys;
 using LHA.Security.Signing;
 using LHA.Security.Device;
+using LHA.BlazorWasm.HttpApi.Client.Clients.PermissionManagement;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Extensions;
 
@@ -59,7 +60,7 @@ public static class HttpApiClientExtensions
         RegisterTypedClient<RoleApiClient>(services);
         RegisterTypedClient<UserApiClient>(services);
         RegisterTypedClient<PermissionApiClient>(services);
-        RegisterTypedClient<LHA.BlazorWasm.HttpApi.Client.Clients.PermissionManagement.PermissionGroupApiClient>(services);
+        RegisterTypedClient<PermissionGroupApiClient>(services);
 
         return services;
     }

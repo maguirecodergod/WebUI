@@ -1,0 +1,169 @@
+@using LHA.BlazorWasm.Components.Dialog
+@using LHA.BlazorWasm.Components.Form
+@using LHA.BlazorWasm.Components.Buttons
+@using LHA.BlazorWasm.Components
+@using LHA.Shared.Contracts.Identity
+@using LHA.BlazorWasm.HttpApi.Client.Clients
+@namespace LHA.BlazorWasm.Components.Identity
+@inherits LhaComponentBase
+
+<PremiumDialog @ref="_dialog" Title="@L("Roles.AddUser")" Size="DialogSize.Medium" ShowFooter="true" OnOk="Assign"
+               OnCancel="Close" OkText="@L("Roles.AssignNow")" CancelText="@L("Common.Cancel")">
+    <HeaderContent>
+        <div class="header-content">
+            <h2>@L("Roles.AddUser")</h2>
+            <p>Select users to assign them the <span>Senior Developer</span> role.</p>
+        </div>
+    </HeaderContent>
+    <ChildContent>
+        <!-- Search -->
+        <div class="search-section">
+            <CInput TValue="string" Value="@SearchQuery" ValueChanged="OnSearchChanged"
+                    ValueExpression="@(() => SearchQuery)" Placeholder="@L("Common.Search")" Class="search-box-custom">
+                <IconLeft><i class="bi bi-search"></i></IconLeft>
+                <IconRight><i class="bi bi-sliders"></i></IconRight>
+            </CInput>
+        </div>
+
+        <!-- User List -->
+        <div class="user-list">
+            @if (_isLoading)
+            {
+                <div class="p-5 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @foreach (var user in FilteredUsers)
+                {
+                    <div class="user-item @(_selectedIds.Contains(user.Id) ? "selected" : "")" @onclick="() => ToggleSelection(user)">
+                        <div class="checkbox-container">
+                            <div class="custom-checkbox">
+                                <i>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </i>
+                            </div>
+                        </div>
+
+                        <div class="avatar-container">
+                            <div class="avatar">@GetInitials(user.UserName)</div>
+                            <div class="status-dot online"></div>
+                        </div>
+
+                        <div class="user-info">
+                            <span class="user-name">@user.UserName</span>
+                            <span class="user-email">@user.Email</span>
+                        </div>
+
+                        <div class="role-badge">User</div>
+                    </div>
+                }
+            }
+        </div>
+    </ChildContent>
+    <FooterContent>
+        <div class="picker-footer-custom">
+            <div class="selection-info">
+                @L("DataTable.SelectedCount", SelectedCount)
+            </div>
+            <div class="footer-actions">
+                <Button Style="CButtonStyle.Secondary" OnClick="Close">@L("Common.Cancel")</Button>
+                <Button Style="CButtonStyle.Primary" OnClick="Assign"
+                        Class="btn-assign-custom">@L("Roles.AssignNow")</Button>
+            </div>
+        </div>
+    </FooterContent>
+</PremiumDialog>
+
+@code {
+    [Inject] private UserApiClient UserAppService { get; set; } = default!;
+
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback<List<IdentityUserDto>> OnUsersSelected { get; set; }
+
+    private PremiumDialog? _dialog;
+    private string SearchQuery { get; set; } = "";
+    private List<IdentityUserDto> _users = new();
+    private HashSet<Guid> _selectedIds = new();
+    private bool _isLoading;
+
+    public async Task OpenAsync(List<Guid>? existingUserIds = null)
+    {
+        _selectedIds = existingUserIds != null ? new HashSet<Guid>(existingUserIds) : new HashSet<Guid>();
+        SearchQuery = "";
+        if (_dialog != null)
+        {
+            await _dialog.OpenAsync();
+            await LoadUsersAsync();
+        }
+    }
+
+    private async Task LoadUsersAsync()
+    {
+        _isLoading = true;
+        StateHasChanged();
+        try
+        {
+            var result = await UserAppService.GetListAsync(new LHA.Shared.Contracts.Identity.Users.GetIdentityUsersInput
+            {
+                Filter = SearchQuery,
+                PageSize = 50
+            });
+            _users = result?.Items?.ToList() ?? new List<IdentityUserDto>();
+        }
+        catch (Exception)
+        {
+            // Handle error
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnSearchChanged(string value)
+    {
+        SearchQuery = value;
+        await LoadUsersAsync();
+    }
+
+    private async Task Close()
+    {
+        if (_dialog != null) await _dialog.CloseAsync();
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task Assign()
+    {
+        var selectedUsers = _users.Where(u => _selectedIds.Contains(u.Id)).ToList();
+        await OnUsersSelected.InvokeAsync(selectedUsers);
+        await Close();
+    }
+
+    private void ToggleSelection(IdentityUserDto user)
+    {
+        if (_selectedIds.Contains(user.Id))
+            _selectedIds.Remove(user.Id);
+        else
+            _selectedIds.Add(user.Id);
+    }
+
+    private string GetInitials(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return "??";
+        var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 1) return parts[0].Substring(0, Math.Min(2, parts[0].Length)).ToUpper();
+        return (parts[0][0].ToString() + parts[parts.Length - 1][0].ToString()).ToUpper();
+    }
+
+    private IEnumerable<IdentityUserDto> FilteredUsers => _users;
+
+    private int SelectedCount => _selectedIds.Count;
+}

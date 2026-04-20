@@ -5,7 +5,7 @@
 @using LHA.BlazorWasm.Components.Buttons
 @using LHA.BlazorWasm.Components.Form
 @using LHA.BlazorWasm.Components.Table
-@using LHA.BlazorWasm.Modules.Host.Roles.Components
+
 @using LHA.Shared.Contracts.Identity
 
 <PageTitle>@L("Roles.PageTitle")</PageTitle>
@@ -22,7 +22,6 @@
         </ChildContent>
     </LHA.BlazorWasm.Components.Dialog.PremiumDialog>
 
-    <HostRoleCreateEditModal @ref="_createEditModal" OnSaved="OnRoleSavedAsync" />
 
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pt-4">
         <div>
@@ -42,7 +41,7 @@
                     <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
                          style="background: transparent; border-color: var(--dt-border-color) !important;">
                         <div class="d-flex align-items-center gap-2">
-                             <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="() => _createEditModal.ShowCreateModal()">
+                             <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick='() => Navigation.NavigateTo("/host/roles/create")'>
                                 <i class="bi bi-plus-lg me-1"></i> @L("Common.Create")
                             </Button>
                         </div>
@@ -116,7 +115,7 @@
                             <div class="d-flex justify-content-end gap-1">
                                 <Tooltip Text="@L("Common.Edit")">
                                     <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
-                                            Class="btn-icon-replica" OnClick="() => _createEditModal.ShowEditModal(context.Id)">
+                                            Class="btn-icon-replica" OnClick='() => Navigation.NavigateTo($"/host/roles/{context.Id}")'>
                                         <i class="bi bi-pencil"></i>
                                     </Button>
                                 </Tooltip>

@@ -5,8 +5,8 @@ namespace LHA.Shared.Contracts.Identity.Permissions;
 /// <summary>A single permission grant/revoke entry.</summary>
 public sealed class PermissionGrantInput
 {
-    public required string Name { get; init; }
-    public bool IsGranted { get; init; }
+    public required string Name { get; set; }
+    public bool IsGranted { get; set; }
 }
 
 public sealed class PermissionGrantInputValidator : AbstractValidator<PermissionGrantInput>
