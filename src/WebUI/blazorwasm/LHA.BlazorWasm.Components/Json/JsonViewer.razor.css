@@ -1,0 +1,85 @@
+.json-viewer-root {
+    background: var(--surface-bg-alt);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.json-viewer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--surface-border);
+}
+
+.json-viewer-header-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--surface-text-muted);
+    letter-spacing: 0.05em;
+}
+
+.json-viewer-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.json-viewer-actions .copied {
+    color: #12b76a !important;
+}
+
+.copy-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.json-content-wrapper {
+    overflow: auto;
+    padding: 1rem;
+}
+
+.json-content {
+    margin: 0;
+    padding: 0;
+}
+
+.json-content code {
+    font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #ce9178;
+    /* VS Code Orange */
+    background: transparent;
+    border: none;
+}
+
+/* Theme adjustments */
+.theme-light .json-content code {
+    color: #a31515;
+    /* VS Code Ruby */
+}
+
+/* Custom Scrollbar for the preview */
+.json-content-wrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.json-content-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.json-content-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.theme-light .json-content-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+}

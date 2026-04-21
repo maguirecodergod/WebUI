@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using LHA.BlazorWasm.Services.Auth;
 using LHA.BlazorWasm.Services.Theme;
+using Microsoft.Extensions.Logging;
 
 namespace LHA.BlazorWasm.Components;
 
@@ -19,6 +20,7 @@ public abstract class LhaComponentBase : ComponentBase, IDisposable
     [Inject] protected IThemeService ThemeService { get; set; } = default!;
     [Inject] protected ThemeState ThemeState { get; set; } = default!;
     [Inject] protected IPermissionService PermissionService { get; set; } = default!;
+    [Inject] protected ILogger<LhaComponentBase> Logger { get; set; } = default!;
 
     protected string L(string key) => Localizer.L(key);
     protected string L(string key, params object[] args)

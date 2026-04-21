@@ -128,27 +128,6 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             StateHasChanged();
         }
 
-        private string FormatJson(string? json)
-        {
-            if (string.IsNullOrWhiteSpace(json)) return "{}";
-            try
-            {
-                // Simple check if it even looks like JSON
-                var trimmed = json.Trim();
-                if (!(trimmed.StartsWith("{") || trimmed.StartsWith("["))) return json;
-
-                using var doc = System.Text.Json.JsonDocument.Parse(json);
-                return System.Text.Json.JsonSerializer.Serialize(doc, new System.Text.Json.JsonSerializerOptions 
-                { 
-                    WriteIndented = true,
-                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                });
-            }
-            catch
-            {
-                return json;
-            }
-        }
 
         private string? GetActiveParameters()
         {

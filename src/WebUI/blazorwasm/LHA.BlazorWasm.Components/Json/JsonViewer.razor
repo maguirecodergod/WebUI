@@ -1,0 +1,61 @@
+@namespace LHA.BlazorWasm.Components.Json
+@inherits LhaComponentBase
+@using Microsoft.JSInterop;
+@using Microsoft.Extensions.Logging;
+@using LHA.BlazorWasm.Components.Buttons
+
+<div class="json-viewer-root @Class" style="@Style">
+    @if (!string.IsNullOrEmpty(Title) || AllowCopy)
+    {
+        <div class="json-viewer-header">
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <span class="json-viewer-header-title">@Title</span>
+            }
+            <div class="json-viewer-actions">
+                @if (AllowCopy)
+                {
+                    <Tooltip Text="@L(_isCopied ? "Common_Copied" : "Common_Copy")">
+                        <Button Style="CButtonStyle.Ghost" Size="CButtonSize.Small" Class="@(_isCopied ? "copied" : "")"
+                                Icon="@(_isCopied ? "bi bi-check2" : "bi bi-clipboard")" OnClick="CopyToClipboardAsync">
+                            @if (_isCopied)
+                            {
+                                <span>@L("Common_Copied")</span>
+                            }
+                        </Button>
+                    </Tooltip>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="json-content-wrapper" style="max-height: @MaxHeight;">
+        <pre class="json-content"><code>@FormattedJson</code></pre>
+    </div>
+</div>
+
+@code {
+    private bool _isCopied;
+    private string FormattedJson => FormatJson(Value);
+
+    private async Task CopyToClipboardAsync()
+    {
+        if (string.IsNullOrEmpty(Value)) return;
+
+        try
+        {
+            await JS.InvokeVoidAsync("navigator.clipboard.writeText", Value);
+            _isCopied = true;
+            StateHasChanged();
+
+            await Task.Delay(2000);
+            _isCopied = false;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Failed to copy JSON to clipboard");
+            ToastNotification.Error(L("Common_CopyFailed"));
+        }
+    }
+}
