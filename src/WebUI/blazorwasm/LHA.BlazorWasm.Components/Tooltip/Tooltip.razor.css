@@ -1,5 +1,5 @@
 /* Core structural layout constraints isolated to component space */
-.tooltip-wrapper {
+.lha-tooltip-wrapper {
     position: relative;
     display: inline-block;
 }
@@ -9,59 +9,80 @@
 }
 
 /* Base style defining absolute positioning out of standard container flow natively */
-.tooltip {
+.lha-tooltip {
     position: absolute;
     top: 0;
     left: 0;
-    width: max-content; /* Ensure text doesn't arbitrarily wrap */
+    width: max-content;
+    max-width: 400px; /* Standardize max width for readable wrapping */
     background-color: var(--bs-dark, #212529);
     color: var(--bs-light, #ffffff);
-    padding: 0.5rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    white-space: nowrap;
-    z-index: var(--z-index-tooltip);
-    pointer-events: none; /* Prevents unexpected hover looping */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 0.625rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    white-space: normal; /* Allow text wrapping */
+    word-break: break-word;
+    z-index: var(--z-index-tooltip, 1070);
+    pointer-events: auto; /* Allow interaction for copying */
+    user-select: text; /* Explicitly allow text selection */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 
     /* Baseline fade state */
     opacity: 0;
     visibility: hidden;
-    /* Do NOT transition transform. Floating UI alters coordinates dynamically */
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out; 
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.2s;
+}
+
+/* Create an invisible 'bridge' to cover the 8px offset gap */
+.lha-tooltip::before {
+    content: '';
+    position: absolute;
+    inset: -10px; /* Expand hit area to overlap with trigger */
+    z-index: -1;
 }
 
 /* Visibility triggers controlled by code-behind CSS append operations */
-.tooltip.visible {
+.lha-tooltip.visible {
     opacity: 1;
     visibility: visible;
 }
 
+.lha-tooltip-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.lha-tooltip-text {
+    display: block;
+    user-select: text;
+}
+
 /* Native CSS Arrow Indicator pseudo-elements generated directly out of CSS borders */
-.tooltip-arrow {
+.lha-tooltip-arrow {
     position: absolute;
     width: 0;
     height: 0;
     border-style: solid;
 }
 
-[data-placement^="top"] .tooltip-arrow {
+[data-placement^="top"] .lha-tooltip-arrow {
     border-width: 6px 6px 0 6px;
     border-color: var(--bs-dark, #212529) transparent transparent transparent;
 }
 
-[data-placement^="bottom"] .tooltip-arrow {
+[data-placement^="bottom"] .lha-tooltip-arrow {
     border-width: 0 6px 6px 6px;
     border-color: transparent transparent var(--bs-dark, #212529) transparent;
 }
 
-[data-placement^="left"] .tooltip-arrow {
+[data-placement^="left"] .lha-tooltip-arrow {
     border-width: 6px 0 6px 6px;
     border-color: transparent transparent transparent var(--bs-dark, #212529);
 }
 
-[data-placement^="right"] .tooltip-arrow {
+[data-placement^="right"] .lha-tooltip-arrow {
     border-width: 6px 6px 6px 0;
     border-color: transparent var(--bs-dark, #212529) transparent transparent;
 }

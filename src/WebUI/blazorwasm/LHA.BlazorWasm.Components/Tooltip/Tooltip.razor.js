@@ -2,7 +2,7 @@ let floatingCleanupMap = new Map();
 
 export function showTooltip(triggerEl, tooltipEl, options) {
     if (!triggerEl || !tooltipEl) return;
-    
+
     // Check if Floating UIDOM is available
     if (!window.FloatingUIDOM) {
         console.warn("FloatingUIDOM is missing. Cannot position tooltip smartly.");
@@ -10,7 +10,7 @@ export function showTooltip(triggerEl, tooltipEl, options) {
     }
 
     const { computePosition, flip, shift, offset, arrow, autoUpdate } = window.FloatingUIDOM;
-    const arrowEl = tooltipEl.querySelector('.tooltip-arrow');
+    const arrowEl = tooltipEl.querySelector('.lha-tooltip-arrow');
     const placement = options.placement || 'top';
 
     // Cleanup previous positioning loop if tooltip is re-shown quickly
@@ -36,7 +36,7 @@ export function showTooltip(triggerEl, tooltipEl, options) {
                 bottom: 'auto',
                 right: 'auto',
                 transform: 'translate(0, 0)', // override CSS transform
-                margin: '0', 
+                margin: '0',
             });
 
             // Set data attribute for arrow CSS rules
@@ -70,7 +70,7 @@ export function showTooltip(triggerEl, tooltipEl, options) {
         elementResize: true,
         layoutShift: true
     });
-    
+
     floatingCleanupMap.set(tooltipEl, cleanup);
 }
 

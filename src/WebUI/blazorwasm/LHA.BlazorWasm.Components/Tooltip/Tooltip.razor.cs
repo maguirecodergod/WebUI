@@ -32,8 +32,8 @@ public partial class Tooltip : IDisposable
     private ElementReference _triggerRef;
     private ElementReference _tooltipRef;
 
-    private string WrapperClass => $"tooltip-wrapper {Class}".Trim();
-    private string TooltipClass => $"tooltip tooltip-{Placement.ToString().ToLowerInvariant()}";
+    private string WrapperClass => $"lha-tooltip-wrapper {Class}".Trim();
+    private string TooltipClass => $"lha-tooltip lha-tooltip-{Placement.ToString().ToLowerInvariant()}";
 
     /// <summary>
     /// Manually requests the tooltip to appear optionally overriding the defined UI trigger limits.

@@ -54,7 +54,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 _input.StartTime = _executionTimeRange.Start?.ToUniversalTime();
                 _input.EndTime = _executionTimeRange.End?.ToUniversalTime();
 
-                var result = _canReadHostLogs 
+                var result = _canReadHostLogs
                     ? await AuditLogService.GetHostListAsync(_input)
                     : await AuditLogService.GetListAsync(_input);
 
@@ -73,14 +73,11 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             _input.PageNumber = request.PageNumber;
             _input.PageSize = request.PageSize;
 
-            // Map global search term from table if provided, 
-            // otherwise rely on our bound _input.SearchQuery
             if (!string.IsNullOrEmpty(request.SearchTerm))
             {
                 _input.SearchQuery = request.SearchTerm;
             }
 
-            // Map sort state from DataTable column headers
             if (request.Sorts is { Count: > 0 })
             {
                 var sort = request.Sorts[0]; // Primary sort
@@ -89,12 +86,10 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             }
             else
             {
-                // Reset to default sort when user clears sorting
                 _input.SorterKey = nameof(AuditLogDto.ExecutionTime);
                 _input.SorterIsAsc = false;
             }
 
-            // Note: Sidebar filters are already bound to _input via @bind-Value in FilterTemplates.
             await LoadLogsAsync();
             return new DataTableResponse<AuditLogDto> { Items = _logs, TotalCount = (int)_totalCount };
         }
@@ -129,7 +124,6 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             _isDetailsDialogVisible = true;
             StateHasChanged();
         }
-
 
         private CBadgeSemantic GetChangeTypeStatus(CEntityChangeType type) => type switch
         {
@@ -190,8 +184,8 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 }
 
                 _isDeleteDialogVisible = false;
-                _itemToDelete = null; 
-                
+                _itemToDelete = null;
+
                 if (_dataTable != null)
                 {
                     await _dataTable.ClearSelectionAsync();
@@ -209,5 +203,65 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 ToastNotification.Error(L("Common.DeleteFailed") + ": " + ex.Message);
             }
         }
+
+        #region Browser Info Helpers
+
+        private AppBrowserDetails ParseBrowserInfo(string? userAgent)
+        {
+            var details = new AppBrowserDetails();
+            if (string.IsNullOrEmpty(userAgent)) return details;
+
+            var lowerAgent = userAgent.ToLower();
+
+            // OS Detection
+            if (lowerAgent.Contains("windows")) details.OS = COperatingSystem.Windows;
+            else if (lowerAgent.Contains("android")) details.OS = COperatingSystem.Android;
+            else if (lowerAgent.Contains("iphone") || lowerAgent.Contains("ipad") || lowerAgent.Contains("ipod")) details.OS = COperatingSystem.iOS;
+            else if (lowerAgent.Contains("mac os")) details.OS = COperatingSystem.MacOS;
+            else if (lowerAgent.Contains("linux")) details.OS = COperatingSystem.Linux;
+
+            // Browser Detection
+            if (lowerAgent.Contains("edg/")) details.Browser = CBrowserType.Edge;
+            else if (lowerAgent.Contains("chrome") && lowerAgent.Contains("safari")) details.Browser = CBrowserType.Chrome;
+            else if (lowerAgent.Contains("firefox")) details.Browser = CBrowserType.Firefox;
+            else if (lowerAgent.Contains("safari") && !lowerAgent.Contains("chrome")) details.Browser = CBrowserType.Safari;
+            else if (lowerAgent.Contains("opera") || lowerAgent.Contains("opr/")) details.Browser = CBrowserType.Opera;
+
+            return details;
+        }
+
+        public class AppBrowserDetails
+        {
+            public CBrowserType Browser { get; set; } = CBrowserType.Unknown;
+            public COperatingSystem OS { get; set; } = COperatingSystem.Unknown;
+
+            public string BrowserIcon => Browser switch
+            {
+                CBrowserType.Chrome => "bi bi-google",
+                CBrowserType.Edge => "bi bi-browser-edge",
+                CBrowserType.Firefox => "bi bi-browser-firefox",
+                CBrowserType.Safari => "bi bi-browser-safari",
+                CBrowserType.Opera => "bi bi-browser-opera",
+                _ => "bi bi-browser-chrome"
+            };
+
+            public string OSIcon => OS switch
+            {
+                COperatingSystem.Windows => "bi bi-windows",
+                COperatingSystem.Android => "bi bi-android2",
+                COperatingSystem.iOS => "bi bi-apple",
+                COperatingSystem.MacOS => "bi bi-apple",
+                COperatingSystem.Linux => "bi bi-ubuntu",
+                _ => "bi bi-laptop"
+            };
+
+            public string BrowserName => Browser.ToString();
+            public string OSName => OS.ToString();
+        }
+
+        public enum CBrowserType { Unknown, Chrome, Edge, Firefox, Safari, Opera }
+        public enum COperatingSystem { Unknown, Windows, MacOS, Linux, Android, iOS }
+
+        #endregion
     }
 }

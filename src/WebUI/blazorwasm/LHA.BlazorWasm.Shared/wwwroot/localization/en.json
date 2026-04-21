@@ -8,6 +8,7 @@
     "Common": {
         "Save": "Save",
         "Cancel": "Cancel",
+        "Close": "Close",
         "Delete": "Delete",
         "Suggestions": "Try the following:",
         "Refresh": "Refresh",
@@ -17,7 +18,8 @@
         "All": "All",
         "Yes": "Yes",
         "No": "No",
-        "Detail": "Detail"
+        "Detail": "Detail",
+        "General": "General"
     },
     "AuditLog": {
         "PageTitle": "Audit Logs",
@@ -41,11 +43,28 @@
         "OnlyExceptions": "Errors Only",
         "ResourceTrace": "Resource Trace",
         "ClientIp": "Client IP",
-        "Browser": "Browser/Client Info",
+        "Browser": "Browser Info",
         "FullDate": "Full Execution Time",
         "LoadError": "Error loading audit logs",
         "PurgeConfirm": "Are you sure you want to purge all audit logs?",
-        "PurgeSuccess": "Audit logs purged successfully."
+        "PurgeSuccess": "Audit logs purged successfully.",
+        "RequestDetails": "Request Information",
+        "UserContext": "User & Client Context",
+        "SystemDetails": "System Details",
+        "Parameters": "Parameters",
+        "Exceptions": "Exceptions",
+        "EntityChanges": "Entity Changes",
+        "NoEntityChangesTitle": "No Data Changes Details",
+        "NoEntityChangesDesc": "No property values were modified during this operation.",
+        "PropertyName": "Property",
+        "OriginalValue": "Original Value",
+        "NewValue": "New Value",
+        "NoPropertyChanges": "No property changes detected for this entity.",
+        "ChangeType": {
+            "0": "Created",
+            "1": "Updated",
+            "2": "Deleted"
+        }
     },
     "User": {
         "Title": "Users",

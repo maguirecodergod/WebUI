@@ -13,14 +13,16 @@
     </div>
 
     <div @ref="_tooltipRef" class="@TooltipClass @(_isVisible ? "visible" : "")" role="tooltip" id="@_tooltipId" aria-hidden="@(!_isVisible)">
-        @if (TooltipContent != null)
-        {
-            @TooltipContent
-        }
-        else
-        {
-            @Text
-        }
-        <div class="tooltip-arrow"></div>
+        <div class="lha-tooltip-inner">
+            @if (TooltipContent != null)
+            {
+                @TooltipContent
+            }
+            else
+            {
+                <span class="lha-tooltip-text">@Text</span>
+            }
+        </div>
+        <div class="lha-tooltip-arrow"></div>
     </div>
 </div>

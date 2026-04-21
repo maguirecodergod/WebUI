@@ -95,7 +95,7 @@
 
 .property-changes-table tbody td {
     vertical-align: middle;
-    border-bottom: 1px solid rgba(0,0,0,0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .value-container {
@@ -134,7 +134,30 @@
 }
 
 .audit-details-container {
-    /* Removed min-height to allow content to fit naturally */
+    /* Container for the tabs, shouldn't scroll itself to keep tabs header fixed */
+    position: relative;
+    padding: 0;
+}
+
+.tab-content-scroll {
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1.5rem;
+}
+
+/* Custom scrollbar for tab content */
+.tab-content-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.tab-content-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tab-content-scroll::-webkit-scrollbar-thumb {
+    background: var(--dt-border);
+    border-radius: 10px;
 }
 
 /* Icon Colors */
@@ -156,4 +179,61 @@
 
 .btn-icon-replica .bi-eye {
     color: var(--dt-accent);
+}
+
+/* Browser Info Styling */
+.browser-info-item {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    background: var(--surface-bg);
+    border: 1px solid var(--surface-border);
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.browser-info-item:hover {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb, 99, 102, 241), 0.05);
+}
+
+/* No Changes Empty State */
+.no-changes-wrapper {
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.02);
+    border: 2px dashed var(--surface-border);
+    border-radius: 12px;
+    margin: 1rem 0;
+}
+
+.theme-dark .no-changes-wrapper {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.no-changes-content {
+    text-align: center;
+    max-width: 400px;
+}
+
+.no-changes-icon {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    opacity: 0.5;
+    margin-bottom: 1rem;
+}
+
+.no-changes-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--dt-text-primary);
+}
+
+.no-changes-text {
+    font-size: 0.875rem;
+    color: var(--dt-text-muted);
+    line-height: 1.6;
 }

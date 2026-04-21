@@ -8,6 +8,7 @@
     "Common": {
         "Save": "Lưu",
         "Cancel": "Hủy",
+        "Close": "Đóng",
         "Delete": "Xóa",
         "Suggestions": "Hãy thử các cách sau:",
         "Refresh": "Làm mới",
@@ -17,7 +18,8 @@
         "All": "Tất cả",
         "Yes": "Có",
         "No": "Không",
-        "Detail": "Chi tiết"
+        "Detail": "Chi tiết",
+        "General": "Thông tin chung"
     },
     "AuditLog": {
         "PageTitle": "Nhật ký hệ thống",
@@ -45,7 +47,24 @@
         "FullDate": "Thời gian thực thi chi tiết",
         "LoadError": "Lỗi khi tải nhật ký hoạt động",
         "PurgeConfirm": "Bạn có chắc chắn muốn xóa tất cả nhật ký hoạt động không?",
-        "PurgeSuccess": "Đã xóa nhật ký hoạt động thành công."
+        "PurgeSuccess": "Đã xóa nhật ký hoạt động thành công.",
+        "RequestDetails": "Thông tin yêu cầu",
+        "UserContext": "Bối cảnh người dùng",
+        "SystemDetails": "Chi tiết hệ thống",
+        "Parameters": "Tham số",
+        "Exceptions": "Lỗi ngoại lệ",
+        "EntityChanges": "Thay đổi dữ liệu",
+        "NoEntityChangesTitle": "Không có chi tiết thay đổi",
+        "NoEntityChangesDesc": "Không có giá trị thuộc tính nào bị thay đổi trong thao tác này.",
+        "PropertyName": "Tên thuộc tính",
+        "OriginalValue": "Giá trị cũ",
+        "NewValue": "Giá trị mới",
+        "NoPropertyChanges": "Không có thuộc tính nào thay đổi cho thực thể này.",
+        "ChangeType": {
+            "0": "Thêm mới",
+            "1": "Cập nhật",
+            "2": "Xóa"
+        }
     },
     "User": {
         "Title": "Người dùng",
