@@ -1,4 +1,10 @@
 {
+    "Menu": {
+        "Home": "Home",
+        "Host": {
+            "Roles": "Roles Management"
+        }
+    },
     "Common": {
         "Save": "Save",
         "Cancel": "Cancel",
@@ -10,7 +16,8 @@
         "ViewDetails": "View Details",
         "All": "All",
         "Yes": "Yes",
-        "No": "No"
+        "No": "No",
+        "Detail": "Detail"
     },
     "AuditLog": {
         "PageTitle": "Audit Logs",

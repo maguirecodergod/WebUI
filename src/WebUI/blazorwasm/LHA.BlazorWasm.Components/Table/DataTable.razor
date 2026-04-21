@@ -105,7 +105,8 @@
                     @foreach (var col in visibleCols)
                     {
                         var sort = GetSort(col.Field);
-                        <th class="dt-header-cell @(col.Sortable ? "dt-sortable" : string.Empty)" style="@col.GetColumnStyle()"
+                        <th class="dt-header-cell @(col.Sortable ? "dt-sortable" : string.Empty)"
+                            style="@col.GetColumnStyle()"
                             @onclick="async () => { if (col.Sortable) await ToggleSort(col.Field); }">
 
                             @if (col.HeaderTemplate is not null)
@@ -148,119 +149,121 @@
                                 @if (!_allEntireDatasetSelected)
                                 {
                                     <span>@string.Format(Localizer.L("DataTable.AllPageSelected"), _displayItems.Count)</span>
-                                        <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
-                                                OnClick="SelectAllEntireDataset">
-                                            @string.Format(Localizer.L("DataTable.SelectAllDataset"), _totalCount)
-                                        </Button>
-                                    }
-                                else
-                                    {
-                                        <span>@string.Format(Localizer.L("DataTable.AllDatasetSelected"), _totalCount)</span>
-                                        <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
-                                                OnClick="ClearSelection">
-                                            @Localizer.L("DataTable.ClearSelection")
-                                        </Button>
-                                    }
-                                </div>
-                            </td>
-                        </tr>
-                    }
-
-                    @if (_isLoading && _displayItems.Count == 0)
-                    {
-                        @for (var i = 0; i < 5; i++)
-                        {
-                            <tr class="dt-row">
-                                @for (var j = 0; j < (visibleCols.Count + (SelectionMode != SelectionMode.None ? 1 : 0) +
-                        (ExpandedRowTemplate is not null ? 1 : 0)); j++)
-                                {
-                                    <td class="dt-cell">
-                                        <Skeleton Height="1.25rem" Width="100%" />
-                                    </td>
-                                }
-                            </tr>
-                        }
-                    }
-                    else if (_displayItems.Count == 0)
-                    {
-                        <tr>
-                            <td colspan="@_totalColumns" class="dt-cell" style="text-align: center; padding: 3rem;">
-                                @if (EmptyTemplate is not null)
-                                {
-                                    @EmptyTemplate
+                                    <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
+                                            OnClick="SelectAllEntireDataset">
+                                        @string.Format(Localizer.L("DataTable.SelectAllDataset"), _totalCount)
+                                    </Button>
                                 }
                                 else
                                 {
-                                    <text>@Localizer.L("DataTable.NoData")</text>
+                                    <span>@string.Format(Localizer.L("DataTable.AllDatasetSelected"), _totalCount)</span>
+                                    <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
+                                            OnClick="ClearSelection">
+                                        @Localizer.L("DataTable.ClearSelection")
+                                    </Button>
                                 }
-                            </td>
-                        </tr>
-                    }
-                    else
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+                @if (_isLoading && _displayItems.Count == 0)
+                {
+                    @for (var i = 0; i < 5; i++)
                     {
-                        @foreach (var item in _displayItems)
-                        {
-                            <tr class="dt-row dt-row-hoverable @(IsSelected(item) ? "dt-row-selected" : string.Empty)"
-                                @onclick="async () => await HandleRowClickInternal(item)">
-
-                                @if (SelectionMode != SelectionMode.None)
-                                {
-                                    <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
-                                        @if (SelectionMode == SelectionMode.Multiple)
-                                        {
-                                            <input type="checkbox" checked="@IsSelected(item)"
-                                                   @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
-                                        }
-                                        else
-                                        {
-                                            <input type="radio" checked="@IsSelected(item)"
-                                                   @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
-                                        }
-                                    </td>
-                                }
-
-                                @if (ExpandedRowTemplate is not null)
-                                {
-                                    <td class="dt-cell dt-col-expand" style="text-align: center;" @onclick:stopPropagation>
-                                        <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : string.Empty)"
-                                                @onclick="() => ToggleExpand(item)"><i class="bi bi-chevron-right"></i></button>
-                                    </td>
-                                }
-
-                                @foreach (var col in visibleCols)
-                                {
-                                    <td class="dt-cell @col.GetCellCss(item)" style="@GetCellInlineStyle(col, item)">
-                                        @if (col.CellTemplate is not null)
-                                        {
-                                            @col.CellTemplate(item)
-                                        }
-                                        else
-                                        {
-                                            @col.GetDisplayValue(item)
-                                        }
-                                    </td>
-                                }
-                            </tr>
-                            @if (IsExpanded(item) && ExpandedRowTemplate is not null)
+                        <tr class="dt-row">
+                            @for (var j = 0; j < (visibleCols.Count + (SelectionMode != SelectionMode.None ? 1 : 0) +
+                    (ExpandedRowTemplate is not null ? 1 : 0)); j++)
                             {
-                                <tr class="dt-expanded-row">
-                                    <td colspan="@_totalColumns" style="padding: 0;">@ExpandedRowTemplate(item)</td>
-                                </tr>
+                                <td class="dt-cell">
+                                    <Skeleton Height="1.25rem" Width="100%" />
+                                </td>
                             }
+                        </tr>
+                    }
+                }
+                else if (_displayItems.Count == 0)
+                {
+                    <tr>
+                        <td colspan="@_totalColumns" class="dt-cell" style="text-align: center; padding: 3rem;">
+                            @if (EmptyTemplate is not null)
+                            {
+                                @EmptyTemplate
+                            }
+                            else
+                            {
+                                <text>@Localizer.L("DataTable.NoData")</text>
+                            }
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in _displayItems)
+                    {
+                        <tr class="dt-row dt-row-hoverable @(IsSelected(item) ? "dt-row-selected" : string.Empty)"
+                            @onclick="async () => await HandleRowClickInternal(item)">
+
+                            @if (SelectionMode != SelectionMode.None)
+                            {
+                                <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
+                                    @if (SelectionMode == SelectionMode.Multiple)
+                                    {
+                                        <input type="checkbox" checked="@IsSelected(item)"
+                                               @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" checked="@IsSelected(item)"
+                                               @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
+                                    }
+                                </td>
+                            }
+
+                            @if (ExpandedRowTemplate is not null)
+                            {
+                                <td class="dt-cell dt-col-expand" style="text-align: center;" @onclick:stopPropagation>
+                                    <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : string.Empty)"
+                                            @onclick="() => ToggleExpand(item)"><i class="bi bi-chevron-right"></i></button>
+                                </td>
+                            }
+
+                            @foreach (var col in visibleCols)
+                            {
+                                <td class="dt-cell @col.GetCellCss(item)" style="@GetCellInlineStyle(col, item)">
+                                    @if (col.CellTemplate is not null)
+                                    {
+                                        @col.CellTemplate(item)
+                                    }
+                                    else
+                                    {
+                                        @col.GetDisplayValue(item)
+                                    }
+                                </td>
+                            }
+                        </tr>
+                        @if (IsExpanded(item) && ExpandedRowTemplate is not null)
+                        {
+                            <tr class="dt-expanded-row">
+                                <td colspan="@_totalColumns" style="padding: 0;">@ExpandedRowTemplate(item)</td>
+                            </tr>
                         }
                     }
-                </tbody>
-            </table>
-        </div>
-
-        @* ════════════ PAGER ════════════ *@
-        @if (ShowPager)
-        {
-            <DataTablePager PageNumber="@_request.PageNumber" PageSize="@_request.PageSize" TotalCount="@_totalCount"
-                            PageSizes="@PageSizes" OnPageChanged="HandlePageChanged" OnPageSizeChanged="HandlePageSizeChanged" />
-        }
+                }
+            </tbody>
+        </table>
     </div>
 
+    @* ════════════ PAGER ════════════ *@
+    @if (ShowPager)
+    {
+        <DataTablePager PageNumber="@_request.PageNumber" PageSize="@_request.PageSize" TotalCount="@_totalCount"
+                        PageSizes="@PageSizes" OnPageChanged="HandlePageChanged" OnPageSizeChanged="HandlePageSizeChanged" />
+    }
+</div>
+
+@if (_columns.Any(c => c.Filterable))
+{
     @if (_filterSidebarOpen)
     {
         <div class="dt-sidebar-overlay" @onclick="CloseFilterSidebar"></div>
@@ -292,14 +295,14 @@
                 @Localizer.L("DataTable.Apply")
             </Button>
         </div>
-
     </aside>
+}
 
-    <div style="display:none">
-        <CascadingValue Value="this" IsFixed="true">
-            @ChildContent
-        </CascadingValue>
-    </div>
+<div style="display:none">
+    <CascadingValue Value="this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+</div>
 
 @code {
     private RenderFragment RenderFilterInput(ColumnDefinition<TItem> col) => __builder =>

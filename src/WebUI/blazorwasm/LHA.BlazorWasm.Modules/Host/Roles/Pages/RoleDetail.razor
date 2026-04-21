@@ -1,14 +1,21 @@
 @page "/host/roles/{Id:guid}"
 @inherits LhaComponentBase
+@using LHA.BlazorWasm.Components.Breadcrumb
 @using LHA.Shared.Contracts.Identity
 @using LHA.BlazorWasm.Components.Tabs
 @using LHA.BlazorWasm.Components.Skeleton
 @using LHA.BlazorWasm.Components.Section
 @using LHA.BlazorWasm.Components.Form
+@using LHA.BlazorWasm.Components.Dialog
 
-<div class="role-detail-container pb-12 animate-fade-in">
+<div class="role-detail-container animate-fade-in">
+    @* --- Breadcrumb --- *@
+    <div class="breadcrumb-wrapper px-1 py-2">
+        <Breadcrumb Items="_breadcrumbItems" Separator="/" />
+    </div>
+
     @* --- Page Header with Sticky Info --- *@
-    <div class="role-header-premium sticky top-0 z-10 bg-[var(--p-bg)] bg-opacity-95 backdrop-blur-sm pb-4 pt-2 -mt-2">
+    <div class="role-header-premium sticky top-0 z-10 bg-[var(--p-bg)] bg-opacity-95 backdrop-blur-sm pb-2">
         <div class="header-left">
             <div class="role-title-row">
                 <Button Style="CButtonStyle.Ghost" Icon="bi bi-arrow-left"
@@ -17,236 +24,244 @@
 
                 @if (_roleModel != null)
                 {
-                    <div class="role-badges">
+                    <div class="role-badges flex gap-2">
                         @if (_roleModel.IsStatic)
                         {
-                            <span class="badge badge-system glass-badge"><i class="bi bi-shield-lock"></i>
-                                @L("Roles.SystemRole")</span>
-                            }
-                            @if (_roleModel.IsDefault)
+                            <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.System" Class="glass-badge">
+                                @L("Roles.SystemRole")
+                            </StatusBadge>
+                        }
+                        @if (_roleModel.IsDefault)
+                        {
+                            <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.Default" Class="glass-badge">
+                                @L("Roles.DefaultRole")
+                            </StatusBadge>
+                        }
+                        @if (_roleModel.IsPublic)
+                        {
+                            <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.Public" Class="glass-badge">
+                                @L("Roles.PublicRole")
+                            </StatusBadge>
+                        }
+                    </div>
+                }
+            </div>
+            <p class="role-subtitle mt-1 ml-12 text-sm text-[var(--p-text-muted)]">
+                <i class="bi bi-fingerprint mr-1"></i> ID: @Id
+            </p>
+        </div>
+        <div class="header-actions">
+            <Button Style="CButtonStyle.Secondary" OnClick="@(() => InvokeAsync(StateHasChanged))"
+                    Icon="bi bi-arrow-clockwise" Class="mr-3 glass-btn">@L("Common.Refresh")</Button>
+            <Button Style="CButtonStyle.Primary" IsLoading="_isSaving" OnClick="SaveRoleAsync" Icon="bi bi-save2"
+                    Class="shadow-lg shadow-indigo-500/30">@L("Common.Save")</Button>
+        </div>
+    </div>
+
+    @* ─────────────────────────────────────────────────
+       Tab Navigation — using the enterprise Tabs component
+       ───────────────────────────────────────────────── *@
+    <div class="role-tabs-wrapper" style="padding-top: 1rem;">
+        <Tabs @bind-ActiveIndex="_activeTabIndex" Variant="CTabVariant.Pills" Position="CTabPosition.Top"
+              Size="CTabSize.Medium" Scrollable="true" LazyLoad="true" OnTabChanged="OnTabChangedAsync"
+              Class="role-detail-tabs">
+
+            <HeaderExtra>
+                @if (_activeTabIndex == 0)
+                {
+                    <div class="search-box-system">
+                        <CInput TValue="string" Value="@_permissionFilter"
+                                ValueChanged="@((string val) => _permissionFilter = val)"
+                                ValueExpression="@(() => _permissionFilter)" Placeholder="@L("Roles.SearchPermissions")"
+                                Size="CInputSize.Medium" Class="glass-input">
+                            <IconLeft><i class="bi bi-search"></i></IconLeft>
+                        </CInput>
+                    </div>
+                }
+            </HeaderExtra>
+
+            <ChildContent>
+                @* ── Tab 1: Permissions ── *@
+                <TabItem Title="@L("Roles.Tab.Permissions")" Icon="bi bi-key">
+                    <Content>
+                        <div class="permissions-view animate-fade-in mt-4">
+
+                            @if (_groups == null || _groups.Count == 0)
                             {
-                                <span class="badge badge-default glass-badge"><i class="bi bi-check-circle"></i>
-                                    @L("Roles.DefaultRole")</span>
-                                }
-                                @if (_roleModel.IsPublic)
-                                {
-                                    <span class="badge badge-public glass-badge"><i class="bi bi-globe"></i>
-                                        @L("Roles.PublicRole")</span>
+                                <div class="permission-grid">
+                                    @for (int i = 0; i < 6; i++)
+                                    {
+                                        <div class="skeleton-card-wrapper">
+                                            <Skeleton Variant="CSkeletonVariant.Rounded" Height="220px" Width="100%" />
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="permission-grid">
+                                    @foreach (var group in _groups.Where(g =>
+                                        string.IsNullOrEmpty(_permissionFilter) ||
+                                        g.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase) ||
+                                        g.Permissions.Any(p => p.DisplayName.Contains(_permissionFilter,
+                                StringComparison.OrdinalIgnoreCase))))
+                                    {
+                                        <Section Title="@L(group.DisplayName)" Icon="bi bi-collection" Collapsible="true">
+                                            <div class="group-meta-tag">@group.ServiceName</div>
+                                            <div class="permission-rows">
+                                                @foreach (var p in group.Permissions.Where(p =>
+                                                    string.IsNullOrEmpty(_permissionFilter) ||
+                                                    p.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase)))
+                                                {
+                                                    <div class="perm-row @(p.IsGranted ? "is-granted" : string.Empty)">
+                                                        <div class="perm-info-p">
+                                                            <div class="perm-top">
+                                                                <span class="perm-name-p">@L(p.DisplayName)</span>
+                                                                @if (p.IsFromTemplate)
+                                                                {
+                                                                    <Tooltip Text="@L("Roles.InheritedFromTemplate")">
+                                                                        <span class="badge-default-mini">@L("Roles.Default")</span>
+                                                                    </Tooltip>
+                                                                }
+                                                            </div>
+                                                            <code class="perm-key-p">@p.Name</code>
+                                                        </div>
+                                                        <div class="perm-toggle-p">
+                                                            <Switch Value="@p.IsGranted"
+                                                                    ValueChanged="@((val) => { p.IsGranted = val; p.IsFromTemplate = false; })"
+                                                                    Size="CSwitchSize.Medium" Tooltip="@L("Roles.TogglePermission")" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </Section>
                                     }
                                 </div>
                             }
                         </div>
-                        <p class="role-subtitle mt-1 ml-12 text-sm text-[var(--p-text-muted)]">
-                            <i class="bi bi-fingerprint mr-1"></i> ID: @Id
-                        </p>
-                    </div>
-                    <div class="header-actions">
-                        <Button Style="CButtonStyle.Secondary" OnClick="@(() => InvokeAsync(StateHasChanged))"
-                                Icon="bi bi-arrow-clockwise" Class="mr-3 glass-btn">@L("Common.Refresh")</Button>
-                        <Button Style="CButtonStyle.Primary" IsLoading="_isSaving" OnClick="SaveRoleAsync" Icon="bi bi-save2"
-                                Class="shadow-lg shadow-indigo-500/30">@L("Common.Save")</Button>
-                    </div>
-                </div>
+                    </Content>
+                </TabItem>
 
-                @* ─────────────────────────────────────────────────
-       Tab Navigation — using the enterprise Tabs component
-       ───────────────────────────────────────────────── *@
-                <div class="role-tabs-wrapper" style="padding-top: 1rem;">
-                    <Tabs @bind-ActiveIndex="_activeTabIndex" Variant="CTabVariant.Pills" Position="CTabPosition.Top"
-                          Size="CTabSize.Medium" Scrollable="true" LazyLoad="true" OnTabChanged="OnTabChangedAsync"
-                          Class="role-detail-tabs">
-
-                        <HeaderExtra>
-                            @if (_activeTabIndex == 0)
-                            {
-                                <div class="search-box-system">
-                                    <CInput TValue="string" Value="@_permissionFilter"
-                                            ValueChanged="@((string val) => _permissionFilter = val)"
-                                            ValueExpression="@(() => _permissionFilter)" Placeholder="@L("Roles.SearchPermissions")"
-                                            Size="CInputSize.Medium" Class="glass-input">
-                                        <IconLeft><i class="bi bi-search"></i></IconLeft>
-                                    </CInput>
+                @* ── Tab 2: Users ── *@
+                <TabItem Title="@L("Roles.Tab.Users")" Icon="bi bi-people"
+                         Badge="@(_assignedUsers.Count > 0 ? _assignedUsers.Count.ToString() : null)">
+                    <Content>
+                        <div class="users-view animate-slide-up">
+                            <div class="view-layout-p">
+                                <div class="users-list-p">
+                                    <div class="modern-card">
+                                        <DataTable TItem="IdentityUserDto" Items="_assignedUsers" Hoverable="true"
+                                                   Striped="true" OnRowClick="@((u) => SelectUser(u))"
+                                                   KeySelector="@(u => u.Id)" ShowToolbar="false"
+                                                   RowClass="@(u => _selectedUser?.Id == u.Id ? "active-row" : string.Empty)">
+                                            <ChildContent>
+                                                <DataTableColumn TItem="IdentityUserDto" Title="@L("Roles.User")">
+                                                    <CellTemplate Context="item">
+                                                        <div class="user-profile-cell">
+                                                            <div class="u-avatar">@item.UserName[0].ToString().ToUpper()
+                                                            </div>
+                                                            <span class="u-name">@item.UserName</span>
+                                                        </div>
+                                                    </CellTemplate>
+                                                </DataTableColumn>
+                                                <DataTableColumn TItem="IdentityUserDto" Property="@(u => u.Email)"
+                                                                 Title="@L("Roles.Email")" />
+                                                <DataTableColumn TItem="IdentityUserDto" Title=""
+                                                                 Alignment="ColumnAlignment.Right">
+                                                    <CellTemplate>
+                                                        <i class="bi bi-chevron-right text-muted"></i>
+                                                    </CellTemplate>
+                                                </DataTableColumn>
+                                            </ChildContent>
+                                            <EmptyTemplate>
+                                                <div class="empty-visual">
+                                                    <i class="bi bi-person-x"></i>
+                                                    <p>@L("Roles.NoUsersAssigned")</p>
+                                                </div>
+                                            </EmptyTemplate>
+                                        </DataTable>
+                                    </div>
                                 </div>
-                            }
-                        </HeaderExtra>
+                            </div>
+                        </div>
 
-                        <ChildContent>
-                            @* ── Tab 1: Permissions ── *@
-                            <TabItem Title="@L("Roles.Tab.Permissions")" Icon="bi bi-key">
-                                <Content>
-                                    <div class="permissions-view animate-fade-in mt-4">
+                    </Content>
+                </TabItem>
+            </ChildContent>
+        </Tabs>
+    </div>
+</div>
 
-                                        @if (_groups == null || _groups.Count == 0)
-                                        {
-                                            <div class="permission-grid">
-                                                @for (int i = 0; i < 6; i++)
-                                                {
-                                                    <div class="skeleton-card-wrapper">
-                                                        <Skeleton Variant="CSkeletonVariant.Rounded" Height="220px" Width="100%" />
-                                                    </div>
-                                                }
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="permission-grid">
-                                                @foreach (var group in _groups.Where(g =>
-                                                    string.IsNullOrEmpty(_permissionFilter) ||
-                                                    g.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase) ||
-                                                    g.Permissions.Any(p => p.DisplayName.Contains(_permissionFilter,
-                                            StringComparison.OrdinalIgnoreCase))))
-                                                {
-                                                    <Section Title="@L(group.DisplayName)" Icon="bi bi-collection" Collapsible="true">
-                                                        <div class="group-meta-tag">@group.ServiceName</div>
-                                                        <div class="permission-rows">
-                                                            @foreach (var p in group.Permissions.Where(p =>
-                                                                string.IsNullOrEmpty(_permissionFilter) ||
-                                                                p.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase)))
-                                                            {
-                                                                <div class="perm-row @(p.IsGranted ? "is-granted" : string.Empty)">
-                                                                    <div class="perm-info-p">
-                                                                        <div class="perm-top">
-                                                                            <span class="perm-name-p">@L(p.DisplayName)</span>
-                                                                            @if (p.IsFromTemplate)
-                                                                            {
-                                                                                <Tooltip Text="@L("Roles.InheritedFromTemplate")">
-                                                                                    <span class="badge-default-mini">@L("Roles.Default")</span>
-                                                                                </Tooltip>
-                                                                            }
-                                                                        </div>
-                                                                        <code class="perm-key-p">@p.Name</code>
-                                                                    </div>
-                                                                    <div class="perm-toggle-p">
-                                                                        <Switch Value="@p.IsGranted"
-                                                                                ValueChanged="@((val) => { p.IsGranted = val; p.IsFromTemplate = false; })"
-                                                                                Size="CSwitchSize.Medium" Tooltip="@L("Roles.TogglePermission")" />
-                                                                    </div>
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                    </Section>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-                                </Content>
-                            </TabItem>
-
-                            @* ── Tab 2: Users ── *@
-                            <TabItem Title="@L("Roles.Tab.Users")" Icon="bi bi-people"
-                                     Badge="@(_assignedUsers.Count > 0 ? _assignedUsers.Count.ToString() : null)">
-                                <Content>
-                                    <div class="users-view animate-slide-up">
-                                        <div class="view-layout-p">
-                                            <div class="users-list-p">
-                                                <div class="modern-card">
-                                                    <DataTable TItem="IdentityUserDto" Items="_assignedUsers" Hoverable="true"
-                                                               Striped="true" OnRowClick="@((u) => SelectUser(u))"
-                                                               KeySelector="@(u => u.Id)"
-                                                               RowClass="@(u => _selectedUser?.Id == u.Id ? "active-row" : string.Empty)">
-                                                        <ChildContent>
-                                                            <DataTableColumn TItem="IdentityUserDto" Title="@L("Roles.User")">
-                                                                <CellTemplate Context="item">
-                                                                    <div class="user-profile-cell">
-                                                                        <div class="u-avatar">@item.UserName[0].ToString().ToUpper()
-                                                                        </div>
-                                                                        <span class="u-name">@item.UserName</span>
-                                                                    </div>
-                                                                </CellTemplate>
-                                                            </DataTableColumn>
-                                                            <DataTableColumn TItem="IdentityUserDto" Property="@(u => u.Email)"
-                                                                             Title="@L("Roles.Email")" />
-                                                            <DataTableColumn TItem="IdentityUserDto" Title=""
-                                                                             Alignment="ColumnAlignment.Right">
-                                                                <CellTemplate>
-                                                                    <i class="bi bi-chevron-right text-muted"></i>
-                                                                </CellTemplate>
-                                                            </DataTableColumn>
-                                                        </ChildContent>
-                                                        <EmptyTemplate>
-                                                            <div class="empty-visual">
-                                                                <i class="bi bi-person-x"></i>
-                                                                <p>@L("Roles.NoUsersAssigned")</p>
-                                                            </div>
-                                                        </EmptyTemplate>
-                                                    </DataTable>
-                                                </div>
-                                            </div>
-
-                                            @if (_selectedUser != null)
-                                            {
-                                                <div class="user-rights-p animate-slide-left">
-                                                    <div class="rights-header">
-                                                        <div class="header-left">
-                                                            <h3>@L("Roles.EffectivePermissionsFor") @_selectedUser.UserName</h3>
-                                                            <p>@L("Roles.Email"): @_selectedUser.Email</p>
-                                                        </div>
-                                                        <Button Style="CButtonStyle.Ghost" OnClick="() => _selectedUser = null"
-                                                                Icon="bi bi-x-lg" />
-                                                    </div>
-
-                                                    <div class="rights-body">
-                                                        @if (_isUserPermissionsLoading)
-                                                        {
-                                                            <div class="rights-loading">
-                                                                <Skeleton Variant="CSkeletonVariant.Text" Count="5" Height="20px"
-                                                                          Width="100%" />
-                                                                <div class="mt-4">
-                                                                    <Skeleton Variant="CSkeletonVariant.Rounded" Height="140px"
-                                                                              Width="100%" />
-                                                                </div>
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            @foreach (var group in _userGroups)
-                                                            {
-                                                                <div class="rights-group">
-                                                                    <div class="r-group-title">@L(group.DisplayName)</div>
-                                                                    @foreach (var p in group.Permissions)
-                                                                    {
-                                                                        <div class="r-item @(p.IsGranted ? "granted" : "denied")">
-                                                                            <div class="r-indicator"></div>
-                                                                            <div class="r-content">
-                                                                                <span class="r-name">@L(p.DisplayName)</span>
-                                                                                <div class="r-sources">
-                                                                                    @if (p.IsInherited)
-                                                                                    {
-                                                                                        <Tooltip
-                                                                                            Text="@(L("Roles.InheritedFromRole") + ": " + string.Join(", ", p.InheritedFrom.Select(x => L(x))))">
-                                                                                            <span class="source-tag S-inherited">
-                                                                                                <i class="bi bi-diagram-3"></i>
-                                                                                                @string.Join(", ", p.InheritedFrom.Select(L))
-                                                                                            </span>
-                                                                                        </Tooltip>
-                                                                                    }
-                                                                                    @if (p.IsDirectOverride)
-                                                                                    {
-                                                                                        <span class="source-tag S-override">
-                                                                                            <i class="bi bi-pencil-square"></i>
-                                                                                            @L("Roles.ManualOverride")
-                                                                                        </span>
-                                                                                    }
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="r-action">
-                                                                                <Switch Value="@p.IsGranted"
-                                                                                        ValueChanged="@((val) => ToggleUserPermission(p, val))"
-                                                                                        Size="CSwitchSize.Small" />
-                                                                            </div>
-                                                                        </div>
-                                                                    }
-                                                                </div>
-                                                            }
-                                                        }
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                </Content>
-                            </TabItem>
-                        </ChildContent>
-                    </Tabs>
+@* Permissions Dialog - Placed at the end of the file, outside of role-detail-container *@
+<PremiumDialog @bind-IsVisible="_isPermissionsDialogVisible"
+               Title="@(L("Roles.EffectivePermissionsFor") + ": " + (_selectedUser?.UserName ?? string.Empty))"
+               Size="DialogSize.Large" ShowFooter="false">
+    <div class="user-rights-p p-0 border-0 shadow-none">
+        @if (_selectedUser != null)
+        {
+            <div class="px-6 py-4 border-b border-[var(--p-border)] bg-[var(--p-card-bg)] opacity-80">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500">
+                        <i class="bi bi-person-badge text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="m-0 font-bold text-lg">@_selectedUser.UserName</h4>
+                        <p class="m-0 text-xs text-[var(--p-text-muted)]">@_selectedUser.Email</p>
+                    </div>
                 </div>
             </div>
+        }
+        <div class="rights-body">
+            @if (_isUserPermissionsLoading)
+            {
+                <div class="rights-loading">
+                    <Skeleton Variant="CSkeletonVariant.Text" Count="5" Height="20px" Width="100%" />
+                    <div class="mt-4">
+                        <Skeleton Variant="CSkeletonVariant.Rounded" Height="140px" Width="100%" />
+                    </div>
+                </div>
+            }
+            else if (_selectedUser != null)
+            {
+                @foreach (var group in _userGroups)
+                {
+                    <div class="rights-group">
+                        <div class="r-group-title">@L(group.DisplayName)</div>
+                        @foreach (var p in group.Permissions)
+                        {
+                            <div class="r-item @(p.IsGranted ? "granted" : "denied")">
+                                <div class="r-indicator"></div>
+                                <div class="r-content">
+                                    <span class="r-name">@L(p.DisplayName)</span>
+                                    <div class="r-sources">
+                                        @if (p.IsInherited)
+                                        {
+                                            <Tooltip
+                                                Text="@(L("Roles.InheritedFromRole") + ": " + string.Join(", ", p.InheritedFrom.Select(x => L(x))))">
+                                                <span class="source-tag S-inherited">
+                                                    <i class="bi bi-diagram-3"></i>
+                                                    @string.Join(", ", p.InheritedFrom.Select(L))
+                                                </span>
+                                            </Tooltip>
+                                        }
+                                        @if (p.IsDirectOverride)
+                                        {
+                                            <span class="source-tag S-override">
+                                                <i class="bi bi-pencil-square"></i>
+                                                @L("Roles.ManualOverride")
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="r-action">
+                                    <Switch Value="@p.IsGranted" ValueChanged="@((val) => ToggleUserPermission(p, val))"
+                                            Size="CSwitchSize.Small" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</PremiumDialog>

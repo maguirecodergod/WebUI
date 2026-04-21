@@ -1,4 +1,10 @@
 {
+    "Menu": {
+        "Home": "Trang chủ",
+        "Host": {
+            "Roles": "Quản lý vai trò"
+        }
+    },
     "Common": {
         "Save": "Lưu",
         "Cancel": "Hủy",
@@ -10,7 +16,8 @@
         "ViewDetails": "Xem chi tiết",
         "All": "Tất cả",
         "Yes": "Có",
-        "No": "Không"
+        "No": "Không",
+        "Detail": "Chi tiết"
     },
     "AuditLog": {
         "PageTitle": "Nhật ký hệ thống",

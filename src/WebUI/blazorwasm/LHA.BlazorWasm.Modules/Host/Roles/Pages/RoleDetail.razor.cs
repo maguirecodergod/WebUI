@@ -32,9 +32,18 @@ public partial class RoleDetail : LhaComponentBase
     private int _activeTabIndex;
     private bool _isSaving;
     private bool _isUserPermissionsLoading;
+    private bool _isPermissionsDialogVisible;
+    private List<LHA.BlazorWasm.Components.Breadcrumb.BreadcrumbItemModel> _breadcrumbItems = [];
 
     protected override async Task OnInitializedAsync()
     {
+        _breadcrumbItems = new List<LHA.BlazorWasm.Components.Breadcrumb.BreadcrumbItemModel>
+        {
+            new() { Text = L("Menu.Home"), Href = "/", Icon = "bi bi-house" },
+            new() { Text = L("Menu.Host.Roles"), Href = "/host/roles", Icon = "bi bi-shield-lock" },
+            new() { Text = L("Common.Detail"), Icon = "bi bi-info-circle" }
+        };
+
         await LoadRoleAsync();
         await LoadPermissionDefinitionsAsync();
         await LoadRolePermissionsAsync();
@@ -200,6 +209,7 @@ public partial class RoleDetail : LhaComponentBase
     private async Task SelectUser(IdentityUserDto user)
     {
         _selectedUser = user;
+        _isPermissionsDialogVisible = true;
         _isUserPermissionsLoading = true;
 
         if (_userGroups.Count == 0 && _groups.Count > 0)
