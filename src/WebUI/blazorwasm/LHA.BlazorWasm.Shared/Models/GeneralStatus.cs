@@ -17,3 +17,12 @@ public enum CGeneralStatus
     Warning
 }
 
+public enum CYesNo
+{
+    [StatusBadge(CBadgeStyle.Success, Variant = CBadgeVariant.Soft, Icon = "bi bi-check-lg")]
+    Yes,
+
+    [StatusBadge(CBadgeStyle.Muted, Variant = CBadgeVariant.Soft, Icon = "bi bi-x-lg")]
+    No
+}
+

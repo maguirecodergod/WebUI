@@ -6,6 +6,8 @@
 @using LHA.BlazorWasm.Components.Table
 
 @using LHA.Shared.Contracts.Identity
+@using LHA.BlazorWasm.Shared.Models
+@using LHA.BlazorWasm.Components.Badges
 
 <PageTitle>@L("Roles.PageTitle")</PageTitle>
 
@@ -77,37 +79,24 @@
                                 <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.IsDefault")" Width="120px" Sortable
                                                  Property="@(x => x.IsDefault)">
                                     <CellTemplate>
-                                        @if (context.IsDefault)
-                                        {
-                                            <span class="badge bg-primary">@L("Common.Yes")</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">@L("Common.No")</span>
-                                        }
+                                        <StatusBadge TEnum="CYesNo" Status="@(context.IsDefault ? CYesNo.Yes : CYesNo.No)" />
                                     </CellTemplate>
                                 </DataTableColumn>
 
                                 <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.Status")" Width="180px">
                                     <CellTemplate>
-                                        <div class="d-flex gap-1 flex-wrap">
+                                        <div class="d-flex gap-2 flex-wrap">
                                             @if (context.IsDefault)
                                             {
-                                                <span
-                                                class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2"
-                                                style="font-size: 0.65rem;">@L("Roles.Default")</span>
+                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.Default" IsPill="true" Class="text-[0.65rem] px-2" />
                                             }
                                             @if (context.IsPublic)
                                             {
-                                                <span
-                                                class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2"
-                                                style="font-size: 0.65rem;">@L("Roles.Public")</span>
+                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.Public" IsPill="true" Class="text-[0.65rem] px-2" />
                                             }
                                             @if (context.IsStatic)
                                             {
-                                                <span
-                                                class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2"
-                                                style="font-size: 0.65rem;">@L("Roles.Static")</span>
+                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.System" IsPill="true" Class="text-[0.65rem] px-2" />
                                             }
                                         </div>
                                     </CellTemplate>
