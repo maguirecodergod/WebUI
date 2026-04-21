@@ -140,9 +140,6 @@
 }
 
 .tab-content-scroll {
-    max-height: 65vh;
-    overflow-y: auto;
-    overflow-x: hidden;
     padding: 1.5rem;
 }
 

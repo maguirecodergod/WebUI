@@ -338,8 +338,25 @@
 
 .rights-body {
     flex: 1;
-    overflow-y: auto;
     padding: 20px 24px 30px;
+}
+
+/* Custom scrollbar for better feel */
+.rights-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.rights-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.rights-body::-webkit-scrollbar-thumb {
+    background: var(--p-border);
+    border-radius: 10px;
+}
+
+.rights-body::-webkit-scrollbar-thumb:hover {
+    background: var(--p-primary);
 }
 
 .rights-loading {

@@ -20,7 +20,8 @@
     box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--border-color);
     border-radius: 0.75rem;
-    display: block;
+    display: flex;
+    flex-direction: column;
     max-height: 90vh;
     overflow: hidden;
     color: var(--text-color);
@@ -117,12 +118,30 @@
 .premium-dialog-content {
     padding: 1rem 1.5rem 1.5rem;
     overflow-y: auto;
+    overflow-x: hidden;
     font-size: 0.875rem;
     line-height: 1.6;
     color: var(--text-color);
-    flex: none;
-    /* Changed from 0 1 auto to none */
-    height: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Base custom scrollbar for all premium dialogs */
+.premium-dialog-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.premium-dialog-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.premium-dialog-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
+}
+
+.premium-dialog-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
 }
 
 .premium-dialog-footer {
