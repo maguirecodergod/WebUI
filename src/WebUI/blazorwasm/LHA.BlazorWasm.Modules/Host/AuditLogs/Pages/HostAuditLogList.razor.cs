@@ -20,6 +20,8 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         private AuditLogDto? _itemToDelete;
         private bool _canReadHostLogs;
         private bool _canDelete; // We'll derive this from HostRead for now since no specific delete permission exists
+        private bool _isDetailsDialogVisible;
+        private AuditLogDto? _viewingLog;
 
         private List<SelectOption<string>> _httpMethodOptions => Enum.GetValues<CHttpMethodType>()
             .Select(x => new SelectOption<string>
@@ -121,7 +123,36 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 
         private void ViewDetails(AuditLogDto log)
         {
+            _viewingLog = log;
+            _isDetailsDialogVisible = true;
+            StateHasChanged();
+        }
 
+        private string FormatJson(string? json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return "{}";
+            try
+            {
+                // Simple check if it even looks like JSON
+                var trimmed = json.Trim();
+                if (!(trimmed.StartsWith("{") || trimmed.StartsWith("["))) return json;
+
+                using var doc = System.Text.Json.JsonDocument.Parse(json);
+                return System.Text.Json.JsonSerializer.Serialize(doc, new System.Text.Json.JsonSerializerOptions 
+                { 
+                    WriteIndented = true,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                });
+            }
+            catch
+            {
+                return json;
+            }
+        }
+
+        private string? GetActiveParameters()
+        {
+            return _viewingLog?.Actions.FirstOrDefault()?.Parameters;
         }
 
         private void ShowSingleDeleteDialog(AuditLogDto log)

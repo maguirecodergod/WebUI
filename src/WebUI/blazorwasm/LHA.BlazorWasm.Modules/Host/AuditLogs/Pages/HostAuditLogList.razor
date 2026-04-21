@@ -1,4 +1,3 @@
-@page "/host/audit-logs"
 @page "/audit-logs"
 @namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 @inherits LhaComponentBase
@@ -9,6 +8,7 @@
 @using LHA.BlazorWasm.Components.Select
 @using LHA.BlazorWasm.Components.Switch
 @using LHA.BlazorWasm.Components.Table
+@using LHA.BlazorWasm.Components.Tabs
 
 <PageTitle>@L("AuditLog.PageTitle")</PageTitle>
 
@@ -27,6 +27,104 @@
             else if (_selectedLogs.Any())
             {
                 @L("AuditLog.DeleteBulkConfirmation", _selectedLogs.Count)
+            }
+        </ChildContent>
+    </LHA.BlazorWasm.Components.Dialog.PremiumDialog>
+
+    <LHA.BlazorWasm.Components.Dialog.PremiumDialog @bind-IsVisible="_isDetailsDialogVisible"
+                   Title="@L("Common.ViewDetails")"
+                   Type="LHA.BlazorWasm.Components.Dialog.DialogType.Information"
+                   Size="LHA.BlazorWasm.Components.Dialog.DialogSize.Large"
+                   ShowCancelButton="false"
+                   OkText="@L("Common.Close")">
+        <ChildContent>
+            @if (_viewingLog != null)
+            {
+                <div class="audit-details-container">
+                    <Tabs Variant="CTabVariant.Pills" Size="CTabSize.Small">
+                        <TabItem Title="@L("Common.General")" Icon="bi bi-info-circle">
+                            <Content>
+                                <div class="p-3">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="detail-label">@L("AuditLog.Id")</label>
+                                            <div class="detail-value font-monospace small">@_viewingLog.Id</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="detail-label">@L("AuditLog.ExecutionTime")</label>
+                                            <div class="detail-value">@_viewingLog.ExecutionTime.ToLocalTime().ToString("F")</div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="detail-label">@L("AuditLog.HttpMethod")</label>
+                                            <div class="detail-value">
+                                                <StatusBadge Status="@GetMethodEnum(_viewingLog.HttpMethod)" IsPill="false">@_viewingLog.HttpMethod</StatusBadge>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="detail-label">@L("AuditLog.Status")</label>
+                                            <div class="detail-value">
+                                                <StatusBadge Status="@GetStatusEnum(_viewingLog.HttpStatusCode)">@_viewingLog.HttpStatusCode</StatusBadge>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="detail-label">@L("AuditLog.Duration")</label>
+                                            <div class="detail-value">@_viewingLog.ExecutionDuration ms</div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="detail-label">@L("AuditLog.Url")</label>
+                                            <div class="detail-value text-break">@_viewingLog.Url</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="detail-label">@L("AuditLog.UserName")</label>
+                                            <div class="detail-value">@(_viewingLog.UserName ?? L("AuditLog.Anonymous"))</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="detail-label">@L("AuditLog.ClientIp")</label>
+                                            <div class="detail-value">@_viewingLog.ClientIpAddress</div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="detail-label">@L("AuditLog.Browser")</label>
+                                            <div class="detail-value small">@_viewingLog.BrowserInfo</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Content>
+                        </TabItem>
+                        <TabItem Title="@L("AuditLog.Parameters")" Icon="bi bi-braces">
+                            <Content>
+                                <div class="p-3">
+                                    <div class="json-viewer-wrapper">
+                                        <pre class="json-viewer">@FormatJson(GetActiveParameters())</pre>
+                                    </div>
+                                </div>
+                            </Content>
+                        </TabItem>
+                        @if (!string.IsNullOrEmpty(_viewingLog.Exceptions))
+                        {
+                            <TabItem Title="@L("AuditLog.Exceptions")" Icon="bi bi-exclamation-triangle" Badge="!">
+                                <Content>
+                                    <div class="p-3">
+                                        <div class="exception-viewer-wrapper">
+                                            <pre class="exception-viewer">@_viewingLog.Exceptions</pre>
+                                        </div>
+                                    </div>
+                                </Content>
+                            </TabItem>
+                        }
+                        @if (!string.IsNullOrEmpty(_viewingLog.ExtraProperties) && _viewingLog.ExtraProperties != "{}")
+                        {
+                            <TabItem Title="@L("Common.ExtraProperties")" Icon="bi bi-list-stars">
+                                <Content>
+                                    <div class="p-3">
+                                        <div class="json-viewer-wrapper">
+                                            <pre class="json-viewer">@FormatJson(_viewingLog.ExtraProperties)</pre>
+                                        </div>
+                                    </div>
+                                </Content>
+                            </TabItem>
+                        }
+                    </Tabs>
+                </div>
             }
         </ChildContent>
     </LHA.BlazorWasm.Components.Dialog.PremiumDialog>
@@ -214,9 +312,9 @@
                                                     @if (_canDelete)
                                                     {
                                                         <Tooltip Text="@L("Common.Delete")">
-                                                            <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small"
+                                                            <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
                                                                     Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
-                                                                <i class="bi bi-trash"></i>
+                                                                <i class="bi bi-trash text-danger"></i>
                                                             </Button>
                                                         </Tooltip>
                                                     }

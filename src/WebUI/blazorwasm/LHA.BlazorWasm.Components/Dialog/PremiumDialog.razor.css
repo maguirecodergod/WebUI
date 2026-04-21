@@ -21,8 +21,7 @@
     box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--border-color);
     border-radius: 1.5rem;
-    display: flex;
-    flex-direction: column;
+    display: block;
     max-height: 90vh;
     overflow: hidden;
     color: var(--text-color);
@@ -83,7 +82,7 @@
 }
 
 .premium-dialog-header {
-    padding: 1.5rem 2rem;
+    padding: 0.875rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -92,7 +91,7 @@
 
 .premium-dialog-title {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     font-weight: 600;
     color: var(--text-color);
 }
@@ -116,16 +115,17 @@
 }
 
 .premium-dialog-content {
-    padding: 1.5rem 2rem 2.5rem;
+    padding: 1rem 1.5rem 1.5rem;
     overflow-y: auto;
     font-size: 0.875rem;
     line-height: 1.6;
     color: var(--text-color);
-    flex: 1;
+    flex: none; /* Changed from 0 1 auto to none */
+    height: auto;
 }
 
 .premium-dialog-footer {
-    padding: 1.25rem 2rem;
+    padding: 0.875rem 1.5rem;
     display: flex;
     justify-content: flex-end;
     gap: 1rem;

@@ -167,5 +167,7 @@
     "AuditLog.DeleteSingleConfirmation": "Are you sure you want to delete this audit log record?",
     "AuditLog.DeleteBulkConfirmation": "Are you sure you want to delete {0} selected audit log records?",
     "AuditLog.BulkDeletedSuccessfully": "Successfully deleted {0} audit log records.",
-    "AuditLog.LoadError": "Error loading audit logs"
+    "AuditLog.LoadError": "Error loading audit logs",
+    "AuditLog.Parameters": "Request Parameters",
+    "AuditLog.Exceptions": "Server Exceptions"
 }

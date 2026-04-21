@@ -4,8 +4,35 @@ namespace LHA.BlazorWasm.Components.Dialog;
 
 public partial class PremiumDialog : LhaComponentBase
 {
+    private ElementReference _overlayRef;
+    private bool _shouldFocus = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_shouldFocus)
+        {
+            _shouldFocus = false;
+            try
+            {
+                await _overlayRef.FocusAsync();
+            }
+            catch { /* Ignore if focus fails */ }
+        }
+    }
+
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    private bool _previousIsVisible;
+
+    protected override void OnParametersSet()
+    {
+        if (IsVisible && !_previousIsVisible)
+        {
+            _shouldFocus = true;
+        }
+        _previousIsVisible = IsVisible;
+    }
 
     [Parameter] public DialogSize Size { get; set; } = DialogSize.Medium;
     [Parameter] public DialogType Type { get; set; } = DialogType.Default;
@@ -40,9 +67,9 @@ public partial class PremiumDialog : LhaComponentBase
     {
         IsClosing = true;
         StateHasChanged();
-        
+
         await Task.Delay(300); // Wait for transition
-        
+
         IsClosing = false;
         IsVisible = false;
         await IsVisibleChanged.InvokeAsync(IsVisible);
@@ -88,6 +115,14 @@ public partial class PremiumDialog : LhaComponentBase
         if (CloseOnOverlayClick && !IsClosing)
         {
             await CloseAsync();
+        }
+    }
+
+    protected async Task HandleKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape" && !IsClosing)
+        {
+            await HandleCancelAsync();
         }
     }
 

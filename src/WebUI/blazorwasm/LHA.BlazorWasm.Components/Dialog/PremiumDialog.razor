@@ -3,7 +3,12 @@
 
 @if (IsVisible)
 {
-    <div class="premium-dialog-overlay @(IsClosing ? "fade-out" : "fade-in")" @onclick="HandleOverlayClick">
+    <div class="premium-dialog-overlay @(IsClosing ? "fade-out" : "fade-in")" 
+         @onclick="HandleOverlayClick" 
+         @onkeydown="HandleKeyDown" 
+         tabindex="-1" 
+         @ref="_overlayRef"
+         style="outline: none;">
         <div class="premium-dialog-container @GetSizeClass() @GetTypeClass() @(IsClosing ? "scale-out" : "scale-in")"
              @onclick:stopPropagation>
 
@@ -21,13 +26,11 @@
 
                     @if (ShowCloseButton)
                     {
-                        <button class="premium-dialog-close-btn" @onclick="CloseAsync" aria-label="@L("Common_Close")">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
+                        <Tooltip Text="@L("Common.Close")">
+                            <button class="premium-dialog-close-btn" @onclick="CloseAsync" aria-label="@L("Common_Close")">
+                                <i class="bi bi-x-lg" style="font-size: 1rem;"></i>
+                            </button>
+                        </Tooltip>
                     }
                 </div>
             }

@@ -383,22 +383,22 @@
    ════════════════════════════════════════════════════════════════════ */
 
 .tabs-content {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
     position: relative;
-    /* Add generous responsive padding separating the content from the tabs */
-    padding: 1.5rem 0;
+    /* Reduced padding for better fit */
+    padding: 1rem 0;
 }
 
 /* Distribute padding based on position */
-.tabs-pos-top .tabs-content { padding: 1.5rem 0 0 0; }
-.tabs-pos-bottom .tabs-content { padding: 0 0 1.5rem 0; }
-.tabs-pos-left .tabs-content { padding: 0 0 0 1.5rem; }
-.tabs-pos-right .tabs-content { padding: 0 1.5rem 0 0; }
+.tabs-pos-top .tabs-content { padding: 1rem 0 0 0; }
+.tabs-pos-bottom .tabs-content { padding: 0 0 1rem 0; }
+.tabs-pos-left .tabs-content { padding: 0 0 0 1rem; }
+.tabs-pos-right .tabs-content { padding: 0 1rem 0 0; }
 
 /* Stretch: give content full height */
-.tabs-stretch .tabs-content { height: 100%; }
+.tabs-stretch .tabs-content { height: auto; min-height: 400px; }
 
 /* Card variant — give panel a border/bg to complete the "card" visual */
 .tabs-variant-card .tabs-content {

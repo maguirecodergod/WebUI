@@ -1,53 +1,75 @@
-.filter-panel-glass {
-    background: var(--dt-bg);
-    border: 1px solid var(--dt-border) !important;
-}
-
-.form-select-replica {
-    border: 1px solid var(--dt-input-border, #e2e8f0);
-    border-radius: 8px;
-    padding: 0.55rem 0.75rem;
-    font-size: 0.875rem;
-    background-color: var(--dt-input-bg, #fff);
-    color: var(--dt-text-primary);
-    transition: border-color 0.2s;
-}
-
-.form-select-replica:focus {
-    border-color: var(--dt-accent);
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
-    outline: none;
-}
-
-.avatar-sm {
-    width: 32px;
-    height: 32px;
-    background: var(--dt-accent-glow);
-    color: var(--dt-accent);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+.detail-label {
+    display: block;
     font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--dt-text-muted);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.025em;
 }
 
-.btn-icon-replica {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--dt-card-bg);
-    border: 1px solid var(--dt-border-color);
+.detail-value {
+    color: var(--dt-text-primary);
+    font-weight: 500;
+}
+
+.json-viewer-wrapper,
+.exception-viewer-wrapper {
+    background: var(--dt-sidebar-bg);
+    border: 1px solid var(--dt-border);
     border-radius: 8px;
-    color: var(--dt-text-secondary);
-    transition: all 0.2s;
+    padding: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
-.btn-icon-replica:hover {
-    background: var(--dt-row-hover);
+.json-viewer {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #ce9178;
+    /* Consistent with VS Code dark JSON color */
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.exception-viewer {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #f44336;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* Theme adjustments */
+[data-theme='light'] .json-viewer {
+    color: #a31515;
+}
+
+[data-theme='light'] .exception-viewer {
+    color: #d32f2f;
+}
+
+.audit-details-container {
+    /* Removed min-height to allow content to fit naturally */
+}
+
+/* Icon Colors */
+.audit-details-container .bi-info-circle {
     color: var(--dt-accent);
-    border-color: var(--dt-accent-glow);
+}
+
+.audit-details-container .bi-braces {
+    color: #ce9178;
+}
+
+.audit-details-container .bi-exclamation-triangle {
+    color: #f44336;
+}
+
+.audit-details-container .bi-list-stars {
+    color: #4caf50;
+}
+
+.btn-icon-replica .bi-eye {
+    color: var(--dt-accent);
 }
