@@ -60,7 +60,7 @@
                                     Placeholder="@L("Common.GlobalSearch")" Size="CInputSize.Small" Style="width: 250px;">
                                 <IconLeft><i class="bi bi-search"></i></IconLeft>
                             </CInput>
-                            <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small" OnClick="() => _dataTable?.RefreshAsync()">
+                            <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small" OnClick="() => _dataTable?.RefreshAsync() ?? Task.CompletedTask">
                                 <i class="bi bi-arrow-clockwise"></i>
                             </Button>
                         </div>
