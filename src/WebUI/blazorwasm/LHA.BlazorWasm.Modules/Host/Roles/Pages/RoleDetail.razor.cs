@@ -32,7 +32,10 @@ public partial class RoleDetail : LhaComponentBase
     private int _activeTabIndex;
     private bool _isSaving;
     private bool _isUserPermissionsLoading;
+    private bool _isSavingUserPermissions;
     private bool _isPermissionsDialogVisible;
+    private bool _hasRoleChanges;
+    private bool _hasUserPermissionChanges;
     private List<LHA.BlazorWasm.Components.Breadcrumb.BreadcrumbItemModel> _breadcrumbItems = [];
 
     protected override async Task OnInitializedAsync()
@@ -195,6 +198,7 @@ public partial class RoleDetail : LhaComponentBase
             }, _roleTenantId);
 
             ToastNotification.Success("Lưu thay đổi thành công!");
+            _hasRoleChanges = false;
         }
         catch (Exception ex)
         {
@@ -211,6 +215,7 @@ public partial class RoleDetail : LhaComponentBase
         _selectedUser = user;
         _isPermissionsDialogVisible = true;
         _isUserPermissionsLoading = true;
+        _hasUserPermissionChanges = false;
 
         if (_userGroups.Count == 0 && _groups.Count > 0)
         {
@@ -336,44 +341,56 @@ public partial class RoleDetail : LhaComponentBase
         }
     }
 
-    private async Task ToggleUserPermission(PermissionDefinitionViewModel p, bool granted)
+    private void OnRolePermissionChanged(PermissionDefinitionViewModel p, bool granted)
+    {
+        p.IsGranted = granted;
+        p.IsFromTemplate = false;
+        _hasRoleChanges = true;
+        StateHasChanged();
+    }
+
+    private void ToggleUserPermission(PermissionDefinitionViewModel p, bool granted)
     {
         if (_selectedUser == null) return;
 
         p.IsGranted = granted;
         p.IsDirectOverride = true; // Any manual toggle in this view is an override
-
-        await SaveUserOverrideAsync(p.Name, granted);
+        _hasUserPermissionChanges = true;
         StateHasChanged();
     }
 
-    private async Task SaveUserOverrideAsync(string name, bool granted)
+    private async Task SaveUserPermissionsAsync()
     {
         if (_selectedUser == null) return;
 
-        var currentOverrides = await PermissionAppService.GetAsync(new GetPermissionListInput
+        _isSavingUserPermissions = true;
+        try
         {
-            ProviderName = PermissionGrantProviderName.User,
-            ProviderKey = _selectedUser.Id.ToString().ToLowerInvariant()
-        }, _selectedUser.TenantId);
+            var permissions = _userGroups
+                .SelectMany(g => g.Permissions)
+                .Where(p => p.IsDirectOverride)
+                .Select(p => new PermissionGrantInput { Name = p.Name, IsGranted = p.IsGranted })
+                .ToList();
 
-        var permissions = currentOverrides?.Select(x => new PermissionGrantInput { Name = x.Name, IsGranted = x.IsGranted }).ToList() ?? [];
+            await PermissionAppService.UpdateAsync(new UpdatePermissionsInput
+            {
+                ProviderName = PermissionGrantProviderName.User,
+                ProviderKey = _selectedUser.Id.ToString().ToLowerInvariant(),
+                Permissions = permissions
+            }, _selectedUser.TenantId);
 
-        var existing = permissions.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
-        if (existing != null)
-        {
-            existing.IsGranted = granted;
+            ToastNotification.Success("Cập nhật quyền người dùng thành công!");
+            _hasUserPermissionChanges = false;
+            _isPermissionsDialogVisible = false;
         }
-        else
+        catch (Exception ex)
         {
-            permissions.Add(new PermissionGrantInput { Name = name, IsGranted = granted });
+            ToastNotification.Error($"{L("Common.Error")}: {ex.Message}");
         }
-
-        await PermissionAppService.UpdateAsync(new UpdatePermissionsInput
+        finally
         {
-            ProviderName = PermissionGrantProviderName.User,
-            ProviderKey = _selectedUser.Id.ToString().ToLowerInvariant(),
-            Permissions = permissions
-        }, _selectedUser.TenantId);
+            _isSavingUserPermissions = false;
+        }
     }
+
 }

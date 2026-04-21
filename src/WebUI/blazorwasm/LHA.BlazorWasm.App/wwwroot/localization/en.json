@@ -105,6 +105,7 @@
     "Common.Operations": "Actions",
     "Common.Search": "Search",
     "Permissions.AuditLogManagement.Group": "Audit Log Management",
+    "Permissions.AuditLogManagement.HostRead": "Read all Audit Logs of system",
     "Permissions.AuditLogManagement.Read": "Read Audit Logs",
     "Permissions.ClaimTypeManagement.Group": "Claim Type Management",
     "Permissions.ClaimTypeManagement.Delete": "Delete Claim Type",

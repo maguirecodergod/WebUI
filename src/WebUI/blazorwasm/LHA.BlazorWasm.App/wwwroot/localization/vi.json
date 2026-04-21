@@ -107,6 +107,7 @@
     "Common.Operations": "Thao tác",
     "Common.Search": "Tìm kiếm",
     "Permissions.AuditLogManagement.Group": "Quản lý nhật ký vận hành",
+    "Permissions.AuditLogManagement.HostRead": "Xem nhật ký hoạt động toàn hệ thống",
     "Permissions.AuditLogManagement.Read": "Truy cập nhật ký",
     "Permissions.ClaimTypeManagement.Group": "Quản lý loại Claim",
     "Permissions.ClaimTypeManagement.Delete": "Xóa Claim",

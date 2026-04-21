@@ -54,7 +54,7 @@
             <Button Style="CButtonStyle.Secondary" OnClick="@(() => InvokeAsync(StateHasChanged))"
                     Icon="bi bi-arrow-clockwise" Class="mr-3 glass-btn">@L("Common.Refresh")</Button>
             <Button Style="CButtonStyle.Primary" IsLoading="_isSaving" OnClick="SaveRoleAsync" Icon="bi bi-save2"
-                    Class="shadow-lg shadow-indigo-500/30">@L("Common.Save")</Button>
+                    Disabled="!_hasRoleChanges" Class="shadow-lg shadow-indigo-500/30">@L("Common.Save")</Button>
         </div>
     </div>
 
@@ -128,7 +128,7 @@
                                                         </div>
                                                         <div class="perm-toggle-p">
                                                             <Switch Value="@p.IsGranted"
-                                                                    ValueChanged="@((val) => { p.IsGranted = val; p.IsFromTemplate = false; })"
+                                                                    ValueChanged="@((val) => OnRolePermissionChanged(p, val))"
                                                                     Size="CSwitchSize.Medium" Tooltip="@L("Roles.TogglePermission")" />
                                                         </div>
                                                     </div>
@@ -195,8 +195,18 @@
 @* Permissions Dialog - Placed at the end of the file, outside of role-detail-container *@
 <PremiumDialog @bind-IsVisible="_isPermissionsDialogVisible"
                Title="@(L("Roles.EffectivePermissionsFor") + ": " + (_selectedUser?.UserName ?? string.Empty))"
-               Size="DialogSize.Large" ShowFooter="false">
-    <div class="user-rights-p p-0 border-0 shadow-none">
+               Size="DialogSize.Large" ShowFooter="true">
+    <FooterContent>
+        <Button Style="CButtonStyle.Secondary" Class="glass-btn" OnClick="@(() => _isPermissionsDialogVisible = false)">
+            @L("Common.Cancel")
+        </Button>
+        <Button Style="CButtonStyle.Primary" IsLoading="_isSavingUserPermissions" OnClick="SaveUserPermissionsAsync" Icon="bi bi-check-lg"
+                Disabled="!_hasUserPermissionChanges" Class="shadow-lg shadow-indigo-500/30">
+            @L("Common.Confirm")
+        </Button>
+    </FooterContent>
+    <ChildContent>
+        <div class="user-rights-p p-0 border-0 shadow-none">
         @if (_selectedUser != null)
         {
             <div class="px-6 py-4 border-b border-[var(--p-border)] bg-[var(--p-card-bg)] opacity-80">
@@ -264,4 +274,5 @@
             }
         </div>
     </div>
+    </ChildContent>
 </PremiumDialog>
