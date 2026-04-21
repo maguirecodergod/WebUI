@@ -20,7 +20,7 @@
     backdrop-filter: blur(20px);
     box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--border-color);
-    border-radius: 1.5rem;
+    border-radius: 0.75rem;
     display: block;
     max-height: 90vh;
     overflow: hidden;
@@ -101,7 +101,8 @@
     border: none;
     cursor: pointer;
     color: var(--text-muted);
-    padding: 0.5rem;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -120,7 +121,8 @@
     font-size: 0.875rem;
     line-height: 1.6;
     color: var(--text-color);
-    flex: none; /* Changed from 0 1 auto to none */
+    flex: none;
+    /* Changed from 0 1 auto to none */
     height: auto;
 }
 
@@ -130,7 +132,7 @@
     justify-content: flex-end;
     gap: 1rem;
     border-top: 1px solid var(--border-color);
-    border-radius: 0 0 1.5rem 1.5rem;
+    border-radius: 0 0 0.75rem 0.75rem;
 }
 
 .premium-dialog-footer .lha-btn {
@@ -173,17 +175,17 @@
 }
 
 .dialog-error {
-    border-top: 5px solid #f04438;
+    border-top: 3px solid #f04438;
 }
 
 .dialog-success {
-    border-top: 5px solid #12b76a;
+    border-top: 3px solid #12b76a;
 }
 
 .dialog-warning {
-    border-top: 5px solid #f79009;
+    border-top: 3px solid #f79009;
 }
 
 .dialog-info {
-    border-top: 5px solid var(--primary-color);
+    border-top: 3px solid var(--primary-color);
 }
