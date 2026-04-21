@@ -220,8 +220,11 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             else if (lowerAgent.Contains("mac os")) details.OS = COperatingSystem.MacOS;
             else if (lowerAgent.Contains("linux")) details.OS = COperatingSystem.Linux;
 
-            // Browser Detection
-            if (lowerAgent.Contains("edg/")) details.Browser = CBrowserType.Edge;
+            // Browser/Client Detection
+            if (lowerAgent.Contains("postman") || lowerAgent.Contains("postmanruntime")) details.Browser = CBrowserType.Postman;
+            else if (lowerAgent.Contains("bruno")) details.Browser = CBrowserType.Bruno;
+            else if (lowerAgent.Contains("curl")) details.Browser = CBrowserType.Curl;
+            else if (lowerAgent.Contains("edg/")) details.Browser = CBrowserType.Edge;
             else if (lowerAgent.Contains("chrome") && lowerAgent.Contains("safari")) details.Browser = CBrowserType.Chrome;
             else if (lowerAgent.Contains("firefox")) details.Browser = CBrowserType.Firefox;
             else if (lowerAgent.Contains("safari") && !lowerAgent.Contains("chrome")) details.Browser = CBrowserType.Safari;
@@ -234,6 +237,8 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         {
             public CBrowserType Browser { get; set; } = CBrowserType.Unknown;
             public COperatingSystem OS { get; set; } = COperatingSystem.Unknown;
+
+            public bool IsSvgIcon => Browser is CBrowserType.Postman or CBrowserType.Bruno or CBrowserType.Curl;
 
             public string BrowserIcon => Browser switch
             {
@@ -259,7 +264,20 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             public string OSName => OS.ToString();
         }
 
-        public enum CBrowserType { Unknown, Chrome, Edge, Firefox, Safari, Opera }
+        public enum CBrowserType
+        {
+            Unknown,
+            Chrome,
+            Edge,
+            Firefox,
+            Safari,
+            Opera,
+            Postman,
+            Bruno,
+            Curl,
+            Terminal,
+            Other
+        }
         public enum COperatingSystem { Unknown, Windows, MacOS, Linux, Android, iOS }
 
         #endregion
