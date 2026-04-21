@@ -395,13 +395,8 @@
     }
 
     .topbar {
-        padding: 0 2rem;
+        padding: 0 1.5rem;
     }
-
-    .search-trigger {
-        display: flex;
-    }
-
 
     .desktop-only {
         display: flex;
@@ -423,9 +418,28 @@
     }
 
     .breadcrumb-desktop {
+        display: block;
         font-size: 0.75rem;
         margin-top: 4px;
         opacity: 0.8;
+    }
+}
+
+/* --- Expanded Search View (min-width: 1200px) --- */
+@media (min-width: 1200px) {
+    .search-trigger {
+        display: flex;
+    }
+    
+    .mobile-search-button {
+        display: none;
+    }
+}
+
+/* --- Large Screens --- */
+@media (min-width: 1536px) {
+    .topbar {
+        padding: 0 2rem;
     }
 }
 

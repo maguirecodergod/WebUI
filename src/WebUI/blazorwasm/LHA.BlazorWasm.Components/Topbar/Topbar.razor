@@ -85,8 +85,7 @@
                         }
                     </div>
 
-                    <button class="icon-button mobile-search-button" @onclick="OpenCommandPalette"
-                            aria-label="Open search">
+                    <button class="icon-button mobile-search-button" @onclick="OpenCommandPalette" aria-label="Open search">
                         <i class="bi bi-search"></i>
                     </button>
 
@@ -109,7 +108,7 @@
                                 else
                                 {
                                     <span>@(TopbarService.State.User?.DisplayName.FirstOrDefault().ToString().ToUpper() ??
-                                                                    "U")</span>
+                                                                                                            "U")</span>
                                     }
                                 </div>
                                 <div class="user-info-text">
@@ -175,8 +174,8 @@
 
             }
         </div>
-        <CommandPalette @bind-IsVisible="_isSearchOpen" />
     </header>
+    <CommandPalette @bind-IsVisible="_isSearchOpen" />
 
     @if (_isProfileOpen || _isNotificationOpen)
     {
