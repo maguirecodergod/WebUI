@@ -3,7 +3,6 @@
 @inherits LhaComponentBase
 @using LHA.BlazorWasm.Components
 @using LHA.BlazorWasm.Components.Buttons
-@using LHA.BlazorWasm.Components.Form
 @using LHA.BlazorWasm.Components.Table
 
 @using LHA.Shared.Contracts.Identity
@@ -11,12 +10,9 @@
 <PageTitle>@L("Roles.PageTitle")</PageTitle>
 
 <div class="role-list-page container-fluid p-4">
-    <LHA.BlazorWasm.Components.Dialog.PremiumDialog @bind-IsVisible="_isDeleteDialogVisible" 
-                   Title="@L("Common.ConfirmDelete")"
-                   Type="LHA.BlazorWasm.Components.Dialog.DialogType.Error"
-                   Size="LHA.BlazorWasm.Components.Dialog.DialogSize.Small"
-                   ShowCancelButton="true"
-                   OnOk="ExecuteDeleteAsync">
+    <LHA.BlazorWasm.Components.Dialog.PremiumDialog @bind-IsVisible="_isDeleteDialogVisible"
+                                                    Title="@L("Common.ConfirmDelete")" Type="LHA.BlazorWasm.Components.Dialog.DialogType.Error"
+                                                    Size="LHA.BlazorWasm.Components.Dialog.DialogSize.Small" ShowCancelButton="true" OnOk="ExecuteDeleteAsync">
         <ChildContent>
             @L("Roles.DeleteSingleConfirmation")
         </ChildContent>
@@ -25,114 +21,132 @@
 
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pt-4">
         <div>
-            <p class="text-[0.75rem] font-medium uppercase tracking-[0.05em] text-primary mb-2">@L("Roles.AccessManagement")</p>
-            <h1 class="text-[2.25rem] font-bold leading-tight tracking-[-0.02em] text-on-surface" style="color: var(--dt-text-primary);">@L("Roles.PageTitle")</h1>
-            <p class="text-sm text-on-surface-variant mt-2 max-w-2xl" style="color: var(--dt-text-muted);">@L("Roles.PageDescription")</p>
-        </div>
-    </div>
+            <p class="text-[0.75rem] font-medium uppercase tracking-[0.05em] text-primary mb-2">
+                @L("Roles.AccessManagement")</p>
+                <h1 class="text-[2.25rem] font-bold leading-tight tracking-[-0.02em] text-on-surface"
+                    style="color: var(--dt-text-primary);">@L("Roles.PageTitle")</h1>
+                <p class="text-sm text-on-surface-variant mt-2 max-w-2xl" style="color: var(--dt-text-muted);">
+                    @L("Roles.PageDescription")</p>
+                </div>
+            </div>
 
-    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
-        <div class="card-body p-0">
-            <DataTable @ref="_dataTable" TItem="IdentityRoleDto" Items="_roles" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
-                       ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10" Searchable="true" ShowToolbar="true"
-                       SelectionMode="SelectionMode.Single" KeySelector="@(x => x.Id)" TableId="HostRoleTable">
+            <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+                <div class="card-body p-0">
+                    <DataTable @ref="_dataTable" TItem="IdentityRoleDto" Items="_roles" Mode="DataTableMode.ServerSide"
+                               TotalCount="(int)_totalCount" ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10"
+                               Searchable="true" ShowToolbar="true" SelectionMode="SelectionMode.None" KeySelector="@(x => x.Id)"
+                               TableId="HostRoleTable">
 
-                <ToolbarTemplate>
-                    <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
-                         style="background: transparent; border-color: var(--dt-border-color) !important;">
-                        <div class="d-flex align-items-center gap-2">
-                             <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick='() => Navigation.NavigateTo("/host/roles/create")'>
-                                <i class="bi bi-plus-lg me-1"></i> @L("Common.Create")
-                            </Button>
-                        </div>
-                        <div class="d-flex gap-2 align-items-center">
-                            @* Use the built-in search via Searchable="true" or customize here *@
-                            @* We keep this side for future custom filters if needed, but remove redundant search *@
-                        </div>
-                    </div>
-                </ToolbarTemplate>
-
-                <ChildContent>
-                    <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.Name")" Width="250px" Sortable Property="@(x => x.Name)">
-                        <CellTemplate>
-                            <div class="d-flex flex-column">
-                                <span class="fw-bold text-on-surface" style="color: var(--dt-text-primary);">@context.Name</span>
-                                <span class="text-[0.65rem] opacity-50 font-mono tracking-wider">ID: @context.Id.ToString()[..8]</span>
-                            </div>
-                        </CellTemplate>
-                    </DataTableColumn>
-
-                    <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.Description")" Width="300px">
-                        <CellTemplate>
-                            <span class="text-sm opacity-75" style="color: var(--dt-text-muted);">
-                                @(context.IsStatic ? "System-defined immutable role." : "Assign organizational role for access control.")
-                            </span>
-                        </CellTemplate>
-                    </DataTableColumn>
-
-                    <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.IsDefault")" Width="120px" Sortable Property="@(x => x.IsDefault)">
-                        <CellTemplate>
-                            @if (context.IsDefault)
-                            {
-                                <span class="badge bg-primary">@L("Common.Yes")</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">@L("Common.No")</span>
-                            }
-                        </CellTemplate>
-                    </DataTableColumn>
-
-                    <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.Status")" Width="180px">
-                        <CellTemplate>
-                            <div class="d-flex gap-1 flex-wrap">
-                                @if (context.IsDefault)
-                                {
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2" style="font-size: 0.65rem;">@L("Roles.Default")</span>
-                                }
-                                @if (context.IsPublic)
-                                {
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2" style="font-size: 0.65rem;">@L("Roles.Public")</span>
-                                }
-                                @if (context.IsStatic)
-                                {
-                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2" style="font-size: 0.65rem;">@L("Roles.Static")</span>
-                                }
-                            </div>
-                        </CellTemplate>
-                    </DataTableColumn>
-
-                    <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.LastUpdated")" Width="180px" Sortable Property="@(x => x.LastModificationTime)">
-                        <CellTemplate>
-                            <span class="small" style="color: var(--dt-text-muted);">
-                                @((context.LastModificationTime ?? context.CreationTime).ToString("yyyy-MM-dd HH:mm"))
-                            </span>
-                        </CellTemplate>
-                    </DataTableColumn>
-
-                    <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.Operations")" Width="120px" Alignment="ColumnAlignment.Right">
-                        <CellTemplate>
-                            <div class="d-flex justify-content-end gap-1">
-                                <Tooltip Text="@L("Common.Edit")">
-                                    <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
-                                            Class="btn-icon-replica" OnClick='() => Navigation.NavigateTo($"/host/roles/{context.Id}")'>
-                                        <i class="bi bi-pencil"></i>
+                        <ToolbarTemplate>
+                            <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
+                                 style="background: transparent; border-color: var(--dt-border-color) !important;">
+                                <div class="d-flex align-items-center gap-2">
+                                    <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small"
+                                            OnClick='() => Navigation.NavigateTo("/host/roles/create")'>
+                                        <i class="bi bi-plus-lg me-1"></i> @L("Common.Create")
                                     </Button>
-                                </Tooltip>
-                                @if(!context.IsStatic)
-                                {
-                                    <Tooltip Text="@L("Common.Delete")">
-                                        <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small"
-                                                Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
-                                            <i class="bi bi-trash"></i>
-                                        </Button>
-                                    </Tooltip>
-                                }
+                                </div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    @* Use the built-in search via Searchable="true" or customize here *@
+                                    @* We keep this side for future custom filters if needed, but remove redundant search *@
+                                </div>
                             </div>
-                        </CellTemplate>
-                    </DataTableColumn>
-                </ChildContent>
-            </DataTable>
-        </div>
-    </div>
-</div>
+                        </ToolbarTemplate>
+
+                        <ChildContent>
+                            <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.Name")" Width="250px" Sortable
+                                             Property="@(x => x.Name)">
+                                <CellTemplate>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-bold text-on-surface"
+                                              style="color: var(--dt-text-primary);">@context.Name</span>
+                                        <span class="text-[0.65rem] opacity-50 font-mono tracking-wider">ID:
+                                            @context.Id.ToString()[..8]</span>
+                                        </div>
+                                    </CellTemplate>
+                                </DataTableColumn>
+
+                                <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.Description")" Width="300px">
+                                    <CellTemplate>
+                                        <span class="text-sm opacity-75" style="color: var(--dt-text-muted);">
+                                            @(context.IsStatic ? "System-defined immutable role." : "Assign organizational role for access control.")
+                                        </span>
+                                    </CellTemplate>
+                                </DataTableColumn>
+
+                                <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.IsDefault")" Width="120px" Sortable
+                                                 Property="@(x => x.IsDefault)">
+                                    <CellTemplate>
+                                        @if (context.IsDefault)
+                                        {
+                                            <span class="badge bg-primary">@L("Common.Yes")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">@L("Common.No")</span>
+                                        }
+                                    </CellTemplate>
+                                </DataTableColumn>
+
+                                <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.Status")" Width="180px">
+                                    <CellTemplate>
+                                        <div class="d-flex gap-1 flex-wrap">
+                                            @if (context.IsDefault)
+                                            {
+                                                <span
+                                                class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2"
+                                                style="font-size: 0.65rem;">@L("Roles.Default")</span>
+                                            }
+                                            @if (context.IsPublic)
+                                            {
+                                                <span
+                                                class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2"
+                                                style="font-size: 0.65rem;">@L("Roles.Public")</span>
+                                            }
+                                            @if (context.IsStatic)
+                                            {
+                                                <span
+                                                class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2"
+                                                style="font-size: 0.65rem;">@L("Roles.Static")</span>
+                                            }
+                                        </div>
+                                    </CellTemplate>
+                                </DataTableColumn>
+
+                                <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.LastUpdated")" Width="180px" Sortable
+                                                 Property="@(x => x.LastModificationTime)">
+                                    <CellTemplate>
+                                        <span class="small" style="color: var(--dt-text-muted);">
+                                            @((context.LastModificationTime ?? context.CreationTime).ToString("yyyy-MM-dd HH:mm"))
+                                        </span>
+                                    </CellTemplate>
+                                </DataTableColumn>
+
+                                <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.Operations")" Width="120px"
+                                                 Alignment="ColumnAlignment.Right">
+                                    <CellTemplate>
+                                        <div class="d-flex justify-content-end gap-1">
+                                            <Tooltip Text="@L("Common.Edit")">
+                                                <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
+                                                        Class="btn-icon-replica"
+                                                        OnClick='() => Navigation.NavigateTo($"/host/roles/{context.Id}")'>
+                                                    <i class="bi bi-pencil"></i>
+                                                </Button>
+                                            </Tooltip>
+                                            @if (!context.IsStatic)
+                                            {
+                                                <Tooltip Text="@L("Common.Delete")">
+                                                    <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small"
+                                                            Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
+                                                        <i class="bi bi-trash"></i>
+                                                    </Button>
+                                                </Tooltip>
+                                            }
+                                        </div>
+                                    </CellTemplate>
+                                </DataTableColumn>
+                            </ChildContent>
+                        </DataTable>
+                    </div>
+                </div>
+            </div>
