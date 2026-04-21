@@ -49,6 +49,90 @@
     color: #d32f2f;
 }
 
+.entity-details-container {
+    padding: 0;
+}
+
+.entity-change-card {
+    background: var(--surface-bg);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.entity-change-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.entity-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(var(--primary-color-rgb, 99, 102, 241), 0.1);
+    color: var(--primary-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.property-changes-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.property-changes-table thead th {
+    background: rgba(0, 0, 0, 0.02);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--surface-text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--surface-border);
+}
+
+.property-changes-table tbody td {
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+.value-container {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.8125rem;
+    word-break: break-all;
+    max-width: 300px;
+}
+
+.value-container.original {
+    background: rgba(240, 68, 56, 0.05);
+    color: #b42318;
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.value-container.current {
+    background: rgba(18, 183, 106, 0.05);
+    color: #027a48;
+}
+
+.theme-dark .value-container.original {
+    background: rgba(240, 68, 56, 0.15);
+    color: #fda29b;
+}
+
+.theme-dark .value-container.current {
+    background: rgba(18, 183, 106, 0.15);
+    color: #75e0a7;
+}
+
+.theme-dark .property-changes-table thead th {
+    background: rgba(255, 255, 255, 0.03);
+}
+
 .audit-details-container {
     /* Removed min-height to allow content to fit naturally */
 }

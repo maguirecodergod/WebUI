@@ -171,5 +171,13 @@
     "AuditLog.DeleteSingleConfirmation": "Bạn có chắc chắn muốn xóa bản ghi nhật ký này?",
     "AuditLog.DeleteBulkConfirmation": "Bạn có chắc chắn muốn xóa {0} bản ghi nhật ký đã chọn?",
     "AuditLog.BulkDeletedSuccessfully": "Đã xóa thành công {0} bản ghi nhật ký.",
-    "AuditLog.LoadError": "Lỗi khi tải nhật ký"
+    "AuditLog.LoadError": "Lỗi khi tải nhật ký",
+    "AuditLog.EntityChanges": "Thay đổi dữ liệu",
+    "AuditLog.ChangeType.Created": "Thêm mới",
+    "AuditLog.ChangeType.Updated": "Cập nhật",
+    "AuditLog.ChangeType.Deleted": "Xóa",
+    "AuditLog.PropertyName": "Thuộc tính",
+    "AuditLog.OriginalValue": "Giá trị cũ",
+    "AuditLog.NewValue": "Giá trị mới",
+    "AuditLog.NoEntityChanges": "Không có thay đổi dữ liệu nào được ghi nhận cho bản ghi này."
 }

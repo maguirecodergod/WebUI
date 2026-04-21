@@ -172,5 +172,13 @@
     "AuditLog.BulkDeletedSuccessfully": "Successfully deleted {0} audit log records.",
     "AuditLog.LoadError": "Error loading audit logs",
     "AuditLog.Parameters": "Request Parameters",
-    "AuditLog.Exceptions": "Server Exceptions"
+    "AuditLog.Exceptions": "Server Exceptions",
+    "AuditLog.EntityChanges": "Entity Changes",
+    "AuditLog.ChangeType.Created": "Created",
+    "AuditLog.ChangeType.Updated": "Updated",
+    "AuditLog.ChangeType.Deleted": "Deleted",
+    "AuditLog.PropertyName": "Property",
+    "AuditLog.OriginalValue": "Original Value",
+    "AuditLog.NewValue": "New Value",
+    "AuditLog.NoEntityChanges": "No entity changes tracked for this entry."
 }

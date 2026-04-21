@@ -1,8 +1,10 @@
+using LHA.Auditing;
 using LHA.BlazorWasm.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
 using LHA.BlazorWasm.Components.Select;
 using LHA.BlazorWasm.Components.Table;
 using LHA.BlazorWasm.Shared;
+using LHA.BlazorWasm.Shared.Models.StatusBadge;
 using LHA.Shared.Contracts.AuditLog;
 using Microsoft.AspNetCore.Components;
 
@@ -128,6 +130,28 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             StateHasChanged();
         }
 
+
+        private CBadgeSemantic GetChangeTypeStatus(CEntityChangeType type) => type switch
+        {
+            CEntityChangeType.Created => CBadgeSemantic.Completed,
+            CEntityChangeType.Updated => CBadgeSemantic.Processing,
+            CEntityChangeType.Deleted => CBadgeSemantic.Deleted,
+            _ => CBadgeSemantic.Unknown
+        };
+
+        private string GetEntityFriendlyName(string? fullName)
+        {
+            if (string.IsNullOrEmpty(fullName)) return "Unknown Entity";
+            var parts = fullName.Split('.');
+            return parts.Last();
+        }
+
+        private string FormatValue(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value) || value == "null") return "-";
+            if (value.Length > 200) return value[..200] + "...";
+            return value;
+        }
 
         private string? GetActiveParameters()
         {
