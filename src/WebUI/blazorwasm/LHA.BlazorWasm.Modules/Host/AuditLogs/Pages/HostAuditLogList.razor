@@ -1,4 +1,5 @@
 @page "/host/audit-logs"
+@page "/audit-logs"
 @namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 @inherits LhaComponentBase
 @using LHA.BlazorWasm.Components.Badges
@@ -40,13 +41,16 @@
                 <ToolbarTemplate>
                     <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
                          style="background: transparent; border-color: var(--dt-border-color) !important;">
-                        <div class="small d-flex align-items-center gap-2" style="color: var(--dt-text-secondary);">
-                            <span>@L("AuditLog.TraceSource"):</span>
-                            <span class="badge"
-                                  style="background: var(--dt-accent-soft); color: var(--dt-accent);">service.identity.lha.io</span>
-                        </div>
+                        @if (_canReadHostLogs)
+                        {
+                            <div class="small d-flex align-items-center gap-2" style="color: var(--dt-text-secondary);">
+                                <span>@L("AuditLog.TraceSource"):</span>
+                                <span class="badge"
+                                      style="background: var(--dt-accent-soft); color: var(--dt-accent);">service.identity.lha.io</span>
+                            </div>
+                        }
                         <div class="d-flex gap-2 align-items-center">
-                            @if (_selectedLogs.Any())
+                            @if (_canDelete && _selectedLogs.Any())
                             {
                                 <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small" OnClick="ShowBulkDeleteDialog">
                                     <i class="bi bi-trash"></i> @L("Common.DeleteSelected") (@_selectedLogs.Count)
@@ -56,6 +60,9 @@
                                     Placeholder="@L("Common.GlobalSearch")" Size="CInputSize.Small" Style="width: 250px;">
                                 <IconLeft><i class="bi bi-search"></i></IconLeft>
                             </CInput>
+                            <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small" OnClick="() => _dataTable?.RefreshAsync()">
+                                <i class="bi bi-arrow-clockwise"></i>
+                            </Button>
                         </div>
                     </div>
                 </ToolbarTemplate>
@@ -204,12 +211,15 @@
                                                             <i class="bi bi-eye"></i>
                                                         </Button>
                                                     </Tooltip>
-                                                    <Tooltip Text="@L("Common.Delete")">
-                                                        <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small"
-                                                                Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
-                                                            <i class="bi bi-trash"></i>
-                                                        </Button>
-                                                    </Tooltip>
+                                                    @if (_canDelete)
+                                                    {
+                                                        <Tooltip Text="@L("Common.Delete")">
+                                                            <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small"
+                                                                    Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
+                                                                <i class="bi bi-trash"></i>
+                                                            </Button>
+                                                        </Tooltip>
+                                                    }
                                                 </div>
                                             </CellTemplate>
                                         </DataTableColumn>

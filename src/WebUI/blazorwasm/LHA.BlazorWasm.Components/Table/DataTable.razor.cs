@@ -646,7 +646,7 @@ public partial class DataTable<TItem> : LhaComponentBase, IDisposable
         await NotifySelectionChanged();
     }
 
-    private async Task ClearSelection()
+    public async Task ClearSelectionAsync()
     {
         _selectedItems.Clear();
         _restoredSelectedKeys?.Clear();

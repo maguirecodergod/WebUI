@@ -18,6 +18,8 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         private List<AuditLogDto> _selectedLogs = new();
         private bool _isDeleteDialogVisible;
         private AuditLogDto? _itemToDelete;
+        private bool _canReadHostLogs;
+        private bool _canDelete; // We'll derive this from HostRead for now since no specific delete permission exists
 
         private List<SelectOption<string>> _httpMethodOptions => Enum.GetValues<CHttpMethodType>()
             .Select(x => new SelectOption<string>
@@ -36,6 +38,8 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            _canReadHostLogs = PermissionService.HasPermission(AuditLogPermissions.AuditLogs.HostRead);
+            _canDelete = _canReadHostLogs; // Restrict delete to Host-level access by default
             await LoadLogsAsync();
         }
 
@@ -46,9 +50,13 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 _input.StartTime = _executionTimeRange.Start?.ToUniversalTime();
                 _input.EndTime = _executionTimeRange.End?.ToUniversalTime();
 
-                var result = await AuditLogService.GetHostListAsync(_input);
+                var result = _canReadHostLogs 
+                    ? await AuditLogService.GetHostListAsync(_input)
+                    : await AuditLogService.GetListAsync(_input);
+
                 _logs = result.Items.ToList();
                 _totalCount = result.TotalCount;
+                StateHasChanged();
             }
             catch (Exception ex)
             {
@@ -61,8 +69,12 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             _input.PageNumber = request.PageNumber;
             _input.PageSize = request.PageSize;
 
-            // Map global search term
-            _input.SearchQuery = string.IsNullOrEmpty(request.SearchTerm) ? null : request.SearchTerm;
+            // Map global search term from table if provided, 
+            // otherwise rely on our bound _input.SearchQuery
+            if (!string.IsNullOrEmpty(request.SearchTerm))
+            {
+                _input.SearchQuery = request.SearchTerm;
+            }
 
             // Map sort state from DataTable column headers
             if (request.Sorts is { Count: > 0 })
@@ -131,20 +143,32 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         {
             try
             {
-                // NOTE: Assume API integration here. AuditLogService doesn't necessarily have Delete.
-                // Replace with actual API call if applicable.
                 if (_itemToDelete != null)
                 {
+                    await AuditLogService.DeleteAsync(_itemToDelete.Id);
                     ToastNotification.Success(L("Common.DeletedSuccessfully"));
                 }
                 else if (_selectedLogs.Any())
                 {
-                    ToastNotification.Success(L("Common.DeletedSuccessfully"));
+                    var deleteTasks = _selectedLogs.Select(log => AuditLogService.DeleteAsync(log.Id));
+                    await Task.WhenAll(deleteTasks);
+                    ToastNotification.Success(L("AuditLog.BulkDeletedSuccessfully", _selectedLogs.Count));
                 }
 
                 _isDeleteDialogVisible = false;
-                _selectedLogs.Clear();
-                await LoadLogsAsync();
+                _itemToDelete = null; 
+                
+                if (_dataTable != null)
+                {
+                    await _dataTable.ClearSelectionAsync();
+                    await _dataTable.RefreshAsync();
+                }
+                else
+                {
+                    _selectedLogs.Clear();
+                    await LoadLogsAsync();
+                }
+                StateHasChanged();
             }
             catch (Exception ex)
             {
