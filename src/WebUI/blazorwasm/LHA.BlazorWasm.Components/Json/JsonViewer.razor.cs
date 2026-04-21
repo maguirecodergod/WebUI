@@ -4,7 +4,7 @@ using System.Text.Encodings.Web;
 
 namespace LHA.BlazorWasm.Components.Json;
 
-public partial class JsonViewer : LhaComponentBase
+public partial class JsonViewer : LHAComponentBase
 {
     [Parameter] public string? Value { get; set; }
     [Parameter] public string? Title { get; set; }

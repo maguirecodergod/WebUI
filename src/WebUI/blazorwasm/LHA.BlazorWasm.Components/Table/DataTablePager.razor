@@ -3,7 +3,7 @@
     Features: First/Prev/Pages/Next/Last, page size selector, jump-to-page, info text.
    ────────────────────────────────────────────────────────────── *@
 @namespace LHA.BlazorWasm.Components.Table
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 
 <div class="dt-pager">
     @* ── Left: Info + Page Size ── *@
@@ -31,13 +31,13 @@
         <div class="dt-pager-nav">
             @* Previous block *@
             <Tooltip Text="@L("Common.First")" Placement="CTooltipPlacement.Top">
-                <Button Class="dt-pager-btn" Disabled="@(PageNumber <= 1)" Style="CButtonStyle.Light"
-                        OnClick="() => GoTo(1)">«</Button>
+                <LHAButton Class="dt-pager-btn" Disabled="@(PageNumber <= 1)" Style="CButtonStyle.Light"
+                           OnClick="() => GoTo(1)">«</LHAButton>
             </Tooltip>
 
             <Tooltip Text="@L("Common.Prev")" Placement="CTooltipPlacement.Top">
-                <Button Class="dt-pager-btn" Disabled="@(PageNumber <= 1)" Style="CButtonStyle.Light"
-                        OnClick="() => GoTo(PageNumber - 1)">‹</Button>
+                <LHAButton Class="dt-pager-btn" Disabled="@(PageNumber <= 1)" Style="CButtonStyle.Light"
+                           OnClick="() => GoTo(PageNumber - 1)">‹</LHAButton>
             </Tooltip>
 
             @* Page Numbers *@
@@ -49,23 +49,23 @@
                 }
                 else
                 {
-                    <Button Class="@($"dt-pager-btn {(item.Page == PageNumber ? "dt-pager-active" : string.Empty)}")"
-                            Style="@(item.Page == PageNumber ? CButtonStyle.Primary : CButtonStyle.Light)"
-                            OnClick="() => GoTo(item.Page)">
+                    <LHAButton Class="@($"dt-pager-btn {(item.Page == PageNumber ? "dt-pager-active" : string.Empty)}")"
+                               Style="@(item.Page == PageNumber ? CButtonStyle.Primary : CButtonStyle.Light)"
+                               OnClick="() => GoTo(item.Page)">
                         @item.Page
-                    </Button>
+                    </LHAButton>
                 }
             }
 
             @* Next block *@
             <Tooltip Text="@L("Common.Next")" Placement="CTooltipPlacement.Top">
-                <Button Class="dt-pager-btn" Disabled="@(PageNumber >= TotalPages)" Style="CButtonStyle.Light"
-                        OnClick="() => GoTo(PageNumber + 1)">›</Button>
+                <LHAButton Class="dt-pager-btn" Disabled="@(PageNumber >= TotalPages)" Style="CButtonStyle.Light"
+                           OnClick="() => GoTo(PageNumber + 1)">›</LHAButton>
             </Tooltip>
 
             <Tooltip Text="@L("Common.Last")" Placement="CTooltipPlacement.Top">
-                <Button Class="dt-pager-btn" Disabled="@(PageNumber >= TotalPages)" Style="CButtonStyle.Light"
-                        OnClick="() => GoTo(TotalPages)">»</Button>
+                <LHAButton Class="dt-pager-btn" Disabled="@(PageNumber >= TotalPages)" Style="CButtonStyle.Light"
+                           OnClick="() => GoTo(TotalPages)">»</LHAButton>
             </Tooltip>
         </div>
 

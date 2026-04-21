@@ -2,7 +2,7 @@
    Tabs — Enterprise-grade Tab container component.
    ═══════════════════════════════════════════════════════════════════ *@
 @namespace LHA.BlazorWasm.Components.Tabs
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @implements IDisposable
 
 <div class="@GetRootClass()" @attributes="AdditionalAttributes">
@@ -13,15 +13,9 @@
             @foreach (var tab in _tabs.OrderBy(t => t.Order))
             {
                 var isActive = tab.Id == _activeId;
-                <button type="button"
-                        id="tab-btn-@tab.Id"
-                        role="tab"
-                        aria-selected="@isActive.ToString().ToLower()"
-                        aria-controls="tab-panel-@tab.Id"
-                        disabled="@tab.Disabled"
-                        class="@GetTabHeaderClass(tab, isActive)"
-                        @onclick="() => ActivateTabAsync(tab)"
-                        @onclick:stopPropagation>
+                <button type="button" id="tab-btn-@tab.Id" role="tab" aria-selected="@isActive.ToString().ToLower()"
+                        aria-controls="tab-panel-@tab.Id" disabled="@tab.Disabled" class="@GetTabHeaderClass(tab, isActive)"
+                        @onclick="() => ActivateTabAsync(tab)" @onclick:stopPropagation>
 
                     @* Icon *@
                     @if (!string.IsNullOrWhiteSpace(tab.Icon))
@@ -44,8 +38,7 @@
                     @* Close button *@
                     @if (tab.Closable)
                     {
-                        <span class="tab-close-btn" role="button" aria-label="Close tab"
-                              @onclick="() => CloseTabAsync(tab)"
+                        <span class="tab-close-btn" role="button" aria-label="Close tab" @onclick="() => CloseTabAsync(tab)"
                               @onclick:stopPropagation>
                             <i class="bi bi-x" aria-hidden="true"></i>
                         </span>
@@ -78,11 +71,8 @@
             @* Lazy: skip render until first activation; after that preserve DOM *@
             @if (!LazyLoad || tab.HasBeenRendered || isActive)
             {
-                <div id="tab-panel-@tab.Id"
-                     role="tabpanel"
-                     aria-labelledby="tab-btn-@tab.Id"
-                     class="@GetPanelClass(tab, isActive)"
-                     hidden="@(!isActive)">
+                <div id="tab-panel-@tab.Id" role="tabpanel" aria-labelledby="tab-btn-@tab.Id"
+                     class="@GetPanelClass(tab, isActive)" hidden="@(!isActive)">
                     @tab.Content
                 </div>
             }

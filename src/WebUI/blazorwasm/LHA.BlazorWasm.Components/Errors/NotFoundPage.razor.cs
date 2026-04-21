@@ -7,7 +7,7 @@ namespace LHA.BlazorWasm.Components.Errors;
 /// A reusable enterprise-grade NotFound (404) Page component.
 /// Designed for SaaS applications with premium aesthetics and localization support.
 /// </summary>
-public partial class NotFoundPage : LhaComponentBase, IDisposable
+public partial class NotFoundPage : LHAComponentBase, IDisposable
 {
     /// <summary>
     /// Gets or sets the title of the error page.

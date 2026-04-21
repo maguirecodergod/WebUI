@@ -21,14 +21,14 @@ namespace LHA.BlazorWasm.Components.Breadcrumb;
 /// &lt;Breadcrumb Items="@breadcrumbItems" /&gt;
 /// </code>
 /// </summary>
-public partial class Breadcrumb : LhaComponentBase
+public partial class LHABreadcrumb : LHAComponentBase
 {
     // ──────────────────────────────────────────────
     // Parameters
     // ──────────────────────────────────────────────
 
     /// <summary>
-    /// Child <see cref="BreadcrumbItem"/> components rendered as markup.
+    /// Child <see cref="LHABreadcrumbItem"/> components rendered as markup.
     /// Use this OR <see cref="Items"/>, not both.
     /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -43,37 +43,35 @@ public partial class Breadcrumb : LhaComponentBase
     /// </summary>
     [Parameter] public string Separator { get; set; } = "/";
 
-    /// <summary>Additional CSS classes applied to the <c>&lt;nav&gt;</c> root.</summary>
+    /// <summary>
+    /// Additional CSS classes applied to the <c>&lt;nav&gt;</c> root.
+    /// </summary>
     [Parameter] public string? Class { get; set; }
 
-    /// <summary>Inline styles applied to the <c>&lt;nav&gt;</c> root.</summary>
+    /// <summary>
+    /// Inline styles applied to the <c>&lt;nav&gt;</c> root.
+    /// </summary>
     [Parameter] public string? Style { get; set; }
 
-    // ──────────────────────────────────────────────
-    // Internal state
-    // ──────────────────────────────────────────────
-
-    /// <summary>Holds the registered child items (markup mode).</summary>
-    private readonly List<BreadcrumbItem> _childItems = new();
-
-    // ──────────────────────────────────────────────
-    // Child registration (markup mode)
-    // ──────────────────────────────────────────────
+    /// <summary>
+    /// Holds the registered child items (markup mode).
+    /// </summary>
+    private readonly List<LHABreadcrumbItem> _childItems = new();
 
     /// <summary>
-    /// Called by child <see cref="BreadcrumbItem"/> components to register
+    /// Called by child <see cref="LHABreadcrumbItem"/> components to register
     /// themselves so the parent can mark the last one as active.
     /// </summary>
-    internal void Register(BreadcrumbItem item)
+    internal void Register(LHABreadcrumbItem item)
     {
         if (!_childItems.Contains(item))
             _childItems.Add(item);
     }
 
     /// <summary>
-    /// Called by child <see cref="BreadcrumbItem"/> components when they are disposed.
+    /// Called by child <see cref="LHABreadcrumbItem"/> components when they are disposed.
     /// </summary>
-    internal void Unregister(BreadcrumbItem item)
+    internal void Unregister(LHABreadcrumbItem item)
     {
         _childItems.Remove(item);
     }
@@ -91,15 +89,20 @@ public partial class Breadcrumb : LhaComponentBase
         StateHasChanged();
     }
 
-    // ──────────────────────────────────────────────
-    // Computed helpers (data-driven mode)
-    // ──────────────────────────────────────────────
-
+    /// <summary>
+    /// Determines if the component should use child content.
+    /// </summary>
     private bool UseChildContent => ChildContent is not null;
 
+    /// <summary>
+    /// Gets the data items from the <see cref="Items"/> parameter.
+    /// </summary>
     private IReadOnlyList<BreadcrumbItemModel> DataItems =>
         Items?.ToList() ?? new List<BreadcrumbItemModel>();
 
+    /// <summary>
+    /// Gets the CSS class for the navigation element.
+    /// </summary>
     private string NavClass =>
         string.IsNullOrWhiteSpace(Class)
             ? "breadcrumb-nav"

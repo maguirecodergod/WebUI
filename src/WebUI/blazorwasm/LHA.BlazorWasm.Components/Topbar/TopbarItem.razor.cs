@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.Topbar;
 
-public partial class TopbarItem : LhaComponentBase
+public partial class TopbarItem : LHAComponentBase
 {
     [Parameter] public TopbarItemModel Item { get; set; } = new();
     [Parameter] public string? Class { get; set; }

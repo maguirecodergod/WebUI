@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.App.Pages.Auth
 {
-    public partial class LoginPage : LhaComponentBase
+    public partial class LoginPage : LHAComponentBase
     {
         [Inject] public AuthApiClient AuthClient { get; set; } = default!;
         [Inject] public ApiAuthenticationStateProvider AuthStateProvider { get; set; } = default!;

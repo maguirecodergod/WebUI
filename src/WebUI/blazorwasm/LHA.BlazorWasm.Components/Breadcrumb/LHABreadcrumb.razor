@@ -1,4 +1,5 @@
 @namespace LHA.BlazorWasm.Components.Breadcrumb
+@inherits LHAComponentBase
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Routing
 
@@ -7,11 +8,6 @@
 
         @if (UseChildContent)
         {
-            @* ── Markup mode ──
-               CascadingValue passes both the parent reference (for registration)
-               and the current separator to each BreadcrumbItem.
-               Each item renders its own <li> plus, when not last, a separator <li>.
-            *@
             <CascadingValue Value="this" IsFixed="true">
                 <CascadingValue Name="BreadcrumbSeparator" Value="@Separator" IsFixed="false">
                     @ChildContent
@@ -20,10 +16,9 @@
         }
         else
         {
-            @* ── Data-driven mode: Items parameter ── *@
             @for (var i = 0; i < DataItems.Count; i++)
             {
-                var item   = DataItems[i];
+                var item = DataItems[i];
                 var isLast = i == DataItems.Count - 1;
                 var isLink = !string.IsNullOrWhiteSpace(item.Href) && !isLast && !item.Disabled;
 

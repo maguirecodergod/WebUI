@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.Emoji;
 
-public partial class EmojiPicker : LhaComponentBase
+public partial class EmojiPicker : LHAComponentBase
 {
     [Parameter] public bool IsOpen { get; set; }
     [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }

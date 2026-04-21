@@ -3,10 +3,10 @@
 <div class="lha-emoji-category-bar">
     @foreach (var category in Enum.GetValues<CEmojiCategory>().Where(c => c != CEmojiCategory.Recent))
     {
-        <Button Type="CButtonType.Button" Class=@($"category-btn {(ActiveCategory == category ? "active" : string.Empty)}")
-            OnClick="() => OnCategorySelected.InvokeAsync(category)" title="@category.ToString()">
+        <LHAButton Type="CButtonType.Button" Class=@($"category-btn {(ActiveCategory == category ? "active" :
+                                              string.Empty)}") OnClick="() => OnCategorySelected.InvokeAsync(category)" title="@category.ToString()">
             <i class="@GetCategoryIcon(category)"></i>
-        </Button>
+        </LHAButton>
     }
 </div>
 

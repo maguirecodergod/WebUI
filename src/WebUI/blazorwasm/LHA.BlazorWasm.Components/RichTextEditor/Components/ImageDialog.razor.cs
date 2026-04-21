@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class ImageDialog : LhaComponentBase
+public partial class ImageDialog : LHAComponentBase
 {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<ImageDialogResult?> OnSubmit { get; set; }

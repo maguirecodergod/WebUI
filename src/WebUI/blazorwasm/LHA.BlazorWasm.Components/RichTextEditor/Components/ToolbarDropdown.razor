@@ -4,30 +4,24 @@
     @if (!string.IsNullOrEmpty(Tooltip))
     {
         <LHA.BlazorWasm.Components.Tooltip.Tooltip Text="@Tooltip" Style="display: inline-flex;">
-            <Button Class="@GetButtonCssClass()"
-                    Style="CButtonStyle.Link"
-                    Disabled="@Disabled"
-                    OnClick="ToggleDropdown">
+            <LHAButton Class="@GetButtonCssClass()" Style="CButtonStyle.Link" Disabled="@Disabled" OnClick="ToggleDropdown">
                 @if (!string.IsNullOrEmpty(SvgIcon))
                 {
                     @((MarkupString)SvgIcon)
                 }
                 <i class="bi bi-chevron-down rte-dropdown-arrow"></i>
-            </Button>
+            </LHAButton>
         </LHA.BlazorWasm.Components.Tooltip.Tooltip>
     }
     else
     {
-        <Button Class="@GetButtonCssClass()"
-                Style="CButtonStyle.Link"
-                Disabled="@Disabled"
-                OnClick="ToggleDropdown">
+        <LHAButton Class="@GetButtonCssClass()" Style="CButtonStyle.Link" Disabled="@Disabled" OnClick="ToggleDropdown">
             @if (!string.IsNullOrEmpty(SvgIcon))
             {
                 @((MarkupString)SvgIcon)
             }
             <i class="bi bi-chevron-down rte-dropdown-arrow"></i>
-        </Button>
+        </LHAButton>
     }
 
     @if (IsOpen)

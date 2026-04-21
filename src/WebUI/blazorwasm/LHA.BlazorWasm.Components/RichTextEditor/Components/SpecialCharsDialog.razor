@@ -6,11 +6,11 @@
         <div class="rte-dialog rte-special-chars-dialog" @onclick:stopPropagation>
             <div class="rte-dialog-header">
                 <h3>@Localizer.L("Editor.Special Characters")</h3>
-                <Button Style="CButtonStyle.Link" Class="rte-dialog-close" OnClick="Close">
+                <LHAButton Style="CButtonStyle.Link" Class="rte-dialog-close" OnClick="Close">
                     <i class="bi bi-x"></i>
-                </Button>
+                </LHAButton>
             </div>
-            
+
             <div class="rte-tabs">
                 @foreach (var tab in _charSets.Keys)
                 {
@@ -30,9 +30,9 @@
                     }
                 </div>
             </div>
-            
+
             <div class="rte-dialog-footer">
-                <Button Style="CButtonStyle.Primary" OnClick="Close">@Localizer.L("Editor.Close")</Button>
+                <LHAButton Style="CButtonStyle.Primary" OnClick="Close">@Localizer.L("Editor.Close")</LHAButton>
             </div>
         </div>
     </div>

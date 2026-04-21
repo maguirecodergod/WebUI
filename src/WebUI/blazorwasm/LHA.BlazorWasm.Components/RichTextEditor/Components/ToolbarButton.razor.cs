@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class ToolbarButton : LhaComponentBase
+public partial class ToolbarButton : LHAComponentBase
 {
     [Parameter] public string? SvgIcon { get; set; }
     [Parameter] public string? Tooltip { get; set; }

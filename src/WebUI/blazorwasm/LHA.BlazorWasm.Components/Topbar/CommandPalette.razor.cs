@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 
 namespace LHA.BlazorWasm.Components.Topbar;
 
-public partial class CommandPalette : LhaComponentBase
+public partial class CommandPalette : LHAComponentBase
 {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
@@ -51,7 +51,7 @@ public partial class CommandPalette : LhaComponentBase
             _activeIndex = 0;
             UpdateActiveItem();
             await Task.Delay(50); // Wait for render
-            try 
+            try
             {
                 await _searchInput.FocusAsync();
             }

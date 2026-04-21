@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.ThemeSwitch;
 
-public class ThemeSwitchBase : LhaComponentBase, IDisposable
+public class ThemeSwitchBase : LHAComponentBase, IDisposable
 {
     [Parameter] public CThemeSwitchVariant Variant { get; set; } = CThemeSwitchVariant.Toggle;
     [Parameter] public string Class { get; set; } = string.Empty;

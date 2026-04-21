@@ -3,7 +3,7 @@ using LHA.BlazorWasm.Components.RichTextEditor.Models;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class ToolbarDropdown : LhaComponentBase
+public partial class ToolbarDropdown : LHAComponentBase
 {
     [Parameter] public string? SvgIcon { get; set; }
     [Parameter] public string? Tooltip { get; set; }

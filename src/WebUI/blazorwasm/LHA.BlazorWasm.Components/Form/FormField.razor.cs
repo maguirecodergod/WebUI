@@ -13,7 +13,7 @@ namespace LHA.BlazorWasm.Components.Form;
 ///     <InputText @bind-Value="Model.Email" class="form-control" />
 /// </FormField>
 /// </summary>
-public partial class FormField : LhaComponentBase
+public partial class FormField : LHAComponentBase
 {
     /// <summary>
     /// Gets or sets the label text for the field.

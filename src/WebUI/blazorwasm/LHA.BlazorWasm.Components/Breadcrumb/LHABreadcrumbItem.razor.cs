@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace LHA.BlazorWasm.Components.Breadcrumb;
 
 /// <summary>
-/// A single item inside a <see cref="Breadcrumb"/> component.
+/// A single item inside a <see cref="LHABreadcrumb"/> component.
 ///
 /// Renders as a <c>NavLink</c> when an <see cref="Href"/> is provided,
 /// or as plain active text when <see cref="Href"/> is omitted (i.e., the
@@ -16,7 +16,7 @@ namespace LHA.BlazorWasm.Components.Breadcrumb;
 /// &lt;BreadcrumbItem Text="Details" /&gt;
 /// </code>
 /// </summary>
-public partial class BreadcrumbItem : LhaComponentBase, IDisposable
+public partial class LHABreadcrumbItem : LHAComponentBase
 {
     // ──────────────────────────────────────────────
     // Parameters
@@ -42,26 +42,26 @@ public partial class BreadcrumbItem : LhaComponentBase, IDisposable
     /// </summary>
     [Parameter] public bool Disabled { get; set; }
 
-    // ──────────────────────────────────────────────
-    // Cascading parent
-    // ──────────────────────────────────────────────
+    /// <summary>
+    /// The parent <see cref="LHABreadcrumb"/> component.
+    /// </summary>
+    [CascadingParameter]
+    private LHABreadcrumb? Parent { get; set; }
 
-    [CascadingParameter] private Breadcrumb? Parent { get; set; }
-
-    [CascadingParameter(Name = "BreadcrumbSeparator")] 
+    /// <summary>
+    /// The separator used between breadcrumb items.
+    /// </summary>
+    [CascadingParameter(Name = "BreadcrumbSeparator")]
     internal string Separator { get; set; } = "/";
 
-    // ──────────────────────────────────────────────
-    // Internal plumbing – set by the parent Breadcrumb
-    // ──────────────────────────────────────────────
-
-    /// <summary>Marks this item as the last one in the trail.</summary>
+    /// <summary>
+    /// Marks this item as the last one in the trail.
+    /// </summary>
     internal bool IsLast { get; set; }
 
-    // ──────────────────────────────────────────────
-    // Lifecycle
-    // ──────────────────────────────────────────────
-
+    /// <summary>
+    /// Initializes the component and registers it with the parent.
+    /// </summary>
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -69,6 +69,9 @@ public partial class BreadcrumbItem : LhaComponentBase, IDisposable
         Parent?.NotifyChanged();
     }
 
+    /// <summary>
+    /// Disposes the component and unregisters it from the parent.
+    /// </summary>
     public override void Dispose()
     {
         base.Dispose();
@@ -76,12 +79,14 @@ public partial class BreadcrumbItem : LhaComponentBase, IDisposable
         Parent?.NotifyChanged();
     }
 
-    // ──────────────────────────────────────────────
-    // Computed helpers
-    // ──────────────────────────────────────────────
-
+    /// <summary>
+    /// Determines if the item is a link.
+    /// </summary>
     internal bool IsLink => !string.IsNullOrWhiteSpace(Href) && !IsLast && !Disabled;
 
+    /// <summary>
+    /// Gets the CSS class for the item.
+    /// </summary>
     internal string ItemCssClass
     {
         get

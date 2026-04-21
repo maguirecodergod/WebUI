@@ -6,9 +6,9 @@
         <div class="rte-dialog" @onclick:stopPropagation>
             <div class="rte-dialog-header">
                 <h3>@Localizer.L("Editor.Insert Image")</h3>
-                <Button Style="CButtonStyle.Link" Class="rte-dialog-close" OnClick="Close">
+                <LHAButton Style="CButtonStyle.Link" Class="rte-dialog-close" OnClick="Close">
                     <i class="bi bi-x"></i>
-                </Button>
+                </LHAButton>
             </div>
             <div class="rte-dialog-body">
                 <div class="rte-form-group">
@@ -34,10 +34,10 @@
                 </div>
             </div>
             <div class="rte-dialog-footer">
-                <Button Style="CButtonStyle.Secondary" OnClick="Close">@Localizer.L("Editor.Cancel")</Button>
-                <Button Style="CButtonStyle.Primary" OnClick="Submit"
-                        Disabled="@string.IsNullOrWhiteSpace(ImageUrl)">@Localizer.L("Editor.Insert Image")</Button>
+                <LHAButton Style="CButtonStyle.Secondary" OnClick="Close">@Localizer.L("Editor.Cancel")</LHAButton>
+                <LHAButton Style="CButtonStyle.Primary" OnClick="Submit" Disabled="@string.IsNullOrWhiteSpace(ImageUrl)">
+                    @Localizer.L("Editor.Insert Image")</LHAButton>
+                </div>
             </div>
         </div>
-    </div>
-}
+    }

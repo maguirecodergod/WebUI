@@ -6,7 +6,7 @@ using LHA.BlazorWasm.Components.Form;
 
 namespace LHA.BlazorWasm.Components.Select;
 
-public partial class Select<TValue> : LhaComponentBase
+public partial class Select<TValue> : LHAComponentBase
 {
     private IJSObjectReference? _jsModule;
     private ElementReference _selectRef;

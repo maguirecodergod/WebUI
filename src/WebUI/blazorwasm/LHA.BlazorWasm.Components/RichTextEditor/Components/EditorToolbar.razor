@@ -130,28 +130,28 @@
                            OnClick="@ShowTableDialog" />
             <ToolbarDropdown SvgIcon="@Icons.Image" Tooltip='@Localizer.L("Editor.Insert Image")' @ref="_imageDropdown">
                 <div class="rte-menu-list">
-                    <Button Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnUploadClick">
+                    <LHAButton Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnUploadClick">
                         <span class="rte-menu-icon rte-menu-icon--primary">@((MarkupString)Icons.Upload)</span>
                         <span>@Localizer.L("Editor.Upload")</span>
-                    </Button>
-                    <Button Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnCameraClick">
+                    </LHAButton>
+                    <LHAButton Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnCameraClick">
                         <span class="rte-menu-icon">@((MarkupString)Icons.Camera)</span>
                         <span>@Localizer.L("Editor.Camera")</span>
-                    </Button>
-                    <Button Style="CButtonStyle.Link" Class="rte-menu-item"
-                            OnClick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
+                    </LHAButton>
+                    <LHAButton Style="CButtonStyle.Link" Class="rte-menu-item"
+                               OnClick="() => { _imageDropdown?.Close(); ShowImageDialog(); }">
                         <span class="rte-menu-icon">@((MarkupString)Icons.Image)</span>
                         <span>@Localizer.L("Editor.By Url")</span>
-                    </Button>
-                    <Button Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnDragDropClick">
+                    </LHAButton>
+                    <LHAButton Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnDragDropClick">
                         <span class="rte-menu-icon">@((MarkupString)Icons.DragDrop)</span>
                         <span>@Localizer.L("Editor.Drag & Drop")</span>
-                    </Button>
+                    </LHAButton>
                     <div class="rte-menu-divider"></div>
-                    <Button Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnImageGalleryClick">
+                    <LHAButton Style="CButtonStyle.Link" Class="rte-menu-item" OnClick="OnImageGalleryClick">
                         <span class="rte-menu-icon">@((MarkupString)Icons.Image)</span>
                         <span>@Localizer.L("Editor.Image Gallery")</span>
-                    </Button>
+                    </LHAButton>
                 </div>
             </ToolbarDropdown>
             <ToolbarDropdown SvgIcon="@Icons.Video" Tooltip='@Localizer.L("Editor.Insert Video")' @ref="_videoDropdown"
@@ -163,12 +163,12 @@
                                @onkeydown="@(async e => { if (e.Key == "Enter") await OnInsertVideoClick(); })" />
                     </div>
                     <div style="text-align: right;">
-                        <Button Style="CButtonStyle.Primary" OnClick="OnInsertVideoClick"
-                                 Disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</Button>
+                        <LHAButton Style="CButtonStyle.Primary" OnClick="OnInsertVideoClick"
+                                   Disabled="@string.IsNullOrWhiteSpace(_videoUrl)">@Localizer.L("Editor.Insert")</LHAButton>
                     </div>
                 </div>
             </ToolbarDropdown>
-            
+
             <ToolbarButton SvgIcon="@Icons.InsertSourceCode" Tooltip='@Localizer.L("Editor.Insert Code Block")'
                            OnClick="@ShowCodeBlockDialog" />
         </div>

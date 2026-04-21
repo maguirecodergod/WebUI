@@ -4,7 +4,7 @@ using LHA.BlazorWasm.Components.RichTextEditor.Models;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class DragDropDialog : LhaComponentBase
+public partial class DragDropDialog : LHAComponentBase
 {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<ImageDialogResult> OnSubmit { get; set; }
@@ -23,9 +23,9 @@ public partial class DragDropDialog : LhaComponentBase
                 var buffer = memoryStream.ToArray();
                 var base64 = Convert.ToBase64String(buffer);
                 var url = $"data:{file.ContentType};base64,{base64}";
-                
+
                 var result = new ImageDialogResult { Url = url };
-                
+
                 if (OnSubmit.HasDelegate)
                 {
                     await OnSubmit.InvokeAsync(result);

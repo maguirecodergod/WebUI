@@ -6,9 +6,9 @@
         <div class="rte-dialog rte-table-dialog" @onclick:stopPropagation>
             <div class="rte-dialog-header">
                 <h3>@Localizer.L("Editor.Insert Table")</h3>
-                <Button Style="CButtonStyle.Link" Class="rte-dialog-close" OnClick="Close">
+                <LHAButton Style="CButtonStyle.Link" Class="rte-dialog-close" OnClick="Close">
                     <i class="bi bi-x"></i>
-                </Button>
+                </LHAButton>
             </div>
             <div class="rte-dialog-body">
                 <div class="rte-table-grid">
@@ -19,8 +19,7 @@
                         {
                             var col = c;
                             <div class="rte-table-cell @(row <= HoverRows && col <= HoverCols ? "highlight" : "")"
-                                 @onmouseover="() => OnCellHover(row, col)"
-                                 @onclick="() => OnCellClick(row, col)">
+                                 @onmouseover="() => OnCellHover(row, col)" @onclick="() => OnCellClick(row, col)">
                             </div>
                         }
                     }

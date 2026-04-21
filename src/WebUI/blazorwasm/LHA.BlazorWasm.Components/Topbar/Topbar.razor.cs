@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 
 namespace LHA.BlazorWasm.Components.Topbar;
 
-public partial class Topbar : LhaComponentBase, IDisposable
+public partial class Topbar : LHAComponentBase, IDisposable
 {
     [Inject] public ITopbarService TopbarService { get; set; } = default!;
     [Inject] public AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
@@ -34,7 +34,7 @@ public partial class Topbar : LhaComponentBase, IDisposable
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        
+
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         if (authState.User.Identity?.IsAuthenticated == true)
         {

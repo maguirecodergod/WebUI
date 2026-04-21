@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class SpecialCharsPopup : LhaComponentBase
+public partial class SpecialCharsPopup : LHAComponentBase
 {
     [Parameter] public EventCallback<string> OnCharSelected { get; set; }
 
@@ -11,11 +11,11 @@ public partial class SpecialCharsPopup : LhaComponentBase
     private readonly Dictionary<string, string[]> _charSets = new()
     {
         {
-            "Unicode", new[] { 
-                "ƒ", "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", 
-                "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω", "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", 
+            "Unicode", new[] {
+                "ƒ", "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π",
+                "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω", "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι",
                 "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "ς", "σ", "τ", "υ", "φ", "χ", "ψ", "ω", "ϑ",
-                "ϒ", "ϖ", "•", "…", "′", "″", "‾", "⁄", "℘", "ℑ", "ℜ", "™", "ℵ", "←", "↑", "→", "↓", 
+                "ϒ", "ϖ", "•", "…", "′", "″", "‾", "⁄", "℘", "ℑ", "ℜ", "™", "ℵ", "←", "↑", "→", "↓",
                 "↔", "↵", "⇐", "⇑", "⇒", "⇓", "⇔", "∀", "∂", "∃", "∅", "∇", "∈", "∉", "∋", "∏", "∑",
                 "−", "∗", "√", "∝", "∞", "∠", "⊥", "⊢", "∩", "∪", "∫", "∴", "∼", "≅", "≈", "≠", "≡",
                 "≤", "≥", "⊂", "⊃", "⊄", "⊆", "⊇", "⊕", "⊗", "⊥", "⋅", "⌈", "⌉", "⌊", "⌋", "⟨", "⟩",

@@ -15,7 +15,7 @@ namespace LHA.BlazorWasm.Components.Switch;
 /// 
 /// <Switch @bind-Value="isEnabled" Tooltip="Toggle feature on/off" />
 /// </summary>
-public partial class Switch : LhaComponentBase
+public partial class Switch : LHAComponentBase
 {
     /// <summary>
     /// Gets or sets the current state of the switch (true = ON, false = OFF).

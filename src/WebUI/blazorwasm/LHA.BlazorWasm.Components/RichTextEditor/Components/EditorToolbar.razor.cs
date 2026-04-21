@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class EditorToolbar : LhaComponentBase
+public partial class EditorToolbar : LHAComponentBase
 {
     [Parameter] public EditorState State { get; set; } = new();
     [Parameter] public EventCallback<(string command, string? value)> OnCommand { get; set; }

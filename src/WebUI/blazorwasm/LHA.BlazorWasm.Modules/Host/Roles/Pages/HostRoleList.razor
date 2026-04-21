@@ -1,6 +1,6 @@
 @page "/host/roles"
 @namespace LHA.BlazorWasm.Modules.Host.Roles.Pages
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @using LHA.BlazorWasm.Components
 @using LHA.BlazorWasm.Components.Buttons
 @using LHA.BlazorWasm.Components.Table
@@ -43,10 +43,10 @@
                             <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
                                  style="background: transparent; border-color: var(--dt-border-color) !important;">
                                 <div class="d-flex align-items-center gap-2">
-                                    <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small"
-                                            OnClick='() => Navigation.NavigateTo("/host/roles/create")'>
+                                    <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Small"
+                                               OnClick='() => Navigation.NavigateTo("/host/roles/create")'>
                                         <i class="bi bi-plus-lg me-1"></i> @L("Common.Create")
-                                    </Button>
+                                    </LHAButton>
                                 </div>
                                 <div class="d-flex gap-2 align-items-center">
                                     @* Use the built-in search via Searchable="true" or customize here *@
@@ -88,15 +88,18 @@
                                         <div class="d-flex gap-2 flex-wrap">
                                             @if (context.IsDefault)
                                             {
-                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.Default" IsPill="true" Class="text-[0.65rem] px-2" />
+                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.Default" IsPill="true"
+                                                             Class="text-[0.65rem] px-2" />
                                             }
                                             @if (context.IsPublic)
                                             {
-                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.Public" IsPill="true" Class="text-[0.65rem] px-2" />
+                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.Public" IsPill="true"
+                                                             Class="text-[0.65rem] px-2" />
                                             }
                                             @if (context.IsStatic)
                                             {
-                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.System" IsPill="true" Class="text-[0.65rem] px-2" />
+                                                <StatusBadge TEnum="CRoleAttribute" Status="CRoleAttribute.System" IsPill="true"
+                                                             Class="text-[0.65rem] px-2" />
                                             }
                                         </div>
                                     </CellTemplate>
@@ -116,19 +119,19 @@
                                     <CellTemplate>
                                         <div class="d-flex justify-content-end gap-1">
                                             <Tooltip Text="@L("Common.Edit")">
-                                                <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
-                                                        Class="btn-icon-replica"
-                                                        OnClick='() => Navigation.NavigateTo($"/host/roles/{context.Id}")'>
+                                                <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
+                                                           Class="btn-icon-replica"
+                                                           OnClick='() => Navigation.NavigateTo($"/host/roles/{context.Id}")'>
                                                     <i class="bi bi-pencil"></i>
-                                                </Button>
+                                                </LHAButton>
                                             </Tooltip>
                                             @if (!context.IsStatic)
                                             {
                                                 <Tooltip Text="@L("Common.Delete")">
-                                                    <Button Style="CButtonStyle.Danger" Size="CButtonSize.Small"
-                                                            Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
+                                                    <LHAButton Style="CButtonStyle.Danger" Size="CButtonSize.Small"
+                                                               Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
                                                         <i class="bi bi-trash"></i>
-                                                    </Button>
+                                                    </LHAButton>
                                                 </Tooltip>
                                             }
                                         </div>

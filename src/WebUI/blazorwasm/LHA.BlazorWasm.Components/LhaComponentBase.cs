@@ -11,7 +11,7 @@ namespace LHA.BlazorWasm.Components;
 /// <summary>
 /// Base class for all LHA components to provide common internal injected services.
 /// </summary>
-public abstract class LhaComponentBase : ComponentBase, IDisposable
+public abstract class LHAComponentBase : ComponentBase, IDisposable
 {
     [Inject] protected ILocalizationService Localizer { get; set; } = default!;
     [Inject] protected IToastService ToastNotification { get; set; } = default!;
@@ -20,7 +20,7 @@ public abstract class LhaComponentBase : ComponentBase, IDisposable
     [Inject] protected IThemeService ThemeService { get; set; } = default!;
     [Inject] protected ThemeState ThemeState { get; set; } = default!;
     [Inject] protected IPermissionService PermissionService { get; set; } = default!;
-    [Inject] protected ILogger<LhaComponentBase> Logger { get; set; } = default!;
+    [Inject] protected ILogger<LHAComponentBase> Logger { get; set; } = default!;
 
     protected string L(string key) => Localizer.L(key);
     protected string L(string key, params object[] args)

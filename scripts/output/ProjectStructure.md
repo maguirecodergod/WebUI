@@ -1207,7 +1207,7 @@ _Generated automatically on 2026-03-23 11:22:37_
 |           |   +-- _Imports.razor
 |           |   +-- ComponentExtensions.cs
 |           |   +-- LHA.BlazorWasm.Components.csproj
-|           |   \-- LhaComponentBase.cs
+|           |   \-- LHAComponentBase.cs
 |           +-- LHA.BlazorWasm.HttpApi.Client
 |           |   +-- Abstractions
 |           |   |   +-- IAccessTokenProvider.cs

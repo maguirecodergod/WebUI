@@ -1,22 +1,17 @@
 @using Microsoft.JSInterop
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 
 @if (IsVisible)
 {
     <div class="command-palette-wrapper @(IsVisible ? "show" : string.Empty)">
         <div class="palette-overlay" @onclick="ClosePalette"></div>
-        
+
         <div class="command-palette-container">
             <div class="palette-header">
                 <i class="bi bi-search search-icon"></i>
-                <input @ref="_searchInput" 
-                       type="text" 
-                       class="palette-input" 
-                       placeholder="@L("Search.CommandPalettePlaceholder")" 
-                       @oninput="HandleInput"
-                       @onkeydown="HandleKeyDown"
-                       @onclick:stopPropagation
-                       value="@_searchText" />
+                <input @ref="_searchInput" type="text" class="palette-input"
+                       placeholder="@L("Search.CommandPalettePlaceholder")" @oninput="HandleInput" @onkeydown="HandleKeyDown"
+                       @onclick:stopPropagation value="@_searchText" />
                 <div class="palette-esc">ESC</div>
             </div>
 

@@ -6,7 +6,7 @@ using LHA.BlazorWasm.Shared.Helpers;
 
 namespace LHA.BlazorWasm.Components.Badges;
 
-public partial class StatusBadge<TEnum> : LhaComponentBase where TEnum : struct, Enum
+public partial class StatusBadge<TEnum> : LHAComponentBase where TEnum : struct, Enum
 {
     private static readonly ConcurrentDictionary<(Type, object), StatusBadgeMetadata> _cache = new();
 

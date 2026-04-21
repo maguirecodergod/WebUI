@@ -1,6 +1,6 @@
 @page "/"
 @implements IDisposable
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @using LHA.BlazorWasm.Components.Select
 @using LHA.BlazorWasm.Components.Breadcrumb
 @using LHA.BlazorWasm.Components.Section
@@ -10,15 +10,6 @@
 
 <PageTitle>@Localizer.L("Common.Save")</PageTitle>
 
-@* <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <h1>@L.L("User.Title")</h1>
-    
-    <div style="display: flex; gap: 1rem; align-items: center;">
-        <LanguageSelector Mode="CLanguageSelectorMode.Dropdown"
-                          SupportedLanguages="new[] { CLanguageCode.EN, CLanguageCode.VI, CLanguageCode.FR, CLanguageCode.ES, CLanguageCode.JA }" />
-    </div>
-</div> *@
-
 <p>@Localizer.L("User.Create") | @Localizer.L("Common.Cancel") | @Localizer.L("Common.Delete")</p>
 
 <hr />
@@ -27,62 +18,62 @@
 <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem; margin-top: 1rem;">
     <div>
         <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Markup Mode (Default)</h3>
-        <Breadcrumb>
-            <BreadcrumbItem Text="Home" Href="/" Icon="fas fa-home" />
-            <BreadcrumbItem Text="UI Components" Href="/components" />
-            <BreadcrumbItem Text="Breadcrumb" />
-        </Breadcrumb>
+        <LHABreadcrumb>
+            <LHABreadcrumbItem Text="Home" Href="/" Icon="fas fa-home" />
+            <LHABreadcrumbItem Text="UI Components" Href="/components" />
+            <LHABreadcrumbItem Text="Breadcrumb" />
+        </LHABreadcrumb>
     </div>
 
     <div>
         <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Data-Driven Mode & Custom Separator</h3>
-        <Breadcrumb Items="breadcrumbDataItems" Separator=">" />
+        <LHABreadcrumb Items="breadcrumbDataItems" Separator=">" />
     </div>
 </div>
 
 <hr />
 <h2>Button Examples</h2>
 
-<Button Style="CButtonStyle.Secondary" Icon="fas fa-arrow-right" IconPosition="CButtonIconPosition.Right">
+<LHAButton Style="CButtonStyle.Secondary" Icon="fas fa-arrow-right" IconPosition="CButtonIconPosition.Right">
     Secondary w/ Icon
-</Button>
+</LHAButton>
 
-<Button Style="CButtonStyle.Success" IsLoading="@isLoading" OnClick="SimulateLoadAsync">
+<LHAButton Style="CButtonStyle.Success" IsLoading="@isLoading" OnClick="SimulateLoadAsync">
     Save Changes (Async)
-</Button>
+</LHAButton>
 
-<Button Style="CButtonStyle.Danger" Disabled="true">
+<LHAButton Style="CButtonStyle.Danger" Disabled="true">
     Disabled Button
-</Button>
+</LHAButton>
 
-<Button Style="CButtonStyle.Link" FullWidth="true" OnClick="OnLinkClick">
+<LHAButton Style="CButtonStyle.Link" FullWidth="true" OnClick="OnLinkClick">
     Full Width Link
-</Button>
+</LHAButton>
 
 <hr />
 <h2>Toast Notification Examples</h2>
 
 <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem; flex-wrap: wrap;">
-    <Button Style="CButtonStyle.Success"
-            OnClick="@(() => ToastNotification.Success("<b>All changes</b> have been saved <br/> successfully to the server.", "Success"))">
+    <LHAButton Style="CButtonStyle.Success"
+               OnClick="@(() => ToastNotification.Success("<b>All changes</b> have been saved <br/> successfully to the server.", "Success"))">
         Show Success
-    </Button>
-    <Button Style="CButtonStyle.Primary"
-            OnClick="@(() => ToastNotification.Info("A new system update is available for download a sdoiya oidy aoi dysoai ydosiay doisaydo isay oidsya oidyaoidysoaiyd oisay doiay doisay doiasy odisayodi yaoid yaoiy doisaydoisay doisaydoiyas oidysaoi ydsoiay doisay doiay odisy aoidysoai ydoisay doisay odiysaoi dysaoi dyaoi dyasoiy doisay doisay odisay oidyaoi dysoai ydosia ydoasiy doasiy dosiay doiasy oisay doisay oisayo diyaoid ysoaiy odisay.", "Update Available"))">
+    </LHAButton>
+    <LHAButton Style="CButtonStyle.Primary"
+               OnClick="@(() => ToastNotification.Info("A new system update is available for download a sdoiya oidy aoi dysoai ydosiay doisaydo isay oidsya oidyaoidysoaiyd oisay doiay doisay doiasy odisayodi yaoid yaoiy doisaydoisay doisaydoiyas oidysaoi ydsoiay doisay doiay odisy aoidysoai ydoisay doisay odiysaoi dysaoi dyaoi dyasoiy doisay doisay odisay oidyaoi dysoai ydosia ydoasiy doasiy dosiay doiasy oisay doisay oisayo diyaoid ysoaiy odisay.", "Update Available"))">
         Show Info
-    </Button>
-    <Button Style="CButtonStyle.Secondary"
-            OnClick="@(() => ToastNotification.Warning("Your storage is almost full (92% used).", "Storage Warning"))">
+    </LHAButton>
+    <LHAButton Style="CButtonStyle.Secondary"
+               OnClick="@(() => ToastNotification.Warning("Your storage is almost full (92% used).", "Storage Warning"))">
         Show Warning
-    </Button>
-    <Button Style="CButtonStyle.Danger"
-            OnClick="@(() => ToastNotification.Error("Unexpected disconnection while fetching data.", "Connection Error"))">
+    </LHAButton>
+    <LHAButton Style="CButtonStyle.Danger"
+               OnClick="@(() => ToastNotification.Error("Unexpected disconnection while fetching data.", "Connection Error"))">
         Show Error
-    </Button>
-    <Button Style="CButtonStyle.Secondary"
-            OnClick="@(() => ToastNotification.Show("This notification will stay for 10 seconds.", CToastLevel.Info, "Persistent Info", 10000))">
+    </LHAButton>
+    <LHAButton Style="CButtonStyle.Secondary"
+               OnClick="@(() => ToastNotification.Show("This notification will stay for 10 seconds.", CToastLevel.Info, "Persistent Info", 10000))">
         Show Custom (10s)
-    </Button>
+    </LHAButton>
 </div>
 
 <hr />
@@ -97,14 +88,14 @@
                 Picker</label>
                 <DatePicker TValue="DateTime?" @bind-Value="testDate" Placeholder="Select Date" />
             </div>
-        
+
             <div>
                 <label
                     style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Time
                     Picker (12h)</label>
                     <TimePicker TValue="DateTime?" @bind-Value="testTime" Placeholder="Select Time" />
                 </div>
-        
+
                 <div>
                     <label
                         style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Date
@@ -113,7 +104,7 @@
                                         Placeholder="Select Date and Time" />
                     </div>
                 </div>
-    
+
                 <!-- Range Pickers -->
                 <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
                     <div>
@@ -122,14 +113,14 @@
                             Range</label>
                             <DateRangePicker TInner="DateTime?" @bind-Value="testDateRange" Placeholder="Select Range" />
                         </div>
-        
+
                         <div>
                             <label
                                 style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Time
                                 Range</label>
                                 <TimeRangePicker TInner="DateTime?" @bind-Value="testTimeRange" Placeholder="Start ~ End" />
                             </div>
-        
+
                             <div style="width: 100%;">
                                 <label
                                     style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Date
@@ -137,7 +128,7 @@
                                     <DateTimeRangePicker TInner="DateTime?" @bind-Value="testDateTimeRange" Placeholder="Select Bounds" />
                                 </div>
                             </div>
-    
+
                             <!-- Validation Examples -->
                             <div
                                 style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border-color);">
@@ -177,447 +168,448 @@
                                             <!-- DateTimeOffset Examples (New) -->
                                             <div
                                                 style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border-color);">
-                                                <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Enterprise Support: DateTimeOffset</h3>
-                                                <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
-                                                    <div>
-                                                        <label
-                                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
-                                                            Date Picker</label>
-                                                            <DatePicker TValue="DateTimeOffset?" @bind-Value="testDtoDate" Placeholder="" />
-                                                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Value:
-                                                                @testDtoDate?.ToString("O")</div>
-                                                            </div>
-                                                            <div>
-                                                                <label
-                                                                    style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
-                                                                    DateTime Picker</label>
-                                                                    <DateTimePicker TValue="DateTimeOffset?" @bind-Value="testDtoDateTime" Is24Hour="true" />
-                                                                    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Value:
-                                                                        @testDtoDateTime?.ToString("O")</div>
-                                                                    </div>
-                                                                    <div style="width: 100%;">
-                                                                        <label
-                                                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
-                                                                            Date Range Picker</label>
-                                                                            <DateRangePicker TInner="DateTimeOffset?" @bind-Value="testDtoRange" />
-                                                                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Range:
-                                                                                @testDtoRange.Start?.ToString("d") ~ @testDtoRange.End?.ToString("d")</div>
-                                                                            </div>
+                                                <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Enterprise Support:
+                                                    DateTimeOffset</h3>
+                                                    <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
+                                                        <div>
+                                                            <label
+                                                                style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
+                                                                Date Picker</label>
+                                                                <DatePicker TValue="DateTimeOffset?" @bind-Value="testDtoDate" Placeholder="" />
+                                                                <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Value:
+                                                                    @testDtoDate?.ToString("O")</div>
+                                                                </div>
+                                                                <div>
+                                                                    <label
+                                                                        style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
+                                                                        DateTime Picker</label>
+                                                                        <DateTimePicker TValue="DateTimeOffset?" @bind-Value="testDtoDateTime" Is24Hour="true" />
+                                                                        <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Value:
+                                                                            @testDtoDateTime?.ToString("O")</div>
                                                                         </div>
-                                                                    </div>
-
-                                                                    <!-- Disabled Date Logic Example (New) -->
-                                                                    <div
-                                                                        style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border-color);">
-                                                                        <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Custom Disabled Dates (No Weekends)</h3>
-                                                                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-                                                                            Example: Disabling all Saturdays and Sundays using <code>DisabledDateFunc</code>.
-                                                                        </p>
-                                                                        <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
-                                                                            <div>
-                                                                                <label
-                                                                                    style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Disabled
-                                                                                    Weekends</label>
-                                                                                    <DatePicker TValue="DateTime?" DisabledDateFunc="DisableWeekends"
-                                                                                                Placeholder="Try picking a weekend..." />
-                                                                                </div>
-                                                                                <div>
-                                                                                    <label
-                                                                                        style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
-                                                                                        with Disabled Weekends</label>
-                                                                                        <DateRangePicker TInner="DateTime?" DisabledDateFunc="DisableWeekends" Placeholder="Start ~ End" />
-                                                                                    </div>
+                                                                        <div style="width: 100%;">
+                                                                            <label
+                                                                                style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">DTO
+                                                                                Date Range Picker</label>
+                                                                                <DateRangePicker TInner="DateTimeOffset?" @bind-Value="testDtoRange" />
+                                                                                <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">Range:
+                                                                                    @testDtoRange.Start?.ToString("d") ~ @testDtoRange.End?.ToString("d")</div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
 
-                                                                        <hr />
-                                                                        <h2>Tooltip Component Examples</h2>
-
-                                                                        <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">
-                                                                            <Tooltip Text="Top tooltip" Placement="CTooltipPlacement.Top">
-                                                                                <Button>Top Placement</Button>
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Text="Bottom tooltip" Placement="CTooltipPlacement.Bottom">
-                                                                                <Button>Bottom Placement</Button>
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Text="Left tooltip" Placement="CTooltipPlacement.Left">
-                                                                                <Button>Left Placement</Button>
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Text="Right tooltip" Placement="CTooltipPlacement.Right">
-                                                                                <Button>Right Placement</Button>
-                                                                            </Tooltip>
-                                                                        </div>
-
-                                                                        <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 4rem;">
-                                                                            <Tooltip Text="Requires a click" Trigger="CTooltipTrigger.Click">
-                                                                                <Button Style="CButtonStyle.Primary">Click me</Button>
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Text="Appears on focus" Trigger="CTooltipTrigger.Focus">
-                                                                                <input type="text" placeholder="Focus me" class="form-control" style="width: 200px;" />
-                                                                            </Tooltip>
-
-                                                                            <Tooltip Placement="CTooltipPlacement.Right">
-                                                                                <TooltipContent>
-                                                                                    <strong>Advanced Content!</strong><br />
-                                                                                    With <em>HTML</em> support.
-                                                                                </TooltipContent>
-                                                                                <ChildContent>
-                                                                                    <span
-                                                                                    style="font-size: 0.9rem; cursor:help; background:#0d6efd; color:#fff; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; font-weight:bold;">?</span>
-                                                                                </ChildContent>
-                                                                            </Tooltip>
-                                                                        </div>
-
-                                                                        <hr />
-                                                                        <h2>Skeleton Component Examples</h2>
-
-                                                                        <div style="display: flex; flex-direction: column; gap: 2rem; max-width: 600px; margin-top: 2rem; margin-bottom: 4rem;">
-                                                                            <div>
-                                                                                <h3>Basic & Text Variants (Wave Animation)</h3>
-                                                                                <Skeleton Width="30%" Height="1.5rem" Style="margin-bottom: 1rem;" /> <!-- Title placeholder -->
-                                                                                <Skeleton Variant="CSkeletonVariant.Text" Count="4" /> <!-- Paragraph placeholder -->
-                                                                            </div>
-
-                                                                            <div>
-                                                                                <h3>Avatar & Card Combo (Pulse Animation)</h3>
-                                                                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                                                                                    <Skeleton Variant="CSkeletonVariant.Circular" Width="60px" Height="60px"
-                                                                                              Animation="CSkeletonAnimation.Pulse" />
-                                                                                    <div style="flex: 1;">
-                                                                                        <Skeleton Variant="CSkeletonVariant.Rectangular" Height="150px" Animation="CSkeletonAnimation.Pulse" />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div>
-                                                                                <h3>Wrapper / IsLoading Toggle</h3>
-                                                                                <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
-                                                                                    <Skeleton IsLoading="@isLoadingData">
-                                                                                        <div style="display: flex; align-items: center; gap: 1rem;">
-                                                                                            <div
-                                                                                                style="width: 50px; height: 50px; border-radius: 50%; background: #0d6efd; color: white; display:flex; align-items:center; justify-content:center; font-weight:bold;">
-                                                                                                JD
-                                                                                            </div>
-                                                                                            <div>
-                                                                                                <h4 style="margin: 0;">John Doe</h4>
-                                                                                                <p style="margin: 0; color: #666;">Software Architect</p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </Skeleton>
-            
-                                                                                    <div style="margin-top: 1rem;">
-                                                                                        <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="ToggleDataLoadingAsync">
-                                                                                            Toggle Loading State
-                                                                                        </Button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <hr />
-                                                                        <h2>Status Badge Examples</h2>
-
-                                                                        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 4rem; margin-top: 1rem;">
-                                                                            <div>
-                                                                                <h3>Order Statuses</h3>
-                                                                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                                                                    <StatusBadge Status="COrderStatus.Pending" />
-                                                                                    <StatusBadge Status="COrderStatus.Processing" />
-                                                                                    <StatusBadge Status="COrderStatus.Completed" />
-                                                                                    <StatusBadge Status="COrderStatus.Cancelled" />
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div>
-                                                                                <h3>Payment Statuses (Soft Variant - Matching requested style)</h3>
-                                                                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                                                                    <StatusBadge Status="CPaymentStatus.Unpaid" />
-                                                                                    <StatusBadge Status="CPaymentStatus.Paid" />
-                                                                                    <StatusBadge Status="CPaymentStatus.Failed" />
-                                                                                    <StatusBadge Status="CPaymentStatus.Refunded" />
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div>
-                                                                                <h3>Variant Comparison</h3>
-                                                                                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                                                                                    <span>Solid:
-                                                                                        <StatusBadge Status="COrderStatus.Completed" />
-                                                                                    </span>
-                                                                                    <span>Soft:
-                                                                                        <StatusBadge Status="CPaymentStatus.Paid" />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div>
-                                                                                <h3>Custom Overrides</h3>
-                                                                                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                                                                    <StatusBadge Status="COrderStatus.Completed">
-                                                                                        <i class="fas fa-star me-1"></i> Special Order
-                                                                                    </StatusBadge>
-            
-                                                                                    <StatusBadge Status="CPaymentStatus.Paid" Class="p-3 shadow-sm rounded-pill" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <hr />
-                                                                        <h2>Select Component Examples</h2>
-
-                                                                        <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
-                                                                            <!-- Basic Selection -->
-                                                                            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-                                                                                <div style="flex: 1; min-width: 300px;">
-                                                                                    <label
-                                                                                        style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Standard
-                                                                                        Select</label>
-                                                                                        <Select TValue="string" Options="cityOptions" @bind-Value="selectedCity" Placeholder="Choose a city..." />
-                                                                                        <div style="margin-top: 0.5rem; font-size: 0.85rem;">Selected: <b>@selectedCity</b></div>
-                                                                                    </div>
-
-                                                                                    <div style="flex: 1; min-width: 300px;">
+                                                                        <!-- Disabled Date Logic Example (New) -->
+                                                                        <div
+                                                                            style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border-color);">
+                                                                            <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Custom Disabled Dates (No
+                                                                                Weekends)</h3>
+                                                                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                                                                                    Example: Disabling all Saturdays and Sundays using <code>DisabledDateFunc</code>.
+                                                                                </p>
+                                                                                <div style="display: flex; gap: 2rem; align-items: flex-end; flex-wrap: wrap;">
+                                                                                    <div>
                                                                                         <label
-                                                                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Searchable
-                                                                                            Select</label>
-                                                                                            <Select TValue="string" Options="cityOptions" Searchable="true" @bind-Value="selectedSearchCity"
-                                                                                                    Placeholder="Search cities..." />
+                                                                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Disabled
+                                                                                            Weekends</label>
+                                                                                            <DatePicker TValue="DateTime?" DisabledDateFunc="DisableWeekends"
+                                                                                                        Placeholder="Try picking a weekend..." />
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <label
+                                                                                                style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Range
+                                                                                                with Disabled Weekends</label>
+                                                                                                <DateRangePicker TInner="DateTime?" DisabledDateFunc="DisableWeekends" Placeholder="Start ~ End" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <hr />
+                                                                                <h2>Tooltip Component Examples</h2>
+
+                                                                                <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">
+                                                                                    <Tooltip Text="Top tooltip" Placement="CTooltipPlacement.Top">
+                                                                                        <LHAButton>Top Placement</LHAButton>
+                                                                                    </Tooltip>
+
+                                                                                    <Tooltip Text="Bottom tooltip" Placement="CTooltipPlacement.Bottom">
+                                                                                        <LHAButton>Bottom Placement</LHAButton>
+                                                                                    </Tooltip>
+
+                                                                                    <Tooltip Text="Left tooltip" Placement="CTooltipPlacement.Left">
+                                                                                        <LHAButton>Left Placement</LHAButton>
+                                                                                    </Tooltip>
+
+                                                                                    <Tooltip Text="Right tooltip" Placement="CTooltipPlacement.Right">
+                                                                                        <LHAButton>Right Placement</LHAButton>
+                                                                                    </Tooltip>
+                                                                                </div>
+
+                                                                                <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 4rem;">
+                                                                                    <Tooltip Text="Requires a click" Trigger="CTooltipTrigger.Click">
+                                                                                        <LHAButton Style="CButtonStyle.Primary">Click me</LHAButton>
+                                                                                    </Tooltip>
+
+                                                                                    <Tooltip Text="Appears on focus" Trigger="CTooltipTrigger.Focus">
+                                                                                        <input type="text" placeholder="Focus me" class="form-control" style="width: 200px;" />
+                                                                                    </Tooltip>
+
+                                                                                    <Tooltip Placement="CTooltipPlacement.Right">
+                                                                                        <TooltipContent>
+                                                                                            <strong>Advanced Content!</strong><br />
+                                                                                            With <em>HTML</em> support.
+                                                                                        </TooltipContent>
+                                                                                        <ChildContent>
+                                                                                            <span
+                                                                                            style="font-size: 0.9rem; cursor:help; background:#0d6efd; color:#fff; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; font-weight:bold;">?</span>
+                                                                                        </ChildContent>
+                                                                                    </Tooltip>
+                                                                                </div>
+
+                                                                                <hr />
+                                                                                <h2>Skeleton Component Examples</h2>
+
+                                                                                <div style="display: flex; flex-direction: column; gap: 2rem; max-width: 600px; margin-top: 2rem; margin-bottom: 4rem;">
+                                                                                    <div>
+                                                                                        <h3>Basic & Text Variants (Wave Animation)</h3>
+                                                                                        <Skeleton Width="30%" Height="1.5rem" Style="margin-bottom: 1rem;" /> <!-- Title placeholder -->
+                                                                                        <Skeleton Variant="CSkeletonVariant.Text" Count="4" /> <!-- Paragraph placeholder -->
+                                                                                    </div>
+
+                                                                                    <div>
+                                                                                        <h3>Avatar & Card Combo (Pulse Animation)</h3>
+                                                                                        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                                                                            <Skeleton Variant="CSkeletonVariant.Circular" Width="60px" Height="60px"
+                                                                                                      Animation="CSkeletonAnimation.Pulse" />
+                                                                                            <div style="flex: 1;">
+                                                                                                <Skeleton Variant="CSkeletonVariant.Rectangular" Height="150px" Animation="CSkeletonAnimation.Pulse" />
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
 
-                                                                                    <!-- Multi Select & Templates -->
+                                                                                    <div>
+                                                                                        <h3>Wrapper / IsLoading Toggle</h3>
+                                                                                        <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
+                                                                                            <Skeleton IsLoading="@isLoadingData">
+                                                                                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                                                                                    <div
+                                                                                                        style="width: 50px; height: 50px; border-radius: 50%; background: #0d6efd; color: white; display:flex; align-items:center; justify-content:center; font-weight:bold;">
+                                                                                                        JD
+                                                                                                    </div>
+                                                                                                    <div>
+                                                                                                        <h4 style="margin: 0;">John Doe</h4>
+                                                                                                        <p style="margin: 0; color: #666;">Software Architect</p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </Skeleton>
+
+                                                                                            <div style="margin-top: 1rem;">
+                                                                                                <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="ToggleDataLoadingAsync">
+                                                                                                    Toggle Loading State
+                                                                                                </LHAButton>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <hr />
+                                                                                <h2>Status Badge Examples</h2>
+
+                                                                                <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 4rem; margin-top: 1rem;">
+                                                                                    <div>
+                                                                                        <h3>Order Statuses</h3>
+                                                                                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                                                                            <StatusBadge Status="COrderStatus.Pending" />
+                                                                                            <StatusBadge Status="COrderStatus.Processing" />
+                                                                                            <StatusBadge Status="COrderStatus.Completed" />
+                                                                                            <StatusBadge Status="COrderStatus.Cancelled" />
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div>
+                                                                                        <h3>Payment Statuses (Soft Variant - Matching requested style)</h3>
+                                                                                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                                                                            <StatusBadge Status="CPaymentStatus.Unpaid" />
+                                                                                            <StatusBadge Status="CPaymentStatus.Paid" />
+                                                                                            <StatusBadge Status="CPaymentStatus.Failed" />
+                                                                                            <StatusBadge Status="CPaymentStatus.Refunded" />
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div>
+                                                                                        <h3>Variant Comparison</h3>
+                                                                                        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                                                                                            <span>Solid:
+                                                                                                <StatusBadge Status="COrderStatus.Completed" />
+                                                                                            </span>
+                                                                                            <span>Soft:
+                                                                                                <StatusBadge Status="CPaymentStatus.Paid" />
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div>
+                                                                                        <h3>Custom Overrides</h3>
+                                                                                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                                                                            <StatusBadge Status="COrderStatus.Completed">
+                                                                                                <i class="fas fa-star me-1"></i> Special Order
+                                                                                            </StatusBadge>
+
+                                                                                            <StatusBadge Status="CPaymentStatus.Paid" Class="p-3 shadow-sm rounded-pill" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <hr />
+                                                                                <h2>Select Component Examples</h2>
+
+                                                                                <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
+                                                                                    <!-- Basic Selection -->
                                                                                     <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
                                                                                         <div style="flex: 1; min-width: 300px;">
                                                                                             <label
-                                                                                                style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Multi
-                                                                                                Select (Tags)</label>
-                                                                                                <Select TValue="string" Options="tagOptions" Mode="CSelectMode.Multiple" @bind-Values="selectedTags"
-                                                                                                        Placeholder="Select tags..." />
+                                                                                                style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Standard
+                                                                                                Select</label>
+                                                                                                <Select TValue="string" Options="cityOptions" @bind-Value="selectedCity" Placeholder="Choose a city..." />
+                                                                                                <div style="margin-top: 0.5rem; font-size: 0.85rem;">Selected: <b>@selectedCity</b></div>
                                                                                             </div>
 
                                                                                             <div style="flex: 1; min-width: 300px;">
                                                                                                 <label
-                                                                                                    style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Custom
-                                                                                                    Templates</label>
-                                                                                                    <Select TValue="string" Options="userOptions" @bind-Value="selectedUser">
-                                                                                                        <OptionTemplate Context="opt">
-                                                                                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                                                                                <div
-                                                                                                                    style="width: 20px; height: 20px; border-radius: 50%; background: #0d6efd; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">
-                                                                                                                    @opt.Label[0]</div>
-                                                                                                                    <span>@opt.Label</span>
-                                                                                                                </div>
-                                                                                                            </OptionTemplate>
-                                                                                                        </Select>
-                                                                                                    </div>
+                                                                                                    style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Searchable
+                                                                                                    Select</label>
+                                                                                                    <Select TValue="string" Options="cityOptions" Searchable="true" @bind-Value="selectedSearchCity"
+                                                                                                            Placeholder="Search cities..." />
                                                                                                 </div>
+                                                                                            </div>
 
-                                                                                                <!-- Virtualization & Async -->
-                                                                                                <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                                                                            <!-- Multi Select & Templates -->
+                                                                                            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                                                                                <div style="flex: 1; min-width: 300px;">
+                                                                                                    <label
+                                                                                                        style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Multi
+                                                                                                        Select (Tags)</label>
+                                                                                                        <Select TValue="string" Options="tagOptions" Mode="CSelectMode.Multiple" @bind-Values="selectedTags"
+                                                                                                                Placeholder="Select tags..." />
+                                                                                                    </div>
+
                                                                                                     <div style="flex: 1; min-width: 300px;">
                                                                                                         <label
-                                                                                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Virtualization
-                                                                                                            Test (10,000 items)</label>
-                                                                                                            <Select TValue="int" Searchable="true" OnLoadPage="LoadLargeDataAsync"
-                                                                                                                    Placeholder="Scroll fast - no lag!" />
-                                                                                                        </div>
-
-                                                                                                        <div style="flex: 1; min-width: 300px;">
-                                                                                                            <label
-                                                                                                                style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Async
-                                                                                                                API Search</label>
-                                                                                                                <Select TValue="string" AsyncSearch="true" LoadOptions="SearchUsersFromApi"
-                                                                                                                        Placeholder="Type to fetch users..." />
+                                                                                                            style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Custom
+                                                                                                            Templates</label>
+                                                                                                            <Select TValue="string" Options="userOptions" @bind-Value="selectedUser">
+                                                                                                                <OptionTemplate Context="opt">
+                                                                                                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                                                                                                        <div
+                                                                                                                            style="width: 20px; height: 20px; border-radius: 50%; background: #0d6efd; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">
+                                                                                                                            @opt.Label[0]</div>
+                                                                                                                            <span>@opt.Label</span>
+                                                                                                                        </div>
+                                                                                                                    </OptionTemplate>
+                                                                                                                </Select>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                    </div>
 
-                                                                                                    <hr />
-                                                                                                    <h2>@Localizer.L("FormField.DemoTitle")</h2>
-
-                                                                                                    <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
-                                                                                                        @* ── Vertical Layout with EditForm Validation ── *@
-                                                                                                        <div
-                                                                                                            style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
-                                                                                                            <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Vertical Layout (Default)</h3>
-                                                                                                            <EditForm Model="@_demoModel" OnValidSubmit="HandleValidSubmit" style="max-width: 480px;">
-                                                                                                                <DataAnnotationsValidator />
-
-                                                                                                                <FormField Label="@Localizer.L("FormField.DemoName")" Required="true" Help="@Localizer.L("FormField.DemoNameHelp")"
-                                                                                                                           ValueExpression="@(() => (object)_demoModel.FullName!)">
-                                                                                                                    <InputText @bind-Value="_demoModel.FullName" class="form-control" placeholder="John Doe" />
-                                                                                                                </FormField>
-
-                                                                                                                <FormField Label="@Localizer.L("FormField.DemoEmail")" Required="true" Help="@Localizer.L("FormField.DemoEmailHelp")"
-                                                                                                                           ValueExpression="@(() => (object)_demoModel.Email!)">
-                                                                                                                    <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
-                                                                                                                </FormField>
-
-                                                                                                                <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
-                                                                                                                    <Button Type="CButtonType.Submit" Style="CButtonStyle.Primary">
-                                                                                                                        @Localizer.L("FormField.DemoSubmit")
-                                                                                                                    </Button>
-                                                                                                                    <Button Style="CButtonStyle.Secondary" OnClick="ResetForm">
-                                                                                                                        @Localizer.L("FormField.DemoReset")
-                                                                                                                    </Button>
+                                                                                                        <!-- Virtualization & Async -->
+                                                                                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                                                                                            <div style="flex: 1; min-width: 300px;">
+                                                                                                                <label
+                                                                                                                    style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Virtualization
+                                                                                                                    Test (10,000 items)</label>
+                                                                                                                    <Select TValue="int" Searchable="true" OnLoadPage="LoadLargeDataAsync"
+                                                                                                                            Placeholder="Scroll fast - no lag!" />
                                                                                                                 </div>
-                                                                                                            </EditForm>
 
-                                                                                                            @if (_formSubmitted)
-                                                                                                            {
+                                                                                                                <div style="flex: 1; min-width: 300px;">
+                                                                                                                    <label
+                                                                                                                        style="display:block; font-weight:bold; margin-bottom:0.5rem; font-size: 0.9rem; color: var(--text-muted);">Async
+                                                                                                                        API Search</label>
+                                                                                                                        <Select TValue="string" AsyncSearch="true" LoadOptions="SearchUsersFromApi"
+                                                                                                                                Placeholder="Type to fetch users..." />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+
+                                                                                                            <hr />
+                                                                                                            <h2>@Localizer.L("FormField.DemoTitle")</h2>
+
+                                                                                                            <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
+                                                                                                                @* ── Vertical Layout with EditForm Validation ── *@
                                                                                                                 <div
-                                                                                                                    style="margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(25,135,84,0.1); border: 1px solid var(--success-color, #198754); border-radius: 0.5rem; color: var(--success-color, #198754); font-size: 0.9rem;">
-                                                                                                                    ✓ Form submitted: <strong>@_demoModel.FullName</strong> — @_demoModel.Email
+                                                                                                                    style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                                                                                                                    <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Vertical Layout (Default)</h3>
+                                                                                                                    <EditForm Model="@_demoModel" OnValidSubmit="HandleValidSubmit" style="max-width: 480px;">
+                                                                                                                        <DataAnnotationsValidator />
+
+                                                                                                                        <FormField Label="@Localizer.L("FormField.DemoName")" Required="true"
+                                                                                                                                   Help="@Localizer.L("FormField.DemoNameHelp")" ValueExpression="@(() => (object)_demoModel.FullName!)">
+                                                                                                                            <InputText @bind-Value="_demoModel.FullName" class="form-control" placeholder="John Doe" />
+                                                                                                                        </FormField>
+
+                                                                                                                        <FormField Label="@Localizer.L("FormField.DemoEmail")" Required="true"
+                                                                                                                                   Help="@Localizer.L("FormField.DemoEmailHelp")" ValueExpression="@(() => (object)_demoModel.Email!)">
+                                                                                                                            <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
+                                                                                                                        </FormField>
+
+                                                                                                                        <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+                                                                                                                            <LHAButton Type="CButtonType.Submit" Style="CButtonStyle.Primary">
+                                                                                                                                @Localizer.L("FormField.DemoSubmit")
+                                                                                                                            </LHAButton>
+                                                                                                                            <LHAButton Style="CButtonStyle.Secondary" OnClick="ResetForm">
+                                                                                                                                @Localizer.L("FormField.DemoReset")
+                                                                                                                            </LHAButton>
+                                                                                                                        </div>
+                                                                                                                    </EditForm>
+
+                                                                                                                    @if (_formSubmitted)
+                                                                                                                    {
+                                                                                                                        <div
+                                                                                                                            style="margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(25,135,84,0.1); border: 1px solid var(--success-color, #198754); border-radius: 0.5rem; color: var(--success-color, #198754); font-size: 0.9rem;">
+                                                                                                                            ✓ Form submitted: <strong>@_demoModel.FullName</strong> — @_demoModel.Email
+                                                                                                                        </div>
+                                                                                                                    }
                                                                                                                 </div>
-                                                                                                            }
-                                                                                                        </div>
 
-                                                                                                        @* ── Horizontal Layout ── *@
-                                                                                                        <div
-                                                                                                            style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
-                                                                                                            <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Horizontal Layout</h3>
-                                                                                                            <div style="max-width: 600px;">
-                                                                                                                <FormField Label="@Localizer.L("FormField.DemoCountry")" Layout="CFormFieldLayout.Horizontal">
-                                                                                                                    <Select TValue="string" Options="countryOptions" @bind-Value="selectedCountry"
-                                                                                                                            Placeholder="Choose a country..." />
-                                                                                                                </FormField>
+                                                                                                                @* ── Horizontal Layout ── *@
+                                                                                                                <div
+                                                                                                                    style="background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                                                                                                                    <h3 style="margin-top: 0; font-size: 1.2rem; font-weight: 700;">Horizontal Layout</h3>
+                                                                                                                    <div style="max-width: 600px;">
+                                                                                                                        <FormField Label="@Localizer.L("FormField.DemoCountry")" Layout="CFormFieldLayout.Horizontal">
+                                                                                                                            <Select TValue="string" Options="countryOptions" @bind-Value="selectedCountry"
+                                                                                                                                    Placeholder="Choose a country..." />
+                                                                                                                        </FormField>
 
-                                                                                                                <FormField Label="@Localizer.L("FormField.DemoEmail")" Layout="CFormFieldLayout.Horizontal"
-                                                                                                                           Help="@Localizer.L("FormField.DemoEmailHelp")">
-                                                                                                                    <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
-                                                                                                                </FormField>
+                                                                                                                        <FormField Label="@Localizer.L("FormField.DemoEmail")" Layout="CFormFieldLayout.Horizontal"
+                                                                                                                                   Help="@Localizer.L("FormField.DemoEmailHelp")">
+                                                                                                                            <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
+                                                                                                                        </FormField>
+                                                                                                                    </div>
+                                                                                                                </div>
                                                                                                             </div>
-                                                                                                        </div>
-                                                                                                    </div>
 
-                                                                                                    <hr />
-                                                                                                    <h2>@Localizer.L("Section.DemoTitle")</h2>
+                                                                                                            <hr />
+                                                                                                            <h2>@Localizer.L("Section.DemoTitle")</h2>
 
-                                                                                                    <div
-                                                                                                        style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; margin-bottom: 4rem; max-width: 700px;">
-                                                                                                        @* ── Collapsible Section with FormFields ── *@
-                                                                                                        <Section Title="@Localizer.L("Section.UserInfo")" Collapsible="true" DefaultExpanded="true">
-                                                                                                            <FormField Label="@Localizer.L("FormField.DemoName")" Required="true" Help="@Localizer.L("FormField.DemoNameHelp")">
-                                                                                                                <InputText @bind-Value="_demoModel.FullName" class="form-control" placeholder="John Doe" />
-                                                                                                            </FormField>
-                                                                                                            <FormField Label="@Localizer.L("FormField.DemoEmail")" Help="@Localizer.L("FormField.DemoEmailHelp")">
-                                                                                                                <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
-                                                                                                            </FormField>
-                                                                                                        </Section>
+                                                                                                            <div
+                                                                                                                style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; margin-bottom: 4rem; max-width: 700px;">
+                                                                                                                @* ── Collapsible Section with FormFields ── *@
+                                                                                                                <Section Title="@Localizer.L("Section.UserInfo")" Collapsible="true" DefaultExpanded="true">
+                                                                                                                    <FormField Label="@Localizer.L("FormField.DemoName")" Required="true"
+                                                                                                                               Help="@Localizer.L("FormField.DemoNameHelp")">
+                                                                                                                        <InputText @bind-Value="_demoModel.FullName" class="form-control" placeholder="John Doe" />
+                                                                                                                    </FormField>
+                                                                                                                    <FormField Label="@Localizer.L("FormField.DemoEmail")" Help="@Localizer.L("FormField.DemoEmailHelp")">
+                                                                                                                        <InputText @bind-Value="_demoModel.Email" class="form-control" placeholder="you@example.com" />
+                                                                                                                    </FormField>
+                                                                                                                </Section>
 
-                                                                                                        @* ── Section with Icon (starts collapsed) ── *@
-                                                                                                        <Section Title="@Localizer.L("Section.Security")" Icon="🔒" Collapsible="true" DefaultExpanded="false">
-                                                                                                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
-                                                                                                                @Localizer.L("Section.SecurityNote")
-                                                                                                            </p>
-                                                                                                        </Section>
+                                                                                                                @* ── Section with Icon (starts collapsed) ── *@
+                                                                                                                <Section Title="@Localizer.L("Section.Security")" Icon="🔒" Collapsible="true" DefaultExpanded="false">
+                                                                                                                    <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
+                                                                                                                        @Localizer.L("Section.SecurityNote")
+                                                                                                                    </p>
+                                                                                                                </Section>
 
-                                                                                                        @* ── Subtle Variant ── *@
-                                                                                                        <Section Title="@Localizer.L("Section.Notifications")" Icon="🔔" Collapsible="true" Variant="CSectionVariant.Subtle">
-                                                                                                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
-                                                                                                                @Localizer.L("Section.NotificationNote")
-                                                                                                            </p>
-                                                                                                        </Section>
+                                                                                                                @* ── Subtle Variant ── *@
+                                                                                                                <Section Title="@Localizer.L("Section.Notifications")" Icon="🔔" Collapsible="true"
+                                                                                                                         Variant="CSectionVariant.Subtle">
+                                                                                                                    <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
+                                                                                                                        @Localizer.L("Section.NotificationNote")
+                                                                                                                    </p>
+                                                                                                                </Section>
 
-                                        @* ── Non-collapsible (always open) ── *@
-                                        <Section Title="Static Content">
-                                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
-                                                This section is always visible. It cannot be collapsed because <code>Collapsible</code> is not set.
-                                            </p>
-                                        </Section>
-                                    </div>
+                                                                                                                @* ── Non-collapsible (always open) ── *@
+                                                                                                                <Section Title="Static Content">
+                                                                                                                    <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
+                                                                                                                        This section is always visible. It cannot be collapsed because <code>Collapsible</code> is
+                                                                                                                        not set.
+                                                                                                                    </p>
+                                                                                                                </Section>
+                                                                                                            </div>
 
-                                    <hr />
-                                    <h2>Switch Component Examples</h2>
+                                                                                                            <hr />
+                                                                                                            <h2>Switch Component Examples</h2>
 
-                                    <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
-                                        @* Basic Switch *@
-                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Basic Switch</h3>
-                                                <Switch @bind-Value="switchValue1" Label="Enable notifications" />
-                                                <div style="margin-top: 0.5rem; font-size: 0.85rem;">Value: <b>@switchValue1</b></div>
-                                            </div>
-                                        </div>
+                                                                                                            <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; margin-bottom: 4rem;">
+                                                                                                                @* Basic Switch *@
+                                                                                                                <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Basic Switch</h3>
+                                                                                                                        <Switch @bind-Value="switchValue1" Label="Enable notifications" />
+                                                                                                                        <div style="margin-top: 0.5rem; font-size: 0.85rem;">Value: <b>@switchValue1</b></div>
+                                                                                                                    </div>
+                                                                                                                </div>
 
-                                        @* Switch Sizes *@
-                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-end;">
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Small</h3>
-                                                <Switch @bind-Value="switchValue2" Size="CSwitchSize.Small" Label="Small switch" />
-                                            </div>
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Medium</h3>
-                                                <Switch @bind-Value="switchValue3" Size="CSwitchSize.Medium" Label="Medium switch" />
-                                            </div>
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Large</h3>
-                                                <Switch @bind-Value="switchValue4" Size="CSwitchSize.Large" Label="Large switch" />
-                                            </div>
-                                        </div>
+                                                                                                                @* Switch Sizes *@
+                                                                                                                <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-end;">
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Small</h3>
+                                                                                                                        <Switch @bind-Value="switchValue2" Size="CSwitchSize.Small" Label="Small switch" />
+                                                                                                                    </div>
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Medium</h3>
+                                                                                                                        <Switch @bind-Value="switchValue3" Size="CSwitchSize.Medium" Label="Medium switch" />
+                                                                                                                    </div>
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Large</h3>
+                                                                                                                        <Switch @bind-Value="switchValue4" Size="CSwitchSize.Large" Label="Large switch" />
+                                                                                                                    </div>
+                                                                                                                </div>
 
-                                        @* Switch with Icons *@
-                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Icons (Check/X)</h3>
-                                                <Switch @bind-Value="switchValue5" ShowIcons="true" OffIcon="fas fa-times" OnIcon="fas fa-check" />
-                                            </div>
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Icons (Sun/Moon)</h3>
-                                                <Switch @bind-Value="switchValue6" ShowIcons="true" OffIcon="fas fa-moon" OnIcon="fas fa-sun" />
-                                            </div>
-                                        </div>
+                                                                                                                @* Switch with Icons *@
+                                                                                                                <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Icons (Check/X)</h3>
+                                                                                                                        <Switch @bind-Value="switchValue5" ShowIcons="true" OffIcon="fas fa-times" OnIcon="fas fa-check" />
+                                                                                                                    </div>
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Icons (Sun/Moon)</h3>
+                                                                                                                        <Switch @bind-Value="switchValue6" ShowIcons="true" OffIcon="fas fa-moon" OnIcon="fas fa-sun" />
+                                                                                                                    </div>
+                                                                                                                </div>
 
-                                        @* Switch with Tooltip *@
-                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Tooltip</h3>
-                                                <Switch @bind-Value="switchValue7" Tooltip="Toggle feature on/off" Label="Feature toggle" />
-                                            </div>
-                                        </div>
+                                                                                                                @* Switch with Tooltip *@
+                                                                                                                <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">With Tooltip</h3>
+                                                                                                                        <Switch @bind-Value="switchValue7" Tooltip="Toggle feature on/off" Label="Feature toggle" />
+                                                                                                                    </div>
+                                                                                                                </div>
 
-                                        @* Switch with Label Position *@
-                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Left Label</h3>
-                                                <Switch @bind-Value="switchValue8" Label="Left label" LabelPosition="CSwitchLabelPosition.Left" />
-                                            </div>
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Right Label</h3>
-                                                <Switch @bind-Value="switchValue9" Label="Right label" LabelPosition="CSwitchLabelPosition.Right" />
-                                            </div>
-                                        </div>
+                                                                                                                @* Switch with Label Position *@
+                                                                                                                <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Left Label</h3>
+                                                                                                                        <Switch @bind-Value="switchValue8" Label="Left label" LabelPosition="CSwitchLabelPosition.Left" />
+                                                                                                                    </div>
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Right Label</h3>
+                                                                                                                        <Switch @bind-Value="switchValue9" Label="Right label" LabelPosition="CSwitchLabelPosition.Right" />
+                                                                                                                    </div>
+                                                                                                                </div>
 
-                                        @* Disabled Switch *@
-                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Disabled (Off)</h3>
-                                                <Switch Disabled="true" Value="false" Label="Disabled off" />
-                                            </div>
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Disabled (On)</h3>
-                                                <Switch Disabled="true" Value="true" Label="Disabled on" />
-                                            </div>
-                                        </div>
+                                                                                                                @* Disabled Switch *@
+                                                                                                                <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Disabled (Off)</h3>
+                                                                                                                        <Switch Disabled="true" Value="false" Label="Disabled off" />
+                                                                                                                    </div>
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Disabled (On)</h3>
+                                                                                                                        <Switch Disabled="true" Value="true" Label="Disabled on" />
+                                                                                                                    </div>
+                                                                                                                </div>
 
-                                        @* Combined: Icons + Tooltip *@
-                                        <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
-                                            <div>
-                                                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Combined: Icons + Tooltip</h3>
-                                                <Switch @bind-Value="switchValue10" 
-                                                        ShowIcons="true" 
-                                                        OffIcon="fas fa-moon" 
-                                                        OnIcon="fas fa-sun" 
-                                                        Tooltip="Toggle dark mode"
-                                                        Size="CSwitchSize.Large" />
-                                            </div>
-                                        </div>
-                                    </div>
+                                                                                                                @* Combined: Icons + Tooltip *@
+                                                                                                                <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                                                                                                                    <div>
+                                                                                                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Combined: Icons + Tooltip</h3>
+                                                                                                                        <Switch @bind-Value="switchValue10" ShowIcons="true" OffIcon="fas fa-moon" OnIcon="fas fa-sun"
+                                                                                                                                Tooltip="Toggle dark mode" Size="CSwitchSize.Large" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
 
 @code {
 
@@ -676,7 +668,7 @@
     private string? selectedSearchCity;
     private IEnumerable<string>? selectedTags = new List<string> { "Blazor", "C#" };
     private string? selectedUser;
-    
+
     private List<SelectOption<string>> cityOptions = new()
     {
         new() { Value = "New York", Label = "New York" },
@@ -710,11 +702,13 @@
     {
         await Task.Delay(400); // Faster mock search
         if (string.IsNullOrEmpty(query)) return userOptions;
-        
+
         return userOptions.Where(o => o.Label.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 
-    private async Task<(IEnumerable<SelectOption<int>> Items, int TotalCount)> LoadLargeDataAsync(int startIndex, int count, string? searchText)
+    private async Task<(IEnumerable<SelectOption<int>> Items, int TotalCount)> LoadLargeDataAsync(int
+                startIndex, int count,
+string? searchText)
     {
         // NO Task.Delay here for maximum performance test
         // Use pre-generated list to avoid GC pressure
@@ -777,7 +771,7 @@
     private async Task ToggleDataLoadingAsync()
     {
         isLoadingData = !isLoadingData;
-        
+
         if (isLoadingData)
         {
             await Task.Delay(1000);

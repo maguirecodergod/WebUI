@@ -13,7 +13,7 @@ using LHA.BlazorWasm.Components;
 
 namespace LHA.BlazorWasm.Modules.Host.Roles.Pages;
 
-public partial class RoleDetail : LhaComponentBase
+public partial class RoleDetail : LHAComponentBase
 {
     [Parameter] public Guid Id { get; set; }
     [Inject] private RoleApiClient RoleAppService { get; set; } = default!;

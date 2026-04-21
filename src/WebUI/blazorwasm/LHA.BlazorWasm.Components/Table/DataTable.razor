@@ -1,10 +1,7 @@
-@* ═══════════════════════════════════════════════════════════════════
-    DataTable<TItem> — Enterprise-grade reusable data table component.
-   ═══════════════════════════════════════════════════════════════════ *@
 @namespace LHA.BlazorWasm.Components.Table
 @using LHA.BlazorWasm.Components.Form
 @using LHA.BlazorWasm.Components.Tooltip
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @typeparam TItem
 @implements IDisposable
 
@@ -31,7 +28,7 @@
             {
                 <div class="dt-search" style="min-width: 260px;">
                     <CInput TValue="string" Value="@_searchInput" ValueChanged="OnSearchValueChanged"
-                            ValueExpression="@(() => _searchInput)" Placeholder="@Localizer.L("Common.Search")" Clearable="true"
+                            ValueExpression="@(() => _searchInput)" Placeholder="@L("Common.Search")" Clearable="true"
                             Size="CInputSize.Small">
                         <IconLeft>
                             <i class="bi bi-search"></i>
@@ -42,22 +39,22 @@
 
             @if (_columns.Any(c => c.Filterable))
             {
-                <Tooltip Text="@Localizer.L("Common.Filters")" Placement="CTooltipPlacement.Top">
-                    <Button Class="@($"dt-toolbar-btn {(_filterSidebarOpen ? "dt-toolbar-btn-active" : string.Empty)}")"
-                            Style="CButtonStyle.Light" OnClick="ToggleFilterSidebar">
+                <Tooltip Text="@L("Common.Filters")" Placement="CTooltipPlacement.Top">
+                    <LHAButton Class="@($"dt-toolbar-btn {(_filterSidebarOpen ? "dt-toolbar-btn-active" : string.Empty)}")"
+                               Style="CButtonStyle.Light" OnClick="ToggleFilterSidebar">
                         <i class="bi bi-filter"></i>
-                    </Button>
+                    </LHAButton>
                 </Tooltip>
             }
 
             @if (ShowColumnToggle && _columns.Count > 0)
             {
                 <div style="position: relative;">
-                    <Tooltip Text="@Localizer.L("Common.DisplayColumn")" Placement="CTooltipPlacement.Top">
-                        <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="ToggleColumnDropdown"
-                                OnClick:stopPropagation="true">
+                    <Tooltip Text="@L("Common.DisplayColumn")" Placement="CTooltipPlacement.Top">
+                        <LHAButton Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="ToggleColumnDropdown"
+                                   OnClick:stopPropagation="true">
                             <i class="bi bi-columns-gap"></i>
-                        </Button>
+                        </LHAButton>
                     </Tooltip>
                     @if (_columnToggleOpen)
                     {
@@ -74,10 +71,10 @@
                 </div>
             }
 
-            <Tooltip Text="@Localizer.L("Common.Refresh")" Placement="CTooltipPlacement.Top">
-                <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="RefreshAsync" IsLoading="@_isLoading">
+            <Tooltip Text="@L("Common.Refresh")" Placement="CTooltipPlacement.Top">
+                <LHAButton Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="RefreshAsync" IsLoading="@_isLoading">
                     <i class="bi bi-arrow-clockwise"></i>
-                </Button>
+                </LHAButton>
             </Tooltip>
         </div>
     }
@@ -148,19 +145,19 @@
                             <div class="dt-selection-msg">
                                 @if (!_allEntireDatasetSelected)
                                 {
-                                    <span>@string.Format(Localizer.L("Common.AllPageSelected"), _displayItems.Count)</span>
-                                    <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
-                                            OnClick="SelectAllEntireDataset">
-                                        @string.Format(Localizer.L("Common.SelectAllDataset"), _totalCount)
-                                    </Button>
+                                    <span>@string.Format(L("Common.AllPageSelected"), _displayItems.Count)</span>
+                                    <LHAButton Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
+                                               OnClick="SelectAllEntireDataset">
+                                        @string.Format(L("Common.SelectAllDataset"), _totalCount)
+                                    </LHAButton>
                                 }
                                 else
                                 {
-                                    <span>@string.Format(Localizer.L("Common.AllDatasetSelected"), _totalCount)</span>
-                                    <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
-                                            OnClick="ClearSelectionAsync">
-                                        @Localizer.L("Common.ClearSelection")
-                                    </Button>
+                                    <span>@string.Format(L("Common.AllDatasetSelected"), _totalCount)</span>
+                                    <LHAButton Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
+                                               OnClick="ClearSelectionAsync">
+                                        @L("Common.ClearSelection")
+                                    </LHAButton>
                                 }
                             </div>
                         </td>
@@ -192,7 +189,7 @@
                             }
                             else
                             {
-                                <text>@Localizer.L("Common.NoData")</text>
+                                <text>@L("Common.NoData")</text>
                             }
                         </td>
                     </tr>
@@ -273,7 +270,7 @@
         <div class="dt-sidebar-header">
             <h3 class="dt-sidebar-title">
                 <i class="bi bi-filter"></i>
-                @Localizer.L("Common.Filters")
+                @L("Common.Filters")
             </h3>
             <button type="button" @onclick="CloseFilterSidebar"
                     style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
@@ -288,12 +285,14 @@
             }
         </div>
         <div class="dt-sidebar-footer">
-            <Button Style="CButtonStyle.Light" Size="CButtonSize.Small" OnClick="ClearAllFiltersAsync" Class="flex-grow-1">
-                @Localizer.L("Common.Clear")
-            </Button>
-            <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="ApplyFiltersAsync" Class="flex-grow-1">
-                @Localizer.L("Common.Apply")
-            </Button>
+            <LHAButton Style="CButtonStyle.Light" Size="CButtonSize.Small" OnClick="ClearAllFiltersAsync"
+                       Class="flex-grow-1">
+                @L("Common.Clear")
+            </LHAButton>
+            <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="ApplyFiltersAsync"
+                       Class="flex-grow-1">
+                @L("Common.Apply")
+            </LHAButton>
         </div>
     </aside>
 }
@@ -325,7 +324,7 @@
             case FilterType.Select:
                 <select class="dt-filter-input" value="@GetStagedFilterValue(col.Field)"
                         @onchange="e => SetStagedFilter(col.Field, e.Value?.ToString(), FilterType.Select, FilterOperator.Equals)">
-                    <option value="">@Localizer.L("Common.All")</option>
+                    <option value="">@L("Common.All")</option>
                     @if (col.FilterOptions is not null)
                     {
                         @foreach (var opt in col.FilterOptions)

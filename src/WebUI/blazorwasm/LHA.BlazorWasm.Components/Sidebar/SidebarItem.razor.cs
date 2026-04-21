@@ -8,7 +8,7 @@ namespace LHA.BlazorWasm.Components.Sidebar;
 /// Recursive sub-component that renders a single sidebar navigation item
 /// and its nested children. Used internally by <see cref="Sidebar"/>.
 /// </summary>
-public partial class SidebarItem : LhaComponentBase
+public partial class SidebarItem : LHAComponentBase
 {
     #region ── Parameters ──
 
@@ -75,7 +75,7 @@ public partial class SidebarItem : LhaComponentBase
     private bool CanShowItem(SidebarItemModel item)
     {
         if (!item.IsVisible) return false;
-        
+
         // Check direct permission
         if (!string.IsNullOrEmpty(item.RequiredPermission) && !PermissionService.HasPermission(item.RequiredPermission))
             return false;
@@ -85,7 +85,7 @@ public partial class SidebarItem : LhaComponentBase
         {
             return item.Children.Any(CanShowItem);
         }
-        
+
         return true;
     }
 

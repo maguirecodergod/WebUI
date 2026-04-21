@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 {
-    public partial class HostAuditLogList : LhaComponentBase
+    public partial class HostAuditLogList : LHAComponentBase
     {
         [Inject] private IAuditLogAppService AuditLogService { get; set; } = default!;
         private List<AuditLogDto> _logs = new();

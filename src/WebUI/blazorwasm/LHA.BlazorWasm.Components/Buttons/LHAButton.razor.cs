@@ -8,13 +8,13 @@ namespace LHA.BlazorWasm.Components.Buttons;
 /// 
 /// Example usage:
 /// 
-/// <Button Style="CButtonStyle.Primary"
+/// <LHAButton Style="CButtonStyle.Primary"
 ///         Size="CButtonSize.Medium"
 ///         OnClick="SaveAsync">
 ///     Save
-/// </Button>
+/// </LHAButton>
 /// </summary>
-public partial class Button : LhaComponentBase
+public partial class LHAButton : LHAComponentBase
 {
     /// <summary>
     /// Gets or sets the text content of the button.

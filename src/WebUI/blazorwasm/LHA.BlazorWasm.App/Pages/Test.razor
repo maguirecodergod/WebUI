@@ -1,8 +1,6 @@
 @page "/test"
-@using LHA.BlazorWasm.HttpApi.Client.Clients
 @using System.Text.Json
 @using LHA.Ddd.Application
-@inject ExampleApiClient ApiClient
 
 <PageTitle>API Client Test</PageTitle>
 
@@ -17,82 +15,8 @@
             </button>
         </div>
         <div>
-            <Button Style="CButtonStyle.Secondary" OnClick="ClearLogs">Clear Logs</Button>
-            <Button Style="CButtonStyle.Primary" OnClick="TestAll" Disabled="@_isBusy">Run All Tests</Button>
-        </div>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-5">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-                <div class="card-header bg-white border-bottom-0 pt-4 px-4">
-                    <h5 class="fw-bold text-dark mb-0">Standard Operations</h5>
-                </div>
-                <div class="card-body px-4 pb-4">
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-outline-primary text-start rounded-3" @onclick="TestGetWeather"
-                                disabled="@_isBusy">
-                            <i class="bi bi-cloud-sun me-2"></i> GET Weather (Collection)
-                        </button>
-                        <button class="btn btn-outline-primary text-start rounded-3" @onclick="() => TestGetUser(1)"
-                                disabled="@_isBusy">
-                            <i class="bi bi-person me-2"></i> GET User (Single - ID: 1)
-                        </button>
-                        <button class="btn btn-outline-success text-start rounded-3" @onclick="TestCreateUser"
-                                disabled="@_isBusy">
-                            <i class="bi bi-person-plus me-2"></i> POST Create User
-                        </button>
-                        <button class="btn btn-outline-warning text-start rounded-3" @onclick="TestUpdateUser"
-                                disabled="@_isBusy">
-                            <i class="bi bi-pencil me-2"></i> PUT Update User
-                        </button>
-                        <button class="btn btn-outline-danger text-start rounded-3" @onclick="TestDeleteUser"
-                                disabled="@_isBusy">
-                            <i class="bi bi-trash me-1"></i> DELETE User
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-7">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-                <div class="card-header bg-white border-bottom-0 pt-4 px-4">
-                    <h5 class="fw-bold text-dark mb-0">Error & Edge Cases</h5>
-                </div>
-                <div class="card-body px-4 pb-4">
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <button class="btn btn-soft-danger w-100 h-100 py-3 rounded-3" @onclick="Test404"
-                                    disabled="@_isBusy">
-                                <div class="fw-bold fs-5">404</div>
-                                <div class="small opacity-75">Not Found</div>
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-soft-danger w-100 h-100 py-3 rounded-3" @onclick="Test500"
-                                    disabled="@_isBusy">
-                                <div class="fw-bold fs-5">500</div>
-                                <div class="small opacity-75">Server Error</div>
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-soft-secondary w-100 h-100 py-3 rounded-3" @onclick="Test401"
-                                    disabled="@_isBusy">
-                                <div class="fw-bold fs-5">401</div>
-                                <div class="small opacity-75">Unauthorized</div>
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-soft-primary w-100 h-100 py-3 rounded-3" @onclick="TestAll"
-                                    disabled="@_isBusy">
-                                <div class="fw-bold fs-5">ALL</div>
-                                <div class="small opacity-75">Run Suite</div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <LHAButton Style="CButtonStyle.Secondary" OnClick="ClearLogs">Clear Logs</LHAButton>
+            <LHAButton Style="CButtonStyle.Primary" OnClick="TestAll" Disabled="@_isBusy">Run All Tests</LHAButton>
         </div>
     </div>
 
@@ -223,30 +147,10 @@
     private bool _showUserPicker;
     private List<TestResult> _testResults = new();
 
-    private async Task TestGetWeather() => await ExecuteTest("GET Weather", () => ApiClient.GetWeatherAsync());
-    private async Task TestGetUser(int id) => await ExecuteTest($"GET User (ID: {id})", () => ApiClient.GetUserAsync(id));
-    private async Task TestCreateUser() => await ExecuteTest("POST Create User", () => ApiClient.CreateUserAsync(new
-CreateUserRequest("New User", "new@example.com")));
-    private async Task TestUpdateUser() => await ExecuteTest("PUT Update User", () => ApiClient.UpdateUserAsync(1, new
-UpdateUserRequest("Updated Name")));
-    private async Task TestDeleteUser() => await ExecuteTest("DELETE User", () => ApiClient.DeleteUserAsync(1));
-    private async Task Test404() => await ExecuteTest("404 Not Found Test", () => ApiClient.Test404NotFoundAsync());
-    private async Task Test500() => await ExecuteTest("500 Server Error Test", () => ApiClient.Test500InternalErrorAsync());
-    private async Task Test401() => await ExecuteTest("401 Unauthorized Test", () => ApiClient.Test401UnauthorizedAsync());
-
     private async Task TestAll()
     {
         _isBusy = true;
         _testResults.Clear();
-
-        await TestGetWeather();
-        await TestGetUser(1);
-        await TestCreateUser();
-        await TestUpdateUser();
-        await TestDeleteUser();
-        await Test404();
-        await Test500();
-        await Test401();
 
         _isBusy = false;
     }

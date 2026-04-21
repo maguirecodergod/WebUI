@@ -1,14 +1,10 @@
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @using LHA.BlazorWasm.Components.Buttons
 
 @if (IsVisible)
 {
-    <div class="premium-dialog-overlay @(IsClosing ? "fade-out" : "fade-in")" 
-         @onclick="HandleOverlayClick" 
-         @onkeydown="HandleKeyDown" 
-         tabindex="-1" 
-         @ref="_overlayRef"
-         style="outline: none;">
+    <div class="premium-dialog-overlay @(IsClosing ? "fade-out" : "fade-in")" @onclick="HandleOverlayClick"
+         @onkeydown="HandleKeyDown" tabindex="-1" @ref="_overlayRef" style="outline: none;">
         <div class="premium-dialog-container @GetSizeClass() @GetTypeClass() @(IsClosing ? "scale-out" : "scale-in")"
              @onclick:stopPropagation>
 
@@ -50,14 +46,14 @@
                     {
                         @if (ShowCancelButton)
                         {
-                            <Button Style="CButtonStyle.Secondary" Class="btn-tertiary" OnClick="ExtendedCancelAsync">
+                            <LHAButton Style="CButtonStyle.Secondary" Class="btn-tertiary" OnClick="ExtendedCancelAsync">
                                 @CancelText
-                            </Button>
+                            </LHAButton>
                         }
 
-                        <Button Style="CButtonStyle.Primary" Class="btn-primary primary-gradient" OnClick="ExtendedOkAsync">
+                        <LHAButton Style="CButtonStyle.Primary" Class="btn-primary primary-gradient" OnClick="ExtendedOkAsync">
                             @OkText
-                        </Button>
+                        </LHAButton>
                     }
                 </div>
             }

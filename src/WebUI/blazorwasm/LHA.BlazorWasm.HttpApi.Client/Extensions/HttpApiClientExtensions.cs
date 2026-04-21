@@ -52,7 +52,6 @@ public static class HttpApiClientExtensions
         services.AddTransient<AuthMessageHandler>();
 
         // 4. Register Typed Clients (extend this list as new clients are created)
-        RegisterTypedClient<ExampleApiClient>(services);
         RegisterTypedClient<AuditLogApiClient>(services);
         services.AddScoped<IAuditLogAppService>(sp => sp.GetRequiredService<AuditLogApiClient>());
 

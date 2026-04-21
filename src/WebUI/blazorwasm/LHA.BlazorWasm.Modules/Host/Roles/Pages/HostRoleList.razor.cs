@@ -8,7 +8,7 @@ using LHA.BlazorWasm.HttpApi.Client.Clients;
 
 namespace LHA.BlazorWasm.Modules.Host.Roles.Pages;
 
-public partial class HostRoleList : LhaComponentBase
+public partial class HostRoleList : LHAComponentBase
 {
     [Inject] private RoleApiClient RoleAppService { get; set; } = default!;
 
@@ -88,11 +88,11 @@ public partial class HostRoleList : LhaComponentBase
 
             _isDeleteDialogVisible = false;
             await LoadRolesAsync();
-            if (_dataTable != null) 
+            if (_dataTable != null)
             {
                 await _dataTable.RefreshAsync();
             }
-            
+
             StateHasChanged();
         }
         catch (Exception ex)
@@ -109,6 +109,6 @@ public partial class HostRoleList : LhaComponentBase
     private async Task OnRoleSavedAsync()
     {
         await LoadRolesAsync();
-        if(_dataTable != null) await _dataTable.RefreshAsync();
+        if (_dataTable != null) await _dataTable.RefreshAsync();
     }
 }

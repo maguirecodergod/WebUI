@@ -1,6 +1,6 @@
 @page "/register-tenant"
 @layout EmptyLayout
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @using LHA.Shared.Contracts.Identity.Auth
 @using LHA.BlazorWasm.HttpApi.Client.Clients
 @using LHA.BlazorWasm.HttpApi.Client.Core
@@ -108,9 +108,9 @@
                         </div>
 
                         <div class="wizard-actions right-align">
-                            <Button Style="CButtonStyle.Primary" OnClick="NextStep" Class="btn-primary-refined">
+                            <LHAButton Style="CButtonStyle.Primary" OnClick="NextStep" Class="btn-primary-refined">
                                 @Localizer.L("TenantRegister.Step1.Continue") <i class="bi bi-arrow-right"></i>
-                            </Button>
+                            </LHAButton>
                         </div>
                     </div>
                 }
@@ -163,12 +163,12 @@
                             </div>
 
                             <div class="wizard-actions space-between mt-8">
-                                <Button Style="CButtonStyle.Ghost" OnClick="PrevStep" Class="btn-secondary-ghost">
+                                <LHAButton Style="CButtonStyle.Ghost" OnClick="PrevStep" Class="btn-secondary-ghost">
                                     <i class="bi bi-arrow-left"></i> @Localizer.L("TenantRegister.Step2.Back")
-                                </Button>
-                                <Button Type="CButtonType.Submit" Style="CButtonStyle.Primary" Class="btn-primary-refined">
+                                </LHAButton>
+                                <LHAButton Type="CButtonType.Submit" Style="CButtonStyle.Primary" Class="btn-primary-refined">
                                     @Localizer.L("TenantRegister.Step2.Finalize") <i class="bi bi-arrow-right"></i>
-                                </Button>
+                                </LHAButton>
                             </div>
                         </EditForm>
                     </div>
@@ -182,21 +182,21 @@
                         </div>
                         <h2 class="section-title text-center">@Localizer.L("TenantRegister.Step3.Title")</h2>
                         <p class="section-desc text-center">@string.Format(Localizer.L("TenantRegister.Step3.Desc"),
-                                                Model.TenantName, SelectedStyle)</p>
+                                                                                                                                    Model.TenantName, SelectedStyle)</p>
 
                             <div class="launch-loader">
                                 <div class="progress-bar-neon"></div>
                             </div>
 
                             <div class="wizard-actions center-align mt-8">
-                                <Button Style="CButtonStyle.Primary" OnClick="GoToDashboard"
-                                        Class="btn-primary-neon">@Localizer.L("TenantRegister.Step3.Launch")</Button>
+                                <LHAButton Style="CButtonStyle.Primary" OnClick="GoToDashboard" Class="btn-primary-neon">
+                                    @Localizer.L("TenantRegister.Step3.Launch")</LHAButton>
+                                </div>
                             </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
 
 @code {
     protected override void OnInitialized()

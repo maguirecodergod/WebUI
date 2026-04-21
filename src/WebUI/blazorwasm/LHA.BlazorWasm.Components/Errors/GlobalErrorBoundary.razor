@@ -15,14 +15,14 @@ else
             </div>
             <h2 class="error-title">@Localizer.L("Errors.Global.OopsTitle")</h2>
             <p class="error-message">@Localizer.L("Errors.Global.OopsMessage")</p>
-            
+
             <div class="error-actions">
-                <Button Style="CButtonStyle.Primary" OnClick="Recover" Class="btn-recover">
+                <LHAButton Style="CButtonStyle.Primary" OnClick="Recover" Class="btn-recover">
                     <i class="bi bi-arrow-clockwise"></i> @Localizer.L("Errors.Global.TryAgain")
-                </Button>
-                <Button Style="CButtonStyle.Secondary" OnClick="GoHome" Class="btn-home">
+                </LHAButton>
+                <LHAButton Style="CButtonStyle.Secondary" OnClick="GoHome" Class="btn-home">
                     <i class="bi bi-house"></i> @Localizer.L("Errors.Global.BackHome")
-                </Button>
+                </LHAButton>
             </div>
 
             @if (!IsProduction)

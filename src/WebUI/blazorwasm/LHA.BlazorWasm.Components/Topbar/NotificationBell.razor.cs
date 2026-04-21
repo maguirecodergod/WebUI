@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.Topbar;
 
-public partial class NotificationBell : LhaComponentBase
+public partial class NotificationBell : LHAComponentBase
 {
     [Inject] public ITopbarService TopbarService { get; set; } = default!;
-    
+
     [Parameter] public int Count { get; set; }
 
     private bool _isOpen;

@@ -1,5 +1,5 @@
 @page "/host/roles/{Id:guid}"
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @using LHA.BlazorWasm.Components.Breadcrumb
 @using LHA.Shared.Contracts.Identity
 @using LHA.BlazorWasm.Components.Tabs
@@ -11,15 +11,15 @@
 <div class="role-detail-container animate-fade-in">
     @* --- Breadcrumb --- *@
     <div class="breadcrumb-wrapper px-1 py-2">
-        <Breadcrumb Items="_breadcrumbItems" Separator="/" />
+        <LHABreadcrumb Items="_breadcrumbItems" Separator="/" />
     </div>
 
     @* --- Page Header with Sticky Info --- *@
     <div class="role-header-premium sticky top-0 z-10 bg-[var(--p-bg)] bg-opacity-95 backdrop-blur-sm pb-2">
         <div class="header-left">
             <div class="role-title-row">
-                <Button Style="CButtonStyle.Ghost" Icon="bi bi-arrow-left"
-                        OnClick='() => Navigation.NavigateTo("/host/roles")' Class="back-btn mr-2" />
+                <LHAButton Style="CButtonStyle.Ghost" Icon="bi bi-arrow-left"
+                           OnClick='() => Navigation.NavigateTo("/host/roles")' Class="back-btn mr-2" />
                 <h1 class="text-3xl font-bold tracking-tight">@(_roleModel?.Name ?? L("Common.Loading"))</h1>
 
                 @if (_roleModel != null)
@@ -51,10 +51,10 @@
             </p>
         </div>
         <div class="header-actions">
-            <Button Style="CButtonStyle.Secondary" OnClick="@(() => InvokeAsync(StateHasChanged))"
-                    Icon="bi bi-arrow-clockwise" Class="mr-3 glass-btn">@L("Common.Refresh")</Button>
-            <Button Style="CButtonStyle.Primary" IsLoading="_isSaving" OnClick="SaveRoleAsync" Icon="bi bi-save2"
-                    Disabled="!_hasRoleChanges" Class="shadow-lg shadow-indigo-500/30">@L("Common.Save")</Button>
+            <LHAButton Style="CButtonStyle.Secondary" OnClick="@(() => InvokeAsync(StateHasChanged))"
+                       Icon="bi bi-arrow-clockwise" Class="mr-3 glass-btn">@L("Common.Refresh")</LHAButton>
+            <LHAButton Style="CButtonStyle.Primary" IsLoading="_isSaving" OnClick="SaveRoleAsync" Icon="bi bi-save2"
+                       Disabled="!_hasRoleChanges" Class="shadow-lg shadow-indigo-500/30">@L("Common.Save")</LHAButton>
         </div>
     </div>
 
@@ -197,82 +197,84 @@
                Title="@(L("Roles.EffectivePermissionsFor") + ": " + (_selectedUser?.UserName ?? string.Empty))"
                Size="DialogSize.Large" ShowFooter="true">
     <FooterContent>
-        <Button Style="CButtonStyle.Secondary" Class="glass-btn" OnClick="@(() => _isPermissionsDialogVisible = false)">
+        <LHAButton Style="CButtonStyle.Secondary" Class="glass-btn"
+                   OnClick="@(() => _isPermissionsDialogVisible = false)">
             @L("Common.Cancel")
-        </Button>
-        <Button Style="CButtonStyle.Primary" IsLoading="_isSavingUserPermissions" OnClick="SaveUserPermissionsAsync" Icon="bi bi-check-lg"
-                Disabled="!_hasUserPermissionChanges" Class="shadow-lg shadow-indigo-500/30">
+        </LHAButton>
+        <LHAButton Style="CButtonStyle.Primary" IsLoading="_isSavingUserPermissions" OnClick="SaveUserPermissionsAsync"
+                   Icon="bi bi-check-lg" Disabled="!_hasUserPermissionChanges" Class="shadow-lg shadow-indigo-500/30">
             @L("Common.Confirm")
-        </Button>
+        </LHAButton>
     </FooterContent>
     <ChildContent>
         <div class="user-rights-p p-0 border-0 shadow-none">
-        @if (_selectedUser != null)
-        {
-            <div class="px-6 py-4 border-b border-[var(--p-border)] bg-[var(--p-card-bg)] opacity-80">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500">
-                        <i class="bi bi-person-badge text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="m-0 font-bold text-lg">@_selectedUser.UserName</h4>
-                        <p class="m-0 text-xs text-[var(--p-text-muted)]">@_selectedUser.Email</p>
-                    </div>
-                </div>
-            </div>
-        }
-        <div class="rights-body">
-            @if (_isUserPermissionsLoading)
+            @if (_selectedUser != null)
             {
-                <div class="rights-loading">
-                    <Skeleton Variant="CSkeletonVariant.Text" Count="5" Height="20px" Width="100%" />
-                    <div class="mt-4">
-                        <Skeleton Variant="CSkeletonVariant.Rounded" Height="140px" Width="100%" />
+                <div class="px-6 py-4 border-b border-[var(--p-border)] bg-[var(--p-card-bg)] opacity-80">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500">
+                            <i class="bi bi-person-badge text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="m-0 font-bold text-lg">@_selectedUser.UserName</h4>
+                            <p class="m-0 text-xs text-[var(--p-text-muted)]">@_selectedUser.Email</p>
+                        </div>
                     </div>
                 </div>
             }
-            else if (_selectedUser != null)
-            {
-                @foreach (var group in _userGroups)
+            <div class="rights-body">
+                @if (_isUserPermissionsLoading)
                 {
-                    <div class="rights-group">
-                        <div class="r-group-title">@L(group.DisplayName)</div>
-                        @foreach (var p in group.Permissions)
-                        {
-                            <div class="r-item @(p.IsGranted ? "granted" : "denied")">
-                                <div class="r-indicator"></div>
-                                <div class="r-content">
-                                    <span class="r-name">@L(p.DisplayName)</span>
-                                    <div class="r-sources">
-                                        @if (p.IsInherited)
-                                        {
-                                            <Tooltip
-                                                Text="@(L("Roles.InheritedFromRole") + ": " + string.Join(", ", p.InheritedFrom.Select(x => L(x))))">
-                                                <span class="source-tag S-inherited">
-                                                    <i class="bi bi-diagram-3"></i>
-                                                    @string.Join(", ", p.InheritedFrom.Select(L))
-                                                </span>
-                                            </Tooltip>
-                                        }
-                                        @if (p.IsDirectOverride)
-                                        {
-                                            <span class="source-tag S-override">
-                                                <i class="bi bi-pencil-square"></i>
-                                                @L("Roles.ManualOverride")
-                                            </span>
-                                        }
-                                    </div>
-                                </div>
-                                <div class="r-action">
-                                    <Switch Value="@p.IsGranted" ValueChanged="@((val) => ToggleUserPermission(p, val))"
-                                            Size="CSwitchSize.Small" />
-                                </div>
-                            </div>
-                        }
+                    <div class="rights-loading">
+                        <Skeleton Variant="CSkeletonVariant.Text" Count="5" Height="20px" Width="100%" />
+                        <div class="mt-4">
+                            <Skeleton Variant="CSkeletonVariant.Rounded" Height="140px" Width="100%" />
+                        </div>
                     </div>
                 }
-            }
+                else if (_selectedUser != null)
+                {
+                    @foreach (var group in _userGroups)
+                    {
+                        <div class="rights-group">
+                            <div class="r-group-title">@L(group.DisplayName)</div>
+                            @foreach (var p in group.Permissions)
+                            {
+                                <div class="r-item @(p.IsGranted ? "granted" : "denied")">
+                                    <div class="r-indicator"></div>
+                                    <div class="r-content">
+                                        <span class="r-name">@L(p.DisplayName)</span>
+                                        <div class="r-sources">
+                                            @if (p.IsInherited)
+                                            {
+                                                <Tooltip
+                                                    Text="@(L("Roles.InheritedFromRole") + ": " + string.Join(", ", p.InheritedFrom.Select(x => L(x))))">
+                                                    <span class="source-tag S-inherited">
+                                                        <i class="bi bi-diagram-3"></i>
+                                                        @string.Join(", ", p.InheritedFrom.Select(L))
+                                                    </span>
+                                                </Tooltip>
+                                            }
+                                            @if (p.IsDirectOverride)
+                                            {
+                                                <span class="source-tag S-override">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                    @L("Roles.ManualOverride")
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="r-action">
+                                        <Switch Value="@p.IsGranted" ValueChanged="@((val) => ToggleUserPermission(p, val))"
+                                                Size="CSwitchSize.Small" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+            </div>
         </div>
-    </div>
     </ChildContent>
 </PremiumDialog>

@@ -1,6 +1,6 @@
 @page "/login"
 @layout EmptyLayout
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @using LHA.BlazorWasm.Components.Forms
 @using LHA.BlazorWasm.Components.Buttons
 @using LHA.BlazorWasm.Components.Form
@@ -52,19 +52,19 @@
             </div>
 
             <div class="login-actions">
-                <Button Type="CButtonType.Submit" Style="CButtonStyle.Primary" Size="CButtonSize.Large"
-                        IsLoading="IsLoading" FullWidth="true" Class="btn-neon-pulse">
+                <LHAButton Type="CButtonType.Submit" Style="CButtonStyle.Primary" Size="CButtonSize.Large"
+                           IsLoading="IsLoading" FullWidth="true" Class="btn-neon-pulse">
                     <span class="btn-text">@Localizer.L("Login.Submit")</span>
                     <i class="bi bi-arrow-right btn-arrow"></i>
-                </Button>
+                </LHAButton>
             </div>
 
             <div class="login-footer">
                 <p>@Localizer.L("Login.NoAccount")</p>
-                <Button Type="CButtonType.Button" Style="CButtonStyle.Ghost" OnClick="GoToRegister"
-                        Class="btn-secondary-ghost">
+                <LHAButton Type="CButtonType.Button" Style="CButtonStyle.Ghost" OnClick="GoToRegister"
+                           Class="btn-secondary-ghost">
                     @Localizer.L("Login.RegisterTenant")
-                </Button>
+                </LHAButton>
             </div>
         </EditForm>
     </div>

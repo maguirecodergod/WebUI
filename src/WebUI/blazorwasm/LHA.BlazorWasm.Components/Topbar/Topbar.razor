@@ -1,8 +1,7 @@
 @using LHA.BlazorWasm.Components.ThemeSwitch
 @using LHA.BlazorWasm.Components.LanguageSelector
-@using LHA.BlazorWasm.Components.Breadcrumb
 
-<header class="topbar @(IsSticky ? "sticky" : "")">
+<header class="topbar @(IsSticky ? "sticky" : string.Empty)">
     @* --- Left Section --- *@
     <div class="topbar-section left">
         @if (LeftContent != null)
@@ -50,7 +49,7 @@
 
                 @if (TopbarService.State.Breadcrumbs.Any())
                 {
-                    <Breadcrumb Items="TopbarService.State.Breadcrumbs" Class="breadcrumb-desktop" />
+                    <LHABreadcrumb Items="TopbarService.State.Breadcrumbs" Class="breadcrumb-desktop" />
                 }
             </div>
         }
@@ -94,13 +93,13 @@
                     <div class="settings-actions tablet-desktop-only" @onclick:stopPropagation>
                         <ThemeSwitch Variant="CThemeSwitchVariant.Toggle" />
                         <LanguageSelector Mode="LHA.BlazorWasm.Services.Localization.CLanguageSelectorMode.Dropdown"
-                                          ShowFlags="true" ShowNames="false" 
+                                          ShowFlags="true" ShowNames="false"
                                           Variant="LHA.BlazorWasm.Components.Select.CSelectVariant.Minimalist"
                                           Size="LHA.BlazorWasm.Components.Form.CInputSize.Small" />
                     </div>
                     @* User Profile *@
                     <div class="user-profile-container">
-                        <div class="user-profile-toggle @(_isProfileOpen ? "active" : "")" @onclick="ToggleProfile"
+                        <div class="user-profile-toggle @(_isProfileOpen ? "active" : string.Empty)" @onclick="ToggleProfile"
                              @onclick:stopPropagation>
                             <div class="user-avatar">
                                 @if (!string.IsNullOrEmpty(TopbarService.State.User?.AvatarUrl))
@@ -110,7 +109,7 @@
                                 else
                                 {
                                     <span>@(TopbarService.State.User?.DisplayName.FirstOrDefault().ToString().ToUpper() ??
-                                                                                                            "U")</span>
+                                                                                                                                                    "U")</span>
                                     }
                                 </div>
                                 <div class="user-info-text">

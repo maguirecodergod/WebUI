@@ -2,7 +2,7 @@
 @using LHA.Shared.Contracts.Identity
 @using LHA.Shared.Contracts.Identity.Roles
 @using LHA.BlazorWasm.HttpApi.Client.Clients
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 
 <PageTitle>Nhóm quyền</PageTitle>
 
@@ -12,35 +12,40 @@
             <h1 class="h4 mb-1 fw-bold text-dark">Nhóm quyền</h1>
         </div>
         <div class="d-flex gap-2">
-            <Button Style="CButtonStyle.Primary" Size="CButtonSize.Medium" OnClick="@(() => Navigation.NavigateTo("/identity/roles/create"))">
+            <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Medium"
+                       OnClick="@(() => Navigation.NavigateTo("/identity/roles/create"))">
                 <i class="bi bi-plus-circle me-1"></i> Tạo nhóm quyền
-            </Button>
+            </LHAButton>
         </div>
     </div>
 
     <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
         <div class="card-body p-0">
-            <DataTable TItem="IdentityRoleDto" Items="_roles" Mode="DataTableMode.ServerSide" TotalCount="(int)_totalCount"
-                       ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="20" Searchable="true" ShowToolbar="true"
-                       KeySelector="@(x => x.Id)" TableId="DataTableIds.IdentityRoles" SearchPlaceholder="Tìm kiếm theo tên nhóm quyền"
-                       OnSearchContentChanged="OnSearchChanged">
+            <DataTable TItem="IdentityRoleDto" Items="_roles" Mode="DataTableMode.ServerSide"
+                       TotalCount="(int)_totalCount" ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="20"
+                       Searchable="true" ShowToolbar="true" KeySelector="@(x => x.Id)" TableId="DataTableIds.IdentityRoles"
+                       SearchPlaceholder="Tìm kiếm theo tên nhóm quyền" OnSearchContentChanged="OnSearchChanged">
 
                 <ChildContent>
-                    <DataTableColumn TItem="IdentityRoleDto" Title="Tên" Width="auto" Sortable Filterable Property="@(x => x.Name)">
+                    <DataTableColumn TItem="IdentityRoleDto" Title="Tên" Width="auto" Sortable Filterable
+                                     Property="@(x => x.Name)">
                         <CellTemplate>
                             <span class="text-dark">@context.Name</span>
                         </CellTemplate>
                     </DataTableColumn>
 
-                    <DataTableColumn TItem="IdentityRoleDto" Title="Thao tác" Width="120px" Alignment="ColumnAlignment.Center">
+                    <DataTableColumn TItem="IdentityRoleDto" Title="Thao tác" Width="120px"
+                                     Alignment="ColumnAlignment.Center">
                         <CellTemplate>
                             <div class="d-flex justify-content-center gap-2">
-                                <button class="btn btn-sm text-primary p-0 border-0 bg-transparent" @onclick="() => NavigateToEdit(context.Id)">
+                                <button class="btn btn-sm text-primary p-0 border-0 bg-transparent"
+                                        @onclick="() => NavigateToEdit(context.Id)">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 @if (!context.IsStatic)
                                 {
-                                    <button class="btn btn-sm text-danger p-0 border-0 bg-transparent" @onclick="() => ShowDeleteDialog(context.Id)">
+                                    <button class="btn btn-sm text-danger p-0 border-0 bg-transparent"
+                                            @onclick="() => ShowDeleteDialog(context.Id)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 }
@@ -55,7 +60,7 @@
 
 @code {
     [Inject] private RoleApiClient RoleService { get; set; } = default!;
-    
+
     private List<IdentityRoleDto> _roles = new();
     private GetIdentityRolesInput _input = new()
     {
@@ -88,9 +93,9 @@
 
     private async Task<DataTableResponse<IdentityRoleDto>> GetDataTableResponseAsync(DataTableRequest request)
     {
-        _input = new GetIdentityRolesInput 
-        { 
-            PageNumber = request.PageNumber, 
+        _input = new GetIdentityRolesInput
+        {
+            PageNumber = request.PageNumber,
             PageSize = request.PageSize,
             Filter = _input.Filter
         };
@@ -100,11 +105,11 @@
 
     private async Task OnSearchChanged(string searchText)
     {
-        _input = new GetIdentityRolesInput 
-        { 
-            Filter = searchText, 
-            PageNumber = 1, 
-            PageSize = _input.PageSize 
+        _input = new GetIdentityRolesInput
+        {
+            Filter = searchText,
+            PageNumber = 1,
+            PageSize = _input.PageSize
         };
         await LoadRolesAsync();
         // The DataTable component will typically refresh itself if items are bound,

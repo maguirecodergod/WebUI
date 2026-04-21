@@ -18,7 +18,7 @@ namespace LHA.BlazorWasm.Components.LanguageSelector;
 /// Inline:
 /// <LanguageSelector Mode="CLanguageSelectorMode.Inline" />
 /// </summary>
-public partial class LanguageSelector : LhaComponentBase, IDisposable
+public partial class LanguageSelector : LHAComponentBase, IDisposable
 {
     /// <summary>
     /// Gets or sets the visual variant mode of the selector (Dropdown or Inline).

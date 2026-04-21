@@ -8,7 +8,7 @@ namespace LHA.BlazorWasm.Components.Table;
 /// Supports client-side &amp; server-side modes, sorting, filtering, paging,
 /// selection, column management, expandable rows, virtualization, skeleton loading.
 /// </summary>
-public partial class DataTable<TItem> : LhaComponentBase, IDisposable
+public partial class DataTable<TItem> : LHAComponentBase, IDisposable
 {
     // ═══════════════════════════════════════════════════════════
     // INJECTED SERVICES

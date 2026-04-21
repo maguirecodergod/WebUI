@@ -3,10 +3,7 @@
 @if (!string.IsNullOrEmpty(Tooltip))
 {
     <LHA.BlazorWasm.Components.Tooltip.Tooltip Text="@Tooltip" Style="display: inline-flex;">
-        <Button Class="@GetCssClass()"
-                Style="CButtonStyle.Link"
-                Disabled="@Disabled"
-                OnClick="HandleClick">
+        <LHAButton Class="@GetCssClass()" Style="CButtonStyle.Link" Disabled="@Disabled" OnClick="HandleClick">
             @if (ChildContent != null)
             {
                 @ChildContent
@@ -15,15 +12,12 @@
             {
                 @((MarkupString)SvgIcon)
             }
-        </Button>
+        </LHAButton>
     </LHA.BlazorWasm.Components.Tooltip.Tooltip>
 }
 else
 {
-    <Button Class="@GetCssClass()"
-            Style="CButtonStyle.Link"
-            Disabled="@Disabled"
-            OnClick="HandleClick">
+    <LHAButton Class="@GetCssClass()" Style="CButtonStyle.Link" Disabled="@Disabled" OnClick="HandleClick">
         @if (ChildContent != null)
         {
             @ChildContent
@@ -32,5 +26,5 @@ else
         {
             @((MarkupString)SvgIcon)
         }
-    </Button>
+    </LHAButton>
 }

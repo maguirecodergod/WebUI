@@ -7,7 +7,7 @@
 @using LHA.Shared.Contracts.PermissionManagement
 @using LHA.BlazorWasm.HttpApi.Client.Clients
 @using LHA.BlazorWasm.HttpApi.Client.Clients.PermissionManagement
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 
 <PageTitle>@(IsEdit ? "Cập nhật nhóm quyền" : "Thêm mới nhóm quyền")</PageTitle>
 
@@ -16,158 +16,176 @@
         <div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-1 text-muted small">
-                    <li class="breadcrumb-item"><a href="/identity/roles" class="text-decoration-none">Danh sách nhóm quyền</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">@(IsEdit ? "Cập nhật" : "Thêm mới")</li>
-                </ol>
-            </nav>
-            <h1 class="h4 mb-0 fw-bold text-dark">@(IsEdit ? "Cập nhật nhóm quyền" : "Thêm mới nhóm quyền")</h1>
-        </div>
-        <div class="d-flex gap-2">
-            <Button Style="CButtonStyle.Primary" Size="CButtonSize.Medium" OnClick="SaveAsync" IsLoading="_isSaving">
-                <i class="bi bi-save me-1"></i> Lưu
-            </Button>
-            <Button Style="CButtonStyle.Secondary" Size="CButtonSize.Medium" OnClick="GoBack">
-                Hủy
-            </Button>
-        </div>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-sm border-0 rounded-3 mb-4 h-100">
-                <div class="card-body">
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">Tên nhóm quyền <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" placeholder="Nhập tên nhóm quyền" @bind="RoleName" disabled="@(IsEdit && _role?.IsStatic == true)" />
-                    </div>
-
-                    <div class="mb-2 fw-bold">Người dùng</div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Tìm kiếm theo tên người dùng" @bind="UserSearchFilter" @bind:event="oninput" @onkeyup="FilterUsers" />
-                    </div>
-
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" id="selectAllUsers" checked="@IsAllUsersSelected" @onchange="ToggleSelectAllUsers">
-                        <label class="form-check-label" for="selectAllUsers">
-                            Chọn tất cả người dùng
-                        </label>
-                    </div>
-
-                    <div class="d-flex flex-wrap gap-2 user-list" style="max-height: 400px; overflow-y: auto;">
-                        @foreach (var user in FilteredUsers)
-                        {
-                            var isSelected = SelectedUserIds.Contains(user.Id);
-                            <div class="user-badge px-3 py-2 border rounded cursor-pointer @(isSelected ? "selected" : "")" @onclick="() => ToggleUserSelection(user.Id)">
-                                <span class="text-truncate">@user.UserName</span>
-                            </div>
-                        }
-                    </div>
-                </div>
+                    <li class="breadcrumb-item"><a href="/identity/roles" class="text-decoration-none">Danh sách nhóm
+                        quyền</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@(IsEdit ? "Cập nhật" : "Thêm mới")</li>
+                    </ol>
+                </nav>
+                <h1 class="h4 mb-0 fw-bold text-dark">@(IsEdit ? "Cập nhật nhóm quyền" : "Thêm mới nhóm quyền")</h1>
+            </div>
+            <div class="d-flex gap-2">
+                <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Medium" OnClick="SaveAsync" IsLoading="_isSaving">
+                    <i class="bi bi-save me-1"></i> Lưu
+                </LHAButton>
+                <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Medium" OnClick="GoBack">
+                    Hủy
+                </LHAButton>
             </div>
         </div>
 
-        <div class="col-md-6 col-lg-7">
-            <div class="card shadow-sm border-0 rounded-3 h-100">
-                <div class="card-body">
-                    <div class="mb-4 fw-bold">Nhóm quyền (Permissions)</div>
-                    
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Tìm kiếm theo tên quyền" @bind="PermissionSearchFilter" @bind:event="oninput" @onkeyup="FilterPermissions" />
-                    </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-sm border-0 rounded-3 mb-4 h-100">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Tên nhóm quyền <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Nhập tên nhóm quyền" @bind="RoleName"
+                                   disabled="@(IsEdit && _role?.IsStatic == true)" />
+                        </div>
 
-                    <div class="d-flex gap-4 mb-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="selectAllPerms" checked="@IsAllPermissionsSelected" @onchange="ToggleSelectAllPermissions">
-                            <label class="form-check-label" for="selectAllPerms">
-                                Chọn tất cả nhóm quyền
+                        <div class="mb-2 fw-bold">Người dùng</div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm theo tên người dùng"
+                                   @bind="UserSearchFilter" @bind:event="oninput" @onkeyup="FilterUsers" />
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="selectAllUsers"
+                                   checked="@IsAllUsersSelected" @onchange="ToggleSelectAllUsers">
+                            <label class="form-check-label" for="selectAllUsers">
+                                Chọn tất cả người dùng
                             </label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="expandAllPerms" checked="@IsAllExpanded" @onchange="ToggleExpandAll">
-                            <label class="form-check-label" for="expandAllPerms">
-                                Mở tất cả nhóm quyền
-                            </label>
-                        </div>
-                    </div>
 
-                    <div class="permission-tree" style="max-height: 600px; overflow-y: auto;">
-                        @foreach (var group in FilteredPermissionGroups)
-                        {
-                            var hasCheckedChild = group.Permissions.Any(p => SelectedPermissions.Contains(p.Name));
-                            var allChecked = group.Permissions.All(p => SelectedPermissions.Contains(p.Name));
-                            var isExpanded = ExpandedGroups.Contains(group.Name);
-
-                            <div class="permission-group mb-3 border rounded p-3 @(hasCheckedChild ? "border-primary-subtle bg-light" : "")">
-                                <div class="d-flex align-items-center">
-                                    <button class="btn btn-sm btn-link p-0 me-2 text-dark text-decoration-none" @onclick="() => ToggleExpandGroup(group.Name)">
-                                        <i class="bi @(isExpanded ? "bi-chevron-down" : "bi-chevron-right")"></i>
-                                    </button>
-                                    
-                                    <div class="form-check mb-0 flex-grow-1">
-                                        <input class="form-check-input" type="checkbox" id="group_@group.Name" 
-                                               checked="@allChecked" 
-                                               indeterminate="@(hasCheckedChild && !allChecked)"
-                                               @onchange="(e) => ToggleGroupPermissions(group, (bool)(e.Value ?? false))">
-                                        <label class="form-check-label fw-semibold cursor-pointer select-none" for="group_@group.Name">
-                                            @group.DisplayName
-                                        </label>
-                                    </div>
+                        <div class="d-flex flex-wrap gap-2 user-list" style="max-height: 400px; overflow-y: auto;">
+                            @foreach (var user in FilteredUsers)
+                            {
+                                var isSelected = SelectedUserIds.Contains(user.Id);
+                                <div class="user-badge px-3 py-2 border rounded cursor-pointer @(isSelected ? "selected" : "")"
+                                     @onclick="() => ToggleUserSelection(user.Id)">
+                                    <span class="text-truncate">@user.UserName</span>
                                 </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                                @if (isExpanded)
-                                {
-                                    <div class="permission-items mt-3 ms-4 ps-3 border-start">
-                                        @foreach (var perm in group.Permissions)
-                                        {
-                                            var isPermSelected = SelectedPermissions.Contains(perm.Name);
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" id="perm_@perm.Name" 
-                                                       checked="@isPermSelected" 
-                                                       @onchange="(e) => TogglePermission(perm.Name, (bool)(e.Value ?? false))">
-                                                <label class="form-check-label cursor-pointer" for="perm_@perm.Name">
-                                                    @perm.DisplayName
-                                                    @if (!string.IsNullOrEmpty(perm.Description))
-                                                    {
-                                                        <div class="small text-muted">@perm.Description</div>
-                                                    }
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                }
+            <div class="col-md-6 col-lg-7">
+                <div class="card shadow-sm border-0 rounded-3 h-100">
+                    <div class="card-body">
+                        <div class="mb-4 fw-bold">Nhóm quyền (Permissions)</div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm theo tên quyền"
+                                   @bind="PermissionSearchFilter" @bind:event="oninput" @onkeyup="FilterPermissions" />
+                        </div>
+
+                        <div class="d-flex gap-4 mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="selectAllPerms"
+                                       checked="@IsAllPermissionsSelected" @onchange="ToggleSelectAllPermissions">
+                                <label class="form-check-label" for="selectAllPerms">
+                                    Chọn tất cả nhóm quyền
+                                </label>
                             </div>
-                        }
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="expandAllPerms" checked="@IsAllExpanded"
+                                       @onchange="ToggleExpandAll">
+                                <label class="form-check-label" for="expandAllPerms">
+                                    Mở tất cả nhóm quyền
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="permission-tree" style="max-height: 600px; overflow-y: auto;">
+                            @foreach (var group in FilteredPermissionGroups)
+                            {
+                                var hasCheckedChild = group.Permissions.Any(p => SelectedPermissions.Contains(p.Name));
+                                var allChecked = group.Permissions.All(p => SelectedPermissions.Contains(p.Name));
+                                var isExpanded = ExpandedGroups.Contains(group.Name);
+
+                                <div
+                                    class="permission-group mb-3 border rounded p-3 @(hasCheckedChild ? "border-primary-subtle bg-light" : "")">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-sm btn-link p-0 me-2 text-dark text-decoration-none"
+                                                @onclick="() => ToggleExpandGroup(group.Name)">
+                                            <i class="bi @(isExpanded ? "bi-chevron-down" : "bi-chevron-right")"></i>
+                                        </button>
+
+                                        <div class="form-check mb-0 flex-grow-1">
+                                            <input class="form-check-input" type="checkbox" id="group_@group.Name"
+                                                   checked="@allChecked" indeterminate="@(hasCheckedChild && !allChecked)"
+                                                   @onchange="(e) => ToggleGroupPermissions(group, (bool)(e.Value ?? false))">
+                                            <label class="form-check-label fw-semibold cursor-pointer select-none"
+                                                   for="group_@group.Name">
+                                                @group.DisplayName
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    @if (isExpanded)
+                                    {
+                                        <div class="permission-items mt-3 ms-4 ps-3 border-start">
+                                            @foreach (var perm in group.Permissions)
+                                            {
+                                                var isPermSelected = SelectedPermissions.Contains(perm.Name);
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox" id="perm_@perm.Name"
+                                                           checked="@isPermSelected"
+                                                           @onchange="(e) => TogglePermission(perm.Name, (bool)(e.Value ?? false))">
+                                                    <label class="form-check-label cursor-pointer" for="perm_@perm.Name">
+                                                        @perm.DisplayName
+                                                        @if (!string.IsNullOrEmpty(perm.Description))
+                                                        {
+                                                            <div class="small text-muted">@perm.Description</div>
+                                                        }
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<style>
-    .cursor-pointer { cursor: pointer; }
-    .select-none { user-select: none; }
-    .user-badge {
-        transition: all 0.2s ease;
-        background: #f8f9fa;
-        color: #495057;
-        border-color: #dee2e6 !important;
-    }
-    .user-badge:hover {
-        background: #e9ecef;
-    }
-    .user-badge.selected {
-        background: #e7f5ff;
-        color: #0b5ed7;
-        border-color: #9ec5fe !important;
-    }
-</style>
+    <style>
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .select-none {
+            user-select: none;
+        }
+
+        .user-badge {
+            transition: all 0.2s ease;
+            background: #f8f9fa;
+            color: #495057;
+            border-color: #dee2e6 !important;
+        }
+
+        .user-badge:hover {
+            background: #e9ecef;
+        }
+
+        .user-badge.selected {
+            background: #e7f5ff;
+            color: #0b5ed7;
+            border-color: #9ec5fe !important;
+        }
+    </style>
 
 @code {
     [Parameter] public Guid? Id { get; set; }
-    
+
     [Inject] private RoleApiClient RoleService { get; set; } = default!;
     [Inject] private UserApiClient UserService { get; set; } = default!;
     [Inject] private PermissionGroupApiClient PermissionGroupService { get; set; } = default!;
@@ -182,8 +200,8 @@
     // Users
     private string UserSearchFilter { get; set; } = string.Empty;
     private List<IdentityUserDto> AllUsers { get; set; } = new();
-    private List<IdentityUserDto> FilteredUsers => string.IsNullOrWhiteSpace(UserSearchFilter) 
-        ? AllUsers 
+    private List<IdentityUserDto> FilteredUsers => string.IsNullOrWhiteSpace(UserSearchFilter)
+        ? AllUsers
         : AllUsers.Where(u => u.UserName.Contains(UserSearchFilter, StringComparison.OrdinalIgnoreCase)).ToList();
     private HashSet<Guid> SelectedUserIds { get; set; } = new();
     private bool IsAllUsersSelected => FilteredUsers.Any() && SelectedUserIds.IsSupersetOf(FilteredUsers.Select(u => u.Id));
@@ -193,16 +211,16 @@
     private List<PermissionGroupDto> AllPermissionGroups { get; set; } = new();
     private List<PermissionGroupDto> FilteredPermissionGroups => string.IsNullOrWhiteSpace(PermissionSearchFilter)
         ? AllPermissionGroups
-        : AllPermissionGroups.Where(g => g.DisplayName.Contains(PermissionSearchFilter, StringComparison.OrdinalIgnoreCase) 
+        : AllPermissionGroups.Where(g => g.DisplayName.Contains(PermissionSearchFilter, StringComparison.OrdinalIgnoreCase)
                                       || g.Permissions.Any(p => p.DisplayName.Contains(PermissionSearchFilter, StringComparison.OrdinalIgnoreCase))).ToList();
-    
+
     private HashSet<string> SelectedPermissions { get; set; } = new();
     private HashSet<string> ExpandedGroups { get; set; } = new();
     private bool IsAllExpanded;
-    
-    private bool IsAllPermissionsSelected 
+
+    private bool IsAllPermissionsSelected
     {
-        get 
+        get
         {
             var allPerms = AllPermissionGroups.SelectMany(g => g.Permissions).Select(p => p.Name).ToList();
             return allPerms.Any() && SelectedPermissions.IsSupersetOf(allPerms);
@@ -223,7 +241,12 @@
             if (usersResult != null) AllUsers = usersResult.Items.ToList();
 
             // 2. Fetch Permission Groups
-            var groupsResult = await PermissionGroupService.GetListAsync(new GetPermissionGroupsInput { PageSize = 1000, PageNumber = 1 });
+            var groupsResult = await PermissionGroupService.GetListAsync(new GetPermissionGroupsInput
+            {
+                PageSize = 1000,
+                PageNumber
+= 1
+            });
             if (groupsResult != null) AllPermissionGroups = groupsResult.Items.ToList();
 
             // 3. If Edit, fetch Role & its configurations
@@ -233,7 +256,7 @@
                 if (_role != null)
                 {
                     RoleName = _role.Name;
-                    
+
                     // Set users who have this role
                     foreach (var user in AllUsers)
                     {
@@ -244,10 +267,10 @@
                     }
 
                     // Fetch Permissions for this role
-                    var grants = await PermissionApiClientService.GetAsync(new GetPermissionListInput 
-                    { 
-                        ProviderName = "R", 
-                        ProviderKey = _role.Name 
+                    var grants = await PermissionApiClientService.GetAsync(new GetPermissionListInput
+                    {
+                        ProviderName = "R",
+                        ProviderKey = _role.Name
                     });
 
                     if (grants != null)
@@ -283,15 +306,15 @@
         try
         {
             IdentityRoleDto? savedRole = _role;
-            
+
             // 1. Save Role
             if (IsEdit)
             {
                 // Only update if not static to prevent bugs
-                if (_role!.IsStatic == false && _role.Name != RoleName) 
+                if (_role!.IsStatic == false && _role.Name != RoleName)
                 {
-                    savedRole = await RoleService.UpdateAsync(Id!.Value, new UpdateIdentityRoleInput 
-                    { 
+                    savedRole = await RoleService.UpdateAsync(Id!.Value, new UpdateIdentityRoleInput
+                    {
                         Name = RoleName,
                         ConcurrencyStamp = _role.ConcurrencyStamp
                     });
@@ -311,13 +334,13 @@
                 ProviderKey = savedRole.Name,
                 Permissions = AllPermissionGroups
                     .SelectMany(g => g.Permissions)
-                    .Select(p => new PermissionGrantInput 
-                    { 
-                        Name = p.Name, 
-                        IsGranted = SelectedPermissions.Contains(p.Name) 
+                    .Select(p => new PermissionGrantInput
+                    {
+                        Name = p.Name,
+                        IsGranted = SelectedPermissions.Contains(p.Name)
                     }).ToList()
             };
-            
+
             await PermissionApiClientService.UpdateAsync(updatePermsInput);
 
             // 3. Save Users (This is a simplified approach, normally updating roles per user is expensive in a loop)
@@ -328,7 +351,7 @@
             {
                 var hasRoleCurrent = user.Roles.Any(r => r.RoleName == savedRole.Name);
                 var shouldHaveRole = SelectedUserIds.Contains(user.Id);
-                
+
                 if (hasRoleCurrent != shouldHaveRole)
                 {
                     List<Guid> newRoleIds = user.Roles.Select(r => r.RoleId).ToList();
@@ -359,13 +382,13 @@
 
     // --- Users Handlers ---
     private void FilterUsers() => StateHasChanged();
-    
+
     private void ToggleUserSelection(Guid userId)
     {
         if (SelectedUserIds.Contains(userId)) SelectedUserIds.Remove(userId);
         else SelectedUserIds.Add(userId);
     }
-    
+
     private void ToggleSelectAllUsers(ChangeEventArgs e)
     {
         var isChecked = (bool)(e.Value ?? false);
@@ -395,7 +418,7 @@
             foreach (var p in allPerms) SelectedPermissions.Remove(p);
         }
     }
-    
+
     private void ToggleExpandAll(ChangeEventArgs e)
     {
         IsAllExpanded = (bool)(e.Value ?? false);

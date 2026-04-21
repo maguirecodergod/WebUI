@@ -14,7 +14,7 @@ namespace LHA.BlazorWasm.Components.Tabs;
 /// &lt;/Tabs&gt;
 /// </code>
 /// </summary>
-public partial class TabItem : LhaComponentBase, IDisposable
+public partial class TabItem : LHAComponentBase, IDisposable
 {
     // ── Cascade ───────────────────────────────────────────────
     [CascadingParameter] private Tabs? Parent { get; set; }

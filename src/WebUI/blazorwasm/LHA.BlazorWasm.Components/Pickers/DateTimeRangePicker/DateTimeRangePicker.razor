@@ -4,13 +4,13 @@
 @typeparam TInner
 @inherits PickerBase<DateRange<TInner>>
 
-<div class="picker-wrapper lha-picker-size-@Size.ToString().ToLower() @Class" style="@Style" @onfocusout="OnFocusOut" @onmousedown="HandleInternalInteraction"
-@ontouchstart="HandleInternalInteraction">
+<div class="picker-wrapper lha-picker-size-@Size.ToString().ToLower() @Class" style="@Style" @onfocusout="OnFocusOut"
+     @onmousedown="HandleInternalInteraction" @ontouchstart="HandleInternalInteraction">
 
     <div class="picker-input-container @(State.IsOpen ? "active" : "") @(Disabled ? "disabled" : "") @ValidationClass"
-    @onclick="TogglePopup">
+         @onclick="TogglePopup">
         <input type="text" class="picker-input" placeholder="@EffectivePlaceholder" value="@FormattedValue" readonly
-            disabled="@Disabled" />
+               disabled="@Disabled" />
 
         <div class="picker-icon">
             <i class="fas fa-calendar-check"></i>
@@ -34,8 +34,8 @@
                 <div class="panel-title">@Localizer.L("Common.Start")</div>
                 <div class="datetime-split">
                     <CalendarView State="StartState" SelectedDate="RangeConverter.MapRange(_tempValue).Start"
-                        Range="ConvertToLegacyRange(_tempValue)" OnDateSelected="(d) => HandleDateSelected(d, true)"
-                        Min="Min" Max="Max" DisabledDateFunc="DisabledDateFunc" />
+                                  Range="ConvertToLegacyRange(_tempValue)" OnDateSelected="(d) => HandleDateSelected(d, true)"
+                                  Min="Min" Max="Max" DisabledDateFunc="DisabledDateFunc" />
 
                     <div class="split-divider"></div>
 
@@ -50,8 +50,8 @@
                 <div class="panel-title">@Localizer.L("Common.End")</div>
                 <div class="datetime-split">
                     <CalendarView State="EndState" SelectedDate="RangeConverter.MapRange(_tempValue).End"
-                        Range="ConvertToLegacyRange(_tempValue)" OnDateSelected="(d) => HandleDateSelected(d, false)"
-                        Min="Min" Max="Max" DisabledDateFunc="DisabledDateFunc" />
+                                  Range="ConvertToLegacyRange(_tempValue)" OnDateSelected="(d) => HandleDateSelected(d, false)"
+                                  Min="Min" Max="Max" DisabledDateFunc="DisabledDateFunc" />
 
                     <div class="split-divider"></div>
 
@@ -62,10 +62,10 @@
         </div>
 
         <div class="range-actions">
-            <Button Type="CButtonType.Button" Class="btn-confirm" Disabled="@(!_tempValue.IsComplete)"
-                OnClick="ConfirmSelection">
+            <LHAButton Type="CButtonType.Button" Class="btn-confirm" Disabled="@(!_tempValue.IsComplete)"
+                       OnClick="ConfirmSelection">
                 @ComputedConfirmText
-            </Button>
+            </LHAButton>
         </div>
     </PickerPopup>
 </div>

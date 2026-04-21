@@ -31,7 +31,7 @@ namespace LHA.BlazorWasm.Components.Tabs;
 /// &lt;/Tabs&gt;
 /// </code>
 /// </summary>
-public partial class Tabs : LhaComponentBase
+public partial class Tabs : LHAComponentBase
 {
     // ═══════════════════════════════════════════════════════════
     // PARAMETERS — Layout & Visual

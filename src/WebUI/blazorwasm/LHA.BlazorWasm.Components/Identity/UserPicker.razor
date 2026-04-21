@@ -5,7 +5,7 @@
 @using LHA.Shared.Contracts.Identity
 @using LHA.BlazorWasm.HttpApi.Client.Clients
 @namespace LHA.BlazorWasm.Components.Identity
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 
 <PremiumDialog @ref="_dialog" Title="@L("Roles.AddUser")" Size="DialogSize.Medium" ShowFooter="true" OnOk="Assign"
                OnCancel="Close" OkText="@L("Roles.AssignNow")" CancelText="@L("Common.Cancel")">
@@ -39,7 +39,8 @@
             {
                 @foreach (var user in FilteredUsers)
                 {
-                    <div class="user-item @(_selectedIds.Contains(user.Id) ? "selected" : "")" @onclick="() => ToggleSelection(user)">
+                    <div class="user-item @(_selectedIds.Contains(user.Id) ? "selected" : "")"
+                         @onclick="() => ToggleSelection(user)">
                         <div class="checkbox-container">
                             <div class="custom-checkbox">
                                 <i>
@@ -73,13 +74,13 @@
                 @L("DataTable.SelectedCount", SelectedCount)
             </div>
             <div class="footer-actions">
-                <Button Style="CButtonStyle.Secondary" OnClick="Close">@L("Common.Cancel")</Button>
-                <Button Style="CButtonStyle.Primary" OnClick="Assign"
-                        Class="btn-assign-custom">@L("Roles.AssignNow")</Button>
+                <LHAButton Style="CButtonStyle.Secondary" OnClick="Close">@L("Common.Cancel")</LHAButton>
+                <LHAButton Style="CButtonStyle.Primary" OnClick="Assign" Class="btn-assign-custom">
+                    @L("Roles.AssignNow")</LHAButton>
+                </div>
             </div>
-        </div>
-    </FooterContent>
-</PremiumDialog>
+        </FooterContent>
+    </PremiumDialog>
 
 @code {
     [Inject] private UserApiClient UserAppService { get; set; } = default!;

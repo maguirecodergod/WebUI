@@ -1,5 +1,5 @@
 @namespace LHA.BlazorWasm.Components.Json
-@inherits LhaComponentBase
+@inherits LHAComponentBase
 @using Microsoft.JSInterop;
 @using Microsoft.Extensions.Logging;
 @using LHA.BlazorWasm.Components.Buttons
@@ -16,13 +16,13 @@
                 @if (AllowCopy)
                 {
                     <Tooltip Text="@L(_isCopied ? "Common_Copied" : "Common_Copy")">
-                        <Button Style="CButtonStyle.Ghost" Size="CButtonSize.Small" Class="@(_isCopied ? "copied" : "")"
-                                Icon="@(_isCopied ? "bi bi-check2" : "bi bi-clipboard")" OnClick="CopyToClipboardAsync">
+                        <LHAButton Style="CButtonStyle.Ghost" Size="CButtonSize.Small" Class="@(_isCopied ? "copied" : "")"
+                                   Icon="@(_isCopied ? "bi bi-check2" : "bi bi-clipboard")" OnClick="CopyToClipboardAsync">
                             @if (_isCopied)
                             {
                                 <span>@L("Common_Copied")</span>
                             }
-                        </Button>
+                        </LHAButton>
                     </Tooltip>
                 }
             </div>

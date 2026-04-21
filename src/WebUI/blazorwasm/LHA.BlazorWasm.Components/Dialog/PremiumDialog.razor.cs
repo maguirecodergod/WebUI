@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace LHA.BlazorWasm.Components.Dialog;
 
-public partial class PremiumDialog : LhaComponentBase
+public partial class PremiumDialog : LHAComponentBase
 {
     private ElementReference _overlayRef;
     private bool _shouldFocus = false;

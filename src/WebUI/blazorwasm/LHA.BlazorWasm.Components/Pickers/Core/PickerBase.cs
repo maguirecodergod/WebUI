@@ -7,7 +7,7 @@ namespace LHA.BlazorWasm.Components.Pickers.Core;
 /// Abstract base defining robust shared UI parameters ensuring zero-configuration consistency across all Pickers.
 /// Integrates pure C# blur mechanics and custom events.
 /// </summary>
-public abstract class PickerBase<TValue> : LhaComponentBase, IDisposable
+public abstract class PickerBase<TValue> : LHAComponentBase, IDisposable
 {
     [Parameter] public TValue? Value { get; set; }
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }

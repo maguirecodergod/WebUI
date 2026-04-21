@@ -7,21 +7,21 @@
         <div class="rte-dialog" @onclick:stopPropagation>
             <div class="rte-dialog-header">
                 <h3>@Localizer.L("Editor.Drag & Drop Image")</h3>
-                <Button Style="CButtonStyle.Link" Class="rte-dialog-close" OnClick="OnClose">
+                <LHAButton Style="CButtonStyle.Link" Class="rte-dialog-close" OnClick="OnClose">
                     <span class="bi bi-x-lg" style="font-size: 16px;">&times;</span>
-                </Button>
+                </LHAButton>
             </div>
             <div class="rte-dialog-body" style="padding: 30px;">
-                 <div class="rte-dropzone">
-                     <InputFile OnChange="HandleDropzoneUpload" accept="image/*" class="rte-dropzone-input" />
-                     <div class="rte-dropzone-content">
-                         <span style="color: #9ca3af; display: inline-block; width: 32px; height: 32px;">
-                             @((MarkupString)Icons.DragDrop)
-                         </span>
-                         <p style="margin: 0; font-size: 14px;">@Localizer.L("Editor.Drag and drop an image here")</p>
-                         <span style="font-size: 12px; opacity: 0.7;">@Localizer.L("Editor.or click to browse")</span>
-                     </div>
-                 </div>
+                <div class="rte-dropzone">
+                    <InputFile OnChange="HandleDropzoneUpload" accept="image/*" class="rte-dropzone-input" />
+                    <div class="rte-dropzone-content">
+                        <span style="color: #9ca3af; display: inline-block; width: 32px; height: 32px;">
+                            @((MarkupString)Icons.DragDrop)
+                        </span>
+                        <p style="margin: 0; font-size: 14px;">@Localizer.L("Editor.Drag and drop an image here")</p>
+                        <span style="font-size: 12px; opacity: 0.7;">@Localizer.L("Editor.or click to browse")</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

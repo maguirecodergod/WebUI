@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace LHA.BlazorWasm.Components.Select;
 
-public partial class SelectItem : LhaComponentBase
+public partial class SelectItem : LHAComponentBase
 {
     [Parameter] public string Label { get; set; } = string.Empty;
     [Parameter] public bool IsSelected { get; set; }

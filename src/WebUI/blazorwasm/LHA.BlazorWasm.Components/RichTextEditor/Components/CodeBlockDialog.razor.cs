@@ -3,7 +3,7 @@ using LHA.BlazorWasm.Components.Select;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 
-public partial class CodeBlockDialog : LhaComponentBase
+public partial class CodeBlockDialog : LHAComponentBase
 {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<CodeBlockResult> OnSubmit { get; set; }
