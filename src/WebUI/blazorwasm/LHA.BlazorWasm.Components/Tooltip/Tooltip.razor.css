@@ -1,11 +1,14 @@
 /* Core structural layout constraints isolated to component space */
 .lha-tooltip-wrapper {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
 }
 
 .tooltip-trigger {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
 }
 
 /* Base style defining absolute positioning out of standard container flow natively */

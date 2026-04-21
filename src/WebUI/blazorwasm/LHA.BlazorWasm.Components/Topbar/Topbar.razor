@@ -94,7 +94,9 @@
                     <div class="settings-actions tablet-desktop-only" @onclick:stopPropagation>
                         <ThemeSwitch Variant="CThemeSwitchVariant.Toggle" />
                         <LanguageSelector Mode="LHA.BlazorWasm.Services.Localization.CLanguageSelectorMode.Dropdown"
-                                          ShowFlags="true" ShowNames="false" />
+                                          ShowFlags="true" ShowNames="false" 
+                                          Variant="LHA.BlazorWasm.Components.Select.CSelectVariant.Minimalist"
+                                          Size="LHA.BlazorWasm.Components.Form.CInputSize.Small" />
                     </div>
                     @* User Profile *@
                     <div class="user-profile-container">

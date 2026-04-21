@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using LHA.BlazorWasm.Components.Skeleton
 
-<div @ref="_selectRef" class="select-wrapper lha-select-size-@Size.ToString().ToLower() @Class" style="@Style"
+<div @ref="_selectRef" class="select-wrapper lha-select-size-@Size.ToString().ToLower() lha-select-variant-@Variant.ToString().ToLower() @Class" style="@Style"
      @onfocusout="OnFocusOut" @onmousedown="HandleInternalInteraction" @ontouchstart="HandleInternalInteraction"
      @onkeydown="HandleKeyDown" tabindex="0" role="combobox" aria-expanded="@State.IsOpen.ToString().ToLower()"
      aria-haspopup="listbox">

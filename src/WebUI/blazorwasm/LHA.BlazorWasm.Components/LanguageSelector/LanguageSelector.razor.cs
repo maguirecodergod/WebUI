@@ -45,6 +45,16 @@ public partial class LanguageSelector : LhaComponentBase, IDisposable
     /// </summary>
     [Parameter] public string? Style { get; set; }
 
+    /// <summary>
+    /// Visual variant for the internal select component.
+    /// </summary>
+    [Parameter] public CSelectVariant Variant { get; set; } = CSelectVariant.Standard;
+
+    /// <summary>
+    /// Size of the internal select component.
+    /// </summary>
+    [Parameter] public LHA.BlazorWasm.Components.Form.CInputSize Size { get; set; } = LHA.BlazorWasm.Components.Form.CInputSize.Medium;
+
     private ICollection<SelectOption<string>> SelectOptions =>
         SupportedOptions.Select(o => new SelectOption<string>
         {

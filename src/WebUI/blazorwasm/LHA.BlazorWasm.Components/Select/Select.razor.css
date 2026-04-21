@@ -41,6 +41,62 @@
     background: color-mix(in srgb, var(--input-bg), var(--input-accent) 2%);
 }
 
+/* Variant: Minimalist */
+.lha-select-variant-minimalist .select-input-container {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: unset;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: 8px;
+    backdrop-filter: none;
+}
+
+.lha-select-variant-minimalist .select-input-container:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.lha-select-variant-minimalist .select-input-container.active {
+    background-color: var(--background-active, rgba(255, 255, 255, 0.15));
+    border-color: var(--primary-color, #0d6efd);
+    box-shadow: none;
+}
+
+/* Variant: Ghost */
+.lha-select-variant-ghost .select-input-container {
+    background-color: transparent;
+    border: 1px solid transparent;
+    min-height: unset;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: 8px;
+    backdrop-filter: none;
+}
+
+.lha-select-variant-ghost .select-input-container:hover {
+    background-color: var(--hover-bg, rgba(255, 255, 255, 0.05));
+    border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+.lha-select-variant-ghost .select-input-container.active {
+    background-color: var(--background-active, rgba(255, 255, 255, 0.1));
+    border-color: var(--primary-color, rgba(13, 110, 253, 0.5));
+    box-shadow: none;
+}
+
+.lha-select-variant-ghost .select-arrow-container,
+.lha-select-variant-minimalist .select-arrow-container {
+    width: 14px;
+    height: 14px;
+    margin-left: 4px;
+}
+
+.lha-select-variant-ghost .bi-chevron-down,
+.lha-select-variant-minimalist .bi-chevron-down {
+    font-size: 0.75rem;
+}
+
 
 .select-input-container.disabled {
     background-color: var(--hover-bg, #e9ecef);

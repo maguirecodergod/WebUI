@@ -1,9 +1,14 @@
 .theme-switch {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    vertical-align: middle;
     cursor: pointer;
     user-select: none;
     transition: opacity 0.2s;
+    line-height: normal;
+    margin: 0;
+    padding: 0;
 }
 
 .theme-switch:hover {

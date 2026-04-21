@@ -38,6 +38,7 @@ public partial class Select<TValue> : LhaComponentBase
     [Parameter] public CInputSize Size { get; set; } = CInputSize.Medium;
 
     [Parameter] public bool ShowClear { get; set; } = true;
+    [Parameter] public CSelectVariant Variant { get; set; } = CSelectVariant.Standard;
 
     [Parameter] public RenderFragment<SelectOption<TValue>>? OptionTemplate { get; set; }
     [Parameter] public RenderFragment<TValue?>? ValueTemplate { get; set; }
