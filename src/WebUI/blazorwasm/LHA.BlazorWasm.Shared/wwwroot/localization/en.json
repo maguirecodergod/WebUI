@@ -1,26 +1,4 @@
 {
-    "Menu": {
-        "Home": "Home",
-        "Host": {
-            "Roles": "Roles Management"
-        }
-    },
-    "Common": {
-        "Save": "Save",
-        "Cancel": "Cancel",
-        "Close": "Close",
-        "Delete": "Delete",
-        "Suggestions": "Try the following:",
-        "Refresh": "Refresh",
-        "GlobalSearch": "Global Search...",
-        "Operations": "Operations",
-        "ViewDetails": "View Details",
-        "All": "All",
-        "Yes": "Yes",
-        "No": "No",
-        "Detail": "Detail",
-        "General": "General"
-    },
     "AuditLog": {
         "PageTitle": "Audit Logs",
         "Title": "Operation Logs",
@@ -66,35 +44,56 @@
             "2": "Deleted"
         }
     },
-    "User": {
-        "Title": "Users",
-        "Create": "Create User"
-    },
-    "Sidebar": {
-        "AriaLabel": "Main Navigation",
-        "ResizeTooltip": "Drag to resize",
-        "Home": "Home",
-        "Counter": "Counter",
-        "Weather": "Weather",
-        "Content": "Content",
-        "RichEditor": "Rich Editor",
-        "Media": "Media",
-        "Images": "Images",
-        "Videos": "Videos",
-        "Documents": "Documents",
-        "Settings": "Settings",
+    "Common": {
+        "All": "All",
+        "AllDatasetSelected": "All {0} records are selected.",
+        "AllPageSelected": "All {0} records on this page are selected.",
+        "Apply": "Apply",
+        "Cancel": "Cancel",
+        "Clear": "Clear",
+        "ClearAllFilters": "Clear All Filters",
+        "ClearSelection": "Clear Selection",
+        "Close": "Close",
+        "Columns": "Columns",
+        "Confirm": "Confirm",
+        "ConfirmDelete": "Confirm Delete",
+        "Copied": "Copied",
+        "Copy": "Copy",
+        "CopyFailed": "Copy failed",
+        "Create": "Create",
+        "CreationTime": "Created At",
+        "Delete": "Delete",
+        "DeleteFailed": "Deletion failed",
+        "DeletedSuccessfully": "Deleted successfully",
+        "Description": "Description",
+        "Detail": "Detail",
+        "DisplayColumn": "Display Columns",
+        "Edit": "Edit",
+        "Filters": "Filters",
+        "First": "First",
         "General": "General",
-        "Security": "Security",
-        "Advanced": "Advanced",
-        "Logs": "Logs",
-        "Config": "Configuration",
-        "ApiTest": "API Test",
-        "HostManagement": "Host Management",
-        "Tenants": "Tenants",
-        "GlobalAuditLogs": "Global Audit Logs",
-        "Management": "Management",
-        "Users": "Users",
-        "AuditLogs": "Audit Logs"
+        "GlobalSearch": "Global Search...",
+        "GoToPage": "Go to page",
+        "Joined": "Joined",
+        "Last": "Last",
+        "LastUpdated": "Last Updated",
+        "Next": "Next",
+        "No": "No",
+        "NoData": "No Data",
+        "Operations": "Operations",
+        "Refresh": "Refresh",
+        "Prev": "Previous",
+        "RowsPerPage": "Rows per page:",
+        "Save": "Save",
+        "SavedSuccessfully": "Saved successfully",
+        "SaveFailed": "Save failed",
+        "Search": "Search",
+        "SelectAllDataset": "Select all {0} records",
+        "ShowingEntries": "Showing {0}-{1} of {2}",
+        "Suggestions": "Try the following:",
+        "ViewAll": "View All",
+        "ViewDetails": "View Details",
+        "Yes": "Yes"
     },
     "Errors": {
         "NotFound": {
@@ -121,140 +120,6 @@
             "UnauthorizedError": "You do not have permission to access that resource.",
             "NullError": "The application encountered missing data. Please refresh.",
             "ErrorId": "Error ID"
-        }
-    },
-    "Permissions": {
-        "UserManagement": {
-            "Group": "User Management",
-            "Read": "View Users",
-            "Create": "Create User",
-            "Update": "Update User",
-            "Delete": "Delete User"
-        },
-        "RoleManagement": {
-            "Group": "Role Management",
-            "Read": "View Roles",
-            "Create": "Create Role",
-            "Update": "Update Role",
-            "Delete": "Delete Role"
-        },
-        "ClaimTypeManagement": {
-            "Group": "Claim Type Management",
-            "Read": "View Claim Types",
-            "Create": "Create Claim Type",
-            "Update": "Update Claim Type",
-            "Delete": "Delete Claim Type"
-        },
-        "SecurityLogManagement": {
-            "Group": "Security Log Management",
-            "Read": "View Security Logs"
-        },
-        "TenantManagement": {
-            "Group": "Tenant Management",
-            "Read": "View Tenants",
-            "Create": "Create Tenant",
-            "Update": "Update Tenant",
-            "Delete": "Delete Tenant"
-        },
-        "AuditLogManagement": {
-            "Group": "Audit Log Management",
-            "Read": "View Audit Logs"
-        },
-        "PermissionMgmt": {
-            "Group": "Permission Management",
-            "DefinitionsRead": "View Permission Definitions",
-            "DefinitionsManage": "Manage Permission Definitions",
-            "GroupsRead": "View Permission Groups",
-            "GroupsManage": "Manage Permission Groups",
-            "TemplatesRead": "View Permission Templates",
-            "TemplatesManage": "Manage Permission Templates",
-            "GrantsRead": "View Permission Grants",
-            "GrantsManage": "Manage Permission Grants"
-        },
-        "Templates": {
-            "TenantAdmin": {
-                "Name": "Tenant Administrator",
-                "Description": "Full access to all management features."
-            }
-        }
-    },
-    "Login": {
-        "Title": "Login",
-        "Subtitle": "Access your workspace",
-        "UserNameOrEmail": "Username or Email",
-        "Password": "Password",
-        "RememberMe": "Remember Me",
-        "ForgotPassword": "Forgot password?",
-        "NoAccount": "Don't have an account?",
-        "RegisterTenant": "Create New Tenant",
-        "Validation": {
-            "UserNameOrEmailRequired": "Username or email is required",
-            "PasswordRequired": "Password is required"
-        }
-    },
-    "TenantRegister": {
-        "Title": "Register New Tenant",
-        "Subtitle": "Join the Enterprise Ecosystem",
-        "Steps": {
-            "Plan": "Plan",
-            "Details": "Details",
-            "Launch": "Launch"
-        },
-        "Step1": {
-            "Title": "Select Database Architecture",
-            "Desc": "Choose the isolation level that fits your organization's security and budget needs.",
-            "BadgePopular": "Most Popular",
-            "PlanStartup": {
-                "Name": "Startup",
-                "Subtitle": "Shared Database",
-                "Desc": "Logical isolation via TenantID. Fast provisioning, perfect for scaling startups.",
-                "Price": "$29",
-                "Feature1": "Shared SQL resources",
-                "Feature2": "Logical row-level security",
-                "Feature3": "Up to 50 users"
-            },
-            "PlanBusiness": {
-                "Name": "Business",
-                "Subtitle": "Hybrid Architecture",
-                "Desc": "Balancing isolation and cost. Shared metadata, dedicated data schema.",
-                "Price": "$99",
-                "Feature1": "Schema-level isolation",
-                "Feature2": "Dedicated IO quotas",
-                "Feature3": "Up to 500 users"
-            },
-            "PlanEnterprise": {
-                "Name": "Enterprise",
-                "Subtitle": "Dedicated Database",
-                "Desc": "Physical isolation for maximum security and compliance requirements.",
-                "Price": "$299",
-                "Feature1": "Physical database isolation",
-                "Feature2": "BYOK Encryption",
-                "Feature3": "Unlimited users"
-            },
-            "Continue": "Continue to Details"
-        },
-        "Step2": {
-            "Title": "Organization Details",
-            "Desc": "Set up your workspace and admin account for the {0} plan.",
-            "OrgName": "Organization Name",
-            "AdminUsername": "Admin Username",
-            "AdminEmail": "Admin Email",
-            "AdminPassword": "Admin Password",
-            "Back": "Back to Plans",
-            "Finalize": "Finalize Setup"
-        },
-        "Step3": {
-            "Title": "Environment Provisioning",
-            "Desc": "Your tenant {0} ({1}) is being spun up. We will redirect you to your dashboard shortly.",
-            "Launch": "Launch Dashboard"
-        },
-        "Validation": {
-            "NameRequired": "Organization name is required.",
-            "AdminUsernameRequired": "Admin username is required.",
-            "AdminEmailRequired": "Admin email is required.",
-            "InvalidEmail": "Please enter a valid email address.",
-            "AdminPasswordRequired": "Admin password is required.",
-            "PasswordTooShort": "Password must be at least 6 characters."
         }
     },
     "HttpStatus": {
@@ -326,5 +191,230 @@
         "LoopDetected": "Loop Detected",
         "NotExtended": "Not Extended",
         "NetworkAuthenticationRequired": "Network Authentication Required"
+    },
+    "Login": {
+        "ForgotPassword": "Forgot password?",
+        "GenericError": "An unknown error occurred. Please try again later.",
+        "NoAccount": "Don't have an account?",
+        "Password": "Password",
+        "RegisterTenant": "Create New Tenant",
+        "RememberMe": "Remember Me",
+        "Submit": "SIGN IN SYSTEM",
+        "Subtitle": "Access your workspace",
+        "Title": "Login",
+        "Validation": {
+            "UserNameOrEmailRequired": "Username or email is required",
+            "PasswordRequired": "Password is required"
+        },
+        "UserNameOrEmail": "Username or Email"
+    },
+    "Menu": {
+        "Home": "Home",
+        "Host": {
+            "Roles": "Roles Management"
+        }
+    },
+    "Permissions": {
+        "UserManagement": {
+            "Group": "User Management",
+            "Read": "View Users",
+            "Create": "Create User",
+            "Update": "Update User",
+            "Delete": "Delete User"
+        },
+        "RoleManagement": {
+            "Group": "Role Management",
+            "Read": "View Roles",
+            "Create": "Create Role",
+            "Update": "Update Role",
+            "Delete": "Delete Role"
+        },
+        "ClaimTypeManagement": {
+            "Group": "Claim Type Management",
+            "Read": "View Claim Types",
+            "Create": "Create Claim Type",
+            "Update": "Update Claim Type",
+            "Delete": "Delete Claim Type"
+        },
+        "SecurityLogManagement": {
+            "Group": "Security Log Management",
+            "Read": "View Security Logs"
+        },
+        "TenantManagement": {
+            "Group": "Tenant Management",
+            "Read": "View Tenants",
+            "Create": "Create Tenant",
+            "Update": "Update Tenant",
+            "Delete": "Delete Tenant"
+        },
+        "AuditLogManagement": {
+            "Group": "Audit Log Management",
+            "Read": "View Audit Logs",
+            "HostRead": "View All Audit Logs of System"
+        },
+        "PermissionMgmt": {
+            "Group": "Permission Management",
+            "DefinitionsRead": "View Permission Definitions",
+            "DefinitionsManage": "Manage Permission Definitions",
+            "GroupsRead": "View Permission Groups",
+            "GroupsManage": "Manage Permission Groups",
+            "TemplatesRead": "View Permission Templates",
+            "TemplatesManage": "Manage Permission Templates",
+            "GrantsRead": "View Permission Grants",
+            "GrantsManage": "Manage Permission Grants"
+        },
+        "Templates": {
+            "TenantAdmin": {
+                "Name": "Tenant Administrator",
+                "Description": "Full access to all management features."
+            }
+        }
+    },
+    "Roles": {
+        "PageTitle": "Roles Management",
+        "PageDescription": "Define and assign organizational roles to control access permissions across the infrastructure.",
+        "AccessManagement": "Access Management",
+        "Name": "Role Name",
+        "IsDefault": "Default",
+        "IsPublic": "Public",
+        "DeleteSingleConfirmation": "Are you sure you want to delete this role?",
+        "LoadError": "Failed to load roles",
+        "CreateRole": "Create New Role",
+        "EditRole": "Edit Role",
+        "BasicInformation": "Basic Information",
+        "PermissionsMatrix": "Permissions Matrix",
+        "AssignedPersonnel": "Assigned Personnel",
+        "UserSpecificPermissions": "Manage Permissions for {0}",
+        "OverrideDescription": "Manage user-specific permission overrides (Provider: User)",
+        "InheritedFromRole": "Inherited from Role",
+        "InheritedFromTemplate": "Inherited from Template",
+        "UserPermissionsSaved": "Permissions for {0} updated successfully.",
+        "UserPermissionsSaveFailed": "Failed to update user permissions.",
+        "NoPermissionsFound": "No permissions found.",
+        "NoUsersAssigned": "No users assigned to this role.",
+        "SearchPermissions": "Search permissions...",
+        "UserRemovedSuccessfully": "User {0} removed from this role.",
+        "UserRemoveFailed": "Failed to remove user from role.",
+        "SelectAll": "Select All",
+        "PermissionsForGroup": "Manage access for {0}",
+        "Default": "Default",
+        "Public": "Public",
+        "Static": "Static",
+        "GeneralInformation": "General Information",
+        "AssignedUsers": "Assigned Users",
+        "AssignedUsersDescription": "List of personnel currently holding this role in the system.",
+        "NamePlaceholder": "Enter role name...",
+        "Permissions": "Permissions",
+        "AddUser": "Add User",
+        "AssignNow": "Assign Now",
+        "ManagePermissions": "Manage Permissions",
+        "Remove": "Remove",
+        "Tab.Permissions": "Permissions",
+        "Tab.Users": "Users",
+        "DefaultRole": "Default Role",
+        "SystemRole": "System Role",
+        "PublicRole": "Public Role",
+        "EffectivePermissionsFor": "Effective Permissions for",
+        "Email": "Email",
+        "ManualOverride": "Manual Override",
+        "TogglePermission": "Toggle Permission",
+        "User": "User"
+    },
+    "Sidebar": {
+        "AriaLabel": "Main Navigation",
+        "ResizeTooltip": "Drag to resize",
+        "Home": "Home",
+        "Counter": "Counter",
+        "Weather": "Weather",
+        "Content": "Content",
+        "RichEditor": "Rich Editor",
+        "Media": "Media",
+        "Images": "Images",
+        "Videos": "Videos",
+        "Documents": "Documents",
+        "Settings": "Settings",
+        "General": "General",
+        "Security": "Security",
+        "Advanced": "Advanced",
+        "Logs": "Logs",
+        "Config": "Configuration",
+        "ApiTest": "API Test",
+        "HostManagement": "Host Management",
+        "Tenants": "Tenants",
+        "GlobalAuditLogs": "Global Audit Logs",
+        "Management": "Management",
+        "Users": "Users",
+        "AuditLogs": "Audit Logs",
+        "Sidebar.Home": "Home",
+        "Roles": "Role Management"
+    },
+    "TenantRegister": {
+        "Title": "Register New Tenant",
+        "Subtitle": "Join the Enterprise Ecosystem",
+        "Steps": {
+            "Plan": "Plan",
+            "Details": "Details",
+            "Launch": "Launch"
+        },
+        "Step1": {
+            "Title": "Select Database Architecture",
+            "Desc": "Choose the isolation level that fits your organization's security and budget needs.",
+            "BadgePopular": "Most Popular",
+            "PlanStartup": {
+                "Name": "Startup",
+                "Subtitle": "Shared Database",
+                "Desc": "Logical isolation via TenantID. Fast provisioning, perfect for scaling startups.",
+                "Price": "$29",
+                "Feature1": "Shared SQL resources",
+                "Feature2": "Logical row-level security",
+                "Feature3": "Up to 50 users"
+            },
+            "PlanBusiness": {
+                "Name": "Business",
+                "Subtitle": "Hybrid Architecture",
+                "Desc": "Balancing isolation and cost. Shared metadata, dedicated data schema.",
+                "Price": "$99",
+                "Feature1": "Schema-level isolation",
+                "Feature2": "Dedicated IO quotas",
+                "Feature3": "Up to 500 users"
+            },
+            "PlanEnterprise": {
+                "Name": "Enterprise",
+                "Subtitle": "Dedicated Database",
+                "Desc": "Physical isolation for maximum security and compliance requirements.",
+                "Price": "$299",
+                "Feature1": "Physical database isolation",
+                "Feature2": "BYOK Encryption",
+                "Feature3": "Unlimited users"
+            },
+            "Continue": "Continue to Details"
+        },
+        "Step2": {
+            "Title": "Organization Details",
+            "Desc": "Set up your workspace and admin account for the {0} plan.",
+            "OrgName": "Organization Name",
+            "AdminUsername": "Admin Username",
+            "AdminEmail": "Admin Email",
+            "AdminPassword": "Admin Password",
+            "Back": "Back to Plans",
+            "Finalize": "Finalize Setup"
+        },
+        "Step3": {
+            "Title": "Environment Provisioning",
+            "Desc": "Your tenant {0} ({1}) is being spun up. We will redirect you to your dashboard shortly.",
+            "Launch": "Launch Dashboard"
+        },
+        "Validation": {
+            "NameRequired": "Organization name is required.",
+            "AdminUsernameRequired": "Admin username is required.",
+            "AdminEmailRequired": "Admin email is required.",
+            "InvalidEmail": "Please enter a valid email address.",
+            "AdminPasswordRequired": "Admin password is required.",
+            "PasswordTooShort": "Password must be at least 6 characters."
+        }
+    },
+    "User": {
+        "Title": "Users",
+        "Create": "Create User"
     }
 }

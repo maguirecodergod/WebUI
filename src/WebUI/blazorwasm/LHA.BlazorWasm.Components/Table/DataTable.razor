@@ -31,7 +31,7 @@
             {
                 <div class="dt-search" style="min-width: 260px;">
                     <CInput TValue="string" Value="@_searchInput" ValueChanged="OnSearchValueChanged"
-                            ValueExpression="@(() => _searchInput)" Placeholder="@Localizer.L("DataTable.Search")" Clearable="true"
+                            ValueExpression="@(() => _searchInput)" Placeholder="@Localizer.L("Common.Search")" Clearable="true"
                             Size="CInputSize.Small">
                         <IconLeft>
                             <i class="bi bi-search"></i>
@@ -42,7 +42,7 @@
 
             @if (_columns.Any(c => c.Filterable))
             {
-                <Tooltip Text="@Localizer.L("DataTable.Filters")" Placement="CTooltipPlacement.Top">
+                <Tooltip Text="@Localizer.L("Common.Filters")" Placement="CTooltipPlacement.Top">
                     <Button Class="@($"dt-toolbar-btn {(_filterSidebarOpen ? "dt-toolbar-btn-active" : string.Empty)}")"
                             Style="CButtonStyle.Light" OnClick="ToggleFilterSidebar">
                         <i class="bi bi-filter"></i>
@@ -53,7 +53,7 @@
             @if (ShowColumnToggle && _columns.Count > 0)
             {
                 <div style="position: relative;">
-                    <Tooltip Text="@Localizer.L("DataTable.Columns")" Placement="CTooltipPlacement.Top">
+                    <Tooltip Text="@Localizer.L("Common.DisplayColumn")" Placement="CTooltipPlacement.Top">
                         <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="ToggleColumnDropdown"
                                 OnClick:stopPropagation="true">
                             <i class="bi bi-columns-gap"></i>
@@ -74,7 +74,7 @@
                 </div>
             }
 
-            <Tooltip Text="@Localizer.L("DataTable.Refresh")" Placement="CTooltipPlacement.Top">
+            <Tooltip Text="@Localizer.L("Common.Refresh")" Placement="CTooltipPlacement.Top">
                 <Button Class="dt-toolbar-btn" Style="CButtonStyle.Light" OnClick="RefreshAsync" IsLoading="@_isLoading">
                     <i class="bi bi-arrow-clockwise"></i>
                 </Button>
@@ -148,18 +148,18 @@
                             <div class="dt-selection-msg">
                                 @if (!_allEntireDatasetSelected)
                                 {
-                                    <span>@string.Format(Localizer.L("DataTable.AllPageSelected"), _displayItems.Count)</span>
+                                    <span>@string.Format(Localizer.L("Common.AllPageSelected"), _displayItems.Count)</span>
                                     <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
                                             OnClick="SelectAllEntireDataset">
-                                        @string.Format(Localizer.L("DataTable.SelectAllDataset"), _totalCount)
+                                        @string.Format(Localizer.L("Common.SelectAllDataset"), _totalCount)
                                     </Button>
                                 }
                                 else
                                 {
-                                    <span>@string.Format(Localizer.L("DataTable.AllDatasetSelected"), _totalCount)</span>
+                                    <span>@string.Format(Localizer.L("Common.AllDatasetSelected"), _totalCount)</span>
                                     <Button Style="CButtonStyle.Link" Size="CButtonSize.Small" Class="ms-2"
                                             OnClick="ClearSelectionAsync">
-                                        @Localizer.L("DataTable.ClearSelection")
+                                        @Localizer.L("Common.ClearSelection")
                                     </Button>
                                 }
                             </div>
@@ -192,7 +192,7 @@
                             }
                             else
                             {
-                                <text>@Localizer.L("DataTable.NoData")</text>
+                                <text>@Localizer.L("Common.NoData")</text>
                             }
                         </td>
                     </tr>
@@ -273,7 +273,7 @@
         <div class="dt-sidebar-header">
             <h3 class="dt-sidebar-title">
                 <i class="bi bi-filter"></i>
-                @Localizer.L("DataTable.Filters")
+                @Localizer.L("Common.Filters")
             </h3>
             <button type="button" @onclick="CloseFilterSidebar"
                     style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
@@ -289,10 +289,10 @@
         </div>
         <div class="dt-sidebar-footer">
             <Button Style="CButtonStyle.Light" Size="CButtonSize.Small" OnClick="ClearAllFiltersAsync" Class="flex-grow-1">
-                @Localizer.L("DataTable.Clear")
+                @Localizer.L("Common.Clear")
             </Button>
             <Button Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="ApplyFiltersAsync" Class="flex-grow-1">
-                @Localizer.L("DataTable.Apply")
+                @Localizer.L("Common.Apply")
             </Button>
         </div>
     </aside>
@@ -325,7 +325,7 @@
             case FilterType.Select:
                 <select class="dt-filter-input" value="@GetStagedFilterValue(col.Field)"
                         @onchange="e => SetStagedFilter(col.Field, e.Value?.ToString(), FilterType.Select, FilterOperator.Equals)">
-                    <option value="">@Localizer.L("DataTable.All")</option>
+                    <option value="">@Localizer.L("Common.All")</option>
                     @if (col.FilterOptions is not null)
                     {
                         @foreach (var opt in col.FilterOptions)

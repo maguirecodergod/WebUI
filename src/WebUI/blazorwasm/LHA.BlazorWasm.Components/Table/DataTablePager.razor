@@ -13,13 +13,13 @@
                 var from = TotalCount == 0 ? 0 : (PageNumber - 1) * PageSize + 1;
                 var to = Math.Min(PageNumber * PageSize, TotalCount);
             }
-            <span>@string.Format(Localizer.L("DataTable.ShowingEntries"), from, to, TotalCount)</span>
+            <span>@L("Common.ShowingEntries", from, to, TotalCount)</span>
         </div>
 
         <div class="dt-pager-size">
-            <span>@Localizer.L("DataTable.RowsPerPage")</span>
+            <span>@L("Common.RowsPerPage")</span>
             <div class="dt-pager-select-wrapper">
-                <Select TValue="int" Options="@_pageSizeOptions" Value="PageSize" ValueChanged="SelectPageSize" 
+                <Select TValue="int" Options="@_pageSizeOptions" Value="PageSize" ValueChanged="SelectPageSize"
                         ShowClear="false" Class="dt-pager-select" Placement="CSelectPlacement.Top" />
             </div>
         </div>
@@ -30,12 +30,12 @@
     <div class="dt-pager-column">
         <div class="dt-pager-nav">
             @* Previous block *@
-            <Tooltip Text="@Localizer.L("DataTable.First")" Placement="CTooltipPlacement.Top">
+            <Tooltip Text="@L("Common.First")" Placement="CTooltipPlacement.Top">
                 <Button Class="dt-pager-btn" Disabled="@(PageNumber <= 1)" Style="CButtonStyle.Light"
                         OnClick="() => GoTo(1)">«</Button>
             </Tooltip>
 
-            <Tooltip Text="@Localizer.L("Common.Prev")" Placement="CTooltipPlacement.Top">
+            <Tooltip Text="@L("Common.Prev")" Placement="CTooltipPlacement.Top">
                 <Button Class="dt-pager-btn" Disabled="@(PageNumber <= 1)" Style="CButtonStyle.Light"
                         OnClick="() => GoTo(PageNumber - 1)">‹</Button>
             </Tooltip>
@@ -58,12 +58,12 @@
             }
 
             @* Next block *@
-            <Tooltip Text="@Localizer.L("Common.Next")" Placement="CTooltipPlacement.Top">
+            <Tooltip Text="@L("Common.Next")" Placement="CTooltipPlacement.Top">
                 <Button Class="dt-pager-btn" Disabled="@(PageNumber >= TotalPages)" Style="CButtonStyle.Light"
                         OnClick="() => GoTo(PageNumber + 1)">›</Button>
             </Tooltip>
 
-            <Tooltip Text="@Localizer.L("DataTable.Last")" Placement="CTooltipPlacement.Top">
+            <Tooltip Text="@L("Common.Last")" Placement="CTooltipPlacement.Top">
                 <Button Class="dt-pager-btn" Disabled="@(PageNumber >= TotalPages)" Style="CButtonStyle.Light"
                         OnClick="() => GoTo(TotalPages)">»</Button>
             </Tooltip>
@@ -71,7 +71,7 @@
 
 
         <div class="dt-pager-jump">
-            <span>@Localizer.L("DataTable.GoToPage")</span>
+            <span>@L("Common.GoToPage")</span>
             <input type="number" min="1" max="@TotalPages" value="@PageNumber" @onchange="OnJumpChange"
                    class="dt-pager-jump-input" />
         </div>
