@@ -31,6 +31,9 @@ public sealed class AuditLogRecord
     /// <summary>Type of action that was audited.</summary>
     public AuditActionType ActionType { get; set; }
 
+    /// <summary>Request/transport type that produced this log.</summary>
+    public CRequestType RequestType { get; set; } = CRequestType.Unknown;
+
     /// <summary>Authenticated user identifier.</summary>
     public string? UserId { get; set; }
 

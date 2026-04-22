@@ -32,11 +32,15 @@ public sealed class AccountUserTenantLookupService : IUserTenantLookupService, I
         await tenantRepo.InsertAsync(tenant, ct);
 
         // 2. Resolve orchestrator and provision infrastructure (e.g., generate conn string, run migrations)
-        var provisioner = scope.ServiceProvider.GetRequiredService<LHA.Account.Application.TenantProvisioning.ITenantProvisioningOrchestrator>();
-        await provisioner.ProvisionAsync(tenant, ct);
+        var provisioner = scope.ServiceProvider.GetRequiredService<LHA.MultiTenancy.Provisioning.ITenantProvisioningOrchestrator>();
+        var newConnString = await provisioner.ProvisionAsync(tenant.Id, tenant.NormalizedName, (int)style, ct);
 
         // 3. Update the tenant again if the provisioner modified the connection strings
-        await tenantRepo.UpdateAsync(tenant, ct);
+        if (!string.IsNullOrWhiteSpace(newConnString))
+        {
+            tenant.AddOrUpdateConnectionString(LHA.Shared.Domain.TenantManagement.TenantConsts.DefaultConnectionStringName, newConnString);
+            await tenantRepo.UpdateAsync(tenant, ct);
+        }
 
         return tenant.Id;
     }

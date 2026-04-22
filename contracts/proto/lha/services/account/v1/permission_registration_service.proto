@@ -27,6 +27,7 @@ message PermissionDefinitionDto {
   string name         = 1;
   string display_name = 2;
   string group_name   = 3;
+  PermissionMultiTenancySide multi_tenancy_side = 4;
 }
 
 message PermissionGroupDto {
@@ -37,4 +38,10 @@ message PermissionGroupDto {
 message RegisterPermissionsResponse {
   bool   success = 1;
   string message = 2;
+}
+
+enum PermissionMultiTenancySide {
+  PERMISSION_MULTI_TENANCY_SIDE_BOTH = 0;
+  PERMISSION_MULTI_TENANCY_SIDE_HOST = 1;
+  PERMISSION_MULTI_TENANCY_SIDE_TENANT = 2;
 }

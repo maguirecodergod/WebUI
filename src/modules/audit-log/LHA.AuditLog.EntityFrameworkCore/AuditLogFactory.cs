@@ -54,6 +54,7 @@ public static class AuditLogFactory
             impersonatorTenantId: entry.ImpersonatorTenantId,
             executionTime: entry.ExecutionTime,
             executionDuration: entry.ExecutionDuration,
+            requestType: entry.RequestType,
             clientId: entry.ClientId,
             correlationId: entry.CorrelationId,
             clientIpAddress: entry.ClientIpAddress,

@@ -1,6 +1,4 @@
-using LHA.TenantManagement.Domain;
-
-namespace LHA.Account.Application.TenantProvisioning;
+namespace LHA.MultiTenancy.Provisioning;
 
 /// <summary>
 /// Orchestrates the process of provisioning a tenant's infrastructure
@@ -10,6 +8,7 @@ public interface ITenantProvisioningOrchestrator
 {
     /// <summary>
     /// Evaluates the tenant's DatabaseStyle and delegates to the appropriate Strategy.
+    /// Returns the updated connection string if applicable.
     /// </summary>
-    Task ProvisionAsync(TenantEntity tenant, CancellationToken cancellationToken = default);
+    Task<string?> ProvisionAsync(Guid tenantId, string normalizedTenantName, int style, CancellationToken cancellationToken = default);
 }

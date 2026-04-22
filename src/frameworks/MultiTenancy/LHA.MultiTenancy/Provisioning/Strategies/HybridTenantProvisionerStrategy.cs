@@ -1,9 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
-using LHA.TenantManagement.Domain;
-using LHA.Shared.Domain.TenantManagement;
-
-namespace LHA.Account.Application.TenantProvisioning.Strategies;
+namespace LHA.MultiTenancy.Provisioning.Strategies;
 
 /// <summary>
 /// Provisioning strategy for Hybrid isolation schemas.
@@ -11,12 +6,12 @@ namespace LHA.Account.Application.TenantProvisioning.Strategies;
 /// </summary>
 public sealed class HybridTenantProvisionerStrategy : ITenantProvisionerStrategy
 {
-    public CMultiTenancyDatabaseStyle Style => CMultiTenancyDatabaseStyle.Hybrid;
+    public int Style => 7; // Hybrid
 
-    public Task ProvisionAsync(TenantEntity tenant, CancellationToken cancellationToken = default)
+    public Task<string?> ProvisionAsync(Guid tenantId, string normalizedTenantName, CancellationToken cancellationToken = default)
     {
         // Implement advanced custom logic here
         // (Like finding least loaded database shards or creating one selectively).
-        return Task.CompletedTask;
+        return Task.FromResult<string?>(null);
     }
 }

@@ -35,9 +35,20 @@ public sealed class AuditEventHandlerDecorator<TEvent> : IEventHandler<TEvent>
         {
             Timestamp = DateTimeOffset.UtcNow,
             ActionType = AuditActionType.EventHandler,
+            RequestType = CRequestType.MessageQueue,
             ActionName = $"EventHandler:{_inner.GetType().Name}<{typeof(TEvent).Name}>",
             CorrelationId = context.Metadata.CorrelationId?.ToString(),
-            TenantId = context.Metadata.TenantId?.ToString()
+            TenantId = context.Metadata.TenantId?.ToString(),
+            Tags = JsonSerializer.Serialize(new Dictionary<string, string?>
+            {
+                ["requestType"] = CRequestType.MessageQueue.ToString(),
+                ["eventType"] = typeof(TEvent).FullName,
+                ["handler"] = _inner.GetType().FullName,
+                ["eventName"] = context.Metadata.EventName,
+                ["eventId"] = context.Metadata.EventId.ToString("N"),
+                ["source"] = context.Metadata.Source,
+                ["consumerGroup"] = context.Metadata.ConsumerGroup
+            })
         };
 
         // Serialize event payload

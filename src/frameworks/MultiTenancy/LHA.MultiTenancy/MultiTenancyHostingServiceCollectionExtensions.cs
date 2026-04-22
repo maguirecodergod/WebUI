@@ -28,6 +28,13 @@ public static class MultiTenancyHostingServiceCollectionExtensions
         // Connection string resolver
         services.TryAddSingleton<MultiTenantConnectionStringResolver>();
 
+        // Tenant Provisioning
+        services.AddTransient<Provisioning.ITenantProvisionerStrategy, Provisioning.Strategies.SharedTenantProvisionerStrategy>();
+        services.AddTransient<Provisioning.ITenantProvisionerStrategy, Provisioning.Strategies.PerTenantProvisionerStrategy>();
+        services.AddTransient<Provisioning.ITenantProvisionerStrategy, Provisioning.Strategies.PerSchemaTenantProvisionerStrategy>();
+        services.AddTransient<Provisioning.ITenantProvisionerStrategy, Provisioning.Strategies.HybridTenantProvisionerStrategy>();
+        services.TryAddTransient<Provisioning.ITenantProvisioningOrchestrator, Provisioning.TenantProvisioningOrchestrator>();
+
         return services;
     }
 }

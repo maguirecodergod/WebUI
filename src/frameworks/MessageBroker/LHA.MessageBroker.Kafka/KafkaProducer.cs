@@ -36,6 +36,15 @@ public sealed class KafkaProducer : IMessagePublisher
         CancellationToken cancellationToken = default) where T : class
     {
         var resolvedTopic = ResolveTopic(destination, envelope.TenantId);
+
+        // Ensure topic exists before publishing
+        if (_options.Consumer.AllowAutoCreateTopics)
+        {
+            await _connectionFactory.EnsureTopicExistsAsync(
+                resolvedTopic,
+                cancellationToken: cancellationToken);
+        }
+
         var partitionKey = ResolvePartitionKey(destination, envelope);
         var message = BuildKafkaMessage(envelope);
 
@@ -84,6 +93,15 @@ public sealed class KafkaProducer : IMessagePublisher
     {
         var tasks = new List<Task<DeliveryResult<string, byte[]>>>();
         var messageIds = new List<string>();
+
+        // Ensure topic exists before publishing batch
+        if (_options.Consumer.AllowAutoCreateTopics)
+        {
+            await _connectionFactory.EnsureTopicExistsAsync(
+                destination,
+                cancellationToken: cancellationToken);
+        }
+
         var producer = _connectionFactory.GetProducer();
 
         foreach (var envelope in envelopes)

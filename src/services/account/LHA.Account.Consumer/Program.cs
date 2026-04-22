@@ -27,6 +27,7 @@ builder.Services.AddAccountEntityFrameworkCore(connectionString);
 builder.Services.AddLHAKafka(kafka =>
 {
     kafka.BootstrapServers = builder.Configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
+    kafka.Consumer.AllowAutoCreateTopics = true;
 });
 
 // ── Kafka event bus (consumer mode) ─────────────────────────────

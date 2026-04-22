@@ -41,6 +41,7 @@ internal sealed class EfCoreAuditLogDispatcher : IAuditLogDispatcher
                 InstanceId = record.InstanceId,
                 ActionName = record.ActionName,
                 ActionType = (byte)record.ActionType,
+                RequestType = (byte)record.RequestType,
                 UserId = record.UserId,
                 TenantId = record.TenantId,
                 UserName = record.UserName,

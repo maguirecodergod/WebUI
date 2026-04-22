@@ -37,12 +37,6 @@ public static class DependencyInjection
         services.AddScoped<ITenantManagerBridge>(sp => sp.GetRequiredService<AccountUserTenantLookupService>());
         services.AddScoped<IPermissionStore, AccountPermissionStore>();
 
-        // Tenant Provisioning Orchestration
-        services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.SharedTenantProvisionerStrategy>();
-        services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.PerTenantProvisionerStrategy>();
-        services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.PerSchemaTenantProvisionerStrategy>();
-        services.AddTransient<TenantProvisioning.ITenantProvisionerStrategy, TenantProvisioning.Strategies.HybridTenantProvisionerStrategy>();
-        services.AddTransient<TenantProvisioning.ITenantProvisioningOrchestrator, TenantProvisioning.TenantProvisioningOrchestrator>();
 
         return services;
     }

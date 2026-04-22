@@ -5,6 +5,7 @@ using LHA.Account.EntityFrameworkCore;
 using LHA.Account.HttpApi;
 using LHA.AspNetCore;
 using LHA.Auditing;
+using LHA.Auditing.Interceptors;
 using LHA.DistributedLocking;
 using LHA.EventBus;
 using LHA.Grpc.Server;
@@ -40,11 +41,15 @@ builder.Services.AddAccountEntityFrameworkCore(connectionString);
 // Use AuditingMode to control which audit producers run in this App.
 // Make sure it matches the storage setup (AuditLogStoreMode) in Account.EntityFrameworkCore!
 builder.Services.AddLHAAuditLogging(
-    mode: CAuditingMode.DataAudit,
+    mode: CAuditingMode.All,
     configureDataAudit: options =>
     {
         options.ApplicationName = "Account";
         options.CaptureRequestBody = true;
+    },
+    configurePipeline: options =>
+    {
+        options.ServiceName = "Account";
     });
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
@@ -81,6 +86,10 @@ builder.Services.AddLHAPermissionAuthorization();
 
 // ── gRPC server ───────────────────────────────────────────────────
 builder.Services.AddLHAGrpcServer();
+builder.Services.AddGrpc(options =>
+{
+    options.Interceptors.Add<AuditGrpcInterceptor>();
+});
 
 var app = builder.Build();
 

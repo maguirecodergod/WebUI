@@ -8,6 +8,9 @@ namespace LHA.Auditing;
 /// </summary>
 public sealed class AuditLogEntry
 {
+    /// <summary>Request/transport type that produced this log.</summary>
+    public CRequestType RequestType { get; set; } = CRequestType.Unknown;
+
     /// <summary>Application/service name.</summary>
     public string? ApplicationName { get; set; }
 
@@ -102,6 +105,7 @@ public sealed class AuditLogEntry
     {
         var sb = new StringBuilder();
         sb.AppendLine($"AUDIT LOG: [{HttpStatusCode?.ToString() ?? "---"}: {(HttpMethod ?? "-------").PadRight(7)}] {Url}");
+        sb.AppendLine($"- Request  : {RequestType}");
         sb.AppendLine($"- User     : {UserName} ({UserId})");
         sb.AppendLine($"- Tenant   : {TenantName} ({TenantId})");
         sb.AppendLine($"- Duration : {ExecutionDuration} ms");

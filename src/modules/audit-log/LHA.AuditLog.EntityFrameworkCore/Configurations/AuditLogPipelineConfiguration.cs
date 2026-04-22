@@ -30,6 +30,7 @@ public sealed class AuditLogPipelineConfiguration : IEntityTypeConfiguration<Aud
         b.HasIndex(e => e.TenantId);
         b.HasIndex(e => e.UserId);
         b.HasIndex(e => e.TraceId);
+        b.HasIndex(e => e.RequestType);
         b.HasIndex(e => new { e.ServiceName, e.Timestamp });
     }
 }

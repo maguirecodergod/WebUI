@@ -101,6 +101,9 @@ public sealed class KafkaConsumerOptions
 
     /// <summary>Number of concurrent consumer workers per subscription.</summary>
     public int ConcurrencyLevel { get; set; } = 1;
+
+    /// <summary>Allow automatic topic creation.</summary>
+    public bool AllowAutoCreateTopics { get; set; } = false;
 }
 
 /// <summary>

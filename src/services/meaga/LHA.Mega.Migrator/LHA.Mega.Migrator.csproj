@@ -14,6 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\LHA.Mega.Application\LHA.Mega.Application.csproj" />
     <ProjectReference Include="..\LHA.Mega.EntityFrameworkCore\LHA.Mega.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\DistributedLocking\LHA.DistributedLocking\LHA.DistributedLocking.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Grpc\LHA.Grpc.Client\LHA.Grpc.Client.csproj" />
   </ItemGroup>
 

@@ -2,6 +2,7 @@ using LHA.Account.Application.Contracts.Permissions;
 using LHA.Identity.Domain;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
 using LHA.PermissionManagement.Domain.PermissionGroups;
+using LHA.PermissionManagement.Domain.Shared;
 using LHA.UnitOfWork;
 
 namespace LHA.Account.Application.Permissions;
@@ -22,12 +23,19 @@ public sealed class PermissionRegistrationService(
         foreach (var p in input.Permissions)
         {
             var existing = await defRepo.FindByNameAsync(p.Name, ct);
+            var side = (MultiTenancySides)p.MultiTenancySide;
             if (existing is null)
             {
                 existing = new PermissionDefinitionEntity(
                     Guid.NewGuid(), p.Name, p.DisplayName,
-                    input.ServiceName, p.GroupName);
+                    input.ServiceName, p.GroupName,
+                    multiTenancySide: side);
                 await defRepo.InsertAsync(existing, ct);
+            }
+            else if (existing.MultiTenancySide != side)
+            {
+                existing.SetMultiTenancySide(side);
+                await defRepo.UpdateAsync(existing, ct);
             }
             defEntities.Add(existing);
         }

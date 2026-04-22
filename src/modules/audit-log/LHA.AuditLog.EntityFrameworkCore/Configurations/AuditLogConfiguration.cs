@@ -18,6 +18,10 @@ public sealed class AuditLogConfiguration : IEntityTypeConfiguration<AuditLogEnt
         b.Property(e => e.ActionName)
             .HasMaxLength(AuditLogConsts.MaxActionNameLength);
 
+        b.Property(e => e.RequestType)
+            .HasConversion<byte>()
+            .HasColumnType("smallint");
+
         b.Property(e => e.UserName)
             .HasMaxLength(AuditLogConsts.MaxUserNameLength);
 
@@ -49,6 +53,7 @@ public sealed class AuditLogConfiguration : IEntityTypeConfiguration<AuditLogEnt
         b.HasIndex(e => e.TenantId);
         b.HasIndex(e => e.UserId);
         b.HasIndex(e => e.ExecutionTime);
+        b.HasIndex(e => e.RequestType);
         b.HasIndex(e => e.HttpStatusCode);
         b.HasIndex(e => e.CorrelationId);
 

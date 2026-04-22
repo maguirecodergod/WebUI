@@ -65,12 +65,15 @@ internal sealed class AuditLoggingMiddleware
         {
             Timestamp = DateTimeOffset.UtcNow,
             ActionType = AuditActionType.HttpRequest,
+            RequestType = AuditRequestClassifier.DetectHttpRequestType(context.Request),
             HttpMethod = context.Request.Method,
             RequestPath = $"{context.Request.Path}{context.Request.QueryString}",
             ClientIp = clientInfoProvider.ClientIpAddress,
             UserAgent = context.Request.Headers.UserAgent.ToString(),
             CorrelationId = clientInfoProvider.CorrelationId
         };
+
+        record.Tags = BuildRequestTags(context, record.RequestType);
 
         // Buffer request body (if configured)
         if (opts.CaptureRequestBody && context.Request.ContentLength > 0)
@@ -198,6 +201,32 @@ internal sealed class AuditLoggingMiddleware
         _ when ex.GetType().Name == "DbUpdateConcurrencyException" => StatusCodes.Status409Conflict,
         _ => StatusCodes.Status500InternalServerError
     };
+
+    private static string BuildRequestTags(HttpContext context, CRequestType requestType)
+    {
+        var tags = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["requestType"] = requestType.ToString(),
+            ["scheme"] = context.Request.Scheme,
+            ["protocol"] = context.Request.Protocol,
+            ["host"] = context.Request.Host.Value,
+            ["queryString"] = context.Request.QueryString.HasValue ? context.Request.QueryString.Value : null
+        };
+
+        if (requestType == CRequestType.Webhook)
+        {
+            tags["webhookEvent"] = context.Request.Headers["X-Webhook-Event"].ToString()
+                ?? context.Request.Headers["X-GitHub-Event"].ToString()
+                ?? context.Request.Headers["X-Gitlab-Event"].ToString();
+        }
+
+        if (requestType == CRequestType.Grpc)
+        {
+            tags["grpcContentType"] = context.Request.ContentType;
+        }
+
+        return System.Text.Json.JsonSerializer.Serialize(tags);
+    }
 
 
     private static bool ShouldSkipAuditing(HttpContext context)

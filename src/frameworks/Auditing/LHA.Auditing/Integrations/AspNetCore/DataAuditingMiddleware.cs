@@ -45,9 +45,16 @@ internal sealed class DataAuditingMiddleware(RequestDelegate next)
             log.ExecutionTime = DateTimeOffset.UtcNow;
             log.Url = context.Request.Path + context.Request.QueryString;
             log.HttpMethod = context.Request.Method;
+            log.RequestType = AuditRequestClassifier.DetectHttpRequestType(context.Request);
             log.ClientIpAddress = context.Connection.RemoteIpAddress?.ToString();
             log.BrowserInfo = context.Request.Headers.UserAgent.ToString();
             log.CorrelationId = Activity.Current?.Id ?? context.TraceIdentifier;
+            log.ExtraProperties["RequestType"] = log.RequestType.ToString();
+            log.ExtraProperties["RequestProtocol"] = context.Request.Protocol;
+            log.ExtraProperties["RequestScheme"] = context.Request.Scheme;
+            log.ExtraProperties["RequestHost"] = context.Request.Host.Value;
+            if (context.Request.QueryString.HasValue)
+                log.ExtraProperties["RequestQueryString"] = context.Request.QueryString.Value;
 
             // Resolve ActionName: prefer EndpointName, then DisplayName, then path
             var endpoint = context.GetEndpoint();

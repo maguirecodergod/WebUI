@@ -29,6 +29,7 @@ builder.Services.AddMegaEntityFrameworkCore(options =>
 builder.Services.AddLHAKafka(kafka =>
 {
     kafka.BootstrapServers = builder.Configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
+    kafka.Consumer.AllowAutoCreateTopics = true;
 });
 
 // ── Kafka event bus (consumer mode) ─────────────────────────────
@@ -37,6 +38,7 @@ builder.Services.AddLHAKafkaEventBus(
     {
         eventBus.ConsumerGroup = "mega-consumer";
         eventBus.ApplicationName = "MegaConsumer";
+        eventBus.EnableInbox = true;
     },
     kafka =>
     {

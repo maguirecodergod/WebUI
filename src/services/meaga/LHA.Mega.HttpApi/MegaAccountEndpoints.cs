@@ -1,10 +1,9 @@
 using LHA.Ddd.Application;
 using LHA.Mega.Application.Contracts.Account;
-using LHA.Mega.Application.Contracts.Constants.Permissions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using P = LHA.Mega.Application.Contracts.Constants.Permissions.MegaPermissions;
+using P = LHA.Mega.Application.Contracts.Permissions.MegaPermissions;
 
 namespace LHA.Mega.HttpApi;
 
@@ -21,7 +20,7 @@ public static class MegaAccountEndpoints
             var dto = await service.GetAsync(id, ct);
             return Results.Ok(ApiResponse<MegaAccountDto>.Ok(dto));
         })
-        .RequireAuthorization(P.Accounts.Read)
+        .RequireAuthorization(P.MegaAccountManagement.Read)
         .WithName("GetMegaAccount")
         .WithSummary("Gets a mega account by ID.");
 
@@ -32,7 +31,7 @@ public static class MegaAccountEndpoints
             var result = await service.GetListAsync(input, ct);
             return Results.Ok(ApiResponse<PagedResultDto<MegaAccountDto>>.Ok(result));
         })
-        .RequireAuthorization(P.Accounts.Read)
+        .RequireAuthorization(P.MegaAccountManagement.Read)
         .WithName("GetMegaAccountList")
         .WithSummary("Gets a paged list of mega accounts.");
 
@@ -41,7 +40,7 @@ public static class MegaAccountEndpoints
             var dto = await service.CreateAsync(input, ct);
             return Results.Created($"/api/mega/accounts/{dto.Id}", ApiResponse<MegaAccountDto>.Ok(dto, 201));
         })
-        .RequireAuthorization(P.Accounts.Create)
+        .RequireAuthorization(P.MegaAccountManagement.Create)
         .WithName("CreateMegaAccount")
         .WithSummary("Creates a new mega account.");
 
@@ -50,7 +49,7 @@ public static class MegaAccountEndpoints
             var dto = await service.UpdateAsync(id, input, ct);
             return Results.Ok(ApiResponse<MegaAccountDto>.Ok(dto));
         })
-        .RequireAuthorization(P.Accounts.Update)
+        .RequireAuthorization(P.MegaAccountManagement.Update)
         .WithName("UpdateMegaAccount")
         .WithSummary("Updates an existing mega account.");
 
@@ -59,7 +58,7 @@ public static class MegaAccountEndpoints
             await service.DeleteAsync(id, ct);
             return Results.NoContent();
         })
-        .RequireAuthorization(P.Accounts.Delete)
+        .RequireAuthorization(P.MegaAccountManagement.Delete)
         .WithName("DeleteMegaAccount")
         .WithSummary("Deletes a mega account.");
 

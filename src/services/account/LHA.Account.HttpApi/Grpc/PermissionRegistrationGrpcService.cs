@@ -23,6 +23,7 @@ public sealed class PermissionRegistrationGrpcServiceV1(
                 Name = p.Name,
                 DisplayName = p.DisplayName,
                 GroupName = p.GroupName,
+                MultiTenancySide = (PermissionRegistrationMultiTenancySide)p.MultiTenancySide,
             }).ToList(),
             Groups = request.Groups.Select(g => new PermissionGroupInput
             {

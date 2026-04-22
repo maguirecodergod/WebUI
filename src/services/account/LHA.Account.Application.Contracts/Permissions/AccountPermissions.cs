@@ -1,10 +1,4 @@
 using LHA.Shared.Contracts.Identity;
-using LHA.Shared.Contracts.Identity.Users;
-using LHA.Shared.Contracts.Identity.Roles;
-using LHA.Shared.Contracts.Identity.Auth;
-using LHA.Shared.Contracts.Identity.Claims;
-using LHA.Shared.Contracts.Identity.Audit;
-using LHA.Shared.Contracts.Identity.Permissions;
 using LHA.Shared.Contracts.TenantManagement;
 using LHA.Shared.Contracts.AuditLog;
 using LHA.Shared.Contracts.PermissionManagement;

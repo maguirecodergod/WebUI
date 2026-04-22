@@ -38,7 +38,13 @@ public sealed class AuditBackgroundJobExecuter : IBackgroundJobExecuter
         {
             Timestamp = DateTimeOffset.UtcNow,
             ActionType = AuditActionType.BackgroundJob,
-            ActionName = $"BackgroundJob:{context.JobType.Name}"
+            RequestType = CRequestType.BackgroundJob,
+            ActionName = $"BackgroundJob:{context.JobType.Name}",
+            Tags = JsonSerializer.Serialize(new Dictionary<string, string?>
+            {
+                ["requestType"] = CRequestType.BackgroundJob.ToString(),
+                ["jobType"] = context.JobType.FullName
+            })
         };
 
         // Serialize job args

@@ -1,8 +1,8 @@
-namespace LHA.Account.Domain.TenantProvisioning;
+namespace LHA.MultiTenancy.Provisioning;
 
 /// <summary>
 /// Domain-level abstraction for migrating a specific tenant's database schema.
-/// This hides the EF Core execution logic from the Application layer.
+/// This allows different modules to register their own migrators.
 /// </summary>
 public interface ITenantDatabaseMigrator
 {

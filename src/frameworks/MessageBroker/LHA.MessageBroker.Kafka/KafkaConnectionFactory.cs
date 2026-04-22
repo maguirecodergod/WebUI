@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -84,7 +85,8 @@ public sealed class KafkaConnectionFactory : IDisposable
             AutoCommitIntervalMs = _options.Consumer.AutoCommitIntervalMs,
             SessionTimeoutMs = _options.Consumer.SessionTimeoutMs,
             HeartbeatIntervalMs = _options.Consumer.HeartbeatIntervalMs,
-            MaxPollIntervalMs = _options.Consumer.MaxPollIntervalMs
+            MaxPollIntervalMs = _options.Consumer.MaxPollIntervalMs,
+            AllowAutoCreateTopics = _options.Consumer.AllowAutoCreateTopics
         };
 
         var consumer = new ConsumerBuilder<string, byte[]>(config)
@@ -108,6 +110,77 @@ public sealed class KafkaConnectionFactory : IDisposable
             "Kafka consumer created for group [{GroupId}]", config.GroupId);
 
         return consumer;
+    }
+
+    /// <summary>
+    /// Ensures that a topic exists, creating it if necessary.
+    /// </summary>
+    public async Task EnsureTopicExistsAsync(
+        string topic,
+        int numPartitions = 3,
+        short replicationFactor = 1,
+        CancellationToken cancellationToken = default)
+    {
+        if (!_options.Consumer.AllowAutoCreateTopics)
+            return;
+
+        try
+        {
+            var adminConfig = new AdminClientConfig
+            {
+                BootstrapServers = _options.BootstrapServers
+            };
+
+            using var adminClient = new AdminClientBuilder(adminConfig).Build();
+
+            // Check if topic exists
+            var metadata = adminClient.GetMetadata(topic, TimeSpan.FromSeconds(5));
+            if (metadata.Topics.Any(t => t.Topic == topic))
+            {
+                _logger.LogDebug("Topic '{Topic}' already exists.", topic);
+                return;
+            }
+        }
+        catch
+        {
+            // Topic doesn't exist or error checking, try to create it
+        }
+
+        try
+        {
+            var adminConfig = new AdminClientConfig
+            {
+                BootstrapServers = _options.BootstrapServers
+            };
+
+            using var adminClient = new AdminClientBuilder(adminConfig).Build();
+
+            var specs = new TopicSpecification[]
+            {
+                new()
+                {
+                    Name = topic,
+                    NumPartitions = numPartitions,
+                    ReplicationFactor = replicationFactor
+                }
+            };
+
+            await adminClient.CreateTopicsAsync(specs);
+            _logger.LogInformation(
+                "Created Kafka topic '{Topic}' with {Partitions} partitions (replication: {Replication})",
+                topic, numPartitions, replicationFactor);
+
+            // Wait a bit for topic to be ready
+            await Task.Delay(500, cancellationToken);
+        }
+        catch (CreateTopicsException ex) when (ex.Results[0].Error.Code == ErrorCode.TopicAlreadyExists)
+        {
+            _logger.LogDebug("Topic '{Topic}' already exists (race condition).", topic);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to create topic '{Topic}'. It may need to be created manually.", topic);
+        }
     }
 
     public void Dispose()

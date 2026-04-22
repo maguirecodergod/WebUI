@@ -1,6 +1,4 @@
-using LHA.TenantManagement.Domain;
-
-namespace LHA.Account.Application.TenantProvisioning;
+namespace LHA.MultiTenancy.Provisioning;
 
 /// <summary>
 /// Orchestrates the process of provisioning by locating the correct strategy
@@ -15,13 +13,13 @@ public sealed class TenantProvisioningOrchestrator : ITenantProvisioningOrchestr
         _strategies = strategies;
     }
 
-    public async Task ProvisionAsync(TenantEntity tenant, CancellationToken cancellationToken = default)
+    public async Task<string?> ProvisionAsync(Guid tenantId, string normalizedTenantName, int style, CancellationToken cancellationToken = default)
     {
-        var strategy = _strategies.FirstOrDefault(s => s.Style == tenant.DatabaseStyle);
+        var strategy = _strategies.FirstOrDefault(s => s.Style == style);
         
         if (strategy == null)
-            throw new NotSupportedException($"Provisioning strategy for DatabaseStyle '{tenant.DatabaseStyle}' is not implemented.");
+            throw new NotSupportedException($"Provisioning strategy for DatabaseStyle '{style}' is not implemented.");
 
-        await strategy.ProvisionAsync(tenant, cancellationToken);
+        return await strategy.ProvisionAsync(tenantId, normalizedTenantName, cancellationToken);
     }
 }

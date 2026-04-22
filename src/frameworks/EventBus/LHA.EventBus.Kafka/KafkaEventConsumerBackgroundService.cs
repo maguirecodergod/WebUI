@@ -39,6 +39,9 @@ internal sealed class KafkaEventConsumerBackgroundService(
 
         logger.LogInformation("Kafka event consumer starting: topic={Topic} group={Group}", topic, groupId);
 
+        // Ensure topic exists before subscribing
+        await connectionFactory.EnsureTopicExistsAsync(topic, cancellationToken: stoppingToken);
+
         var consumer = connectionFactory.CreateConsumer(groupId);
 
         consumer.Subscribe(topic);

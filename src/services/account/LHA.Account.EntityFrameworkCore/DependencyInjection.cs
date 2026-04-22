@@ -101,8 +101,8 @@ public static class DependencyInjection
         services.AddScoped<IEntityChangeRepository, EfCoreEntityChangeRepository>();
         services.AddScoped<IEntityPropertyChangeRepository, EfCoreEntityPropertyChangeRepository>();
 
-        // 4) Register the Tenant Provisioning Migrator
-        services.AddTransient<LHA.Account.Domain.TenantProvisioning.ITenantDatabaseMigrator, TenantProvisioning.TenantDatabaseMigrator>();
+        // 4) Register the Tenant Provisioning Migrator for AccountDbContext
+        services.AddTransient<LHA.MultiTenancy.Provisioning.ITenantDatabaseMigrator, LHA.EntityFrameworkCore.Provisioning.EfCoreTenantDatabaseMigrator<AccountDbContext>>();
 
         return services;
     }

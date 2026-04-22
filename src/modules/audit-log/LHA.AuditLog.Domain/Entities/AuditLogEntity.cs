@@ -26,6 +26,9 @@ public sealed class AuditLogEntity : Entity<Guid>, IMultiTenant, IHasCreationTim
     /// <summary>Name of the action (e.g. "Login", "Register").</summary>
     public string? ActionName { get; private init; }
 
+    /// <summary>Request/transport type that produced this log.</summary>
+    public CRequestType RequestType { get; private init; }
+
     /// <summary>Authenticated user identifier.</summary>
     public Guid? UserId { get; private init; }
 
@@ -108,6 +111,7 @@ public sealed class AuditLogEntity : Entity<Guid>, IMultiTenant, IHasCreationTim
         Guid? impersonatorTenantId,
         DateTimeOffset executionTime,
         int executionDuration,
+        CRequestType requestType,
         string? clientId,
         string? correlationId,
         string? clientIpAddress,
@@ -130,6 +134,7 @@ public sealed class AuditLogEntity : Entity<Guid>, IMultiTenant, IHasCreationTim
         ImpersonatorTenantId = impersonatorTenantId;
         ExecutionTime = executionTime;
         ExecutionDuration = executionDuration;
+        RequestType = requestType;
         ClientId = clientId;
         CorrelationId = correlationId;
         ClientIpAddress = clientIpAddress;
