@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\frameworks\Core\LHA.Core\LHA.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-using LHA.BlazorWasm.Shared.Models.StatusBadge;
+using LHA;
 
 namespace LHA.BlazorWasm.Shared.Helpers
 {
@@ -38,6 +38,13 @@ namespace LHA.BlazorWasm.Shared.Helpers
             CBadgeSemantic.Inactive => CBadgeStyle.Slate,
             CBadgeSemantic.Archived => CBadgeStyle.Dark,
             CBadgeSemantic.Deleted => CBadgeStyle.Danger,
+
+            // Request Channel
+            CBadgeSemantic.RequestHttp => CBadgeStyle.Success,
+            CBadgeSemantic.RequestGrpc => CBadgeStyle.Indigo,
+            CBadgeSemantic.RequestWebhook => CBadgeStyle.Teal,
+            CBadgeSemantic.RequestQueue => CBadgeStyle.Orange,
+            CBadgeSemantic.RequestJob => CBadgeStyle.Purple,
 
             _ => CBadgeStyle.Muted
         };

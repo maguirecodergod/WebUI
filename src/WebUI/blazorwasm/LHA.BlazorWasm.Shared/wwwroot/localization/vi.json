@@ -10,6 +10,15 @@
         "SelectDateRange": "Chọn khoảng thời gian",
         "ApplicationName": "Ứng dụng",
         "HttpMethod": "Phương thức",
+        "RequestType": "Loại yêu cầu",
+        "RequestTypeEnum": {
+            "Unknown": "Không xác định",
+            "Http": "HTTP",
+            "Grpc": "gRPC",
+            "Webhook": "Webhook",
+            "MessageQueue": "Hàng đợi",
+            "BackgroundJob": "Tiến trình chạy ngầm"
+        },
         "Url": "URL",
         "User": "Người dùng",
         "UserName": "Tên người dùng",

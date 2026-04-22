@@ -1,10 +1,10 @@
+using LHA;
 using LHA.Auditing;
 using LHA.BlazorWasm.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
 using LHA.BlazorWasm.Components.Select;
 using LHA.BlazorWasm.Components.Table;
 using LHA.BlazorWasm.Shared;
-using LHA.BlazorWasm.Shared.Models.StatusBadge;
 using LHA.Shared.Contracts.AuditLog;
 using Microsoft.AspNetCore.Components;
 
@@ -30,6 +30,14 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             {
                 Value = x.ToString(),
                 Label = char.ToUpper(x.ToString().ToLower()[0]) + x.ToString().ToLower().Substring(1)
+            })
+            .ToList();
+
+        private List<SelectOption<CRequestType?>> _requestTypeOptions => Enum.GetValues<CRequestType>()
+            .Select(x => new SelectOption<CRequestType?>
+            {
+                Value = x,
+                Label = L($"AuditLog.RequestTypeEnum.{x}")
             })
             .ToList();
 
@@ -224,6 +232,9 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             if (lowerAgent.Contains("postman") || lowerAgent.Contains("postmanruntime")) details.Browser = CBrowserType.Postman;
             else if (lowerAgent.Contains("bruno")) details.Browser = CBrowserType.Bruno;
             else if (lowerAgent.Contains("curl")) details.Browser = CBrowserType.Curl;
+            else if (lowerAgent.Contains("grpc")) details.Browser = CBrowserType.Grpc;
+            else if (lowerAgent.Contains("message") || lowerAgent.Contains("queue") || lowerAgent.Contains("mq")) details.Browser = CBrowserType.MessageQueue;
+            else if (lowerAgent.Contains("worker") || lowerAgent.Contains("job") || lowerAgent.Contains("background")) details.Browser = CBrowserType.BackgroundJob;
             else if (lowerAgent.Contains("edg/")) details.Browser = CBrowserType.Edge;
             else if (lowerAgent.Contains("chrome") && lowerAgent.Contains("safari")) details.Browser = CBrowserType.Chrome;
             else if (lowerAgent.Contains("firefox")) details.Browser = CBrowserType.Firefox;
@@ -238,7 +249,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             public CBrowserType Browser { get; set; } = CBrowserType.Unknown;
             public COperatingSystem OS { get; set; } = COperatingSystem.Unknown;
 
-            public bool IsSvgIcon => Browser is CBrowserType.Postman or CBrowserType.Bruno or CBrowserType.Curl;
+            public bool IsSvgIcon => Browser is CBrowserType.Postman or CBrowserType.Bruno or CBrowserType.Curl or CBrowserType.Grpc or CBrowserType.MessageQueue or CBrowserType.BackgroundJob;
 
             public string BrowserIcon => Browser switch
             {
@@ -247,6 +258,9 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 CBrowserType.Firefox => "bi bi-browser-firefox",
                 CBrowserType.Safari => "bi bi-browser-safari",
                 CBrowserType.Opera => "bi bi-browser-opera",
+                CBrowserType.Grpc => "bi bi-lightning-charge-fill",
+                CBrowserType.MessageQueue => "bi bi-mailbox2",
+                CBrowserType.BackgroundJob => "bi bi-cpu-fill",
                 _ => "bi bi-browser-chrome"
             };
 
@@ -275,6 +289,9 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             Postman,
             Bruno,
             Curl,
+            Grpc,
+            MessageQueue,
+            BackgroundJob,
             Terminal,
             Other
         }

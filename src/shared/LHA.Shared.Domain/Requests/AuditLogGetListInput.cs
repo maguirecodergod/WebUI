@@ -1,3 +1,4 @@
+using LHA.Auditing;
 using LHA.Ddd.Application;
 
 namespace LHA.Shared.Domain.Requests;
@@ -28,4 +29,5 @@ public class AuditLogFilter
     public int? MinExecutionDuration { get; set; }
     public int? MaxExecutionDuration { get; set; }
     public bool? HasException { get; set; }
+    public CRequestType? RequestType { get; set; }
 }

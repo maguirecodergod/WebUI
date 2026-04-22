@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Domain.Shared\LHA.Ddd.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Auditing\LHA.Auditing.Contracts\LHA.Auditing.Contracts.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>

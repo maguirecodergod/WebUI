@@ -1,3 +1,6 @@
+using LHA;
+using LHA.Auditing;
+
 namespace LHA.Auditing.Pipeline;
 
 /// <summary>

@@ -1,3 +1,4 @@
+using LHA;
 using LHA.AuditLog.Domain;
 using LHA.Ddd.Application;
 
@@ -45,6 +46,7 @@ public sealed class AuditLogAppService : ApplicationService, LHA.AuditLog.Applic
             maxExecutionDuration: input.MaxExecutionDuration,
             minExecutionDuration: input.MinExecutionDuration,
             hasException: input.HasException,
+            requestType: input.RequestType,
             cancellationToken: cancellationToken);
 
         var items = await _auditLogRepository.GetListAsync(
@@ -63,6 +65,7 @@ public sealed class AuditLogAppService : ApplicationService, LHA.AuditLog.Applic
             maxExecutionDuration: input.MaxExecutionDuration,
             minExecutionDuration: input.MinExecutionDuration,
             hasException: input.HasException,
+            requestType: input.RequestType,
             cancellationToken: cancellationToken);
 
         return new PagedResultDto<AuditLogDto>(
@@ -100,7 +103,7 @@ public sealed class AuditLogAppService : ApplicationService, LHA.AuditLog.Applic
 
     private static AuditLogDto MapToDto(AuditLogEntity entity)
     {
-        return new AuditLogDto
+        var auditLogDto = new AuditLogDto
         {
             Id = entity.Id,
             ApplicationName = entity.ApplicationName,
@@ -117,6 +120,7 @@ public sealed class AuditLogAppService : ApplicationService, LHA.AuditLog.Applic
             ClientIpAddress = entity.ClientIpAddress,
             HttpMethod = entity.HttpMethod,
             HttpStatusCode = entity.HttpStatusCode,
+            RequestType = entity.RequestType,
             Url = entity.Url,
             BrowserInfo = entity.BrowserInfo,
             Exceptions = entity.Exceptions,
@@ -133,6 +137,8 @@ public sealed class AuditLogAppService : ApplicationService, LHA.AuditLog.Applic
             }).ToList(),
             EntityChanges = entity.EntityChanges.Select(MapToEntityChangeDto).ToList()
         };
+
+        return auditLogDto;
     }
 
     private static EntityChangeDto MapToEntityChangeDto(EntityChangeEntity entity)

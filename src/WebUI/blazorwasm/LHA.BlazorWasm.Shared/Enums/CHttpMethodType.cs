@@ -1,4 +1,4 @@
-using LHA.BlazorWasm.Shared.Models.StatusBadge;
+using LHA;
 
 namespace LHA.BlazorWasm.Shared
 {

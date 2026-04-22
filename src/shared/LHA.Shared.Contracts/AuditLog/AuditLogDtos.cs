@@ -1,3 +1,4 @@
+using LHA;
 using LHA.Auditing;
 using LHA.Ddd.Application;
 
@@ -25,6 +26,7 @@ public sealed class AuditLogDto : EntityDto<Guid>
     public string? ClientIpAddress { get; init; }
     public string? HttpMethod { get; init; }
     public int? HttpStatusCode { get; init; }
+    public CRequestType RequestType { get; init; }
     public string? Url { get; init; }
     public string? BrowserInfo { get; init; }
     public string? Exceptions { get; init; }

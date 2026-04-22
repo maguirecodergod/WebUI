@@ -1,3 +1,4 @@
+using LHA;
 using LHA.Auditing;
 using LHA.Ddd.Domain;
 using LHA.MultiTenancy;

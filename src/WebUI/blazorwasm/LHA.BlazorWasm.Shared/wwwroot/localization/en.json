@@ -10,6 +10,15 @@
         "SelectDateRange": "Select Date Range",
         "ApplicationName": "Application",
         "HttpMethod": "Method",
+        "RequestType": "Request Type",
+        "RequestTypeEnum": {
+            "Unknown": "Unknown",
+            "Http": "HTTP",
+            "Grpc": "gRPC",
+            "Webhook": "Webhook",
+            "MessageQueue": "Queue",
+            "BackgroundJob": "Background Job"
+        },
         "Url": "URL",
         "User": "User",
         "UserName": "Username",

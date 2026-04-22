@@ -1,4 +1,5 @@
 using System.Text.Json;
+using LHA;
 using LHA.Auditing;
 using LHA.AuditLog.Domain;
 

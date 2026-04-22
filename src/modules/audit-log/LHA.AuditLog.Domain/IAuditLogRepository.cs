@@ -1,3 +1,5 @@
+using LHA;
+using LHA.Auditing;
 using LHA.Ddd.Domain;
 
 namespace LHA.AuditLog.Domain;
@@ -27,6 +29,7 @@ public interface IAuditLogRepository : IRepository<AuditLogEntity, Guid>
         int? maxExecutionDuration = null,
         int? minExecutionDuration = null,
         bool? hasException = null,
+        CRequestType? requestType = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -46,6 +49,7 @@ public interface IAuditLogRepository : IRepository<AuditLogEntity, Guid>
         int? maxExecutionDuration = null,
         int? minExecutionDuration = null,
         bool? hasException = null,
+        CRequestType? requestType = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>

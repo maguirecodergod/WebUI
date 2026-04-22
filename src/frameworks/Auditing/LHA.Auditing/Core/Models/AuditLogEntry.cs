@@ -1,4 +1,5 @@
 using System.Text;
+using LHA;
 
 namespace LHA.Auditing;
 

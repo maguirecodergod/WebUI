@@ -1,3 +1,4 @@
+using LHA;
 using LHA.Ddd.Application;
 using LHA.Auditing;
 
@@ -19,6 +20,9 @@ public sealed class GetAuditLogsInput : PagedAndSortedResultRequestDto
 
     /// <summary>Filter by URL (contains, case-insensitive).</summary>
     public string? Url { get; set; }
+
+    /// <summary>Filter by request type.</summary>
+    public CRequestType? RequestType { get; set; }
 
     /// <summary>Minimum HTTP status code.</summary>
     public int? MinStatusCode { get; set; }

@@ -1,3 +1,5 @@
+using LHA;
+using LHA.Auditing;
 using LHA.AuditLog.Domain;
 using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
@@ -47,13 +49,14 @@ public sealed class EfCoreAuditLogRepository
         int? maxExecutionDuration = null,
         int? minExecutionDuration = null,
         bool? hasException = null,
+        CRequestType? requestType = null,
         CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
 
         var query = ApplyFilters(dbSet, startTime, endTime, httpMethod, url,
             minStatusCode, maxStatusCode, userId, userName, applicationName,
-            correlationId, maxExecutionDuration, minExecutionDuration, hasException);
+            correlationId, maxExecutionDuration, minExecutionDuration, hasException, requestType);
 
         return await query
             .SortByDynamic(sorter, defaultProperty: "ExecutionTime", defaultAscending: false)
@@ -80,13 +83,14 @@ public sealed class EfCoreAuditLogRepository
         int? maxExecutionDuration = null,
         int? minExecutionDuration = null,
         bool? hasException = null,
+        CRequestType? requestType = null,
         CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
 
         var query = ApplyFilters(dbSet, startTime, endTime, httpMethod, url,
             minStatusCode, maxStatusCode, userId, userName, applicationName,
-            correlationId, maxExecutionDuration, minExecutionDuration, hasException);
+            correlationId, maxExecutionDuration, minExecutionDuration, hasException, requestType);
 
         return await query.LongCountAsync(cancellationToken);
     }
@@ -161,7 +165,8 @@ public sealed class EfCoreAuditLogRepository
         string? correlationId,
         int? maxExecutionDuration,
         int? minExecutionDuration,
-        bool? hasException)
+        bool? hasException,
+        CRequestType? requestType)
     {
         return query
             .AsNoTracking()
@@ -178,6 +183,7 @@ public sealed class EfCoreAuditLogRepository
             .WhereIf(maxExecutionDuration.HasValue, x => x.ExecutionDuration <= maxExecutionDuration!.Value)
             .WhereIf(minExecutionDuration.HasValue, x => x.ExecutionDuration >= minExecutionDuration!.Value)
             .WhereIf(hasException == true, x => x.Exceptions != null && x.Exceptions != "")
-            .WhereIf(hasException == false, x => x.Exceptions == null || x.Exceptions == "");
+            .WhereIf(hasException == false, x => x.Exceptions == null || x.Exceptions == "")
+            .WhereIf(requestType.HasValue, x => x.RequestType == requestType!.Value);
     }
 }

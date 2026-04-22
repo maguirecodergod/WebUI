@@ -50,7 +50,8 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
                 CorrelationId = input.CorrelationId,
                 MinExecutionDuration = input.MinExecutionDuration,
                 MaxExecutionDuration = input.MaxExecutionDuration,
-                HasException = input.HasException
+                HasException = input.HasException,
+                RequestType = input.RequestType,
             },
             IncludeDetails = false,
             DisableTenantFilter = input.DisableTenantFilter
@@ -190,6 +191,7 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
             BrowserInfo = entity.BrowserInfo,
             Exceptions = entity.Exceptions,
             Comments = entity.Comments,
+            RequestType = entity.RequestType,
             ExtraProperties = entity.ExtraProperties,
             Actions = entity.Actions.Select(MapToDto).ToList(),
             EntityChanges = entity.EntityChanges.Select(MapToDto).ToList()

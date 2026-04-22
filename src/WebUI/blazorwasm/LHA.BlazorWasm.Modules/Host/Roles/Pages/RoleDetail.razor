@@ -150,9 +150,14 @@
                             <div class="view-layout-p">
                                 <div class="users-list-p">
                                     <div class="modern-card">
+                                        <div class="flex justify-between items-center mb-4 px-2">
+                                            <h3 class="text-lg font-semibold m-0 text-[var(--p-text)]">@L("Roles.AssignedUsers")</h3>
+                                            <LHAButton Style="CButtonStyle.Primary" Icon="bi bi-person-plus" OnClick="OpenAssignUserDialog" Class="shadow-lg shadow-indigo-500/30">
+                                                @L("Roles.AssignUser")
+                                            </LHAButton>
+                                        </div>
                                         <DataTable TItem="IdentityUserDto" Items="_assignedUsers" Hoverable="true"
-                                                   Striped="true" OnRowClick="@((u) => SelectUser(u))"
-                                                   KeySelector="@(u => u.Id)" ShowToolbar="false"
+                                                   Striped="true" KeySelector="@(u => u.Id)" ShowToolbar="false"
                                                    RowClass="@(u => _selectedUser?.Id == u.Id ? "active-row" : string.Empty)">
                                             <ChildContent>
                                                 <DataTableColumn TItem="IdentityUserDto" Title="@L("Roles.User")">
@@ -166,10 +171,13 @@
                                                 </DataTableColumn>
                                                 <DataTableColumn TItem="IdentityUserDto" Property="@(u => u.Email)"
                                                                  Title="@L("Roles.Email")" />
-                                                <DataTableColumn TItem="IdentityUserDto" Title=""
+                                                <DataTableColumn TItem="IdentityUserDto" Title="@L("Common.Actions")"
                                                                  Alignment="ColumnAlignment.Right">
-                                                    <CellTemplate>
-                                                        <i class="bi bi-chevron-right text-muted"></i>
+                                                    <CellTemplate Context="item">
+                                                        <div class="flex gap-2 justify-end">
+                                                            <LHAButton Style="CButtonStyle.Ghost" Size="CButtonSize.Small" Icon="bi bi-shield-lock" OnClick="@(() => SelectUser(item))" />
+                                                            <LHAButton Style="CButtonStyle.Danger" Size="CButtonSize.Small" Icon="bi bi-trash" OnClick="@(() => ConfirmRemoveUser(item))" Class="glass-btn hover:!bg-red-500 hover:!text-white" />
+                                                        </div>
                                                     </CellTemplate>
                                                 </DataTableColumn>
                                             </ChildContent>
@@ -277,4 +285,78 @@
             </div>
         </div>
     </ChildContent>
+</PremiumDialog>
+
+@* Assign User Dialog *@
+<PremiumDialog @bind-IsVisible="_isAssignUserDialogVisible"
+               Title="@L("Roles.AssignUser")"
+               Size="DialogSize.Medium" ShowFooter="true">
+    <FooterContent>
+        <LHAButton Style="CButtonStyle.Secondary" Class="glass-btn"
+                   OnClick="@(() => _isAssignUserDialogVisible = false)">
+            @L("Common.Close")
+        </LHAButton>
+    </FooterContent>
+    <ChildContent>
+        <div class="p-4">
+            <CInput TValue="string" Value="@_userSearchQuery"
+                    ValueChanged="@SearchAvailableUsers"
+                    ValueExpression="@(() => _userSearchQuery)" Placeholder="@L("Roles.SearchUsers")"
+                    Size="CInputSize.Medium" Class="mb-4 glass-input">
+                <IconLeft><i class="bi bi-search"></i></IconLeft>
+            </CInput>
+
+            <div class="max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                <DataTable TItem="IdentityUserDto" Items="_filteredAvailableUsers" Hoverable="true" Striped="true" ShowToolbar="false">
+                    <ChildContent>
+                        <DataTableColumn TItem="IdentityUserDto" Title="@L("Roles.User")">
+                            <CellTemplate Context="item">
+                                <div class="user-profile-cell">
+                                    <div class="u-avatar">@item.UserName[0].ToString().ToUpper()</div>
+                                    <span class="u-name">@item.UserName</span>
+                                </div>
+                            </CellTemplate>
+                        </DataTableColumn>
+                        <DataTableColumn TItem="IdentityUserDto" Property="@(u => u.Email)" Title="@L("Roles.Email")" />
+                        <DataTableColumn TItem="IdentityUserDto" Title="@L("Common.Actions")" Alignment="ColumnAlignment.Right">
+                            <CellTemplate Context="item">
+                                <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Small" Icon="bi bi-plus-lg" OnClick="@(() => AssignUserToRoleAsync(item))" IsLoading="@(_isAssigningUser)" Class="shadow-sm">
+                                    @L("Roles.Assign")
+                                </LHAButton>
+                            </CellTemplate>
+                        </DataTableColumn>
+                    </ChildContent>
+                    <EmptyTemplate>
+                        <div class="empty-visual">
+                            <i class="bi bi-person-x text-3xl mb-2 text-[var(--p-text-muted)] block text-center"></i>
+                            <p class="text-center text-[var(--p-text-muted)] text-sm">@L("Roles.NoUsersFound")</p>
+                        </div>
+                    </EmptyTemplate>
+                </DataTable>
+            </div>
+        </div>
+    </ChildContent>
+</PremiumDialog>
+
+@* Remove User Confirmation Dialog *@
+<PremiumDialog @bind-IsVisible="_isRemoveUserDialogVisible"
+               Title="@L("Roles.RemoveUser")"
+               Type="DialogType.Warning"
+               Size="DialogSize.Small" ShowFooter="true">
+    <ChildContent>
+        <div class="p-6 text-center">
+            <i class="bi bi-exclamation-triangle text-5xl text-orange-500 mb-4 block"></i>
+            <h4 class="text-lg font-bold mb-2">@L("Roles.RemoveUserConfirmation")</h4>
+            <p class="text-sm text-[var(--p-text-muted)]">@(_userToRemove?.UserName ?? string.Empty)</p>
+        </div>
+    </ChildContent>
+    <FooterContent>
+        <LHAButton Style="CButtonStyle.Secondary" Class="glass-btn"
+                   OnClick="@(() => _isRemoveUserDialogVisible = false)">
+            @L("Common.Cancel")
+        </LHAButton>
+        <LHAButton Style="CButtonStyle.Danger" IsLoading="_isRemovingUser" OnClick="RemoveUserFromRoleAsync" Class="shadow-lg shadow-red-500/30">
+            @L("Common.Remove")
+        </LHAButton>
+    </FooterContent>
 </PremiumDialog>

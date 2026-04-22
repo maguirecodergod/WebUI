@@ -38,6 +38,17 @@ public partial class RoleDetail : LHAComponentBase
     private bool _hasUserPermissionChanges;
     private List<LHA.BlazorWasm.Components.Breadcrumb.BreadcrumbItemModel> _breadcrumbItems = [];
 
+    // User Assignment & Removal
+    private bool _isAssignUserDialogVisible;
+    private List<IdentityUserDto> _allAvailableUsers = [];
+    private List<IdentityUserDto> _filteredAvailableUsers = [];
+    private string _userSearchQuery = string.Empty;
+    private bool _isAssigningUser;
+
+    private bool _isRemoveUserDialogVisible;
+    private IdentityUserDto? _userToRemove;
+    private bool _isRemovingUser;
+
     protected override async Task OnInitializedAsync()
     {
         _breadcrumbItems = new List<LHA.BlazorWasm.Components.Breadcrumb.BreadcrumbItemModel>
@@ -390,6 +401,101 @@ public partial class RoleDetail : LHAComponentBase
         finally
         {
             _isSavingUserPermissions = false;
+        }
+    }
+
+    private async Task OpenAssignUserDialog()
+    {
+        _isAssignUserDialogVisible = true;
+        _userSearchQuery = string.Empty;
+        
+        var usersRes = await UserAppService.GetListAsync(new GetIdentityUsersInput { PageSize = 1000 });
+        if (usersRes?.Items != null)
+        {
+            var assignedIds = _assignedUsers.Select(u => u.Id).ToHashSet();
+            _allAvailableUsers = usersRes.Items.Where(u => !assignedIds.Contains(u.Id)).ToList();
+            _filteredAvailableUsers = _allAvailableUsers;
+        }
+    }
+
+    private void SearchAvailableUsers(string query)
+    {
+        _userSearchQuery = query;
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            _filteredAvailableUsers = _allAvailableUsers;
+        }
+        else
+        {
+            _filteredAvailableUsers = _allAvailableUsers
+                .Where(u => u.UserName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                            (u.Email != null && u.Email.Contains(query, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+        }
+    }
+
+    private async Task AssignUserToRoleAsync(IdentityUserDto user)
+    {
+        _isAssigningUser = true;
+        try
+        {
+            var userRolesRes = await UserAppService.GetRolesAsync(user.Id);
+            var roleIds = userRolesRes?.Select(r => r.Id).ToList() ?? [];
+            if (!roleIds.Contains(Id))
+            {
+                roleIds.Add(Id);
+                await UserAppService.UpdateRolesAsync(user.Id, roleIds);
+                
+                _assignedUsers.Add(user);
+                _allAvailableUsers.Remove(user);
+                _filteredAvailableUsers.Remove(user);
+                
+                ToastNotification.Success(L("Roles.UserAssignedSuccess"));
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastNotification.Error($"{L("Common.Error")}: {ex.Message}");
+        }
+        finally
+        {
+            _isAssigningUser = false;
+        }
+    }
+
+    private void ConfirmRemoveUser(IdentityUserDto user)
+    {
+        _userToRemove = user;
+        _isRemoveUserDialogVisible = true;
+    }
+
+    private async Task RemoveUserFromRoleAsync()
+    {
+        if (_userToRemove == null) return;
+        
+        _isRemovingUser = true;
+        try
+        {
+            var userRolesRes = await UserAppService.GetRolesAsync(_userToRemove.Id);
+            var roleIds = userRolesRes?.Select(r => r.Id).ToList() ?? [];
+            if (roleIds.Contains(Id))
+            {
+                roleIds.Remove(Id);
+                await UserAppService.UpdateRolesAsync(_userToRemove.Id, roleIds);
+                
+                _assignedUsers.RemoveAll(u => u.Id == _userToRemove.Id);
+                
+                ToastNotification.Success(L("Roles.UserRemovedSuccess"));
+            }
+            _isRemoveUserDialogVisible = false;
+        }
+        catch (Exception ex)
+        {
+            ToastNotification.Error($"{L("Common.Error")}: {ex.Message}");
+        }
+        finally
+        {
+            _isRemovingUser = false;
         }
     }
 

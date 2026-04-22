@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
-using LHA.BlazorWasm.Shared.Models.StatusBadge;
+using LHA;
+using LHA.BlazorWasm.Shared.Models.StatusBadge; // StatusBadgeMetadata
 using System.Reflection;
 using System.Collections.Concurrent;
 using LHA.BlazorWasm.Shared.Helpers;
