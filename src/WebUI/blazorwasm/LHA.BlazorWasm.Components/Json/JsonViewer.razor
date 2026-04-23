@@ -15,12 +15,12 @@
             <div class="json-viewer-actions">
                 @if (AllowCopy)
                 {
-                    <Tooltip Text="@L(_isCopied ? "Common_Copied" : "Common_Copy")">
+                    <Tooltip Text="@L(_isCopied ? "Common.Copied" : "Common.Copy")">
                         <LHAButton Style="CButtonStyle.Ghost" Size="CButtonSize.Small" Class="@(_isCopied ? "copied" : "")"
                                    Icon="@(_isCopied ? "bi bi-check2" : "bi bi-clipboard")" OnClick="CopyToClipboardAsync">
                             @if (_isCopied)
                             {
-                                <span>@L("Common_Copied")</span>
+                                <span>@L("Common.Copied")</span>
                             }
                         </LHAButton>
                     </Tooltip>
@@ -55,7 +55,7 @@
         catch (Exception ex)
         {
             Logger.LogError(ex, "Failed to copy JSON to clipboard");
-            ToastNotification.Error(L("Common_CopyFailed"));
+            ToastNotification.Error(L("Common.CopyFailed"));
         }
     }
 }

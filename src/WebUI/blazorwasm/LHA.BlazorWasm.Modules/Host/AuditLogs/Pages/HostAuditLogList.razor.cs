@@ -169,7 +169,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         private void ShowBulkDeleteDialog()
         {
             _itemToDelete = null;
-            if (_selectedLogs.Any())
+            if (_selectedLogs.Any() || (_dataTable?.TotalSelectedCount > 0))
             {
                 _isDeleteDialogVisible = true;
             }
@@ -183,6 +183,39 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 {
                     await AuditLogService.DeleteAsync(_itemToDelete.Id);
                     ToastNotification.Success(L("Common.DeletedSuccessfully"));
+                }
+                else if (_dataTable != null && _dataTable.IsAllEntireDatasetSelected)
+                {
+                    int originalPageSize = _input.PageSize;
+                    int originalPageNumber = _input.PageNumber;
+                    
+                    _input.PageSize = 100;
+                    _input.PageNumber = 1;
+                    
+                    int deletedCount = 0;
+                    bool hasMore = true;
+
+                    while (hasMore)
+                    {
+                        var result = _canReadHostLogs
+                            ? await AuditLogService.GetHostListAsync(_input)
+                            : await AuditLogService.GetListAsync(_input);
+
+                        if (result.Items == null || !result.Items.Any())
+                        {
+                            hasMore = false;
+                            break;
+                        }
+
+                        var deleteTasks = result.Items.Select(log => AuditLogService.DeleteAsync(log.Id));
+                        await Task.WhenAll(deleteTasks);
+                        deletedCount += result.Items.Count;
+                    }
+
+                    _input.PageSize = originalPageSize;
+                    _input.PageNumber = originalPageNumber;
+                    
+                    ToastNotification.Success(L("AuditLog.BulkDeletedSuccessfully", deletedCount));
                 }
                 else if (_selectedLogs.Any())
                 {

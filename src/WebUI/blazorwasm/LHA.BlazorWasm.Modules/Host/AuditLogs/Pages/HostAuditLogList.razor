@@ -25,6 +25,10 @@
             {
                 @L("AuditLog.DeleteSingleConfirmation")
             }
+            else if ((_dataTable?.TotalSelectedCount ?? 0) > 0)
+            {
+                @L("AuditLog.DeleteBulkConfirmation", _dataTable!.TotalSelectedCount)
+            }
             else if (_selectedLogs.Any())
             {
                 @L("AuditLog.DeleteBulkConfirmation", _selectedLogs.Count)
@@ -113,8 +117,7 @@
                                                                                 @if (browser.IsSvgIcon)
                                                                                 {
                                                                                     <div class="browser-svg-icon d-flex align-items-center">
-                                                                                        @if (browser.Browser ==
-                                                                                HostAuditLogList.CBrowserType.Postman)
+                                                                                        @if (browser.Browser == HostAuditLogList.CBrowserType.Postman)
                                                                                         {
                                                                                             <svg width="20" height="20" viewBox="0 0 32 32"
                                                                                                  fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -301,7 +304,7 @@
                                                                                                 </table>
                                                                                             </div>
                                                                                         }
-                                                        else
+                                            else
                                                                                         {
                                                                                             <div class="p-3 text-center small text-muted">
                                                                                                 @L("AuditLog.NoPropertyChanges")</div>
@@ -319,14 +322,12 @@
                                                 }
                                             </ChildContent>
                                         </PremiumDialog>
-                                        @* Data Table Card *@
                                         <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
                                             <div class="card-body p-0">
                                                 <DataTable @ref="_dataTable" TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide"
                                                            TotalCount="(int)_totalCount" ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10"
                                                            Searchable="false" ShowToolbar="true" SelectionMode="SelectionMode.Multiple" KeySelector="@(x => x.Id)"
                                                            TableId="@DataTableIds.AuditLogs" OnSelectionChanged="(items) => _selectedLogs = items.ToList()">
-
                                                     <ToolbarTemplate>
                                                         <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
                                                              style="background: transparent; border-color: var(--dt-border-color) !important;">
@@ -339,18 +340,18 @@
                                                                 </div>
                                                             }
                                                             <div class="d-flex gap-2 align-items-center">
-                                                                @if (_canDelete && _selectedLogs.Any())
+                                                                @if (_canDelete && (_selectedLogs.Any() || (_dataTable?.TotalSelectedCount > 0)))
                                                                 {
                                                                     <LHAButton Style="CButtonStyle.Danger" Size="CButtonSize.Small"
                                                                                OnClick="ShowBulkDeleteDialog">
-                                                                        <i class="bi bi-trash"></i> @L("Common.DeleteSelected") (@_selectedLogs.Count)
+                                                                        <i class="bi bi-trash"></i> @L("Common.DeleteSelected") (@(_dataTable?.TotalSelectedCount ?? _selectedLogs.Count))
                                                                     </LHAButton>
                                                                 }
                                                                 <CInput TValue="string" @bind-Value="_input.SearchQuery"
                                                                         Placeholder="@L("Common.GlobalSearch")" Size="CInputSize.Small" Style="width: 250px;">
                                                                     <IconLeft><i class="bi bi-search"></i></IconLeft>
                                                                 </CInput>
-                                                                <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
+                                                                <LHAButton Style="CButtonStyle.Secondary"
                                                                            OnClick="() => _dataTable?.RefreshAsync() ?? Task.CompletedTask">
                                                                     <i class="bi bi-arrow-clockwise"></i>
                                                                 </LHAButton>
@@ -371,224 +372,214 @@
                                                                          Filterable Property="@(x => x.ExecutionTime)">
                                                             <CellTemplate>
                                                                 <div class="small fw-semibold" style="color: var(--dt-text-primary);">
-                                                                    @context.ExecutionTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</div>
-                                                                    <div class="small" style="color: var(--dt-text-muted);">
-                                                                        @context.ExecutionTime.ToLocalTime().ToString("dddd")</div>
-                                                                    </CellTemplate>
-                                                                    <FilterTemplate>
-                                                                        <DateTimeRangePicker TInner="DateTimeOffset?" @bind-Value="_executionTimeRange"
-                                                                                             Placeholder="@L("AuditLog.SelectDateRange")" Size="CInputSize.Small" ShowClear />
-                                                                    </FilterTemplate>
-                                                                </DataTableColumn>
+                                                                    @context.ExecutionTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                                                                </div>
+                                                                <div class="small" style="color: var(--dt-text-muted);">
+                                                                    @context.ExecutionTime.ToLocalTime().ToString("dddd")
+                                                                </div>
+                                                            </CellTemplate>
+                                                            <FilterTemplate>
+                                                                <DateTimeRangePicker TInner="DateTimeOffset?" @bind-Value="_executionTimeRange"
+                                                                                     Placeholder="@L("AuditLog.SelectDateRange")" Size="CInputSize.Small" ShowClear />
+                                                            </FilterTemplate>
+                                                        </DataTableColumn>
 
-                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ApplicationName")" Width="140px" Sortable
-                                                                                 Filterable Property="@(x => x.ApplicationName)">
-                                                                    <FilterTemplate>
-                                                                        <CInput TValue="string" @bind-Value="_input.ApplicationName"
-                                                                                Placeholder="@L("AuditLog.ApplicationName")" Clearable Size="CInputSize.Small" />
-                                                                    </FilterTemplate>
-                                                                </DataTableColumn>
+                                                        <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ApplicationName")" Width="140px" Sortable
+                                                                         Filterable Property="@(x => x.ApplicationName)">
+                                                            <FilterTemplate>
+                                                                <CInput TValue="string" @bind-Value="_input.ApplicationName"
+                                                                        Placeholder="@L("AuditLog.ApplicationName")" Clearable Size="CInputSize.Small" />
+                                                            </FilterTemplate>
+                                                        </DataTableColumn>
 
-                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.HttpMethod")" Width="90px" Sortable
-                                                                                 Filterable Property="@(x => x.HttpMethod)">
-                                                                    <CellTemplate>
-                                                                        <StatusBadge Status="@GetMethodEnum(context.HttpMethod)" IsPill="false"
-                                                                                     Style="width: 70px; justify-content: center;">
-                                                                            @context.HttpMethod
-                                                                        </StatusBadge>
-                                                                    </CellTemplate>
-                                                                    <FilterTemplate>
-                                                                        <Select TValue="string" @bind-Value="_input.HttpMethod" Options="_httpMethodOptions"
-                                                                                Placeholder="@L("Common.All")" Size="CInputSize.Small" ShowClear />
-                                                                    </FilterTemplate>
-                                                                </DataTableColumn>
+                                                        <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.HttpMethod")" Width="90px" Sortable
+                                                                         Filterable Property="@(x => x.HttpMethod)">
+                                                            <CellTemplate>
+                                                                <StatusBadge Status="@GetMethodEnum(context.HttpMethod)" IsPill="false"
+                                                                             Style="width: 70px; justify-content: center;">
+                                                                    @context.HttpMethod
+                                                                </StatusBadge>
+                                                            </CellTemplate>
+                                                            <FilterTemplate>
+                                                                <Select TValue="string" @bind-Value="_input.HttpMethod" Options="_httpMethodOptions"
+                                                                        Placeholder="@L("Common.All")" Size="CInputSize.Small" ShowClear />
+                                                            </FilterTemplate>
+                                                        </DataTableColumn>
 
-                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.RequestType")" Width="100px" Sortable
-                                                                                 Filterable Property="@(x => x.RequestType)">
-                                                                    <CellTemplate>
-                                                                        <StatusBadge Status="@context.RequestType" IsPill="false"
-                                                                                     Style="width: 80px; justify-content: center;">
-                                                                        </StatusBadge>
-                                                                    </CellTemplate>
-                                                                    <FilterTemplate>
-                                                                        <Select TValue="CRequestType?" @bind-Value="_input.RequestType" Options="_requestTypeOptions"
-                                                                                Placeholder="@L("Common.All")" Size="CInputSize.Small" ShowClear />
-                                                                    </FilterTemplate>
-                                                                </DataTableColumn>
+                                                        <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.RequestType")" Width="100px" Sortable
+                                                                         Filterable Property="@(x => x.RequestType)">
+                                                            <CellTemplate>
+                                                                <StatusBadge Status="@context.RequestType" IsPill="false"
+                                                                             Style="width: 80px; justify-content: center;">
+                                                                </StatusBadge>
+                                                            </CellTemplate>
+                                                            <FilterTemplate>
+                                                                <Select TValue="CRequestType?" @bind-Value="_input.RequestType"
+                                                                        Options="_requestTypeOptions" Placeholder="@L("Common.All")" Size="CInputSize.Small"
+                                                                        ShowClear />
+                                                            </FilterTemplate>
+                                                        </DataTableColumn>
 
-                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Url")" Width="auto" Sortable Filterable
-                                                                                 Property="@(x => x.Url)">
-                                                                    <FilterTemplate>
-                                                                        <CInput TValue="string" @bind-Value="_input.Url" Placeholder="@L("AuditLog.Url")" Clearable
-                                                                                Size="CInputSize.Small" />
-                                                                    </FilterTemplate>
-                                                                    <CellTemplate>
-                                                                        <div class="d-flex flex-column">
-                                                                            @if (context.RequestType != CRequestType.Http && !string.IsNullOrEmpty(context.ActionName))
-                                                                            {
-                                                                                <div class="fw-bold small text-truncate" style="max-width: 300px; color: var(--dt-text-primary);" title="@context.ActionName">
-                                                                                    @context.ActionName
-                                                                                </div>
-                                                                                @if (!string.IsNullOrEmpty(context.Url))
-                                                                                {
-                                                                                    <div class="small text-muted text-truncate" style="max-width: 300px; font-size: 11px;" title="@context.Url">
-                                                                                        @context.Url
-                                                                                    </div>
-                                                                                }
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <div class="fw-bold small text-truncate"
-                                                                                     style="max-width: 300px; color: var(--dt-text-primary);" title="@context.Url">
-                                                                                    @context.Url</div>
-                                                                            }
+                                                        <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Url")" Width="auto" Sortable Filterable
+                                                                         Property="@(x => x.Url)">
+                                                            <FilterTemplate>
+                                                                <CInput TValue="string" @bind-Value="_input.Url" Placeholder="@L("AuditLog.Url")" Clearable
+                                                                        Size="CInputSize.Small" />
+                                                            </FilterTemplate>
+                                                            <CellTemplate>
+                                                                <div class="d-flex flex-column">
+                                                                    @if (context.RequestType != CRequestType.Http &&
+                                                                                                    !string.IsNullOrEmpty(context.ActionName))
+                                                                    {
+                                                                        <div class="fw-bold small text-truncate"
+                                                                             style="max-width: 300px; color: var(--dt-text-primary);"
+                                                                             title="@context.ActionName">
+                                                                            @context.ActionName
                                                                         </div>
-                                                                    </CellTemplate>
-                                                                </DataTableColumn>
+                                                                        @if (!string.IsNullOrEmpty(context.Url))
+                                                                        {
+                                                                            <div class="small text-muted text-truncate" style="max-width: 300px; font-size: 11px;"
+                                                                                 title="@context.Url">
+                                                                                @context.Url
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="fw-bold small text-truncate"
+                                                                             style="max-width: 300px; color: var(--dt-text-primary);" title="@context.Url">
+                                                                            @context.Url</div>
+                                                                        }
+                                                                    </div>
+                                                                </CellTemplate>
+                                                            </DataTableColumn>
 
-                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.User")" Width="180px" Sortable Filterable
-                                                                                 Property="@(x => x.UserName)">
-                                                                    <FilterTemplate>
-                                                                        <CInput TValue="string" @bind-Value="_input.UserName" Placeholder="@L("AuditLog.UserName")"
-                                                                                Clearable Size="CInputSize.Small" />
-                                                                    </FilterTemplate>
-                                                                    <CellTemplate>
-                                                                        <div class="d-flex align-items-center gap-2">
-                                                                            <div class="avatar-sm">@context.UserName?[..1].ToUpper()</div>
-                                                                            <div>
-                                                                                <div class="fw-bold small" style="color: var(--dt-text-primary);">@(context.UserName ?? L("AuditLog.Anonymous"))</div>
-                                                                                <div class="small" style="color: var(--dt-text-muted);">@context.ClientIpAddress</div>
+                                                            <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.User")" Width="180px" Sortable Filterable
+                                                                             Property="@(x => x.UserName)">
+                                                                <FilterTemplate>
+                                                                    <CInput TValue="string" @bind-Value="_input.UserName" Placeholder="@L("AuditLog.UserName")"
+                                                                            Clearable Size="CInputSize.Small" />
+                                                                </FilterTemplate>
+                                                                <CellTemplate>
+                                                                    <div class="d-flex align-items-center gap-2">
+                                                                        <div class="avatar-sm">@context.UserName?[..1].ToUpper()</div>
+                                                                        <div>
+                                                                            <div class="fw-bold small" style="color: var(--dt-text-primary);">@(context.UserName
+                                                                                                                        ?? L("AuditLog.Anonymous"))</div>
+                                                                                <div class="small" style="color: var(--dt-text-muted);">@context.ClientIpAddress
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </CellTemplate>
                                                                 </DataTableColumn>
-
-                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Browser")" Width="80px">
+                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Status")" Width="110px" Sortable Filterable
+                                                                                 Property="@(x => x.HttpStatusCode)">
+                                                                    <FilterTemplate>
+                                                                        <div class="row g-2">
+                                                                            <div class="col-6">
+                                                                                <CInput TValue="int?" @bind-Value="_input.MinStatusCode" Type="number"
+                                                                                        Placeholder="Min" Size="CInputSize.Small" />
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <CInput TValue="int?" @bind-Value="_input.MaxStatusCode" Type="number"
+                                                                                        Placeholder="Max" Size="CInputSize.Small" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </FilterTemplate>
                                                                     <CellTemplate>
-                                                                        @{
-                                                                            var browserDetails = ParseBrowserInfo(context.BrowserInfo);
-                                                                        }
-                                                                        <div class="d-flex align-items-center gap-2" style="color: var(--dt-text-muted); font-size: 1.1rem;">
-                                                                            <i class="@browserDetails.OSIcon" title="@browserDetails.OSName"></i>
-                                                                            @if (browserDetails.IsSvgIcon)
-                                                                            {
-                                                                                <span class="badge bg-light text-dark border" style="font-size: 0.65rem; padding: 2px 4px;">@browserDetails.BrowserName</span>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <i class="@browserDetails.BrowserIcon" title="@browserDetails.BrowserName"></i>
-                                                                            }
+                                                                        <StatusBadge Status="@GetStatusEnum(context.HttpStatusCode)"
+                                                                                     Style="min-width: 65px; justify-content: center;">
+                                                                            @context.HttpStatusCode
+                                                                        </StatusBadge>
+                                                                    </CellTemplate>
+                                                                </DataTableColumn>
+
+                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Duration")" Width="100px" Sortable
+                                                                                 Filterable Property="@(x => x.ExecutionDuration)">
+                                                                    <FilterTemplate>
+                                                                        <div class="row g-2">
+                                                                            <div class="col-6">
+                                                                                <CInput TValue="int?" @bind-Value="_input.MinExecutionDuration" Placeholder="Min"
+                                                                                        Size="CInputSize.Small" />
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <CInput TValue="int?" @bind-Value="_input.MaxExecutionDuration" Type="number"
+                                                                                        Placeholder="Max" Size="CInputSize.Small" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </FilterTemplate>
+                                                                    <CellTemplate>
+                                                                        <div class="small text-center" style="color: var(--dt-text-muted);">
+                                                                            @context.ExecutionDuration ms
                                                                         </div>
                                                                     </CellTemplate>
                                                                 </DataTableColumn>
 
-                                                                        <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Status")" Width="110px" Sortable Filterable
-                                                                                         Property="@(x => x.HttpStatusCode)">
-                                                                            <FilterTemplate>
-                                                                                <div class="row g-2">
-                                                                                    <div class="col-6">
-                                                                                        <CInput TValue="int?" @bind-Value="_input.MinStatusCode" Type="number"
-                                                                                                Placeholder="Min" Size="CInputSize.Small" />
-                                                                                    </div>
-                                                                                    <div class="col-6">
-                                                                                        <CInput TValue="int?" @bind-Value="_input.MaxStatusCode" Type="number"
-                                                                                                Placeholder="Max" Size="CInputSize.Small" />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </FilterTemplate>
-                                                                            <CellTemplate>
-                                                                                <StatusBadge Status="@GetStatusEnum(context.HttpStatusCode)"
-                                                                                             Style="min-width: 65px; justify-content: center;">
-                                                                                    @context.HttpStatusCode
-                                                                                </StatusBadge>
-                                                                            </CellTemplate>
-                                                                        </DataTableColumn>
+                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ExtraFilters")" Filterable Visible="false">
+                                                                    <FilterTemplate>
+                                                                        <div class="d-flex flex-column gap-3 mt-1">
+                                                                            <FormField Label="@L("AuditLog.CorrelationId")">
+                                                                                <CInput TValue="string" @bind-Value="_input.CorrelationId"
+                                                                                        Placeholder="@L("AuditLog.CorrelationId")" Clearable Size="CInputSize.Small" />
+                                                                            </FormField>
+                                                                            <div class="d-flex align-items-center justify-content-between px-1">
+                                                                                <span class="small text-muted">@L("AuditLog.OnlyExceptions")</span>
+                                                                                <Switch Value="_input.HasException ?? false"
+                                                                                        ValueChanged="@(v => _input.HasException = v)" Size="CSwitchSize.Small" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </FilterTemplate>
+                                                                </DataTableColumn>
 
-                                                                        <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Duration")" Width="100px" Sortable
-                                                                                         Filterable Property="@(x => x.ExecutionDuration)">
-                                                                            <FilterTemplate>
-                                                                                <div class="row g-2">
-                                                                                    <div class="col-6">
-                                                                                        <CInput TValue="int?" @bind-Value="_input.MinExecutionDuration" Type="number"
-                                                                                                Placeholder="Min" Size="CInputSize.Small" />
-                                                                                    </div>
-                                                                                    <div class="col-6">
-                                                                                        <CInput TValue="int?" @bind-Value="_input.MaxExecutionDuration" Type="number"
-                                                                                                Placeholder="Max" Size="CInputSize.Small" />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </FilterTemplate>
-                                                                            <CellTemplate>
-                                                                                <div class="small text-center" style="color: var(--dt-text-muted);">
-                                                                                    @context.ExecutionDuration ms</div>
-                                                                                </CellTemplate>
-                                                                            </DataTableColumn>
+                                                                <DataTableColumn TItem="AuditLogDto" Title="@L("Common.Operations")" Width="100px"
+                                                                                 Alignment="ColumnAlignment.Right">
+                                                                    <CellTemplate>
+                                                                        <div class="d-flex justify-content-end gap-1">
+                                                                            <Tooltip Text="@L("Common.ViewDetails")">
+                                                                                <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
+                                                                                           Class="btn-icon-replica" OnClick="() => ViewDetails(context)">
+                                                                                    <i class="bi bi-eye"></i>
+                                                                                </LHAButton>
+                                                                            </Tooltip>
+                                                                            @if (_canDelete)
+                                                                            {
+                                                                                <Tooltip Text="@L("Common.Delete")">
+                                                                                    <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
+                                                                                               Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
+                                                                                        <i class="bi bi-trash text-danger"></i>
+                                                                                    </LHAButton>
+                                                                                </Tooltip>
+                                                                            }
+                                                                        </div>
+                                                                    </CellTemplate>
+                                                                </DataTableColumn>
+                                                            </ChildContent>
 
-                                                                            <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ExtraFilters")" Filterable Visible="false">
-                                                                                <FilterTemplate>
-                                                                                    <div class="d-flex flex-column gap-3 mt-1">
-                                                                                        <FormField Label="@L("AuditLog.CorrelationId")">
-                                                                                            <CInput TValue="string" @bind-Value="_input.CorrelationId"
-                                                                                                    Placeholder="Correlation ID" Clearable Size="CInputSize.Small" />
-                                                                                        </FormField>
-                                                                                        <div class="d-flex align-items-center justify-content-between px-1">
-                                                                                            <span class="small text-muted">@L("AuditLog.OnlyExceptions")</span>
-                                                                                            <Switch Value="_input.HasException ?? false"
-                                                                                                    ValueChanged="@(v => _input.HasException = v)" Size="CSwitchSize.Small" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </FilterTemplate>
-                                                                            </DataTableColumn>
-
-                                                                            <DataTableColumn TItem="AuditLogDto" Title="@L("Common.Operations")" Width="100px"
-                                                                                             Alignment="ColumnAlignment.Right">
-                                                                                <CellTemplate>
-                                                                                    <div class="d-flex justify-content-end gap-1">
-                                                                                        <Tooltip Text="@L("Common.ViewDetails")">
-                                                                                            <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
-                                                                                                       Class="btn-icon-replica" OnClick="() => ViewDetails(context)">
-                                                                                                <i class="bi bi-eye"></i>
-                                                                                            </LHAButton>
-                                                                                        </Tooltip>
-                                                                                        @if (_canDelete)
-                                                                                        {
-                                                                                            <Tooltip Text="@L("Common.Delete")">
-                                                                                                <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
-                                                                                                           Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
-                                                                                                    <i class="bi bi-trash text-danger"></i>
-                                                                                                </LHAButton>
-                                                                                            </Tooltip>
-                                                                                        }
-                                                                                    </div>
-                                                                                </CellTemplate>
-                                                                            </DataTableColumn>
-                                                                        </ChildContent>
-
-                                                                        <ExpandedRowTemplate>
-                                                                            <div class="p-4" style="background: var(--dt-sidebar-bg); border-top: 1px solid var(--dt-border);">
-                                                                                <h6 class="fw-bold mb-3" style="color: var(--dt-text-primary);">@L("AuditLog.ResourceTrace")
-                                                                                    (@context.Id)</h6>
-                                                                                    <div class="row g-3">
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="small d-block"
-                                                                                                   style="color: var(--dt-text-muted);">@L("AuditLog.ClientIp")</label>
-                                                                                            <span style="color: var(--dt-text-secondary);">@context.ClientIpAddress</span>
-                                                                                        </div>
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="small d-block"
-                                                                                                   style="color: var(--dt-text-muted);">@L("AuditLog.Browser")</label>
-                                                                                            <span class="small" style="color: var(--dt-text-secondary);">@context.BrowserInfo</span>
-                                                                                        </div>
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="small d-block"
-                                                                                                   style="color: var(--dt-text-muted);">@L("AuditLog.FullDate")</label>
-                                                                                            <span
-                                                                                            style="color: var(--dt-text-secondary);">@context.ExecutionTime.ToLocalTime().ToString("F")</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </ExpandedRowTemplate>
-                                                                        </DataTable>
+                                                            <ExpandedRowTemplate>
+                                                                <div class="p-4" style="background: var(--dt-sidebar-bg); border-top: 1px solid var(--dt-border);">
+                                                                    <h6 class="fw-bold mb-3" style="color: var(--dt-text-primary);">@L("AuditLog.ResourceTrace")
+                                                                        (@context.Id)</h6>
+                                                                        <div class="row g-3">
+                                                                            <div class="col-md-4">
+                                                                                <label class="small d-block"
+                                                                                       style="color: var(--dt-text-muted);">@L("AuditLog.ClientIp")</label>
+                                                                                <span style="color: var(--dt-text-secondary);">@context.ClientIpAddress</span>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <label class="small d-block"
+                                                                                       style="color: var(--dt-text-muted);">@L("AuditLog.Browser")</label>
+                                                                                <span class="small" style="color: var(--dt-text-secondary);">@context.BrowserInfo</span>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <label class="small d-block"
+                                                                                       style="color: var(--dt-text-muted);">@L("AuditLog.FullDate")</label>
+                                                                                <span
+                                                                                style="color: var(--dt-text-secondary);">@context.ExecutionTime.ToLocalTime().ToString("F")</span>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
+                                                                </ExpandedRowTemplate>
+                                                            </DataTable>
+                                                        </div>
+                                                    </div>
+                                                </div>

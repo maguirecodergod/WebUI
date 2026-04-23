@@ -73,11 +73,13 @@
         "CreationTime": "Ngày tạo",
         "Delete": "Xóa",
         "DeleteFailed": "Xóa thất bại",
+        "DeleteSelected": "Xóa lựa chọn",
         "DeletedSuccessfully": "Xóa thành công",
         "Description": "Mô tả",
         "Detail": "Chi tiết",
         "DisplayColumn": "Hiển thị cột",
         "Edit": "Chỉnh sửa",
+        "ExtraProperties": "Thuộc tính thêm",
         "Filters": "Bộ lọc",
         "First": "Đầu tiên",
         "General": "Tổng quan",
@@ -277,6 +279,13 @@
                 "Name": "Quản trị viên Tenant",
                 "Description": "Toàn quyền truy cập tất cả tính năng quản lý."
             }
+        },
+        "MegaAccountManagement": {
+            "Group": "Quản lý tài khoản Mega",
+            "Read": "Xem tài khoản Mega",
+            "Create": "Tạo tài khoản Mega",
+            "Update": "Cập nhật tài khoản Mega",
+            "Delete": "Xóa tài khoản Mega"
         }
     },
     "Roles": {

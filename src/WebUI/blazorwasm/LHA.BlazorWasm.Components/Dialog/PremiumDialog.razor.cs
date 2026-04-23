@@ -47,8 +47,8 @@ public partial class PremiumDialog : LHAComponentBase
     [Parameter] public bool ShowCloseButton { get; set; } = true;
     [Parameter] public bool CloseOnOverlayClick { get; set; } = false;
 
-    [Parameter] public string OkText { get; set; } = "Common_Confirm";
-    [Parameter] public string CancelText { get; set; } = "Common_Cancel";
+    [Parameter] public string OkText { get; set; } = "Common.Confirm";
+    [Parameter] public string CancelText { get; set; } = "Common.Cancel";
     [Parameter] public bool ShowCancelButton { get; set; } = true;
 
     [Parameter] public EventCallback OnOk { get; set; }

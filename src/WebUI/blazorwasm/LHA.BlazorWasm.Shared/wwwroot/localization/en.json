@@ -73,11 +73,13 @@
         "CreationTime": "Created At",
         "Delete": "Delete",
         "DeleteFailed": "Deletion failed",
+        "DeleteSelected": "Delete Selected",
         "DeletedSuccessfully": "Deleted successfully",
         "Description": "Description",
         "Detail": "Detail",
         "DisplayColumn": "Display Columns",
         "Edit": "Edit",
+        "ExtraProperties": "Extra Properties",
         "Filters": "Filters",
         "First": "First",
         "General": "General",
@@ -277,6 +279,13 @@
                 "Name": "Tenant Administrator",
                 "Description": "Full access to all management features."
             }
+        },
+        "MegaAccountManagement": {
+            "Group": "Mega Account Management",
+            "Read": "View Mega Accounts",
+            "Create": "Create Mega Account",
+            "Update": "Update Mega Account",
+            "Delete": "Delete Mega Account"
         }
     },
     "Roles": {

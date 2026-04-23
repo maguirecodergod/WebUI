@@ -132,6 +132,9 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
     private bool _allEntireDatasetSelected;
     private HashSet<string>? _restoredSelectedKeys;
 
+    public bool IsAllEntireDatasetSelected => _allEntireDatasetSelected;
+    public int TotalSelectedCount => _allEntireDatasetSelected ? _totalCount : _selectedItems.Count;
+
     // Expanded rows
     private readonly HashSet<object> _expandedItems = new();
 
