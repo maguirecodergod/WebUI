@@ -6,14 +6,14 @@ namespace LHA.Shared.Contracts.Identity.Users;
 /// <summary>Input for creating a new user.</summary>
 public sealed class CreateIdentityUserInput
 {
-    public required string UserName { get; init; }
-    public required string Email { get; init; }
-    public required string Password { get; init; }
-    public string? PhoneNumber { get; init; }
-    public string? Name { get; init; }
-    public string? Surname { get; init; }
-    public bool LockoutEnabled { get; init; } = true;
-    public List<Guid> RoleIds { get; init; } = [];
+    public required string UserName { get; set; }
+    public required string Email { get; set; }
+    public required string Password { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? Name { get; set; }
+    public string? Surname { get; set; }
+    public bool LockoutEnabled { get; set; } = true;
+    public List<Guid> RoleIds { get; set; } = [];
 }
 
 public sealed class CreateIdentityUserInputValidator : AbstractValidator<CreateIdentityUserInput>

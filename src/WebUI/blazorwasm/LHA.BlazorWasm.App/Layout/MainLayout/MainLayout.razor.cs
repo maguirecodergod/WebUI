@@ -46,7 +46,7 @@ public partial class MainLayout : LHALayoutComponentBase
             Icon = """<i class="bi bi-shield-lock"></i>""",
             Children = new()
             {
-                new() { Id = "tenant-users", TitleKey = "Sidebar.Users", Href = "/admin/users", Icon = """<i class="bi bi-people"></i>""", RequiredPermission = IdentityPermissions.Users.Read },
+                new() { Id = "tenant-users", TitleKey = "Sidebar.Users", Href = "/tenant/users", Icon = """<i class="bi bi-people"></i>""", RequiredPermission = IdentityPermissions.Users.Read },
                 new() { Id = "tenant-logs", TitleKey = "Sidebar.AuditLogs", Href = "/audit-logs", Icon = """<i class="bi bi-journal-text"></i>""", RequiredPermission = AuditLogPermissions.AuditLogs.Read }
             }
         }

@@ -9,20 +9,20 @@ namespace LHA.Shared.Contracts.Identity;
 public sealed class IdentityUserDto : FullAuditedEntityDto<Guid>
 {
     public Guid? TenantId { get; init; }
-    public required string UserName { get; init; }
-    public required string Email { get; init; }
-    public bool EmailConfirmed { get; init; }
-    public string? PhoneNumber { get; init; }
-    public bool PhoneNumberConfirmed { get; init; }
-    public bool TwoFactorEnabled { get; init; }
-    public bool LockoutEnabled { get; init; }
-    public DateTimeOffset? LockoutEnd { get; init; }
-    public int AccessFailedCount { get; init; }
-    public CMasterStatus Status { get; init; }
-    public string? Name { get; init; }
-    public string? Surname { get; init; }
-    public string ConcurrencyStamp { get; init; } = string.Empty;
-    public List<IdentityUserRoleDto> Roles { get; init; } = [];
+    public required string UserName { get; set; }
+    public required string Email { get; set; }
+    public bool EmailConfirmed { get; set; }
+    public string? PhoneNumber { get; set; }
+    public bool PhoneNumberConfirmed { get; set; }
+    public bool TwoFactorEnabled { get; set; }
+    public bool LockoutEnabled { get; set; }
+    public DateTimeOffset? LockoutEnd { get; set; }
+    public int AccessFailedCount { get; set; }
+    public CMasterStatus Status { get; set; }
+    public string? Name { get; set; }
+    public string? Surname { get; set; }
+    public string ConcurrencyStamp { get; set; } = string.Empty;
+    public List<IdentityUserRoleDto> Roles { get; set; } = [];
 }
 
 /// <summary>DTO for a user-role assignment.</summary>

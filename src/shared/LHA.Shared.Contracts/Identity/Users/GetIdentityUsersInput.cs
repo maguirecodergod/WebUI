@@ -7,7 +7,7 @@ namespace LHA.Shared.Contracts.Identity.Users;
 /// <summary>Input for querying users with filtering and paging.</summary>
 public sealed class GetIdentityUsersInput : PagedAndSortedResultRequestDto
 {
-    public string? Filter { get; init; }
-    public CMasterStatus? Status { get; init; }
-    public Guid? RoleId { get; init; }
+    public string? Filter { get; set; }
+    public CMasterStatus? Status { get; set; }
+    public Guid? RoleId { get; set; }
 }

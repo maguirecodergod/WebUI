@@ -1,0 +1,153 @@
+@page "/tenant/users/{Id:guid}"
+@namespace LHA.BlazorWasm.Modules.Tenant.Users.Pages
+@inherits LHAComponentBase
+@using LHA.BlazorWasm.Components.Breadcrumb
+@using LHA.BlazorWasm.Components.Form
+@using LHA.BlazorWasm.Components.Section
+@using LHA.BlazorWasm.Components.Skeleton
+@using LHA.Shared.Contracts.Identity.Users
+
+<PageTitle>@L("Users.EditUser")</PageTitle>
+
+<div class="user-edit-container animate-fade-in px-4 py-2">
+    @* ─── Breadcrumb ─── *@
+    <div class="breadcrumb-wrapper mb-3">
+        <LHABreadcrumb Items="_breadcrumbItems" Separator="/" />
+    </div>
+
+    @* ─── Header ─── *@
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <LHAButton Style="CButtonStyle.Ghost" Icon="bi bi-arrow-left" OnClick="Cancel" />
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight m-0">@L("Users.EditUser")</h1>
+            <p class="text-sm text-muted mt-1 m-0">@L("Users.EditUserDescription")</p>
+        </div>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <Skeleton Variant="CSkeletonVariant.Rounded" Height="300px" Class="mb-4" />
+                <Skeleton Variant="CSkeletonVariant.Rounded" Height="250px" />
+            </div>
+            <div class="col-lg-4">
+                <Skeleton Variant="CSkeletonVariant.Rounded" Height="400px" />
+            </div>
+        </div>
+    }
+    else if (_user != null)
+    {
+        <div class="row g-4">
+            <div class="col-lg-8">
+                @* ─── Account Info ─── *@
+                <Section Title="@L("Users.AccountInformation")" Icon="bi bi-person-badge" Class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <FormField Label="@L("Users.Username")" Required="true">
+                                <CInput TValue="string" @bind-Value="_user.UserName" Placeholder="@L("Users.UsernamePlaceholder")" />
+                            </FormField>
+                        </div>
+                        <div class="col-md-6">
+                            <FormField Label="@L("Users.Email")" Required="true">
+                                <CInput TValue="string" @bind-Value="_user.Email" Type="email" Placeholder="example@email.com" />
+                            </FormField>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-info d-flex align-items-center gap-2 py-2 px-3 border-0 rounded-3">
+                                <i class="bi bi-info-circle-fill"></i>
+                                <span class="text-xs">@L("Users.PasswordChangeNote")</span>
+                            </div>
+                        </div>
+                    </div>
+                </Section>
+
+                @* ─── Personal Info ─── *@
+                <Section Title="@L("Users.PersonalInformation")" Icon="bi bi-info-circle" Class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <FormField Label="@L("Users.Name")">
+                                <CInput TValue="string" @bind-Value="_user.Name" Placeholder="@L("Users.NamePlaceholder")" />
+                            </FormField>
+                        </div>
+                        <div class="col-md-6">
+                            <FormField Label="@L("Users.Surname")">
+                                <CInput TValue="string" @bind-Value="_user.Surname" Placeholder="@L("Users.SurnamePlaceholder")" />
+                            </FormField>
+                        </div>
+                        <div class="col-md-12">
+                            <FormField Label="@L("Users.PhoneNumber")">
+                                <CInput TValue="string" @bind-Value="_user.PhoneNumber" Placeholder="+84..." />
+                            </FormField>
+                        </div>
+                    </div>
+                </Section>
+            </div>
+
+            <div class="col-lg-4">
+                @* ─── Roles ─── *@
+                <Section Title="@L("Users.AssignRoles")" Icon="bi bi-shield-check">
+                    <div class="role-selection-list">
+                        @if (_availableRoles.Count == 0)
+                        {
+                            <p class="text-muted text-sm italic">@L("Users.NoRolesAvailable")</p>
+                        }
+                        else
+                        {
+                            @foreach (var role in _availableRoles)
+                            {
+                                <div class="role-item mb-2">
+                                    <div class="form-check custom-check">
+                                        <input class="form-check-input" type="checkbox" id="role-@role.Id" 
+                                               checked="@_selectedRoleIds.Contains(role.Id)"
+                                               @onchange="@(e => { if((bool)e.Value!) _selectedRoleIds.Add(role.Id); else _selectedRoleIds.Remove(role.Id); })" />
+                                        <label class="form-check-label ms-2" for="role-@role.Id">
+                                            <span class="fw-bold">@role.Name</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </Section>
+
+                <div class="mt-4 d-grid gap-2">
+                    <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Large" 
+                               IsLoading="_isSaving" OnClick="HandleSubmitAsync"
+                               Icon="bi bi-check-lg" Class="shadow-lg shadow-indigo-500/30">
+                        @L("Common.SaveChanges")
+                    </LHAButton>
+                    <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Large" OnClick="Cancel">
+                        @L("Common.Cancel")
+                    </LHAButton>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .user-edit-container {
+        animation: fadeIn 0.5s ease-out;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .role-selection-list {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    .custom-check .form-check-input:checked {
+        background-color: #6366f1;
+        border-color: #6366f1;
+    }
+
+    .text-xs { font-size: 0.75rem; }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
