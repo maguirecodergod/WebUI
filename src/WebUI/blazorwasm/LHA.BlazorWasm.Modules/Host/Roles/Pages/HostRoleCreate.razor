@@ -1,0 +1,354 @@
+@page "/host/roles/create"
+@namespace LHA.BlazorWasm.Modules.Host.Roles.Pages
+@inherits LHAComponentBase
+@using LHA.BlazorWasm.Components.Breadcrumb
+@using LHA.BlazorWasm.Components.Section
+@using LHA.BlazorWasm.Components.Form
+@using LHA.BlazorWasm.Components.Skeleton
+@using LHA.BlazorWasm.Modules.Host.Roles.Models
+@using LHA.Shared.Contracts.Identity
+
+<PageTitle>@L("Roles.CreateRole")</PageTitle>
+
+<div class="role-create-container animate-fade-in">
+    @* ─── Breadcrumb ─── *@
+    <div class="breadcrumb-wrapper px-1 py-2">
+        <LHABreadcrumb Items="_breadcrumbItems" Separator="/" />
+    </div>
+
+    @* ─── Header ─── *@
+    <div class="create-header">
+        <div class="header-left">
+            <div class="d-flex align-items-center gap-3">
+                <LHAButton Style="CButtonStyle.Ghost" Icon="bi bi-arrow-left"
+                           OnClick="NavigateToRoleList" Class="back-btn" />
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight m-0">@L("Roles.CreateRole")</h1>
+                    <p class="text-sm text-muted mt-1 m-0">@L("Roles.CreateRoleDescription")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (_isCompleted)
+    {
+        @* ─── Success State ─── *@
+        <div class="success-panel animate-fade-in">
+            <div class="success-icon-wrapper">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <h2 class="text-2xl font-bold mt-4 mb-2">@L("Roles.CreateSuccess")</h2>
+            <p class="text-muted mb-6">@L("Roles.RoleCreatedMessage")</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <LHAButton Style="CButtonStyle.Secondary" OnClick="NavigateToRoleList"
+                           Icon="bi bi-list-ul">
+                    @L("Roles.BackToList")
+                </LHAButton>
+                <LHAButton Style="CButtonStyle.Primary" OnClick="NavigateToCreatedRole"
+                           Icon="bi bi-eye" Class="shadow-lg shadow-indigo-500/30">
+                    @L("Roles.ViewRole")
+                </LHAButton>
+            </div>
+        </div>
+    }
+    else
+    {
+        @* ─── Stepper Progress ─── *@
+        <div class="stepper-container">
+            <div class="stepper">
+                @for (int i = 0; i < TotalSteps; i++)
+                {
+                    var stepIndex = i;
+                    var stepLabel = i switch
+                    {
+                        0 => L("Roles.Step.RoleInfo"),
+                        1 => L("Roles.Step.Permissions"),
+                        2 => L("Roles.Step.Users"),
+                        _ => ""
+                    };
+                    var stepIcon = i switch
+                    {
+                        0 => "bi-shield-lock",
+                        1 => "bi-key",
+                        2 => "bi-people",
+                        _ => ""
+                    };
+
+                    <div class="step @(stepIndex < _currentStep ? "completed" : "") @(stepIndex == _currentStep ? "active" : "")">
+                        <div class="step-indicator">
+                            @if (stepIndex < _currentStep)
+                            {
+                                <i class="bi bi-check-lg"></i>
+                            }
+                            else
+                            {
+                                <i class="bi @stepIcon"></i>
+                            }
+                        </div>
+                        <span class="step-label">@stepLabel</span>
+                    </div>
+
+                    @if (i < TotalSteps - 1)
+                    {
+                        <div class="step-connector @(stepIndex < _currentStep ? "completed" : "")"></div>
+                    }
+                }
+            </div>
+        </div>
+
+        @* ─── Step Content ─── *@
+        <div class="step-content">
+            @switch (_currentStep)
+            {
+                case 0:
+                    @* ── Step 1: Role Info ── *@
+                    <div class="step-panel animate-fade-in">
+                        <div class="form-card">
+                            <div class="form-card-header">
+                                <i class="bi bi-shield-lock form-card-icon"></i>
+                                <div>
+                                    <h3 class="form-card-title">@L("Roles.RoleInformation")</h3>
+                                    <p class="form-card-subtitle">@L("Roles.RoleInfoDescription")</p>
+                                </div>
+                            </div>
+                            <div class="form-card-body">
+                                <div class="form-group">
+                                    <FormField Label="@L("Roles.Name")" Required="true">
+                                        <CInput TValue="string" @bind-Value="_roleName"
+                                                Placeholder="@L("Roles.NamePlaceholder")"
+                                                Size="CInputSize.Large" Class="glass-input">
+                                            <IconLeft><i class="bi bi-tag"></i></IconLeft>
+                                        </CInput>
+                                    </FormField>
+                                    @if (!string.IsNullOrEmpty(_nameError))
+                                    {
+                                        <p class="field-error">@_nameError</p>
+                                    }
+                                </div>
+
+                                <div class="toggle-group">
+                                    <div class="toggle-row">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">@L("Roles.IsDefault")</span>
+                                            <span class="toggle-desc">@L("Roles.IsDefaultDescription")</span>
+                                        </div>
+                                        <Switch @bind-Value="_isDefault" Size="CSwitchSize.Medium" />
+                                    </div>
+                                    <div class="toggle-row">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">@L("Roles.IsPublic")</span>
+                                            <span class="toggle-desc">@L("Roles.IsPublicDescription")</span>
+                                        </div>
+                                        <Switch @bind-Value="_isPublic" Size="CSwitchSize.Medium" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+
+                case 1:
+                    @* ── Step 2: Permissions ── *@
+                    <div class="step-panel animate-fade-in">
+                        <div class="permissions-header">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="perm-count-badge">
+                                    <i class="bi bi-key"></i>
+                                    <span>@GetGrantedPermissionCount()</span>
+                                </div>
+                                <span class="text-muted text-sm">@L("Roles.PermissionsSelected")</span>
+                            </div>
+                            <div class="search-box-system">
+                                <CInput TValue="string" @bind-Value="_permissionFilter"
+                                        Placeholder="@L("Roles.SearchPermissions")"
+                                        Size="CInputSize.Medium" Class="glass-input">
+                                    <IconLeft><i class="bi bi-search"></i></IconLeft>
+                                </CInput>
+                            </div>
+                        </div>
+
+                        @if (_isLoadingPermissions)
+                        {
+                            <div class="permission-grid">
+                                @for (int i = 0; i < 4; i++)
+                                {
+                                    <div class="skeleton-card-wrapper">
+                                        <Skeleton Variant="CSkeletonVariant.Rounded" Height="200px" Width="100%" />
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="permission-grid">
+                                @foreach (var group in _groups.Where(g =>
+                                    string.IsNullOrEmpty(_permissionFilter) ||
+                                    g.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase) ||
+                                    g.Permissions.Any(p => p.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase))))
+                                {
+                                    <Section Title="@L(group.DisplayName)" Icon="bi bi-collection" Collapsible="true">
+                                        <div class="group-header-row">
+                                            <div class="group-meta-tag">@group.ServiceName</div>
+                                            <div class="group-toggle-all">
+                                                <span class="text-xs text-muted me-2">@L("Common.All")</span>
+                                                <Switch Value="@AreAllGroupPermissionsGranted(group)"
+                                                        ValueChanged="@((val) => ToggleAllGroupPermissions(group, val))"
+                                                        Size="CSwitchSize.Small" />
+                                            </div>
+                                        </div>
+                                        <div class="permission-rows">
+                                            @foreach (var p in group.Permissions.Where(p =>
+                                                string.IsNullOrEmpty(_permissionFilter) ||
+                                                p.DisplayName.Contains(_permissionFilter, StringComparison.OrdinalIgnoreCase)))
+                                            {
+                                                <div class="perm-row @(p.IsGranted ? "is-granted" : string.Empty)">
+                                                    <div class="perm-info-p">
+                                                        <div class="perm-top">
+                                                            <span class="perm-name-p">@L(p.DisplayName)</span>
+                                                        </div>
+                                                        <code class="perm-key-p">@p.Name</code>
+                                                    </div>
+                                                    <div class="perm-toggle-p">
+                                                        <Switch Value="@p.IsGranted"
+                                                                ValueChanged="@((val) => OnPermissionChanged(p, val))"
+                                                                Size="CSwitchSize.Medium"
+                                                                Tooltip="@L("Roles.TogglePermission")" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </Section>
+                                }
+                            </div>
+                        }
+                    </div>
+                    break;
+
+                case 2:
+                    @* ── Step 3: Assign Users ── *@
+                    <div class="step-panel animate-fade-in">
+                        <div class="users-layout">
+                            @* Selected Users *@
+                            @if (_selectedUsers.Count > 0)
+                            {
+                                <div class="selected-users-card">
+                                    <div class="selected-users-header">
+                                        <h4 class="m-0 font-semibold">
+                                            <i class="bi bi-people-fill me-2"></i>
+                                            @L("Roles.SelectedUsers") (@_selectedUsers.Count)
+                                        </h4>
+                                    </div>
+                                    <div class="selected-users-list">
+                                        @foreach (var user in _selectedUsers)
+                                        {
+                                            <div class="selected-user-chip">
+                                                <div class="u-avatar-sm">@user.UserName[0].ToString().ToUpper()</div>
+                                                <span class="chip-name">@user.UserName</span>
+                                                <button class="chip-remove" @onclick="() => RemoveUserFromSelection(user)">
+                                                    <i class="bi bi-x-lg"></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @* Available Users *@
+                            <div class="available-users-card">
+                                <div class="available-users-header">
+                                    <h4 class="m-0 font-semibold">@L("Roles.AvailableUsers")</h4>
+                                    <div class="search-box-system" style="width: 300px;">
+                                        <CInput TValue="string" Value="@_userSearchQuery"
+                                                ValueChanged="@SearchUsers"
+                                                ValueExpression="@(() => _userSearchQuery)"
+                                                Placeholder="@L("Roles.SearchUsers")"
+                                                Size="CInputSize.Medium" Class="glass-input">
+                                            <IconLeft><i class="bi bi-search"></i></IconLeft>
+                                        </CInput>
+                                    </div>
+                                </div>
+
+                                @if (_isLoadingUsers)
+                                {
+                                    <div class="p-4">
+                                        <Skeleton Variant="CSkeletonVariant.Text" Count="5" Height="40px" Width="100%" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="available-users-list">
+                                        <DataTable TItem="IdentityUserDto" Items="_filteredUsers"
+                                                   Hoverable="true" Striped="true" ShowToolbar="false"
+                                                   KeySelector="@(u => u.Id)">
+                                            <ChildContent>
+                                                <DataTableColumn TItem="IdentityUserDto" Title="@L("Roles.User")">
+                                                    <CellTemplate Context="item">
+                                                        <div class="user-profile-cell">
+                                                            <div class="u-avatar">@item.UserName[0].ToString().ToUpper()</div>
+                                                            <div class="d-flex flex-column">
+                                                                <span class="u-name">@item.UserName</span>
+                                                                <span class="u-email">@item.Email</span>
+                                                            </div>
+                                                        </div>
+                                                    </CellTemplate>
+                                                </DataTableColumn>
+                                                <DataTableColumn TItem="IdentityUserDto" Title="@L("Common.Actions")"
+                                                                 Alignment="ColumnAlignment.Right">
+                                                    <CellTemplate Context="item">
+                                                        <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Small"
+                                                                   Icon="bi bi-plus-lg"
+                                                                   OnClick="@(() => AddUserToSelection(item))"
+                                                                   Class="shadow-sm">
+                                                            @L("Roles.Assign")
+                                                        </LHAButton>
+                                                    </CellTemplate>
+                                                </DataTableColumn>
+                                            </ChildContent>
+                                            <EmptyTemplate>
+                                                <div class="empty-visual">
+                                                    <i class="bi bi-person-x text-3xl mb-2 block text-center"></i>
+                                                    <p class="text-center text-muted text-sm">@L("Roles.NoUsersFound")</p>
+                                                </div>
+                                            </EmptyTemplate>
+                                        </DataTable>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    break;
+            }
+        </div>
+
+        @* ─── Footer Actions ─── *@
+        <div class="wizard-footer">
+            <div class="footer-left">
+                @if (_currentStep > 0)
+                {
+                    <LHAButton Style="CButtonStyle.Secondary" OnClick="PreviousStep"
+                               Icon="bi bi-arrow-left" Class="glass-btn">
+                        @L("Common.Previous")
+                    </LHAButton>
+                }
+            </div>
+            <div class="footer-right">
+                @if (_currentStep < TotalSteps - 1)
+                {
+                    <LHAButton Style="CButtonStyle.Primary" OnClick="NextStepAsync"
+                               Disabled="!CanGoNext" Icon="bi bi-arrow-right"
+                               Class="shadow-lg shadow-indigo-500/30">
+                        @L("Common.Next")
+                    </LHAButton>
+                }
+                else
+                {
+                    <LHAButton Style="CButtonStyle.Primary" OnClick="SubmitAsync"
+                               IsLoading="_isCreating" Icon="bi bi-check-lg"
+                               Class="shadow-lg shadow-indigo-500/30 px-5">
+                        @L("Roles.CreateRole")
+                    </LHAButton>
+                }
+            </div>
+        </div>
+    }
+</div>

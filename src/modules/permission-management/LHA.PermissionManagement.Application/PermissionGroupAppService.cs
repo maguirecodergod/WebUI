@@ -3,7 +3,9 @@ using LHA.Ddd.Domain;
 using LHA.PermissionManagement.Application.Contracts;
 using LHA.PermissionManagement.Domain.PermissionDefinitions;
 using LHA.PermissionManagement.Domain.PermissionGroups;
+using LHA.MultiTenancy;
 using LHA.UnitOfWork;
+using LHA.PermissionManagement.Domain.Shared;
 
 namespace LHA.PermissionManagement.Application;
 
@@ -13,15 +15,18 @@ public sealed class PermissionGroupAppService
     private readonly IPermissionGroupRepository _groupRepo;
     private readonly IPermissionDefinitionRepository _defRepo;
     private readonly IUnitOfWorkManager _uowManager;
+    private readonly ICurrentTenant _currentTenant;
 
     public PermissionGroupAppService(
         IPermissionGroupRepository groupRepo,
         IPermissionDefinitionRepository defRepo,
-        IUnitOfWorkManager uowManager)
+        IUnitOfWorkManager uowManager,
+        ICurrentTenant currentTenant)
     {
         _groupRepo = groupRepo;
         _defRepo = defRepo;
         _uowManager = uowManager;
+        _currentTenant = currentTenant;
     }
 
     public async Task<PermissionGroupDto> GetAsync(Guid id)
@@ -47,14 +52,20 @@ public sealed class PermissionGroupAppService
         var allPerms = allPermIds.Count > 0 ? await _defRepo.GetListByIdsAsync(allPermIds) : [];
         var permLookup = allPerms.ToDictionary(p => p.Id);
 
+        var currentSide = _currentTenant.GetSide();
+
         var dtos = groups.ConvertAll(g =>
         {
             var perms = g.Items
                 .Where(i => permLookup.ContainsKey(i.PermissionDefinitionId))
                 .Select(i => permLookup[i.PermissionDefinitionId])
+                .Where(p => (MapToSide(p.MultiTenancySide) & currentSide) != 0)
                 .ToList();
+            
+            if (perms.Count == 0 && g.Items.Count > 0) return null; // Skip groups with no allowed perms
+            
             return MapToDto(g, perms);
-        });
+        }).Where(d => d != null).Cast<PermissionGroupDto>().ToList();
 
         return new PagedResultDto<PermissionGroupDto>(
             totalCount, dtos, input.PageNumber, input.PageSize);
@@ -137,7 +148,15 @@ public sealed class PermissionGroupAppService
             DisplayName = p.DisplayName,
             ServiceName = p.ServiceName,
             GroupName = p.GroupName,
-            Description = p.Description
+            Description = p.Description,
+            MultiTenancySide = MapToSide(p.MultiTenancySide)
         })
+    };
+
+    private static CMultiTenancySidesType MapToSide(MultiTenancySides side) => side switch
+    {
+        MultiTenancySides.Host => CMultiTenancySidesType.Host,
+        MultiTenancySides.Tenant => CMultiTenancySidesType.Tenant,
+        _ => CMultiTenancySidesType.Both
     };
 }

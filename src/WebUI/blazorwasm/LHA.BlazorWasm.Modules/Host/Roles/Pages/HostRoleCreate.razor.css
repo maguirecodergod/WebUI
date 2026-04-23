@@ -1,0 +1,641 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Create Role Wizard — Premium Styles
+   Mirrors the design system from RoleDetail.razor.css
+   ═══════════════════════════════════════════════════════════════════ */
+
+.role-create-container {
+    --p-primary: #6366f1;
+    --p-primary-light: #818cf8;
+    --p-primary-rgb: 99, 102, 241;
+    --p-secondary: #64748b;
+    --p-bg: transparent;
+    --p-card-bg: var(--surface-bg, #ffffff);
+    --p-text: var(--surface-text, #1e293b);
+    --p-text-muted: var(--surface-text-muted, #64748b);
+    --p-border: var(--surface-border, rgba(0, 0, 0, 0.08));
+    --p-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --p-radius: 16px;
+    --p-radius-sm: 8px;
+    --p-success: #10b981;
+    --p-success-rgb: 16, 185, 129;
+
+    color: var(--p-text);
+    transition: all 0.3s ease;
+    min-height: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 3rem;
+}
+
+/* ── Animations ── */
+.animate-fade-in {
+    animation: rcFadeIn 0.5s ease-out;
+}
+
+@keyframes rcFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ── */
+.create-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0 1.5rem;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--p-border);
+}
+
+.text-muted {
+    color: var(--p-text-muted) !important;
+}
+
+/* ── Stepper ── */
+.stepper-container {
+    padding: 2rem 0 1.5rem;
+}
+
+.stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.step-indicator {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    border: 2px solid var(--p-border);
+    background: var(--p-card-bg);
+    color: var(--p-text-muted);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step.active .step-indicator {
+    background: var(--p-primary);
+    border-color: var(--p-primary);
+    color: white;
+    box-shadow: 0 6px 20px rgba(var(--p-primary-rgb), 0.35);
+    transform: scale(1.1);
+}
+
+.step.completed .step-indicator {
+    background: var(--p-success);
+    border-color: var(--p-success);
+    color: white;
+    box-shadow: 0 4px 12px rgba(var(--p-success-rgb), 0.3);
+}
+
+.step-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--p-text-muted);
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.step.active .step-label {
+    color: var(--p-primary);
+}
+
+.step.completed .step-label {
+    color: var(--p-success);
+}
+
+.step-connector {
+    width: 80px;
+    height: 3px;
+    background: var(--p-border);
+    border-radius: 2px;
+    margin: 0 12px;
+    margin-bottom: 24px;
+    transition: background 0.4s ease;
+}
+
+.step-connector.completed {
+    background: linear-gradient(90deg, var(--p-success), var(--p-primary));
+}
+
+/* ── Step Content ── */
+.step-content {
+    min-height: 400px;
+}
+
+.step-panel {
+    padding: 0.5rem 0;
+}
+
+/* ── Form Card (Step 1) ── */
+.form-card {
+    background: var(--p-card-bg);
+    border: 1px solid var(--p-border);
+    border-radius: var(--p-radius);
+    box-shadow: var(--p-shadow);
+    overflow: hidden;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.form-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--p-border);
+}
+
+.form-card-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-size: 20px;
+    color: var(--p-primary);
+    background: linear-gradient(135deg, rgba(var(--p-primary-rgb), 0.1), rgba(var(--p-primary-rgb), 0.03));
+    border: 1px solid rgba(var(--p-primary-rgb), 0.1);
+}
+
+.form-card-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--p-text);
+}
+
+.form-card-subtitle {
+    font-size: 13px;
+    color: var(--p-text-muted);
+    margin: 2px 0 0;
+}
+
+.form-card-body {
+    padding: 28px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.field-error {
+    color: #ef4444;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 6px 0 0 4px;
+}
+
+/* ── Toggle Group ── */
+.toggle-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--p-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    transition: background 0.2s;
+}
+
+.toggle-row:not(:last-child) {
+    border-bottom: 1px solid var(--p-border);
+}
+
+.toggle-row:hover {
+    background: rgba(0, 0, 0, 0.015);
+}
+
+.toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.toggle-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--p-text);
+}
+
+.toggle-desc {
+    font-size: 12px;
+    color: var(--p-text-muted);
+}
+
+/* ── Permissions (Step 2) — reuses RoleDetail patterns ── */
+.permissions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: var(--p-card-bg);
+    border: 1px solid var(--p-border);
+    border-radius: var(--p-radius);
+}
+
+.perm-count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--p-primary);
+    background: rgba(var(--p-primary-rgb), 0.08);
+    border: 1px solid rgba(var(--p-primary-rgb), 0.15);
+}
+
+.search-box-system {
+    width: 300px;
+}
+
+::deep .search-box-system .lha-input {
+    border-radius: 12px;
+    background: transparent;
+    border: 1px solid var(--p-border);
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+::deep .search-box-system .lha-input:focus-within {
+    background: var(--p-card-bg);
+    border-color: var(--p-primary-light);
+    box-shadow: 0 4px 20px rgba(var(--p-primary-rgb), 0.1);
+}
+
+.permission-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+::deep section {
+    background: var(--p-card-bg) !important;
+    border: 1px solid var(--p-border) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03) !important;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+::deep section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.05) !important;
+    border-color: var(--p-primary-light) !important;
+}
+
+::deep .section-header {
+    padding: 20px 24px !important;
+    border-bottom: 1px solid var(--p-border) !important;
+    background: transparent !important;
+}
+
+::deep .section-title {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: var(--p-text) !important;
+}
+
+::deep .section-icon {
+    color: var(--p-primary) !important;
+    margin-right: 14px !important;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, rgba(var(--p-primary-rgb), 0.1), rgba(var(--p-primary-rgb), 0.02));
+    border: 1px solid rgba(var(--p-primary-rgb), 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.group-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px 4px;
+}
+
+.group-meta-tag {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--p-primary);
+    letter-spacing: 0.15em;
+    opacity: 0.8;
+}
+
+.group-toggle-all {
+    display: flex;
+    align-items: center;
+}
+
+.permission-rows {
+    padding: 10px 20px 20px;
+}
+
+.perm-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 12px;
+    border-radius: 12px;
+    transition: background 0.2s;
+    border-bottom: 1px solid var(--p-border);
+}
+
+.perm-row:last-child {
+    border-bottom: none;
+}
+
+.perm-row:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.perm-row.is-granted {
+    background: rgba(var(--p-success-rgb), 0.03);
+}
+
+.perm-name-p {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--p-text);
+}
+
+.perm-key-p {
+    font-size: 11px;
+    color: var(--p-text-muted);
+    opacity: 0.7;
+    display: block;
+    margin-top: 2px;
+}
+
+/* ── Users (Step 3) ── */
+.users-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.selected-users-card,
+.available-users-card {
+    background: var(--p-card-bg);
+    border: 1px solid var(--p-border);
+    border-radius: var(--p-radius);
+    overflow: hidden;
+    box-shadow: var(--p-shadow);
+}
+
+.selected-users-header,
+.available-users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--p-border);
+}
+
+.selected-users-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px 24px;
+}
+
+.selected-user-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px 6px 6px;
+    border-radius: 12px;
+    background: rgba(var(--p-primary-rgb), 0.06);
+    border: 1px solid rgba(var(--p-primary-rgb), 0.12);
+    transition: all 0.2s ease;
+}
+
+.selected-user-chip:hover {
+    border-color: var(--p-primary-light);
+    box-shadow: 0 2px 8px rgba(var(--p-primary-rgb), 0.1);
+}
+
+.u-avatar-sm {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--p-primary), var(--p-primary-light));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.chip-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--p-text);
+}
+
+.chip-remove {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--p-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 10px;
+    padding: 0;
+}
+
+.chip-remove:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.available-users-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.user-profile-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.u-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--p-primary), var(--p-primary-light));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(var(--p-primary-rgb), 0.2);
+}
+
+.u-name {
+    font-weight: 700;
+    color: var(--p-text);
+    font-size: 14px;
+}
+
+.u-email {
+    color: var(--p-text-muted);
+    font-size: 12px;
+}
+
+.empty-visual {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--p-text-muted);
+}
+
+/* ── Wizard Footer ── */
+.wizard-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0 0;
+    margin-top: 24px;
+    border-top: 1px solid var(--p-border);
+}
+
+.footer-left,
+.footer-right {
+    display: flex;
+    gap: 12px;
+}
+
+/* ── Success Panel ── */
+.success-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    text-align: center;
+}
+
+.success-icon-wrapper {
+    width: 96px;
+    height: 96px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(var(--p-success-rgb), 0.15), rgba(var(--p-success-rgb), 0.05));
+    border: 2px solid rgba(var(--p-success-rgb), 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: var(--p-success);
+    box-shadow: 0 12px 40px rgba(var(--p-success-rgb), 0.15);
+    animation: successPulse 2s ease-in-out infinite;
+}
+
+@keyframes successPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ── Glass Inputs ── */
+::deep .glass-input .lha-input {
+    border-radius: 14px !important;
+    border: 1px solid var(--p-border) !important;
+    background: transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+::deep .glass-input .lha-input:focus-within {
+    border-color: var(--p-primary-light) !important;
+    box-shadow: 0 4px 20px rgba(var(--p-primary-rgb), 0.1) !important;
+}
+
+/* ── Dark Mode ── */
+.theme-dark .role-create-container {
+    --p-card-bg: #1e222b;
+    --p-border: rgba(255, 255, 255, 0.08);
+    --p-text: #f8fafc;
+    --p-text-muted: #94a3b8;
+    --p-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.theme-dark .toggle-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.theme-dark .perm-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.theme-dark .perm-row.is-granted {
+    background: rgba(var(--p-success-rgb), 0.05);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .role-create-container {
+        padding: 0.5rem 1rem 2rem;
+    }
+
+    .stepper {
+        gap: 0;
+    }
+
+    .step-connector {
+        width: 40px;
+    }
+
+    .step-label {
+        font-size: 10px;
+    }
+
+    .permissions-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-box-system {
+        width: 100% !important;
+    }
+
+    .available-users-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+}

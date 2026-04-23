@@ -5,6 +5,7 @@
     <ProjectReference Include="..\..\..\frameworks\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
     <ProjectReference Include="..\LHA.PermissionManagement.Application.Contracts\LHA.PermissionManagement.Application.Contracts.csproj" />
     <ProjectReference Include="..\LHA.PermissionManagement.Domain\LHA.PermissionManagement.Domain.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\MultiTenancy\LHA.MultiTenancy.Abstraction\LHA.MultiTenancy.Abstraction.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

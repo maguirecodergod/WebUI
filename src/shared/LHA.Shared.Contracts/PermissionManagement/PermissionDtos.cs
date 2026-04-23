@@ -1,3 +1,4 @@
+using LHA.MultiTenancy;
 using LHA.Ddd.Application;
 
 namespace LHA.Shared.Contracts.PermissionManagement;
@@ -13,6 +14,7 @@ public sealed class PermissionDefinitionDto : EntityDto<Guid>
     public required string ServiceName { get; init; }
     public string? GroupName { get; init; }
     public string? Description { get; init; }
+    public CMultiTenancySidesType MultiTenancySide { get; init; } = CMultiTenancySidesType.Both;
 }
 
 // ──────────────────────────────────────────────────────────────────

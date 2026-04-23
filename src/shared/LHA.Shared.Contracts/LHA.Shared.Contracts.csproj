@@ -11,6 +11,7 @@
     <ProjectReference Include="..\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
     <ProjectReference Include="..\..\frameworks\Ddd\LHA.Ddd.Application.Contracts\LHA.Ddd.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\frameworks\Auditing\LHA.Auditing.Contracts\LHA.Auditing.Contracts.csproj" />
+    <ProjectReference Include="..\..\frameworks\MultiTenancy\LHA.MultiTenancy.Abstraction\LHA.MultiTenancy.Abstraction.csproj" />
   </ItemGroup>
 
   <ItemGroup>
