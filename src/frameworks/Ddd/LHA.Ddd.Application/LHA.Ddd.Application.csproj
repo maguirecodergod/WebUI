@@ -1,8 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.Ddd.Application.Contracts\LHA.Ddd.Application.Contracts.csproj" />
     <ProjectReference Include="..\LHA.Ddd.Domain\LHA.Ddd.Domain.csproj" />
+    <ProjectReference Include="..\..\Caching\LHA.Caching\LHA.Caching.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

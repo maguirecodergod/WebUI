@@ -29,7 +29,7 @@ public abstract class ReadOnlyAppService<TEntity, TEntityDto, TKey, TGetListInpu
     public virtual async Task<TEntityDto> GetAsync(TKey id)
     {
         var entity = await ReadOnlyRepository.GetAsync(id);
-        return MapToDto(entity);
+        return await EnrichAuditAsync(MapToDto(entity));
     }
 
     /// <inheritdoc />

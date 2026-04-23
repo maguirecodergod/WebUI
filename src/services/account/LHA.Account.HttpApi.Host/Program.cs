@@ -1,4 +1,5 @@
 using System.Text;
+using LHA.Caching;
 using LHA.Account.Application;
 using LHA.Account.Domain.Shared.Localization;
 using LHA.Account.EntityFrameworkCore;
@@ -21,13 +22,14 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Framework services ───────────────────────────────────────────
-builder.Services.AddLHAMultiTenancy(options =>
+builder.Services.AddLHAMultiTenancyHosting(options =>
 {
     options.TenantResolvers.Add(new LHA.AspNetCore.Security.DomainTenantResolveContributor());
     options.TenantResolvers.Add(new LHA.AspNetCore.Security.HttpHeaderTenantResolveContributor());
 });
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
+builder.Services.AddLHACaching();
 builder.Services.AddLHAInMemoryEventBus();
 
 // ── Module services (Application + EF Core) ──────────────────────

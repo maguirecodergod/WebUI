@@ -34,7 +34,7 @@ public abstract class CrudAppService<TEntity, TEntityDto, TKey, TGetListInput, T
     {
         var entity = MapToEntity(input);
         entity = await Repository.InsertAsync(entity);
-        return MapToDto(entity);
+        return await EnrichAuditAsync(MapToDto(entity));
     }
 
     /// <inheritdoc />
@@ -43,7 +43,7 @@ public abstract class CrudAppService<TEntity, TEntityDto, TKey, TGetListInput, T
         var entity = await Repository.GetAsync(id);
         MapToEntity(input, entity);
         entity = await Repository.UpdateAsync(entity);
-        return MapToDto(entity);
+        return await EnrichAuditAsync(MapToDto(entity));
     }
 
     /// <inheritdoc />

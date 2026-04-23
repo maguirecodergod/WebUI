@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using LHA.MultiTenancy;
+using LHA.Core.Users;
 
 namespace LHA.Auditing;
 
@@ -75,18 +76,18 @@ public sealed class AuditPropertySetter : IAuditPropertySetter
 
     private void SetCreatorId(object targetObject)
     {
-        if (!_userProvider.UserId.HasValue) return;
-        if (!IsSameTenant(targetObject)) return;
+        var userId = _userProvider.UserId ?? CurrentUserDefaults.SystemUserId;
+        if (!IsSameTenant(targetObject, userId)) return;
 
         if (targetObject is IMayHaveCreator may && !may.CreatorId.HasValue)
         {
             TrySetProperty<IMayHaveCreator, Guid?>(
-                targetObject, e => e.CreatorId, _ => _userProvider.UserId);
+                targetObject, e => e.CreatorId, _ => userId);
         }
         else if (targetObject is IMustHaveCreator must && must.CreatorId == default)
         {
             TrySetProperty<IMustHaveCreator, Guid>(
-                targetObject, e => e.CreatorId, _ => _userProvider.UserId!.Value);
+                targetObject, e => e.CreatorId, _ => userId);
         }
     }
 
@@ -103,14 +104,9 @@ public sealed class AuditPropertySetter : IAuditPropertySetter
     {
         if (targetObject is not IModificationAuditedObject) return;
 
-        if (!_userProvider.UserId.HasValue)
-        {
-            TrySetProperty<IModificationAuditedObject, Guid?>(
-                targetObject, e => e.LastModifierId, _ => null);
-            return;
-        }
+        var userId = _userProvider.UserId ?? CurrentUserDefaults.SystemUserId;
 
-        if (!IsSameTenant(targetObject))
+        if (!IsSameTenant(targetObject, userId))
         {
             TrySetProperty<IModificationAuditedObject, Guid?>(
                 targetObject, e => e.LastModifierId, _ => null);
@@ -118,7 +114,7 @@ public sealed class AuditPropertySetter : IAuditPropertySetter
         }
 
         TrySetProperty<IModificationAuditedObject, Guid?>(
-            targetObject, e => e.LastModifierId, _ => _userProvider.UserId);
+            targetObject, e => e.LastModifierId, _ => userId);
     }
 
     private void SetIsDeleted(object targetObject)
@@ -142,14 +138,9 @@ public sealed class AuditPropertySetter : IAuditPropertySetter
     {
         if (targetObject is not IDeletionAuditedObject) return;
 
-        if (!_userProvider.UserId.HasValue)
-        {
-            TrySetProperty<IDeletionAuditedObject, Guid?>(
-                targetObject, e => e.DeleterId, _ => null);
-            return;
-        }
+        var userId = _userProvider.UserId ?? CurrentUserDefaults.SystemUserId;
 
-        if (!IsSameTenant(targetObject))
+        if (!IsSameTenant(targetObject, userId))
         {
             TrySetProperty<IDeletionAuditedObject, Guid?>(
                 targetObject, e => e.DeleterId, _ => null);
@@ -157,11 +148,16 @@ public sealed class AuditPropertySetter : IAuditPropertySetter
         }
 
         TrySetProperty<IDeletionAuditedObject, Guid?>(
-            targetObject, e => e.DeleterId, _ => _userProvider.UserId);
+            targetObject, e => e.DeleterId, _ => userId);
     }
 
-    private bool IsSameTenant(object targetObject)
+    private bool IsSameTenant(object targetObject, Guid userId)
     {
+        if (CurrentUserDefaults.IsSystemIdentity(userId))
+        {
+            return true; // System/Anonymous can operate across tenants
+        }
+
         if (targetObject is IMultiTenant multiTenant)
         {
             return multiTenant.TenantId == _userProvider.TenantId;

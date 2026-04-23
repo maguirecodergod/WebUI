@@ -17,16 +17,18 @@ public static class MultiTenancyHostingServiceCollectionExtensions
     ///   <item><see cref="MultiTenantConnectionStringResolver"/></item>
     /// </list>
     /// </summary>
-    public static IServiceCollection AddLHAMultiTenancyHosting(this IServiceCollection services)
+    public static IServiceCollection AddLHAMultiTenancyHosting(
+        this IServiceCollection services,
+        Action<MultiTenancyOptions>? configure = null)
     {
-        services.AddLHAMultiTenancy();
+        services.AddLHAMultiTenancy(configure);
 
         // Replace NullTenantStore with configuration-backed store
         services.RemoveAll<ITenantStore>();
         services.TryAddSingleton<ITenantStore, ConfigurationTenantStore>();
 
         // Connection string resolver
-        services.TryAddSingleton<MultiTenantConnectionStringResolver>();
+        services.TryAddTransient<MultiTenantConnectionStringResolver>();
 
         // Tenant Provisioning
         services.AddTransient<Provisioning.ITenantProvisionerStrategy, Provisioning.Strategies.SharedTenantProvisionerStrategy>();

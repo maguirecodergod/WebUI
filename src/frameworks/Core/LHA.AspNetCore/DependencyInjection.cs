@@ -38,6 +38,12 @@ public static class LhaAspNetCoreServiceCollectionExtensions
         services.AddLHAExceptionHandler();
         services.AddLHACurrentUserContext();
 
+        // Register the global MVC filter for audit enrichment
+        services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options => 
+        {
+            options.Filters.Add<AuditEnrichmentResultFilter>();
+        });
+
         services.AddLHALocalization(opts =>
         {
             foreach (var resource in resources)

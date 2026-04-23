@@ -1,5 +1,6 @@
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Account.Application.Permissions;
+using LHA.Ddd.Application;
 using LHA.Shared.Contracts.AuditLog;
 using LHA.AuditLog.Application;
 using LHA.Identity.Application;
@@ -22,6 +23,7 @@ public static class DependencyInjection
     /// </summary>
     public static IServiceCollection AddAccountApplication(this IServiceCollection services)
     {
+        services.AddLHADddApplication();
         services.AddIdentityApplication();
         services.AddTenantManagementApplication();
         services.AddAuditLogApplication();

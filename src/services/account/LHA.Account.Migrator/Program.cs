@@ -2,6 +2,7 @@ using LHA.Account.Application;
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Account.EntityFrameworkCore;
 using LHA.Auditing;
+using LHA.Caching;
 using LHA.Core.Users;
 using LHA.Identity.Domain;
 using LHA.MultiTenancy;
@@ -33,6 +34,7 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
 
 // ── Framework services ───────────────────────────────────────────
 builder.Services.AddLHAAuditLogging();
+builder.Services.AddLHACaching();
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHAInMemoryEventBus();
