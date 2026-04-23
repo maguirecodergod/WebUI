@@ -164,7 +164,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         {
             _itemToDelete = log;
             _isDeleteDialogVisible = true;
-        }
+        } 
 
         private void ShowBulkDeleteDialog()
         {

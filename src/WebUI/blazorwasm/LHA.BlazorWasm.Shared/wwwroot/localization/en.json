@@ -318,6 +318,7 @@
         "Default": "Default",
         "Public": "Public",
         "Static": "Static",
+        "Status": "Status",
         "GeneralInformation": "General Information",
         "AssignedUsers": "Assigned Users",
         "AssignedUsersDescription": "List of personnel currently holding this role in the system.",
@@ -336,7 +337,9 @@
         "Email": "Email",
         "ManualOverride": "Manual Override",
         "TogglePermission": "Toggle Permission",
-        "User": "User"
+        "User": "User",
+        "SystemRoleDescription": "System-defined immutable role.",
+        "AssignOrganizationalRole": "Assign organizational role for access control."
     },
     "Sidebar": {
         "AriaLabel": "Main Navigation",

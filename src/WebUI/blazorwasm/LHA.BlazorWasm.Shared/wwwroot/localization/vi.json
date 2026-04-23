@@ -318,6 +318,7 @@
         "Default": "Mặc định",
         "Public": "Công khai",
         "Static": "Tĩnh",
+        "Status": "Trạng thái",
         "GeneralInformation": "Thông tin chung",
         "AssignedUsers": "Người dùng đã gán",
         "AssignedUsersDescription": "Danh sách nhân sự hiện đang giữ vai trò này trong hệ thống.",
@@ -336,7 +337,9 @@
         "Email": "Email",
         "ManualOverride": "Ghi đè thủ công",
         "TogglePermission": "Bật/Tắt quyền",
-        "User": "Người dùng"
+        "User": "Người dùng",
+        "SystemRoleDescription": "Vai trò bất biến do hệ thống định nghĩa.",
+        "AssignOrganizationalRole": "Phân công vai trò tổ chức để kiểm soát quyền truy cập."
     },
     "Sidebar": {
         "AriaLabel": "Điều hướng chính",

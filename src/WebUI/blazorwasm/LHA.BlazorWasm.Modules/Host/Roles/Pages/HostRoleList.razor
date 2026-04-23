@@ -71,7 +71,8 @@
                                 <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.Description")" Width="300px">
                                     <CellTemplate>
                                         <span class="text-sm opacity-75" style="color: var(--dt-text-muted);">
-                                            @(context.IsStatic ? "System-defined immutable role." : "Assign organizational role for access control.")
+                                            @(context.IsStatic ? L("Roles.SystemRoleDescription") :
+                                                L("Roles.AssignOrganizationalRole"))
                                         </span>
                                     </CellTemplate>
                                 </DataTableColumn>
@@ -115,14 +116,14 @@
                                 </DataTableColumn>
 
                                 <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.Operations")" Width="120px"
-                                                 Alignment="ColumnAlignment.Right">
+                                    Alignment="ColumnAlignment.Center">
                                     <CellTemplate>
-                                        <div class="d-flex justify-content-end gap-1">
-                                            <Tooltip Text="@L("Common.Edit")">
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <Tooltip Text="@L("Common.Detail")">
                                                 <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
                                                            Class="btn-icon-replica"
                                                            OnClick='() => Navigation.NavigateTo($"/host/roles/{context.Id}")'>
-                                                    <i class="bi bi-pencil"></i>
+                                                    <i class="bi bi-eye"></i>
                                                 </LHAButton>
                                             </Tooltip>
                                             @if (!context.IsStatic)
