@@ -62,6 +62,8 @@
   </Folder>
   <Folder Name="/src/frameworks/EventBus/">
     <Project Path="src/frameworks/EventBus/LHA.EventBus.Abstraction/LHA.EventBus.Abstraction.csproj" />
+    <Project Path="src/frameworks/EventBus/LHA.EventBus.Kafka/LHA.EventBus.Kafka.csproj" />
+    <Project Path="src/frameworks/EventBus/LHA.EventBus.RabbitMQ/LHA.EventBus.RabbitMQ.csproj" />
     <Project Path="src/frameworks/EventBus/LHA.EventBus/LHA.EventBus.csproj" />
   </Folder>
   <Folder Name="/src/frameworks/MultiTenancy/">
