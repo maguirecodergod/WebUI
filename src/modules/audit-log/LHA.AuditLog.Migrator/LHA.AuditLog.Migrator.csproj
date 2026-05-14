@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore\LHA.AuditLog.EntityFrameworkCore.csproj" />
+    <!-- <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore.PostgreSQL\LHA.AuditLog.EntityFrameworkCore.PostgreSQL.csproj" /> -->
+    <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore.MongoDB\LHA.AuditLog.EntityFrameworkCore.MongoDB.csproj" />
   </ItemGroup>
 
   <ItemGroup>

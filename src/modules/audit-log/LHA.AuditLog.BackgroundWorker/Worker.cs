@@ -1,6 +1,6 @@
 using LHA.AuditLog.Domain;
 using LHA.AuditLog.Domain.Shared;
-using Microsoft.Extensions.DependencyInjection;
+using LHA.UnitOfWork;
 
 namespace LHA.AuditLog.BackgroundWorker;
 
@@ -12,7 +12,8 @@ namespace LHA.AuditLog.BackgroundWorker;
 /// </summary>
 public sealed class AuditLogCleanupWorker(
     IServiceScopeFactory scopeFactory,
-    ILogger<AuditLogCleanupWorker> logger) : BackgroundService
+    ILogger<AuditLogCleanupWorker> logger,
+    IUnitOfWorkManager uowManager) : BackgroundService
 {
     /// <summary>How often to run (default: every 24 hours).</summary>
     private static readonly TimeSpan Interval = TimeSpan.FromHours(24);
@@ -50,7 +51,12 @@ public sealed class AuditLogCleanupWorker(
         using var scope = scopeFactory.CreateScope();
         var repository = scope.ServiceProvider.GetRequiredService<IAuditLogRepository>();
 
+        // DbContext usage requires an active Unit of Work
+        using var uow = uowManager.Begin(new UnitOfWorkOptions { IsTransactional = false });
+        
         var deletedCount = await repository.DeleteOlderThanAsync(cutoff, cancellationToken);
+        
+        await uow.CompleteAsync(cancellationToken);
 
         logger.LogInformation("Audit log cleanup complete. Deleted {Count} records.", deletedCount);
     }

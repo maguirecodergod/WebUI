@@ -1,4 +1,3 @@
-@inject ILocalizationService Localizer
 <CascadingAuthenticationState>
     <GlobalErrorBoundary>
         <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] { typeof(LHA.BlazorWasm.Modules.LhaModuleMarker).Assembly }">
@@ -18,10 +17,3 @@
         </Router>
     </GlobalErrorBoundary>
 </CascadingAuthenticationState>
-
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-        await Localizer.InitializeAsync();
-    }
-}

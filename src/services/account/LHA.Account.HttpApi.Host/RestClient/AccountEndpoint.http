@@ -1,0 +1,24 @@
+@hostname = https://localhost:7150
+@recurringJobId = LHA.Account.Cron.Workers.SendBirthdayEmailWorker
+@jobId = 1
+
+### Get all Recurring Jobs
+GET {{hostname}}/api/account/background-jobs/recurring
+
+### Trigger a Recurring Job immediately
+POST {{hostname}}/api/account/background-jobs/recurring/{{recurringJobId}}/trigger
+
+### Delete a Recurring Job
+DELETE {{hostname}}/api/account/background-jobs/recurring/{{recurringJobId}}
+
+### Get Enqueued Jobs (default queue)
+GET {{hostname}}/api/account/background-jobs/enqueued?queue=default
+
+### Get Failed Jobs
+GET {{hostname}}/api/account/background-jobs/failed
+
+### Delete a specific Job by Id
+DELETE {{hostname}}/api/account/background-jobs/{{jobId}}
+
+### Requeue a specific Job by Id
+POST {{hostname}}/api/account/background-jobs/{{jobId}}/requeue

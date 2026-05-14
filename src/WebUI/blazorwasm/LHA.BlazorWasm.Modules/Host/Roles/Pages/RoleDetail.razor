@@ -150,15 +150,23 @@
                             <div class="view-layout-p">
                                 <div class="users-list-p">
                                     <div class="modern-card">
-                                        <div class="flex justify-between items-center mb-4 px-2">
-                                            <h3 class="text-lg font-semibold m-0 text-[var(--p-text)]">@L("Roles.AssignedUsers")</h3>
-                                            <LHAButton Style="CButtonStyle.Primary" Icon="bi bi-person-plus" OnClick="OpenAssignUserDialog" Class="shadow-lg shadow-indigo-500/30">
-                                                @L("Roles.AssignUser")
-                                            </LHAButton>
-                                        </div>
                                         <DataTable TItem="IdentityUserDto" Items="_assignedUsers" Hoverable="true"
-                                                   Striped="true" KeySelector="@(u => u.Id)" ShowToolbar="false"
+                                                   Striped="true" KeySelector="@(u => u.Id)" ShowToolbar="true"
                                                    RowClass="@(u => _selectedUser?.Id == u.Id ? "active-row" : string.Empty)">
+                                            <ToolbarTemplate>
+                                                <div class="flex justify-between items-center mb-4 px-2">
+                                                    <h3 class="text-lg font-semibold m-0 text-[var(--p-text)]">@L("Roles.AssignedUsers")</h3>
+                                                    <LHAButton Style="CButtonStyle.Primary" Icon="bi bi-person-plus" OnClick="OpenAssignUserDialog" Class="shadow-lg shadow-indigo-500/30">
+                                                        @L("Roles.AssignUser")
+                                                    </LHAButton>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
+                                                    style="background: transparent; border-color: var(--dt-border-color) !important;">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        @L("BackgroundWorkers.Title")
+                                                    </div>
+                                                </div>
+                                            </ToolbarTemplate>
                                             <ChildContent>
                                                 <DataTableColumn TItem="IdentityUserDto" Title="@L("Roles.User")">
                                                     <CellTemplate Context="item">

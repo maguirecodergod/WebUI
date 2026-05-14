@@ -1,3 +1,4 @@
+using LHA.BlazorWasm.Components.Tooltip;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -59,6 +60,11 @@ public partial class LHAButton : LHAComponentBase
     [Parameter] public bool FullWidth { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the button should have an outline style.
+    /// </summary>
+    [Parameter] public bool Outline { get; set; }
+
+    /// <summary>
     /// Gets or sets the type of the button.
     /// </summary>
     [Parameter] public CButtonType Type { get; set; } = CButtonType.Button;
@@ -86,6 +92,16 @@ public partial class LHAButton : LHAComponentBase
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     /// <summary>
+    /// Gets or sets the tooltip text to display when hovering over the button.
+    /// </summary>
+    [Parameter] public string? Tooltip { get; set; }
+
+    /// <summary>
+    /// Gets or sets the tooltip placement.
+    /// </summary>
+    [Parameter] public CTooltipPlacement TooltipPlacement { get; set; } = CTooltipPlacement.Top;
+
+    /// <summary>
     /// Determines if the button should be disabled in the DOM.
     /// </summary>
     private bool IsDisabled => Disabled || IsLoading;
@@ -98,7 +114,15 @@ public partial class LHAButton : LHAComponentBase
     {
         var classes = new List<string> { "base-btn" };
 
-        classes.Add($"btn-{Style.ToString().ToLowerInvariant()}");
+        if (Outline)
+        {
+            classes.Add($"btn-outline-{Style.ToString().ToLowerInvariant()}");
+        }
+        else
+        {
+            classes.Add($"btn-{Style.ToString().ToLowerInvariant()}");
+        }
+
         classes.Add($"btn-{Size.ToString().ToLowerInvariant()}");
 
         if (FullWidth)

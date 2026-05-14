@@ -2,15 +2,18 @@ using LHA.Auditing;
 using LHA.AuditLog.Application;
 using LHA.AuditLog.BackgroundWorker;
 using LHA.AuditLog.EntityFrameworkCore;
-using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
 using LHA.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+// using LHA.AuditLog.EntityFrameworkCore.PostgreSQL;
+using LHA.AuditLog.EntityFrameworkCore.MongoDB;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("Default")
-    ?? throw new InvalidOperationException("Missing 'Default' connection string.");
+// var connectionString = builder.Configuration.GetConnectionString("Default")
+//     ?? throw new InvalidOperationException("Missing 'Default' connection string.");
+
+var mongoConnectionString = builder.Configuration.GetConnectionString("Mongo");
 
 // ── Framework services ───────────────────────────────────────────
 builder.Services.AddLHAAuditLogging();
@@ -21,23 +24,28 @@ builder.Services.AddLHAUnitOfWork();
 builder.Services.AddAuditLogApplication();
 builder.Services.AddAuditLogEntityFrameworkCore(auditBuilder =>
 {
-    // ─── AUDIT LOG STORE MODE EXAMPLES ───
-    // Uncomment ONE of the following modes to test different audit setups
-    // when creating your schema and writing logs:
-
     // 1. All Mode (Default): Uses both Relational Structured Logs & Pipeline Logs
-    auditBuilder.UseAll(); 
+    auditBuilder.UseAll();
 
-    // 2. Data Audit Only: Relational Data Action and Entity Logs (Pipeline ignored)
-    //auditBuilder.UseDataAuditOnly();
+    // ─── POSTGRESQL CONFIGURATION ───
+    // auditBuilder.UsePostgreSql();
+    // auditBuilder.ConfigureDbContext(options =>
+    // {
+    //     options.Configure<AuditLogDbContext>(ctx =>
+    //         ctx.DbContextOptions.UseNpgsql(connectionString));
+    // });
 
-    // 3. Pipeline Only: High-throughput API logs (Data Audit tables ignored)
-    //auditBuilder.UsePipelineOnly();
-    auditBuilder.ConfigureDbContext(options =>
-                {
-                    options.Configure<AuditLogDbContext>(ctx =>
-                        ctx.DbContextOptions.UseNpgsql(connectionString));
-                });
+    // ─── MONGODB CONFIGURATION (Uncomment to use) ───
+    // Note: Requires referencing LHA.AuditLog.EntityFrameworkCore.MongoDB project
+    if (!string.IsNullOrEmpty(mongoConnectionString))
+    {
+        auditBuilder.UseMongoDb();
+        auditBuilder.ConfigureDbContext(options =>
+        {
+            options.Configure<AuditLogDbContext>(ctx =>
+                ctx.DbContextOptions.UseMongoDB(mongoConnectionString, "LienHoaApp_AuditLog"));
+        });
+    }
 });
 
 // ── Background workers ───────────────────────────────────────────

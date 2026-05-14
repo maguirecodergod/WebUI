@@ -3,10 +3,6 @@ using LHA.TenantManagement.Application.Contracts;
 
 namespace LHA.TenantManagement.Consumer;
 
-/// <summary>
-/// Handles <see cref="TenantCreatedEto"/> integration events.
-/// For example: provisioning per-tenant databases, sending welcome notifications, etc.
-/// </summary>
 public sealed class TenantCreatedEventHandler(ILogger<TenantCreatedEventHandler> logger)
     : IEventHandler<TenantCreatedEto>
 {
@@ -16,14 +12,23 @@ public sealed class TenantCreatedEventHandler(ILogger<TenantCreatedEventHandler>
             "Tenant created: {TenantId} — Name: {Name}, CreatedAt: {CreationTime}",
             @event.TenantId, @event.Name, @event.CreationTime);
 
-        // TODO: Provision per-tenant database, send welcome email, etc.
         return Task.CompletedTask;
     }
 }
 
-/// <summary>
-/// Handles <see cref="TenantActivationChangedEto"/> integration events.
-/// </summary>
+public sealed class TenantNameChangedEventHandler(ILogger<TenantNameChangedEventHandler> logger)
+    : IEventHandler<TenantNameChangedEto>
+{
+    public Task HandleAsync(TenantNameChangedEto @event, EventContext context, CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation(
+            "Tenant {TenantId} name changed from {OldName} to {NewName}",
+            @event.TenantId, @event.OldName, @event.NewName);
+
+        return Task.CompletedTask;
+    }
+}
+
 public sealed class TenantActivationChangedEventHandler(ILogger<TenantActivationChangedEventHandler> logger)
     : IEventHandler<TenantActivationChangedEto>
 {
@@ -33,14 +38,10 @@ public sealed class TenantActivationChangedEventHandler(ILogger<TenantActivation
             "Tenant {TenantId} activation changed: IsActive={IsActive}",
             @event.TenantId, @event.IsActive);
 
-        // TODO: Invalidate caches, suspend background jobs, etc.
         return Task.CompletedTask;
     }
 }
 
-/// <summary>
-/// Handles <see cref="TenantConnectionStringChangedEto"/> integration events.
-/// </summary>
 public sealed class TenantConnectionStringChangedEventHandler(ILogger<TenantConnectionStringChangedEventHandler> logger)
     : IEventHandler<TenantConnectionStringChangedEto>
 {
@@ -50,7 +51,6 @@ public sealed class TenantConnectionStringChangedEventHandler(ILogger<TenantConn
             "Tenant {TenantId} connection string changed: {Name}",
             @event.TenantId, @event.ConnectionStringName);
 
-        // TODO: Rotate connection pools, update tenant store cache, etc.
         return Task.CompletedTask;
     }
 }

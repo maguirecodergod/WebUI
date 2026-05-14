@@ -39,6 +39,7 @@
     "Sidebar.Management": "Quản trị vận hành",
     "Sidebar.Users": "Người dùng",
     "Sidebar.AuditLogs": "Nhật ký hệ thống",
+    "Sidebar.BackgroundWorkers": "Công việc nền",
 
     "Common.Actions": "Thao tác",
     "Common.Edit": "Chỉnh sửa",
@@ -79,5 +80,23 @@
     "Users.NoUsersFound": "Không tìm thấy người dùng nào.",
     "Users.PasswordChangeNote": "Để trống mật khẩu nếu bạn không muốn thay đổi.",
     "Users.DeleteConfirmation": "Bạn có chắc chắn muốn xóa người dùng {0}?",
-    "Users.PasswordMismatch": "Mật khẩu xác nhận không khớp."
+    "Users.PasswordMismatch": "Mật khẩu xác nhận không khớp.",
+    "BackgroundWorkers.Title": "Quản lý công việc nền",
+    "BackgroundWorkers.Description": "Quản lý và giám sát các công việc nền chạy định kỳ.",
+    "BackgroundWorkers.Enqueued": "Đang chờ",
+    "BackgroundWorkers.Processing": "Đang xử lý",
+    "BackgroundWorkers.Succeeded": "Thành công",
+    "BackgroundWorkers.Failed": "Thất bại",
+    "BackgroundWorkers.NoJobsFound": "Không tìm thấy công việc nào.",
+    "BackgroundWorkers.JobId": "Mã công việc",
+    "BackgroundWorkers.Method": "Phương thức",
+    "BackgroundWorkers.Cron": "Cron",
+    "BackgroundWorkers.Queue": "Hàng đợi",
+    "BackgroundWorkers.NextExecution": "Lần chạy tiếp theo",
+    "BackgroundWorkers.LastExecution": "Lần chạy gần nhất",
+    "BackgroundWorkers.LastJobState": "Trạng thái lần cuối",
+    "BackgroundWorkers.Trigger": "Kích hoạt",
+    "BackgroundWorkers.TriggerConfirmation": "Bạn có chắc muốn kích hoạt công việc này?",
+    "BackgroundWorkers.TriggerSuccess": "Kích hoạt thành công.",
+    "BackgroundWorkers.DeleteConfirmation": "Bạn có chắc muốn xóa công việc này?"
 }

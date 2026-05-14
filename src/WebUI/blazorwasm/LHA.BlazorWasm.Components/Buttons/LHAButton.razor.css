@@ -214,6 +214,110 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
+   OUTLINE VARIANTS
+   ══════════════════════════════════════════════════════════════ */
+
+.btn-outline-primary {
+    color: var(--primary-color, #6366f1);
+    background-color: transparent;
+    border-color: var(--primary-color, #6366f1);
+}
+
+.btn-outline-primary:hover:not(:disabled) {
+    color: #fff;
+    background-color: var(--primary-color, #6366f1);
+    border-color: var(--primary-color, #6366f1);
+    box-shadow: 0 4px 12px var(--range-bg, rgba(99, 102, 241, 0.35));
+}
+
+.btn-outline-secondary {
+    color: var(--text-muted, #6b7280);
+    background-color: transparent;
+    border-color: var(--border-color, #d1d5db);
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+    color: var(--text-color, #374151);
+    background-color: var(--hover-bg, #f3f4f6);
+    border-color: var(--border-color, #d1d5db);
+}
+
+.btn-outline-success {
+    color: var(--success-color, #12b76a);
+    background-color: transparent;
+    border-color: var(--success-color, #12b76a);
+}
+
+.btn-outline-success:hover:not(:disabled) {
+    color: #fff;
+    background-color: var(--success-color, #12b76a);
+    border-color: var(--success-color, #12b76a);
+    box-shadow: 0 4px 12px var(--success-bg, rgba(18, 183, 106, 0.3));
+}
+
+.btn-outline-danger {
+    color: var(--error-color, #f04438);
+    background-color: transparent;
+    border-color: var(--error-color, #f04438);
+}
+
+.btn-outline-danger:hover:not(:disabled) {
+    color: #fff;
+    background-color: var(--error-color, #f04438);
+    border-color: var(--error-color, #f04438);
+    box-shadow: 0 4px 12px var(--error-bg, rgba(240, 68, 56, 0.3));
+}
+
+.btn-outline-warning {
+    color: var(--warning-color, #f79009);
+    background-color: transparent;
+    border-color: var(--warning-color, #f79009);
+}
+
+.btn-outline-warning:hover:not(:disabled) {
+    color: #1a1c21;
+    background-color: var(--warning-color, #f79009);
+    border-color: var(--warning-color, #f79009);
+    box-shadow: 0 4px 12px var(--warning-bg, rgba(247, 144, 9, 0.3));
+}
+
+.btn-outline-info {
+    color: var(--primary-color, #6366f1);
+    background-color: transparent;
+    border-color: var(--primary-color, #6366f1);
+}
+
+.btn-outline-info:hover:not(:disabled) {
+    color: #fff;
+    background-color: var(--primary-color, #6366f1);
+    border-color: var(--primary-color, #6366f1);
+}
+
+.btn-outline-light {
+    color: var(--border-color, #e5e7eb);
+    background-color: transparent;
+    border-color: var(--border-color, #e5e7eb);
+}
+
+.btn-outline-light:hover:not(:disabled) {
+    color: var(--text-color, #374151);
+    background-color: var(--input-bg, #ffffff);
+    border-color: var(--border-color, #e5e7eb);
+}
+
+.btn-outline-dark {
+    color: var(--text-color, #111827);
+    background-color: transparent;
+    border-color: var(--text-color, #111827);
+}
+
+.btn-outline-dark:hover:not(:disabled) {
+    color: #f9fafb;
+    background-color: var(--text-color, #111827);
+    border-color: var(--text-color, #111827);
+}
+
+/* ══════════════════════════════════════════════════════════════
    SPINNER
    ══════════════════════════════════════════════════════════════ */
 

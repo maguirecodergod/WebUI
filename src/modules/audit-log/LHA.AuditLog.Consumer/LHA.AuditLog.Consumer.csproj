@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
     <ProjectReference Include="..\LHA.AuditLog.Application\LHA.AuditLog.Application.csproj" />
-    <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore\LHA.AuditLog.EntityFrameworkCore.csproj" />
+    <!-- <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore.PostgreSQL\LHA.AuditLog.EntityFrameworkCore.PostgreSQL.csproj" /> -->
+    <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore.MongoDB\LHA.AuditLog.EntityFrameworkCore.MongoDB.csproj" />
   </ItemGroup>
 </Project>

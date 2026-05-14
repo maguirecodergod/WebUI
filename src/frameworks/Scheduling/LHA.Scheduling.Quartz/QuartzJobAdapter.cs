@@ -91,7 +91,7 @@ public sealed class QuartzJobAdapter<TJob> : IJob where TJob : IScheduledJob
                 "Job [{JobType}] completed successfully: {Message}",
                 typeof(TJob).Name, result.Message);
             // Reset retry counter on success
-            quartzContext.JobDetail.JobDataMap.Put(QuartzDataMapKeys.RetryAttempt, 0);
+            quartzContext.JobDetail.JobDataMap[QuartzDataMapKeys.RetryAttempt] = 0;
         }
         else if (result.ShouldRetry && retryAttempt < maxRetries)
         {
@@ -100,7 +100,7 @@ public sealed class QuartzJobAdapter<TJob> : IJob where TJob : IScheduledJob
                 typeof(TJob).Name, retryAttempt + 1, maxRetries, result.Message);
 
             // Increment retry counter
-            quartzContext.JobDetail.JobDataMap.Put(QuartzDataMapKeys.RetryAttempt, retryAttempt + 1);
+            quartzContext.JobDetail.JobDataMap[QuartzDataMapKeys.RetryAttempt] = retryAttempt + 1;
 
             // Schedule a retry with exponential backoff
             var backoff = TimeSpan.FromSeconds(Math.Pow(2, retryAttempt) * 5);

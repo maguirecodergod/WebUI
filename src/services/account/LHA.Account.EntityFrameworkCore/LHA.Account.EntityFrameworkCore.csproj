@@ -11,7 +11,7 @@
     <ProjectReference Include="..\LHA.Account.Domain\LHA.Account.Domain.csproj" />
     <ProjectReference Include="..\..\..\modules\identity\LHA.Identity.EntityFrameworkCore\LHA.Identity.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\..\modules\tenant-management\LHA.TenantManagement.EntityFrameworkCore\LHA.TenantManagement.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.EntityFrameworkCore\LHA.AuditLog.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.EntityFrameworkCore.PostgreSQL\LHA.AuditLog.EntityFrameworkCore.PostgreSQL.csproj" />
     <ProjectReference Include="..\..\..\modules\permission-management\LHA.PermissionManagement.EntityFrameworkCore\LHA.PermissionManagement.EntityFrameworkCore.csproj" />
   </ItemGroup>
 

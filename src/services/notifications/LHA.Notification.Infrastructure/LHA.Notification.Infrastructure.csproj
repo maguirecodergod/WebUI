@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Notification.Domain\LHA.Notification.Domain.csproj" />
+    <ProjectReference Include="..\LHA.Notification.Application.Contracts\LHA.Notification.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus.Abstraction\LHA.EventBus.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EntityFrameworkCore\LHA.EntityFrameworkCore.MongoDB\LHA.EntityFrameworkCore.MongoDB.csproj" />
+    <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.EntityFrameworkCore.MongoDB\LHA.AuditLog.EntityFrameworkCore.MongoDB.csproj" />
+  </ItemGroup>
+<!-- 
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="3.8.1" />
+    <PackageReference Include="MongoDB.EntityFrameworkCore" Version="10.0.1" />
+  </ItemGroup> -->
+
+</Project>

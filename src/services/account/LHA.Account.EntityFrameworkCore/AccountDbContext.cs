@@ -8,6 +8,7 @@ using LHA.TenantManagement.EntityFrameworkCore;
 using LHA.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using LHA.AuditLog.EntityFrameworkCore.PostgreSQL;
 
 namespace LHA.Account.EntityFrameworkCore;
 
@@ -41,7 +42,7 @@ public sealed class AccountDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        
+
         // Apply Data Auditing interceptor to capture EF Core entity changes
         var interceptor = _serviceProvider?.GetService<LHA.EntityFrameworkCore.Auditing.DataAuditingSaveChangesInterceptor>();
         if (interceptor is not null)
@@ -61,7 +62,7 @@ public sealed class AccountDbContext
         // Apply module model configurations first.
         modelBuilder.ConfigureIdentity();
         modelBuilder.ConfigureTenantManagement();
-        modelBuilder.ConfigureAuditLog(auditMode);
+        modelBuilder.ConfigureAuditLogPostgreSql(auditMode);
         modelBuilder.ConfigurePermissionManagement();
         modelBuilder.TryConfigureEventBus<AccountDbContext>();
 

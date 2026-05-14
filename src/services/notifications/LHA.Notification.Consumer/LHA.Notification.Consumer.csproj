@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-LHA.Notification.Consumer-07f6b32f-30c7-4973-ba22-b3be411139ec</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Notification.Application\LHA.Notification.Application.csproj" />
+    <ProjectReference Include="..\LHA.Notification.Infrastructure\LHA.Notification.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus.Kafka\LHA.EventBus.Kafka.csproj" />
+  </ItemGroup>
+</Project>

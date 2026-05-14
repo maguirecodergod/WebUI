@@ -60,6 +60,7 @@ public static class HttpApiClientExtensions
         RegisterTypedClient<UserApiClient>(services);
         RegisterTypedClient<PermissionApiClient>(services);
         RegisterTypedClient<PermissionGroupApiClient>(services);
+        RegisterTypedClient<LHA.BlazorWasm.HttpApi.Client.Clients.BackgroundJobs.BackgroundJobApiClient>(services);
 
         return services;
     }

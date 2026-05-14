@@ -55,19 +55,19 @@ public sealed class QuartzRecurringJobManager : IRecurringJobManager
         var timeZone = TimeZoneInfo.FindSystemTimeZoneById(options?.TimeZoneId ?? "UTC");
 
         var dataMap = new JobDataMap();
-        dataMap.Put(QuartzDataMapKeys.JobTypeName, typeof(TJob).AssemblyQualifiedName!);
-        dataMap.Put(QuartzDataMapKeys.MaxRetries, options?.MaxRetries ?? _options.DefaultMaxRetries);
-        dataMap.Put(QuartzDataMapKeys.RetryAttempt, 0);
+        dataMap[QuartzDataMapKeys.JobTypeName] = typeof(TJob).AssemblyQualifiedName ?? typeof(TJob).FullName ?? "unknown";
+        dataMap[QuartzDataMapKeys.MaxRetries] = options?.MaxRetries ?? _options.DefaultMaxRetries;
+        dataMap[QuartzDataMapKeys.RetryAttempt] = 0;
 
         if (options?.Parameters is not null)
-            dataMap.Put(QuartzDataMapKeys.SerializedParameters,
-                JsonSerializer.Serialize(options.Parameters, options.Parameters.GetType(), JsonOptions));
+            dataMap[QuartzDataMapKeys.SerializedParameters] =
+                JsonSerializer.Serialize(options.Parameters, options.Parameters.GetType(), JsonOptions);
 
         if (!string.IsNullOrEmpty(options?.TenantId))
-            dataMap.Put(QuartzDataMapKeys.TenantId, options.TenantId);
+            dataMap[QuartzDataMapKeys.TenantId] = options.TenantId;
 
         foreach (var kvp in options?.Metadata ?? new Dictionary<string, string>())
-            dataMap.Put($"meta.{kvp.Key}", kvp.Value);
+            dataMap[$"meta.{kvp.Key}"] = kvp.Value;
 
         var jobDetail = JobBuilder.Create<QuartzJobAdapter<TJob>>()
             .WithIdentity(jobKey)

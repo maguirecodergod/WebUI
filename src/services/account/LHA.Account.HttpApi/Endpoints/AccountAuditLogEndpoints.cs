@@ -1,15 +1,10 @@
 using LHA.Shared.Contracts.AuditLog;
 using LHA.Ddd.Application;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Auditing;
-using LHA.MultiTenancy;
-using LHA.Core.Users;
 
 namespace LHA.Account.HttpApi;
 

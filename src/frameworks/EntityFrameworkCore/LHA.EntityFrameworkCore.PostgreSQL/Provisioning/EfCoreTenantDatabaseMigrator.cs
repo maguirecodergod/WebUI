@@ -54,9 +54,8 @@ public class EfCoreTenantDatabaseMigrator<TDbContext> : ITenantDatabaseMigrator
                     var safeSchemaName = builder.SearchPath.Replace("\"", "\"\"");
                     
                     // We create a separate connection to avoid interfering with the DbContext's state.
-#pragma warning disable EF1002 // Vulnerable to SQL injection
-                    await dbContext.Database.ExecuteSqlRawAsync("CREATE SCHEMA IF NOT EXISTS \"" + safeSchemaName + "\";", cancellationToken);
-#pragma warning restore EF1002 // Vulnerable to SQL injection
+                    // Using ExecuteSqlInterpolatedAsync provides better security than ExecuteSqlRawAsync
+                    await dbContext.Database.ExecuteSqlInterpolatedAsync($"CREATE SCHEMA IF NOT EXISTS \"{safeSchemaName}\";", cancellationToken);
                 }
             }
 

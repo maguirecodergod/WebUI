@@ -3,7 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="..\LHA.BlazorWasm.Shared\LHA.BlazorWasm.Shared.csproj" />
     <ProjectReference Include="..\LHA.Security\LHA.Security.csproj" />
-    <ProjectReference Include="..\..\..\shared\LHA.Shared.Contracts\LHA.Shared.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

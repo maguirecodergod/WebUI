@@ -143,10 +143,27 @@ public sealed class EfCoreAuditLogRepository
     {
         var dbContext = await GetDbContextAsync();
 
-        // EF Core 7+ ExecuteDeleteAsync with cascading deletes
-        return await dbContext.Set<AuditLogEntity>()
-            .Where(x => x.ExecutionTime < cutoffTime)
-            .ExecuteDeleteAsync(cancellationToken);
+        if (dbContext.Database.IsRelational())
+        {
+            // EF Core 7+ ExecuteDeleteAsync with cascading deletes (optimized for SQL)
+            return await dbContext.Set<AuditLogEntity>()
+                .Where(x => x.ExecutionTime < cutoffTime)
+                .ExecuteDeleteAsync(cancellationToken);
+        }
+        else
+        {
+            // Fallback for non-relational providers (e.g. MongoDB) that don't support ExecuteDeleteAsync
+            var logsToDelete = await dbContext.Set<AuditLogEntity>()
+                .Where(x => x.ExecutionTime < cutoffTime)
+                .ToListAsync(cancellationToken);
+
+            if (logsToDelete.Count == 0) return 0;
+
+            dbContext.Set<AuditLogEntity>().RemoveRange(logsToDelete);
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            return logsToDelete.Count;
+        }
     }
 
     // ─── Private helpers ─────────────────────────────────────────────

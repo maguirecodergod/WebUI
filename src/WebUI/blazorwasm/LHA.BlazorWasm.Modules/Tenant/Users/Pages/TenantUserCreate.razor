@@ -30,22 +30,22 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <FormField Label="@L("Users.Username")" Required="true">
-                            <CInput TValue="string" @bind-Value="_model.UserName" Placeholder="@L("Users.UsernamePlaceholder")" />
+                            <CInput TValue="string" @bind-Value="_model.UserName" Placeholder="@L("Users.UsernamePlaceholder")" Autocomplete="username" />
                         </FormField>
                     </div>
                     <div class="col-md-6">
                         <FormField Label="@L("Users.Email")" Required="true">
-                            <CInput TValue="string" @bind-Value="_model.Email" Type="email" Placeholder="example@email.com" />
+                            <CInput TValue="string" @bind-Value="_model.Email" Type="email" Placeholder="example@email.com" Autocomplete="email" />
                         </FormField>
                     </div>
                     <div class="col-md-6">
                         <FormField Label="@L("Users.Password")" Required="true">
-                            <CInput TValue="string" @bind-Value="_model.Password" Type="password" Placeholder="••••••••" />
+                            <CInput TValue="string" @bind-Value="_model.Password" Type="password" Placeholder="••••••••" Autocomplete="new-password" />
                         </FormField>
                     </div>
                     <div class="col-md-6">
                         <FormField Label="@L("Users.ConfirmPassword")" Required="true">
-                            <CInput TValue="string" @bind-Value="_passwordConfirmation" Type="password" Placeholder="••••••••" />
+                            <CInput TValue="string" @bind-Value="_passwordConfirmation" Type="password" Placeholder="••••••••" Autocomplete="new-password" />
                         </FormField>
                     </div>
                 </div>

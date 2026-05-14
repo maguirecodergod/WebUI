@@ -1,16 +1,17 @@
 using System.Text;
+using Hangfire.PostgreSql;
 using LHA.Caching;
 using LHA.Account.Application;
 using LHA.Account.Domain.Shared.Localization;
 using LHA.Account.EntityFrameworkCore;
 using LHA.Account.HttpApi;
 using LHA.AspNetCore;
+using LHA.Scheduling.Hangfire;
 using LHA.Auditing;
 using LHA.Auditing.Interceptors;
 using LHA.DistributedLocking;
 using LHA.EventBus;
 using LHA.Grpc.Server;
-using LHA.Identity.Application;
 using LHA.Identity.Domain.Shared.Localization;
 using LHA.MultiTenancy;
 using LHA.Swagger;
@@ -18,6 +19,7 @@ using LHA.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using LHA.Shared.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,13 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
 
 builder.Services.AddAccountApplication();
 builder.Services.AddAccountEntityFrameworkCore(connectionString);
+
+builder.Services.AddLHAHangfireScheduling(options =>
+{
+    options.ConfigureHangfire = config =>
+        config.UsePostgreSqlStorage(opt => opt.UseNpgsqlConnection(connectionString));
+    options.EnableServer = false; // API node only enqueues and monitors, does not process jobs
+});
 
 // ─── AUDIT LOG PRODUCER ───
 // Use AuditingMode to control which audit producers run in this App.

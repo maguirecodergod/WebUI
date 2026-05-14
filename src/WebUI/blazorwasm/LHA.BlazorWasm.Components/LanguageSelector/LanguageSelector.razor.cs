@@ -51,6 +51,11 @@ public partial class LanguageSelector : LHAComponentBase, IDisposable
     [Parameter] public CSelectVariant Variant { get; set; } = CSelectVariant.Standard;
 
     /// <summary>
+    /// Placement of the internal select component.
+    /// </summary>
+    [Parameter] public CSelectPlacement Placement { get; set; } = CSelectPlacement.Auto;
+
+    /// <summary>
     /// Size of the internal select component.
     /// </summary>
     [Parameter] public LHA.BlazorWasm.Components.Form.CInputSize Size { get; set; } = LHA.BlazorWasm.Components.Form.CInputSize.Medium;

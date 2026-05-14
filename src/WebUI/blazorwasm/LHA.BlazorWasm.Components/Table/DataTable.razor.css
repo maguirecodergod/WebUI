@@ -351,7 +351,7 @@
 /* ── Filter Sidebar Picker Refinement ── */
 .dt-sidebar ::deep .picker-wrapper {
     width: 100%;
-    position: static; /* Let the popup be relative to sidebar body if needed, or just standard */
+    position: static;
 }
 
 .dt-sidebar ::deep .picker-popup {

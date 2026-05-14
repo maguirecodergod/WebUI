@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <div class="select-dropdown @(State.IsOpen ? "open" : "") @(_isOpeningUpwards ? "open-top" : "")"
+    <div class="select-dropdown @(State.IsOpen ? "open" : "") @GetPlacementClass()"
          @onclick:stopPropagation="true">
         @if (Searchable)
         {

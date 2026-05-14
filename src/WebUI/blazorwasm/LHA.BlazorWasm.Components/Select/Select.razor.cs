@@ -47,6 +47,7 @@ public partial class Select<TValue> : LHAComponentBase
 
     protected SelectState<TValue> State { get; } = new();
     private bool _isOpeningUpwards;
+    private bool _isAlignRight;
     private List<SelectOption<TValue>> _internalOptions = new();
     private List<SelectOption<TValue>> _filteredOptions = new();
 
@@ -72,6 +73,26 @@ public partial class Select<TValue> : LHAComponentBase
     private bool IsSingleMode => Mode == CSelectMode.Single;
     private bool HasValue => Value != null;
     private bool HasAnyValue => IsSingleMode ? HasValue : (Values?.Any() ?? false);
+    
+    private string GetPlacementClass()
+    {
+        if (Placement == CSelectPlacement.Auto)
+        {
+            var vertical = _isOpeningUpwards ? "top" : "bottom";
+            var horizontal = _isAlignRight ? "-right" : "";
+            return $"lha-select-placement-{vertical}{horizontal}";
+        }
+        
+        return "lha-select-placement-" + Placement.ToString().ToLower()
+            .Replace("topleft", "top-left")
+            .Replace("topright", "top-right")
+            .Replace("bottomleft", "bottom-left")
+            .Replace("bottomright", "bottom-right")
+            .Replace("lefttop", "left-top")
+            .Replace("leftbottom", "left-bottom")
+            .Replace("righttop", "right-top")
+            .Replace("rightbottom", "right-bottom");
+    }
 
     private ICollection<SelectOption<TValue>> FilteredOptions => _filteredOptions;
 
@@ -127,18 +148,32 @@ public partial class Select<TValue> : LHAComponentBase
 
         if (!State.IsOpen)
         {
-            if (Placement == CSelectPlacement.Top)
+            switch (Placement)
             {
-                _isOpeningUpwards = true;
-            }
-            else if (Placement == CSelectPlacement.Bottom)
-            {
-                _isOpeningUpwards = false;
-            }
-            else // Auto
-            {
-                _jsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/Select/Select.razor.js");
-                _isOpeningUpwards = await _jsModule.InvokeAsync<bool>("shouldOpenUpwards", _selectRef);
+                case CSelectPlacement.Top:
+                case CSelectPlacement.TopLeft:
+                case CSelectPlacement.TopRight:
+                    _isOpeningUpwards = true;
+                    break;
+                case CSelectPlacement.Bottom:
+                case CSelectPlacement.BottomLeft:
+                case CSelectPlacement.BottomRight:
+                    _isOpeningUpwards = false;
+                    break;
+                case CSelectPlacement.Left:
+                case CSelectPlacement.LeftTop:
+                case CSelectPlacement.LeftBottom:
+                case CSelectPlacement.Right:
+                case CSelectPlacement.RightTop:
+                case CSelectPlacement.RightBottom:
+                    _isOpeningUpwards = false; // Lateral placement might need different logic, but for now we keep it horizontal
+                    break;
+                default: // Auto
+                    _jsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/LHA.BlazorWasm.Components/Select/Select.razor.js");
+                    var result = await _jsModule.InvokeAsync<SmartPlacementResult>("getSmartPlacement", _selectRef);
+                    _isOpeningUpwards = result.OpenUpwards;
+                    _isAlignRight = result.AlignRight;
+                    break;
             }
         }
 
@@ -147,6 +182,12 @@ public partial class Select<TValue> : LHAComponentBase
         {
             State.FocusedIndex = -1;
         }
+    }
+
+    private class SmartPlacementResult
+    {
+        public bool OpenUpwards { get; set; }
+        public bool AlignRight { get; set; }
     }
 
     private async Task SelectItemAsync(SelectOption<TValue> option)

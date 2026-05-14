@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
 
@@ -93,15 +94,15 @@ public partial class Topbar : LHAComponentBase, IDisposable
             }
             catch (ObjectDisposedException)
             {
-                // Component disposed before JS interop could finish.
+                Logger.LogWarning("Topbar component disposed before JS interop could finish.");
             }
             catch (JSDisconnectedException)
             {
-                // Browser connection lost.
+                Logger.LogWarning("Browser connection lost during Topbar initialization.");
             }
             catch (TaskCanceledException)
             {
-                // Interop cancelled.
+                Logger.LogWarning("Interop task cancelled during Topbar initialization.");
             }
         }
     }
@@ -130,6 +131,23 @@ public partial class Topbar : LHAComponentBase, IDisposable
         base.Dispose();
         _isDisposed = true;
         TopbarService.State.OnStateChanged -= StateHasChanged;
+
+        try
+        {
+            // Clean up JavaScript event listeners before disposing the .NET reference
+            if (_jsModule != null)
+            {
+                _ = _jsModule.InvokeVoidAsync("dispose").AsTask();
+            }
+        }
+        catch (ObjectDisposedException)
+        {
+            Logger.LogWarning("Topbar component disposed before JS interop cleanup could complete.");
+        }
+        catch (JSDisconnectedException)
+        {
+            Logger.LogWarning("Browser connection lost during Topbar cleanup.");
+        }
 
         _dotNetHelper?.Dispose();
 

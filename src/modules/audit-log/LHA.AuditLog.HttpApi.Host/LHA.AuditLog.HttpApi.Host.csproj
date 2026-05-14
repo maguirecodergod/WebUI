@@ -2,10 +2,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.AuditLog.Application\LHA.AuditLog.Application.csproj" />
-    <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore\LHA.AuditLog.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\LHA.AuditLog.HttpApi\LHA.AuditLog.HttpApi.csproj" />
+    <!-- <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore.PostgreSQL\LHA.AuditLog.EntityFrameworkCore.PostgreSQL.csproj" /> -->
+    <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore.MongoDB\LHA.AuditLog.EntityFrameworkCore.MongoDB.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Swagger\LHA.Swagger\LHA.Swagger.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
+    
   </ItemGroup>
 
   <PropertyGroup>

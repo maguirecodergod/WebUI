@@ -1,0 +1,171 @@
+@page "/host/background-workers"
+@namespace LHA.BlazorWasm.Modules.Host.BackgroundWorkers.Pages
+@inherits LHAComponentBase
+@using LHA.BlazorWasm.Components.Breadcrumb
+@using LHA.BlazorWasm.Components.Table
+@using LHA.Shared.Contracts.BackgroundJobs
+
+<PageTitle>@L("BackgroundWorkers.Title")</PageTitle>
+
+<div class="px-4 py-2">
+    @* ─── Breadcrumb ─── *@
+    <div class="breadcrumb-wrapper mb-3">
+        <LHABreadcrumb Items="_breadcrumbItems" Separator="/" />
+    </div>
+
+    @* ─── Header ─── *@
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight m-0">@L("BackgroundWorkers.Title")</h1>
+            <p class="text-sm text-muted mt-1 m-0">@L("BackgroundWorkers.Description")</p>
+        </div>
+    </div>
+
+    @* ─── Statistics ─── *@
+    @if (_statistics != null)
+    {
+        <div class="row mb-4">
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card bg-primary text-white shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="card-title text-white-50 m-0">@L("BackgroundWorkers.Enqueued")</h6>
+                            <i class="bi bi-box-arrow-in-right fs-4"></i>
+                        </div>
+                        <h2 class="m-0 font-bold">@_statistics.Enqueued</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card bg-info text-white shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="card-title text-white-50 m-0">@L("BackgroundWorkers.Processing")</h6>
+                            <i class="bi bi-gear-wide-connected fs-4"></i>
+                        </div>
+                        <h2 class="m-0 font-bold">@_statistics.Processing</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card bg-success text-white shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="card-title text-white-50 m-0">@L("BackgroundWorkers.Succeeded")</h6>
+                            <i class="bi bi-check-circle fs-4"></i>
+                        </div>
+                        <h2 class="m-0 font-bold">@_statistics.Succeeded</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card bg-danger text-white shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="card-title text-white-50 m-0">@L("BackgroundWorkers.Failed")</h6>
+                            <i class="bi bi-x-circle fs-4"></i>
+                        </div>
+                        <h2 class="m-0 font-bold">@_statistics.Failed</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* ─── Jobs Table ─── *@
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <DataTable @ref="_dataTable" TItem="RecurringJobDto" Mode="DataTableMode.ServerSide"
+                       ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="20" Searchable="false" ShowToolbar="true"
+                       KeySelector="@(x => x.Id)" IsLoading="_isLoading">
+
+                <ToolbarTemplate>
+                    <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
+                         style="background: transparent; border-color: var(--dt-border-color) !important;">
+                        <div class="d-flex align-items-center gap-2">
+                            @L("BackgroundWorkers.Title")
+                        </div>
+                    </div>
+                </ToolbarTemplate>
+
+                <ChildContent>
+                    <DataTableColumn TItem="RecurringJobDto" Title="@L("BackgroundWorkers.JobId")">
+                        <CellTemplate Context="item">
+                            <span class="font-semibold text-primary">@item.Id</span>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="RecurringJobDto" Title="@L("BackgroundWorkers.Method")">
+                        <CellTemplate Context="item">
+                            <span class="font-monospace text-muted">@(item.JobMethod ?? "-")</span>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="RecurringJobDto" Title="@L("BackgroundWorkers.Cron")">
+                        <CellTemplate Context="item">
+                            <code>@item.Cron</code>
+                            <div class="text-xs text-muted mt-1">
+                                <i class="bi bi-info-circle me-1"></i>
+                                @GetCronDescription(item.Cron)
+                            </div>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="RecurringJobDto" Title="@L("BackgroundWorkers.Queue")">
+                        <CellTemplate Context="item">
+                            <span class="badge bg-secondary">@item.Queue</span>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="RecurringJobDto" Title="@L("BackgroundWorkers.NextExecution")">
+                        <CellTemplate Context="item">
+                            <span>@(item.NextExecution?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</span>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="RecurringJobDto" Title="@L("BackgroundWorkers.LastExecution")">
+                        <CellTemplate Context="item">
+                            <span>@(item.LastExecution?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</span>
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="RecurringJobDto" Title="@L("BackgroundWorkers.LastJobState")">
+                        <CellTemplate Context="item">
+                            @if (!string.IsNullOrEmpty(item.LastJobState))
+                            {
+                                <span class="badge @(item.LastJobState == "Succeeded" ? "bg-success" : "bg-warning")">
+                                    @item.LastJobState
+                                </span>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </CellTemplate>
+                    </DataTableColumn>
+
+                    <DataTableColumn TItem="RecurringJobDto" Title="@L("Common.Actions")" Width="120px"
+                                     Alignment="ColumnAlignment.Center">
+                        <CellTemplate Context="item">
+                            <div class="d-flex justify-content-center gap-2">
+                                <LHAButton Style="CButtonStyle.Primary" Outline="@true" Size="CButtonSize.Small"
+                                           OnClick="() => TriggerJobAsync(item.Id)" Tooltip="@L("BackgroundWorkers.Trigger")"
+                                           Icon="bi bi-play-fill" IsLoading="_isLoading" />
+                                <LHAButton Style="CButtonStyle.Danger" Outline="@true" Size="CButtonSize.Small"
+                                           OnClick="() => DeleteJobAsync(item.Id)" Tooltip="@L("Common.Delete")"
+                                           Icon="bi bi-trash" IsLoading="_isLoading" />
+                            </div>
+                        </CellTemplate>
+                    </DataTableColumn>
+                </ChildContent>
+
+                <EmptyTemplate>
+                    <div class="empty-state py-5 text-center">
+                        <i class="bi bi-gear text-muted display-4"></i>
+                        <p class="mt-3 text-muted">@L("BackgroundWorkers.NoJobsFound")</p>
+                    </div>
+                </EmptyTemplate>
+            </DataTable>
+        </div>
+    </div>
+</div>

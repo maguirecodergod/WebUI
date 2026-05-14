@@ -186,41 +186,81 @@
 /* ── Responsive ── */
 @media (max-width: 768px) {
     .dt-pager {
-        flex-direction: column !important;
-        gap: 1rem !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem !important;
         padding: 1rem 0.5rem !important;
         height: auto !important;
         min-height: unset !important;
-        align-items: center !important;
     }
 
     .dt-pager-column {
-        flex-direction: column !important;
-        gap: 0.75rem !important;
-        width: 100% !important;
-        align-items: center !important;
+        display: contents;
     }
 
     .dt-pager-info {
+        width: 100%;
         text-align: center !important;
         font-size: 0.75rem !important;
-        opacity: 0.8;
-    }
-
-    .dt-pager-nav {
-        justify-content: center !important;
-        width: 100% !important;
-        flex-wrap: wrap !important;
-        gap: 0.5rem !important;
+        opacity: 0.9;
+        order: 1;
     }
 
     .dt-pager-size {
-        justify-content: center !important;
+        order: 2;
+        font-size: 0.75rem !important;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .dt-pager-jump {
+        order: 3;
+        font-size: 0.75rem !important;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .dt-pager-nav {
+        order: 4;
         width: 100% !important;
         justify-content: center !important;
-        margin-top: 0.25rem !important;
+        gap: 0.125rem !important;
+        margin-top: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dt-pager-column {
+        gap: 0.75rem !important;
+    }
+
+    .dt-pager-size span,
+    .dt-pager-jump span {
+        display: none !important;
+    }
+
+    .dt-pager-size::before {
+        content: "Rows:";
+        font-size: 0.75rem;
+        font-weight: 600;
+        opacity: 0.8;
+    }
+
+    .dt-pager-jump::before {
+        content: "Go:";
+        font-size: 0.75rem;
+        font-weight: 600;
+        opacity: 0.8;
+    }
+
+    .dt-pager-select-wrapper {
+        width: 55px;
+    }
+
+    .dt-pager-jump-input {
+        width: 35px;
     }
 }

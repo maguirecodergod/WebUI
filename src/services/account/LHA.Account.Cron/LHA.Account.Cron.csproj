@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.21.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.Account.Application\LHA.Account.Application.csproj" />
     <ProjectReference Include="..\LHA.Account.EntityFrameworkCore\LHA.Account.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\BackgroundWorker\LHA.BackgroundWorker.Hangfire\LHA.BackgroundWorker.Hangfire.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Scheduling\LHA.Scheduling.Hangfire\LHA.Scheduling.Hangfire.csproj" />
   </ItemGroup>
 
 </Project>

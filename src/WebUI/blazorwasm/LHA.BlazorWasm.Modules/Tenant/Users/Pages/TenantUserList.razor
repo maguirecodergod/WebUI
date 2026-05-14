@@ -19,25 +19,26 @@
             <h1 class="text-3xl font-bold tracking-tight m-0">@L("Users.UserManagement")</h1>
             <p class="text-sm text-muted mt-1 m-0">@L("Users.UserManagementDescription")</p>
         </div>
-        <LHAButton Style="CButtonStyle.Primary" Icon="bi bi-person-plus" OnClick="NavigateToCreate" 
-                   Class="shadow-lg shadow-indigo-500/30">
-            @L("Users.CreateUser")
-        </LHAButton>
     </div>
 
     @* ─── User Table ─── *@
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
         <div class="card-body p-0">
-            <DataTable TItem="IdentityUserDto" 
-                       Mode="DataTableMode.ServerSide"
-                       ServerDataSource="GetDataTableResponseAsync"
-                       DefaultPageSize="20"
-                       Searchable="true" 
-                       ShowToolbar="true"
-                       KeySelector="@(x => x.Id)"
-                       SearchPlaceholder="@L("Users.SearchPlaceholder")"
-                       IsLoading="_isLoading">
-                
+            <DataTable TItem="IdentityUserDto" Mode="DataTableMode.ServerSide"
+                       ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="20" Searchable="true" ShowToolbar="true"
+                       KeySelector="@(x => x.Id)" SearchPlaceholder="@L("Users.SearchPlaceholder")" IsLoading="_isLoading">
+
+                <ToolbarTemplate>
+                    <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Small" OnClick="NavigateToCreate"
+                                       Icon="bi bi-person-plus">
+                                @L("Users.CreateUser")
+                            </LHAButton>
+                        </div>
+                    </div>
+                </ToolbarTemplate>
+
                 <ChildContent>
                     <DataTableColumn TItem="IdentityUserDto" Title="@L("Users.Username")">
                         <CellTemplate Context="item">
@@ -49,22 +50,27 @@
                     </DataTableColumn>
 
                     <DataTableColumn TItem="IdentityUserDto" Title="@L("Users.Email")" Property="@(x => x.Email)" />
-                    
+
                     <DataTableColumn TItem="IdentityUserDto" Title="@L("Users.FullName")">
                         <CellTemplate Context="item">
                             <span>@item.Name @item.Surname</span>
                         </CellTemplate>
                     </DataTableColumn>
 
-                    <DataTableColumn TItem="IdentityUserDto" Title="@L("Common.Actions")" Width="120px" Alignment="ColumnAlignment.Center">
+                    <DataTableColumn TItem="IdentityUserDto" Title="@L("Common.Actions")" Width="120px"
+                                     Alignment="ColumnAlignment.Center">
                         <CellTemplate Context="item">
-                            <div class="d-flex justify-content-center gap-2">
-                                <button class="btn-action edit" @onclick="() => NavigateToEdit(item.Id)" title="@L("Common.Edit")">
+                            <div class="d-flex justify-content-start gap-1">
+                                <LHAButton Style="CButtonStyle.Dark" Outline="true" Size="CButtonSize.Small"
+                                           Class="btn-icon-replica" Tooltip="@L("Common.Edit")"
+                                           OnClick="() => NavigateToEdit(item.Id)">
                                     <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button class="btn-action delete" @onclick="() => DeleteUserAsync(item)" title="@L("Common.Delete")">
+                                </LHAButton>
+                                <LHAButton Style="CButtonStyle.Danger" Outline="true" Size="CButtonSize.Small"
+                                           Tooltip="@L("Common.Delete")" Class="btn-icon-replica"
+                                           OnClick='() => DeleteUserAsync(item)'>
                                     <i class="bi bi-trash"></i>
-                                </button>
+                                </LHAButton>
                             </div>
                         </CellTemplate>
                     </DataTableColumn>
@@ -115,14 +121,28 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s;
-        background: rgba(0,0,0,0.03);
+        background: rgba(0, 0, 0, 0.03);
     }
 
-    .btn-action.edit:hover { background: rgba(99, 102, 241, 0.1); color: #6366f1; }
-    .btn-action.delete:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .btn-action.edit:hover {
+        background: rgba(99, 102, 241, 0.1);
+        color: #6366f1;
+    }
+
+    .btn-action.delete:hover {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
 
     @@keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>

@@ -31,6 +31,7 @@ builder.Services.AddTenantManagementEntityFrameworkCore(options =>
 
 // ── Event handlers ───────────────────────────────────────────────
 builder.Services.AddTransient<IEventHandler<TenantCreatedEto>, TenantCreatedEventHandler>();
+builder.Services.AddTransient<IEventHandler<TenantNameChangedEto>, TenantNameChangedEventHandler>();
 builder.Services.AddTransient<IEventHandler<TenantActivationChangedEto>, TenantActivationChangedEventHandler>();
 builder.Services.AddTransient<IEventHandler<TenantConnectionStringChangedEto>, TenantConnectionStringChangedEventHandler>();
 

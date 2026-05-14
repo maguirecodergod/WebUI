@@ -165,25 +165,25 @@ public sealed class QuartzJobScheduler : IJobScheduler
     private void PopulateDataMap<TJob>(
         JobDataMap dataMap, object? parameters, JobOptions? options) where TJob : IScheduledJob
     {
-        dataMap.Put(QuartzDataMapKeys.JobTypeName, typeof(TJob).AssemblyQualifiedName!);
-        dataMap.Put(QuartzDataMapKeys.MaxRetries, options?.MaxRetries ?? _options.DefaultMaxRetries);
-        dataMap.Put(QuartzDataMapKeys.RetryAttempt, 0);
+        dataMap[QuartzDataMapKeys.JobTypeName] = typeof(TJob).AssemblyQualifiedName!;
+        dataMap[QuartzDataMapKeys.MaxRetries] = options?.MaxRetries ?? _options.DefaultMaxRetries;
+        dataMap[QuartzDataMapKeys.RetryAttempt] = 0;
 
         if (parameters is not null)
-            dataMap.Put(QuartzDataMapKeys.SerializedParameters,
-                JsonSerializer.Serialize(parameters, parameters.GetType(), JsonOptions));
+            dataMap[QuartzDataMapKeys.SerializedParameters] =
+                JsonSerializer.Serialize(parameters, parameters.GetType(), JsonOptions);
 
         if (options is null) return;
 
         if (!string.IsNullOrEmpty(options.TenantId))
-            dataMap.Put(QuartzDataMapKeys.TenantId, options.TenantId);
+            dataMap[QuartzDataMapKeys.TenantId] = options.TenantId;
         if (!string.IsNullOrEmpty(options.CorrelationId))
-            dataMap.Put(QuartzDataMapKeys.CorrelationId, options.CorrelationId);
+            dataMap[QuartzDataMapKeys.CorrelationId] = options.CorrelationId;
         if (!string.IsNullOrEmpty(options.UserId))
-            dataMap.Put(QuartzDataMapKeys.UserId, options.UserId);
+            dataMap[QuartzDataMapKeys.UserId] = options.UserId;
 
         foreach (var kvp in options.Metadata)
-            dataMap.Put($"meta.{kvp.Key}", kvp.Value);
+            dataMap[$"meta.{kvp.Key}"] = kvp.Value;
     }
 
     private static string GenerateJobId() => $"lha-{Guid.NewGuid():N}";

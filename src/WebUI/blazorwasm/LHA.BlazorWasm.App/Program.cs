@@ -13,6 +13,7 @@ using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.Services.Auth;
 using FluentValidation;
 using LHA.Shared.Contracts.Identity.Auth;
+using LHA.BlazorWasm.Shared.Abstractions.Localization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -71,5 +72,8 @@ await themeService.InitializeAsync();
 var storage = host.Services.GetRequiredService<ILocalStorageService>();
 var tenantId = await storage.GetAsync<string>("current_tenant_id");
 host.Services.GetRequiredService<PersistentClientContextProvider>().SetTenantId(tenantId);
+
+var localizer = host.Services.GetRequiredService<ILocalizationService>();
+await localizer.InitializeAsync();
 
 await host.RunAsync();

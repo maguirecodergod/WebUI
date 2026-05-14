@@ -1,34 +1,66 @@
 @namespace LHA.BlazorWasm.Components.Buttons
 
-<button class="@GetCssClass()" 
-        type="@Type.ToString().ToLowerInvariant()"
-        disabled="@IsDisabled" 
-        @onclick="OnClick" 
-        @onclick:stopPropagation
-        @attributes="AdditionalAttributes">
-    @if (IsLoading)
-    {
-        <span class="btn-spinner" aria-hidden="true"></span>
-    }
-    else
-    {
-        @if (!string.IsNullOrEmpty(Icon) && IconPosition == CButtonIconPosition.Left)
-        {
-            <i class="@Icon btn-icon-left" aria-hidden="true"></i>
-        }
+@if (!string.IsNullOrWhiteSpace(Tooltip))
+{
+    <Tooltip Text="@Tooltip" Placement="@TooltipPlacement">
+        <button class="@GetCssClass()" type="@Type.ToString().ToLowerInvariant()" disabled="@IsDisabled" @onclick="OnClick"
+                @onclick:stopPropagation @attributes="AdditionalAttributes">
+            @if (IsLoading)
+            {
+                <span class="btn-spinner" aria-hidden="true"></span>
+            }
+            else
+            {
+                @if (!string.IsNullOrEmpty(Icon) && IconPosition == CButtonIconPosition.Left)
+                {
+                    <i class="@Icon btn-icon-left" aria-hidden="true"></i>
+                }
 
-        @if (ChildContent != null)
-        {
-            <span class="btn-content">@ChildContent</span>
-        }
-        else if (!string.IsNullOrEmpty(Text))
-        {
-            <span class="btn-content">@Text</span>
-        }
+                @if (ChildContent != null)
+                {
+                    <span class="btn-content">@ChildContent</span>
+                }
+                else if (!string.IsNullOrEmpty(Text))
+                {
+                    <span class="btn-content">@Text</span>
+                }
 
-        @if (!string.IsNullOrEmpty(Icon) && IconPosition == CButtonIconPosition.Right)
+                @if (!string.IsNullOrEmpty(Icon) && IconPosition == CButtonIconPosition.Right)
+                {
+                    <i class="@Icon btn-icon-right" aria-hidden="true"></i>
+                }
+            }
+        </button>
+    </Tooltip>
+}
+else
+{
+    <button class="@GetCssClass()" type="@Type.ToString().ToLowerInvariant()" disabled="@IsDisabled" @onclick="OnClick"
+            @onclick:stopPropagation @attributes="AdditionalAttributes">
+        @if (IsLoading)
         {
-            <i class="@Icon btn-icon-right" aria-hidden="true"></i>
+            <span class="btn-spinner" aria-hidden="true"></span>
         }
-    }
-</button>
+        else
+        {
+            @if (!string.IsNullOrEmpty(Icon) && IconPosition == CButtonIconPosition.Left)
+            {
+                <i class="@Icon btn-icon-left" aria-hidden="true"></i>
+            }
+
+            @if (ChildContent != null)
+            {
+                <span class="btn-content">@ChildContent</span>
+            }
+            else if (!string.IsNullOrEmpty(Text))
+            {
+                <span class="btn-content">@Text</span>
+            }
+
+            @if (!string.IsNullOrEmpty(Icon) && IconPosition == CButtonIconPosition.Right)
+            {
+                <i class="@Icon btn-icon-right" aria-hidden="true"></i>
+            }
+        }
+    </button>
+}

@@ -1,5 +1,17 @@
 <Solution>
   <Folder Name="/src/" />
+  <Folder Name="/src/services/notifications/">
+    <Project Path="src/services/notifications/LHA.Notification.Application.Contracts/LHA.Notification.Application.Contracts.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.Application/LHA.Notification.Application.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.Consumer/LHA.Notification.Consumer.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.Cron/LHA.Notification.Cron.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.Domain.Shared/LHA.Notification.Domain.Shared.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.Domain/LHA.Notification.Domain.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.HttpApi.Host/LHA.Notification.HttpApi.Host.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.HttpApi/LHA.Notification.HttpApi.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.Infrastructure/LHA.Notification.Infrastructure.csproj" />
+    <Project Path="src/services/notifications/LHA.Notification.Migrator/LHA.Notification.Migrator.csproj" />
+  </Folder>
   <Folder Name="/src/shared/">
     <Project Path="src/shared/LHA.Shared.Contracts/LHA.Shared.Contracts.csproj" />
     <Project Path="src/shared/LHA.Shared.Domain/LHA.Shared.Domain.csproj" />
@@ -77,6 +89,7 @@
   </Folder>
   <Folder Name="/src/frameworks/EntityFrameworkCore/">
     <Project Path="src/frameworks/EntityFrameworkCore/LHA.EntityFrameworkCore/LHA.EntityFrameworkCore.csproj" />
+    <Project Path="src/frameworks/EntityFrameworkCore/LHA.EntityFrameworkCore.MongoDB/LHA.EntityFrameworkCore.MongoDB.csproj" />
     <Project Path="src/frameworks/EntityFrameworkCore/LHA.EntityFrameworkCore.PostgreSQL/LHA.EntityFrameworkCore.PostgreSQL.csproj" />
   </Folder>
   <Folder Name="/src/frameworks/UnitOfWork/">
@@ -125,6 +138,8 @@
     <Project Path="src/modules/audit-log/LHA.AuditLog.Consumer/LHA.AuditLog.Consumer.csproj" />
     <Project Path="src/modules/audit-log/LHA.AuditLog.Domain.Shared/LHA.AuditLog.Domain.Shared.csproj" />
     <Project Path="src/modules/audit-log/LHA.AuditLog.Domain/LHA.AuditLog.Domain.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.EntityFrameworkCore.MongoDB/LHA.AuditLog.EntityFrameworkCore.MongoDB.csproj" />
+    <Project Path="src/modules/audit-log/LHA.AuditLog.EntityFrameworkCore.PostgreSQL/LHA.AuditLog.EntityFrameworkCore.PostgreSQL.csproj" />
     <Project Path="src/modules/audit-log/LHA.AuditLog.EntityFrameworkCore/LHA.AuditLog.EntityFrameworkCore.csproj" />
     <Project Path="src/modules/audit-log/LHA.AuditLog.HttpApi.Host/LHA.AuditLog.HttpApi.Host.csproj" />
     <Project Path="src/modules/audit-log/LHA.AuditLog.HttpApi/LHA.AuditLog.HttpApi.csproj" />

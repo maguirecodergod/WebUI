@@ -1,12 +1,13 @@
-using LHA;
 using LHA.Auditing;
 using LHA.BlazorWasm.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
 using LHA.BlazorWasm.Components.Select;
 using LHA.BlazorWasm.Components.Table;
+using LHA.BlazorWasm.HttpApi.Client.Core;
 using LHA.BlazorWasm.Shared;
 using LHA.Shared.Contracts.AuditLog;
 using Microsoft.AspNetCore.Components;
+using LHA.BlazorWasm.Shared.Models;
 
 namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 {
@@ -51,7 +52,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         protected override async Task OnInitializedAsync()
         {
             _canReadHostLogs = PermissionService.HasPermission(AuditLogPermissions.AuditLogs.HostRead);
-            _canDelete = _canReadHostLogs; // Restrict delete to Host-level access by default
+            _canDelete = _canReadHostLogs;
             await LoadLogsAsync();
         }
 
@@ -69,6 +70,10 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 _logs = result.Items.ToList();
                 _totalCount = result.TotalCount;
                 StateHasChanged();
+            }
+            catch (ApiException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -164,7 +169,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         {
             _itemToDelete = log;
             _isDeleteDialogVisible = true;
-        } 
+        }
 
         private void ShowBulkDeleteDialog()
         {
@@ -188,10 +193,10 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 {
                     int originalPageSize = _input.PageSize;
                     int originalPageNumber = _input.PageNumber;
-                    
+
                     _input.PageSize = 100;
                     _input.PageNumber = 1;
-                    
+
                     int deletedCount = 0;
                     bool hasMore = true;
 
@@ -214,7 +219,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 
                     _input.PageSize = originalPageSize;
                     _input.PageNumber = originalPageNumber;
-                    
+
                     ToastNotification.Success(L("AuditLog.BulkDeletedSuccessfully", deletedCount));
                 }
                 else if (_selectedLogs.Any())
@@ -276,60 +281,6 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 
             return details;
         }
-
-        public class AppBrowserDetails
-        {
-            public CBrowserType Browser { get; set; } = CBrowserType.Unknown;
-            public COperatingSystem OS { get; set; } = COperatingSystem.Unknown;
-
-            public bool IsSvgIcon => Browser is CBrowserType.Postman or CBrowserType.Bruno or CBrowserType.Curl or CBrowserType.Grpc or CBrowserType.MessageQueue or CBrowserType.BackgroundJob;
-
-            public string BrowserIcon => Browser switch
-            {
-                CBrowserType.Chrome => "bi bi-google",
-                CBrowserType.Edge => "bi bi-browser-edge",
-                CBrowserType.Firefox => "bi bi-browser-firefox",
-                CBrowserType.Safari => "bi bi-browser-safari",
-                CBrowserType.Opera => "bi bi-browser-opera",
-                CBrowserType.Grpc => "bi bi-lightning-charge-fill",
-                CBrowserType.MessageQueue => "bi bi-mailbox2",
-                CBrowserType.BackgroundJob => "bi bi-cpu-fill",
-                _ => "bi bi-browser-chrome"
-            };
-
-            public string OSIcon => OS switch
-            {
-                COperatingSystem.Windows => "bi bi-windows",
-                COperatingSystem.Android => "bi bi-android2",
-                COperatingSystem.iOS => "bi bi-apple",
-                COperatingSystem.MacOS => "bi bi-apple",
-                COperatingSystem.Linux => "bi bi-ubuntu",
-                _ => "bi bi-laptop"
-            };
-
-            public string BrowserName => Browser.ToString();
-            public string OSName => OS.ToString();
-        }
-
-        public enum CBrowserType
-        {
-            Unknown,
-            Chrome,
-            Edge,
-            Firefox,
-            Safari,
-            Opera,
-            Postman,
-            Bruno,
-            Curl,
-            Grpc,
-            MessageQueue,
-            BackgroundJob,
-            Terminal,
-            Other
-        }
-        public enum COperatingSystem { Unknown, Windows, MacOS, Linux, Android, iOS }
-
         #endregion
     }
 }

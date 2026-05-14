@@ -26,7 +26,11 @@ public static class AuditLogEntityFrameworkCoreDependencyInjection
         var builder = new AuditLogEntityFrameworkCoreBuilder();
         configure?.Invoke(builder);
 
-        services.Configure<AuditLogEntityFrameworkCoreOptions>(opt => opt.Mode = builder.Mode);
+        services.Configure<AuditLogEntityFrameworkCoreOptions>(opt => 
+        {
+            opt.Mode = builder.Mode;
+            opt.ModelConfigurator = builder.ModelConfigurator;
+        });
 
         // Always register the single shared DbContext
         services.AddLhaDbContext<AuditLogDbContext>(builder.DbContextConfig);
@@ -56,8 +60,9 @@ public static class AuditLogEntityFrameworkCoreDependencyInjection
 /// </summary>
 public sealed class AuditLogEntityFrameworkCoreBuilder
 {
-    internal AuditLogStoreMode Mode { get; private set; } = AuditLogStoreMode.All;
+    public AuditLogStoreMode Mode { get; private set; } = AuditLogStoreMode.All;
     internal Action<LhaDbContextOptions>? DbContextConfig { get; private set; }
+    internal Action<Microsoft.EntityFrameworkCore.ModelBuilder>? ModelConfigurator { get; private set; }
 
     /// <summary>
     /// Explicitly sets the audit store modes using flags.
@@ -96,6 +101,12 @@ public sealed class AuditLogEntityFrameworkCoreBuilder
         return this;
     }
 
+    public AuditLogEntityFrameworkCoreBuilder ConfigureModel(Action<Microsoft.EntityFrameworkCore.ModelBuilder> configurator)
+    {
+        ModelConfigurator = configurator;
+        return this;
+    }
+
     /// <summary>
     /// Configures the EF Core DbContext options for the Audit Log module.
     /// </summary>
@@ -128,4 +139,5 @@ public enum AuditLogStoreMode
 public sealed class AuditLogEntityFrameworkCoreOptions
 {
     public AuditLogStoreMode Mode { get; set; } = AuditLogStoreMode.All;
+    public Action<Microsoft.EntityFrameworkCore.ModelBuilder>? ModelConfigurator { get; set; }
 }

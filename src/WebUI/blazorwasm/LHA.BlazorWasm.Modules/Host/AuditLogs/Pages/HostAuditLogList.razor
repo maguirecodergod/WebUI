@@ -14,6 +14,7 @@
 @using LHA.BlazorWasm.Components.Table
 @using LHA.BlazorWasm.Components.Tabs
 @using LHA.BlazorWasm.Components.Tooltip
+@using LHA.BlazorWasm.Services.Helpers
 
 <PageTitle>@L("AuditLog.PageTitle")</PageTitle>
 
@@ -112,12 +113,12 @@
                                                                         var browser = ParseBrowserInfo(_viewingLog.BrowserInfo);
                                                                     }
                                                                     <div class="detail-value d-flex align-items-center gap-3">
-                                                                        <Tooltip Text="@browser.BrowserName">
+                                                                        <Tooltip Text="@browser.Browser.GetDisplayName(Localizer)">
                                                                             <div class="browser-info-item">
                                                                                 @if (browser.IsSvgIcon)
                                                                                 {
                                                                                     <div class="browser-svg-icon d-flex align-items-center">
-                                                                                        @if (browser.Browser == HostAuditLogList.CBrowserType.Postman)
+                                                                                        @if (browser.Browser == CBrowserType.Postman)
                                                                                         {
                                                                                             <svg width="20" height="20" viewBox="0 0 32 32"
                                                                                                  fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -127,8 +128,7 @@
                                                                                                 fill="#fff" />
                                                                                             </svg>
                                                                                         }
-                                                                                        else if (browser.Browser ==
-                                                                                HostAuditLogList.CBrowserType.Bruno)
+                                                                                        else if (browser.Browser == CBrowserType.Bruno)
                                                                                         {
                                                                                             <svg width="20" height="20" viewBox="0 0 24 24"
                                                                                                  fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -138,8 +138,7 @@
                                                                                                       stroke-linejoin="round" />
                                                                                             </svg>
                                                                                         }
-                                                                                        else if (browser.Browser ==
-                                                                                HostAuditLogList.CBrowserType.Curl)
+                                                                                        else if (browser.Browser == CBrowserType.Curl)
                                                                                         {
                                                                                             <svg width="20" height="20" viewBox="0 0 24 24"
                                                                                                  fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -150,20 +149,20 @@
                                                                                                       stroke-linejoin="round" />
                                                                                             </svg>
                                                                                         }
-                                                                                        <span class="ms-2 small">@browser.BrowserName</span>
+                                                                                        <span class="ms-2 small">@browser.Browser.GetDisplayName(Localizer)</span>
                                                                                     </div>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <i class="@browser.BrowserIcon text-primary fs-5"></i>
-                                                                                    <span class="ms-1 small">@browser.BrowserName</span>
+                                                                                    <i class="@browser.Browser.GetIcon() text-primary fs-5"></i>
+                                                                                    <span class="ms-1 small">@browser.Browser.GetDisplayName(Localizer)</span>
                                                                                 }
                                                                             </div>
                                                                         </Tooltip>
-                                                                        <Tooltip Text="@browser.OSName">
+                                                                        <Tooltip Text="@browser.OS.GetDisplayName(Localizer)">
                                                                             <div class="browser-info-item">
-                                                                                <i class="@browser.OSIcon text-secondary fs-5"></i>
-                                                                                <span class="ms-1 small">@browser.OSName</span>
+                                                                                <i class="@browser.OS.GetIcon() text-secondary fs-5"></i>
+                                                                                <span class="ms-1 small">@browser.OS.GetDisplayName(Localizer)</span>
                                                                             </div>
                                                                         </Tooltip>
                                                                         <Tooltip Text="@_viewingLog.BrowserInfo">

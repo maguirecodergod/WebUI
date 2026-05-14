@@ -43,6 +43,9 @@ public static class AccountEndpoints
         // gRPC services (inter-service communication)
         endpoints.MapGrpcService<PermissionRegistrationGrpcServiceV1>();
 
+        // Background Jobs
+        endpoints.MapBackgroundJobEndpoints();
+
         return endpoints;
     }
 }

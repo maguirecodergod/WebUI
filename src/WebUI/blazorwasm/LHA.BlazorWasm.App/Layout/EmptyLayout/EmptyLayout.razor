@@ -3,16 +3,11 @@
 @using LHA.BlazorWasm.Components.LanguageSelector
 
 <div class="empty-layout @ThemeService.ThemeClass">
-    <div class="layout-controls-pill">
-        <div class="control-item theme-toggle" @onclick:stopPropagation>
-            <ThemeSwitch Variant="CThemeSwitchVariant.Icon" />
-        </div>
-        <div class="control-divider"></div>
-        <div class="control-item lang-selector" @onclick:stopPropagation>
-            <LanguageSelector Mode="CLanguageSelectorMode.Dropdown" ShowFlags="true" ShowNames="false" />
-        </div>
+    <div class="layout-controls">
+        <ThemeSwitch Variant="CThemeSwitchVariant.Icon" Size="sm" />
+        <LanguageSelector Mode="CLanguageSelectorMode.Dropdown" ShowFlags="true" ShowNames="true"
+                          Size="LHA.BlazorWasm.Components.Form.CInputSize.Small" />
     </div>
-
     @Body
     <LHA.BlazorWasm.Components.Toast.ToastContainer />
 </div>

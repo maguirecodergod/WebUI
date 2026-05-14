@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\frameworks\Core\LHA.Core\LHA.Core.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Contracts\LHA.Shared.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

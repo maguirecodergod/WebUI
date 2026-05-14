@@ -48,15 +48,11 @@
                                         <i class="bi bi-plus-lg me-1"></i> @L("Common.Create")
                                     </LHAButton>
                                 </div>
-                                <div class="d-flex gap-2 align-items-center">
-                                    @* Use the built-in search via Searchable="true" or customize here *@
-                                    @* We keep this side for future custom filters if needed, but remove redundant search *@
-                                </div>
                             </div>
                         </ToolbarTemplate>
 
                         <ChildContent>
-                            <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.Name")" Width="250px" Sortable
+                            <DataTableColumn TItem="IdentityRoleDto" Title="@L("Roles.Name")" Width="200px" Sortable
                                              Property="@(x => x.Name)">
                                 <CellTemplate>
                                     <div class="d-flex flex-column">
@@ -116,24 +112,21 @@
                                 </DataTableColumn>
 
                                 <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.Operations")" Width="120px"
-                                    Alignment="ColumnAlignment.Center">
+                                                 Alignment="ColumnAlignment.Left">
                                     <CellTemplate>
-                                        <div class="d-flex justify-content-center gap-1">
-                                            <Tooltip Text="@L("Common.Detail")">
-                                                <LHAButton Style="CButtonStyle.Secondary" Size="CButtonSize.Small"
-                                                           Class="btn-icon-replica"
-                                                           OnClick='() => Navigation.NavigateTo($"/host/roles/{context.Id}")'>
-                                                    <i class="bi bi-eye"></i>
-                                                </LHAButton>
-                                            </Tooltip>
+                                        <div class="d-flex justify-content-start gap-1">
+                                            <LHAButton Style="CButtonStyle.Info" Outline="true" Size="CButtonSize.Small"
+                                                       Tooltip="@L("Common.Detail")" Class="btn-icon-replica"
+                                                       OnClick='() => Navigation.NavigateTo($"/host/roles/{context.Id}")'>
+                                                <i class="bi bi-eye"></i>
+                                            </LHAButton>
                                             @if (!context.IsStatic)
                                             {
-                                                <Tooltip Text="@L("Common.Delete")">
-                                                    <LHAButton Style="CButtonStyle.Danger" Size="CButtonSize.Small"
-                                                               Class="btn-icon-replica" OnClick="() => ShowSingleDeleteDialog(context)">
-                                                        <i class="bi bi-trash"></i>
-                                                    </LHAButton>
-                                                </Tooltip>
+                                                <LHAButton Style="CButtonStyle.Danger" Outline="true" Size="CButtonSize.Small"
+                                                           Class="btn-icon-replica" Tooltip="@L("Common.Delete")"
+                                                           OnClick="() => ShowSingleDeleteDialog(context)">
+                                                    <i class="bi bi-trash"></i>
+                                                </LHAButton>
                                             }
                                         </div>
                                     </CellTemplate>

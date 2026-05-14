@@ -29,7 +29,6 @@
     "AuditLog.NoEntityChanges": "No entity changes tracked for this entry.",
     "AuditLog.NoEntityChangesTitle": "No Data Changes Detected",
     "AuditLog.NoEntityChangesDesc": "No modifications or property updates were recorded for this specific operation.",
-
     "Menu.Home": "Home",
     "Menu.Tenant.Users": "Users",
     "Sidebar.Home": "Home",
@@ -39,7 +38,7 @@
     "Sidebar.Management": "Management",
     "Sidebar.Users": "Users",
     "Sidebar.AuditLogs": "Audit Logs",
-
+    "Sidebar.BackgroundWorkers": "Background Workers",
     "Common.Actions": "Actions",
     "Common.Edit": "Edit",
     "Common.Delete": "Delete",
@@ -53,7 +52,6 @@
     "Common.CreateFailed": "Creation failed",
     "Common.UpdateSuccess": "Updated successfully",
     "Common.UpdateFailed": "Update failed",
-
     "Users.UserManagement": "User Management",
     "Users.UserManagementDescription": "Manage your employees and their access levels within your tenant.",
     "Users.CreateUser": "Add User",
@@ -79,5 +77,23 @@
     "Users.NoUsersFound": "No users found.",
     "Users.PasswordChangeNote": "Leave password blank if you do not want to change it.",
     "Users.DeleteConfirmation": "Are you sure you want to delete user {0}?",
-    "Users.PasswordMismatch": "Passwords do not match."
+    "Users.PasswordMismatch": "Passwords do not match.",
+    "BackgroundWorkers.Title": "Background Workers",
+    "BackgroundWorkers.Description": "Manage and monitor recurring background jobs.",
+    "BackgroundWorkers.Enqueued": "Enqueued",
+    "BackgroundWorkers.Processing": "Processing",
+    "BackgroundWorkers.Succeeded": "Succeeded",
+    "BackgroundWorkers.Failed": "Failed",
+    "BackgroundWorkers.NoJobsFound": "No background jobs found.",
+    "BackgroundWorkers.JobId": "Job ID",
+    "BackgroundWorkers.Method": "Method",
+    "BackgroundWorkers.Cron": "Cron",
+    "BackgroundWorkers.Queue": "Queue",
+    "BackgroundWorkers.NextExecution": "Next Execution",
+    "BackgroundWorkers.LastExecution": "Last Execution",
+    "BackgroundWorkers.LastJobState": "Last State",
+    "BackgroundWorkers.Trigger": "Trigger",
+    "BackgroundWorkers.TriggerConfirmation": "Are you sure you want to trigger this job?",
+    "BackgroundWorkers.TriggerSuccess": "Job triggered successfully.",
+    "BackgroundWorkers.DeleteConfirmation": "Are you sure you want to delete this job?"
 }

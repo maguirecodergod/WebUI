@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\frameworks\EntityFrameworkCore\LHA.EntityFrameworkCore.PostgreSQL\LHA.EntityFrameworkCore.PostgreSQL.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EntityFrameworkCore\LHA.EntityFrameworkCore\LHA.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\LHA.AuditLog.Domain\LHA.AuditLog.Domain.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Auditing\LHA.Auditing\LHA.Auditing.csproj" />
   </ItemGroup>

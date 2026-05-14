@@ -27,10 +27,8 @@ public sealed class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
 
     private readonly Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? _options;
 
-    public AuditLogDbContext(DbContextOptions<AuditLogDbContext> options)
-        : base(options)
-    {
-    }
+    // Use only the constructor with IOptions to ensure ModelConfigurator is correctly injected
+
 
     public AuditLogDbContext(
         DbContextOptions<AuditLogDbContext> options,
@@ -43,10 +41,17 @@ public sealed class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
         _options = auditOptions;
     }
 
+    /// <summary>
+    /// Design-time configurator used by <c>IDesignTimeDbContextFactory</c> when DI is not available.
+    /// </summary>
+    public static Action<ModelBuilder>? DesignTimeModelConfigurator { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ConfigureAuditLog(_options?.Value.Mode ?? AuditLogStoreMode.All);
+        
+        var configurator = _options?.Value.ModelConfigurator ?? DesignTimeModelConfigurator;
+        configurator?.Invoke(modelBuilder);
         
         // Apply global query filters (IMultiTenant, ISoftDelete) after entities are added
         ApplyGlobalFilters(modelBuilder);

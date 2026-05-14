@@ -6,6 +6,10 @@
     <ProjectReference Include="..\LHA.BlazorWasm.Components\LHA.BlazorWasm.Components.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CronExpressionDescriptor" Version="2.45.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

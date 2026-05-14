@@ -5,6 +5,7 @@ using LHA.BlazorWasm.Components.Topbar;
 using Microsoft.AspNetCore.Components;
 using LHA.Shared.Contracts.AuditLog;
 using LHA.Shared.Contracts.TenantManagement;
+using LHA.BlazorWasm.Modules.Host.BackgroundWorkers.Pages;
 using LHA.Shared.Contracts.Identity;
 
 namespace LHA.BlazorWasm.App.Layout.MainLayout;
@@ -35,7 +36,8 @@ public partial class MainLayout : LHALayoutComponentBase
             Children = new()
             {
                 new() { Id = "host-tenants", TitleKey = "Sidebar.Tenants", Href = "/host/tenants", Icon = """<i class="bi bi-building"></i>""", RequiredPermission = TenantManagementPermissions.Tenants.Read },
-                new() { Id = "host-roles", TitleKey = "Sidebar.Roles", Href = "/host/roles", Icon = """<i class="bi bi-person-vcard"></i>""", RequiredPermission = IdentityPermissions.Roles.Read }
+                new() { Id = "host-roles", TitleKey = "Sidebar.Roles", Href = "/host/roles", Icon = """<i class="bi bi-person-vcard"></i>""", RequiredPermission = IdentityPermissions.Roles.Read },
+                new() { Id = "background-workers", TitleKey = "Sidebar.BackgroundWorkers", Href = "/host/background-workers", Icon = """<i class="bi bi-gear"></i>""", RequiredPermission = null }
             }
         },
         new()
@@ -47,7 +49,7 @@ public partial class MainLayout : LHALayoutComponentBase
             Children = new()
             {
                 new() { Id = "tenant-users", TitleKey = "Sidebar.Users", Href = "/tenant/users", Icon = """<i class="bi bi-people"></i>""", RequiredPermission = IdentityPermissions.Users.Read },
-                new() { Id = "tenant-logs", TitleKey = "Sidebar.AuditLogs", Href = "/audit-logs", Icon = """<i class="bi bi-journal-text"></i>""", RequiredPermission = AuditLogPermissions.AuditLogs.Read }
+
             }
         }
     };

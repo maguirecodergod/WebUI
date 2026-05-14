@@ -13,9 +13,12 @@
     <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Swagger\LHA.Swagger\LHA.Swagger.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Scheduling\LHA.Scheduling.Hangfire\LHA.Scheduling.Hangfire.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\BackgroundWorker\LHA.BackgroundWorker.Hangfire\LHA.BackgroundWorker.Hangfire.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.21.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
   </ItemGroup>
 
