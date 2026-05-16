@@ -10,11 +10,11 @@
     <ProjectReference Include="..\LHA.Account.Application\LHA.Account.Application.csproj" />
     <ProjectReference Include="..\LHA.Account.EntityFrameworkCore\LHA.Account.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\LHA.Account.HttpApi\LHA.Account.HttpApi.csproj" />
-    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus\LHA.EventBus.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Swagger\LHA.Swagger\LHA.Swagger.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Scheduling\LHA.Scheduling.Hangfire\LHA.Scheduling.Hangfire.csproj" />
     <ProjectReference Include="..\..\..\frameworks\BackgroundWorker\LHA.BackgroundWorker.Hangfire\LHA.BackgroundWorker.Hangfire.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus.Kafka\LHA.EventBus.Kafka.csproj" />
   </ItemGroup>
 
   <ItemGroup>

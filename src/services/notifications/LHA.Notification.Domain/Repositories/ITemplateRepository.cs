@@ -9,6 +9,6 @@ public interface ITemplateRepository : IRepository<TemplateEntity, Guid>
     Task<IEnumerable<TemplateEntity>> GetByTypeAsync(CNotificationType type, CancellationToken cancellationToken = default);
     Task<IEnumerable<TemplateEntity>> GetActiveAsync(CancellationToken cancellationToken = default);
     Task<IEnumerable<TemplateEntity>> GetByTagsAsync(List<string> tags, CancellationToken cancellationToken = default);
-    IAsyncEnumerable<TemplateEntity> GetByTenantCursorAsync(int batchSize, CancellationToken cancellationToken = default);
+    IAsyncEnumerable<TemplateEntity> GetByTenantCursorAsync(Guid? tenantId, int batchSize, CancellationToken cancellationToken = default);
     Task<IEnumerable<TemplateEntity>> SearchAsync(string query, CancellationToken cancellationToken = default);
 }

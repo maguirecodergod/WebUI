@@ -1,4 +1,3 @@
-using LHA;
 using LHA.Auditing;
 using LHA.AuditLog.Domain;
 using LHA.Ddd.Domain;
@@ -24,12 +23,20 @@ public sealed class EfCoreAuditLogRepository
     public override async Task<AuditLogEntity?> FindAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();
-        return await dbSet
-            .Include(x => x.Actions)
-            .Include(x => x.EntityChanges)
-                .ThenInclude(c => c.PropertyChanges)
-            .AsSplitQuery()
-            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        var isRelational = (await GetDbContextAsync()).Database.IsRelational();
+
+        IQueryable<AuditLogEntity> query = dbSet;
+
+        if (isRelational)
+        {
+            query = query
+                .Include(x => x.Actions)
+                .Include(x => x.EntityChanges)
+                    .ThenInclude(c => c.PropertyChanges)
+                .AsSplitQuery();
+        }
+
+        return await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -54,18 +61,26 @@ public sealed class EfCoreAuditLogRepository
     {
         var dbSet = await GetDbSetAsync();
 
+        var isRelational = (await GetDbContextAsync()).Database.IsRelational();
+
         var query = ApplyFilters(dbSet, startTime, endTime, httpMethod, url,
             minStatusCode, maxStatusCode, userId, userName, applicationName,
             correlationId, maxExecutionDuration, minExecutionDuration, hasException, requestType);
 
-        return await query
+        IQueryable<AuditLogEntity> queryFinal = query
             .SortByDynamic(sorter, defaultProperty: "ExecutionTime", defaultAscending: false)
-            .PageBy(paging)
-            .Include(x => x.Actions)
-            .Include(x => x.EntityChanges)
-                .ThenInclude(c => c.PropertyChanges)
-            .AsSplitQuery()
-            .ToListAsync(cancellationToken);
+            .PageBy(paging);
+
+        if (isRelational)
+        {
+            queryFinal = queryFinal
+                .Include(x => x.Actions)
+                .Include(x => x.EntityChanges)
+                    .ThenInclude(c => c.PropertyChanges)
+                .AsSplitQuery();
+        }
+
+        return await queryFinal.ToListAsync(cancellationToken);
     }
 
     /// <inheritdoc />
@@ -105,6 +120,8 @@ public sealed class EfCoreAuditLogRepository
     {
         var dbContext = await GetDbContextAsync();
 
+        var isRelational = dbContext.Database.IsRelational();
+
         var query = dbContext.Set<EntityChangeEntity>()
             .AsNoTracking()
             .WhereIf(!string.IsNullOrWhiteSpace(entityTypeFullName),
@@ -112,11 +129,16 @@ public sealed class EfCoreAuditLogRepository
             .WhereIf(!string.IsNullOrWhiteSpace(entityId),
                 c => c.EntityId == entityId);
 
-        return await query
+        var finalQuery = query
             .SortByDynamic(sorter, defaultProperty: "ChangeTime", defaultAscending: false)
-            .PageBy(paging)
-            .Include(c => c.PropertyChanges)
-            .ToListAsync(cancellationToken);
+            .PageBy(paging);
+
+        if (isRelational)
+        {
+            finalQuery = finalQuery.Include(c => c.PropertyChanges);
+        }
+
+        return await finalQuery.ToListAsync(cancellationToken);
     }
 
     /// <inheritdoc />

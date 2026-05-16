@@ -7,15 +7,14 @@ using LHA.PermissionManagement.EntityFrameworkCore;
 using LHA.TenantManagement.EntityFrameworkCore;
 using LHA.Core.Users;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using LHA.AuditLog.EntityFrameworkCore.PostgreSQL;
 
 namespace LHA.Account.EntityFrameworkCore;
 
 /// <summary>
 /// Unified DbContext for the Account Service, combining all module entity mappings
-/// into a single context. This replaces the individual module DbContexts at runtime
-/// via the ReplaceDbContext pattern, so all modules share one connection and transaction.
+/// into a single context. This context uses composition by calling module configuration 
+/// extensions instead of inheritance, ensuring a modular and extensible architecture.
 /// </summary>
 public sealed class AccountDbContext
     : LhaDbContext<AccountDbContext>, IHasEventOutbox, IHasEventInbox
@@ -26,28 +25,29 @@ public sealed class AccountDbContext
     /// <inheritdoc />
     public DbSet<InboxMessage> InboxMessages => Set<InboxMessage>();
 
-    private readonly IServiceProvider _serviceProvider;
+    private readonly LHA.EntityFrameworkCore.Auditing.DataAuditingSaveChangesInterceptor? _auditInterceptor;
+    private readonly Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? _auditOptions;
 
     public AccountDbContext(
         DbContextOptions<AccountDbContext> options,
-        IServiceProvider serviceProvider,
+        Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? auditOptions = null,
+        LHA.EntityFrameworkCore.Auditing.DataAuditingSaveChangesInterceptor? auditInterceptor = null,
         IAuditPropertySetter? auditPropertySetter = null,
         ICurrentTenant? currentTenant = null,
         ICurrentUser? currentUser = null)
         : base(options, auditPropertySetter, currentTenant, currentUser)
     {
-        _serviceProvider = serviceProvider;
+        _auditOptions = auditOptions;
+        _auditInterceptor = auditInterceptor;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
 
-        // Apply Data Auditing interceptor to capture EF Core entity changes
-        var interceptor = _serviceProvider?.GetService<LHA.EntityFrameworkCore.Auditing.DataAuditingSaveChangesInterceptor>();
-        if (interceptor is not null)
+        if (_auditInterceptor is not null)
         {
-            optionsBuilder.AddInterceptors(interceptor);
+            optionsBuilder.AddInterceptors(_auditInterceptor);
         }
     }
 
@@ -55,15 +55,22 @@ public sealed class AccountDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Determine the audit mode configured in DI (fallback to All)
-        var auditOptions = _serviceProvider?.GetService<Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>>();
-        var auditMode = auditOptions?.Value.Mode ?? AuditLogStoreMode.All;
+        // --- Module Configurations (Composition) ---
 
-        // Apply module model configurations first.
+        // 1. Identity Module
         modelBuilder.ConfigureIdentity();
+
+        // 2. Tenant Management Module
         modelBuilder.ConfigureTenantManagement();
-        modelBuilder.ConfigureAuditLogPostgreSql(auditMode);
+
+        // 3. Audit Log Module
+        var auditMode = _auditOptions?.Value.Mode ?? AuditLogStoreMode.All;
+        modelBuilder.ConfigureAuditLogPostgreSql(auditMode); 
+
+        // 4. Permission Management Module
         modelBuilder.ConfigurePermissionManagement();
+
+        // 5. Event Bus
         modelBuilder.TryConfigureEventBus<AccountDbContext>();
 
         // ─── Override table names with Account Service conventions ───

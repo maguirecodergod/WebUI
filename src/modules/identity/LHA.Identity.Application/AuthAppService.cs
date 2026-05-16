@@ -90,7 +90,12 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
                 null, input.UserNameOrEmail, ct);
 
             await _eventBus.PublishAsync(new LoginFailedEto(
-                input.UserNameOrEmail, "InvalidUserNameOrEmail", null, DateTimeOffset.UtcNow), ct);
+                input.UserNameOrEmail, "InvalidUserNameOrEmail")
+            {
+                TenantId = null,
+                OccurredAtUtc = DateTimeOffset.UtcNow,
+                Version = 1
+            }, ct);
 
             throw new ValidationException("userNameOrEmail", L["Identity_Auth_InvalidUserNameOrEmail_Error_Message_Entry"]);
         }
@@ -121,7 +126,12 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             await uow.CompleteAsync();
 
             await _eventBus.PublishAsync(new LoginFailedEto(
-                input.UserNameOrEmail, "InvalidPassword", user.TenantId, DateTimeOffset.UtcNow), ct);
+                input.UserNameOrEmail, "InvalidPassword")
+            {
+                TenantId = user.TenantId,
+                OccurredAtUtc = DateTimeOffset.UtcNow,
+                Version = 1
+            }, ct);
 
             throw new ValidationException("password", L["Identity_Auth_InvalidPassword_Error_Message_Entry"]);
         }
@@ -131,7 +141,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
 
         // 1. Determine target tenant. Prioritize the user's own tenant if none specified in request.
         var targetTenantId = _currentTenant.Id ?? user.TenantId;
-        
+
         // 2. Fetch roles for the target tenant
         var (roleIds, roleNames) = await GetRolesAsync(user, targetTenantId, ct);
 
@@ -151,7 +161,12 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             await RecordSecurityLogAsync("Login", IdentitySecurityLogActionConsts.LoginSucceeded,
                 user.Id, user.UserName, ct);
             await _eventBus.PublishAsync(new LoginSucceededEto(
-                user.Id, user.UserName, user.TenantId, DateTimeOffset.UtcNow), ct);
+                user.Id, user.UserName)
+            {
+                TenantId = user.TenantId,
+                OccurredAtUtc = DateTimeOffset.UtcNow,
+                Version = 1
+            }, ct);
 
             await uow.CompleteAsync();
 
@@ -211,7 +226,11 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         await RecordSecurityLogAsync("Login", IdentitySecurityLogActionConsts.LoginSucceeded,
             user.Id, user.UserName, ct);
         await _eventBus.PublishAsync(new LoginSucceededEto(
-            user.Id, user.UserName, targetTenantId, DateTimeOffset.UtcNow), ct);
+            user.Id, user.UserName)
+        {
+            TenantId = targetTenantId,
+            OccurredAtUtc = DateTimeOffset.UtcNow,
+        }, ct);
 
         await uow.CompleteAsync();
 
@@ -313,7 +332,12 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         await RecordSecurityLogAsync("Register", IdentitySecurityLogActionConsts.LoginSucceeded,
             user.Id, user.UserName, ct);
         await _eventBus.PublishAsync(new UserCreatedEto(
-            user.Id, user.UserName, user.Email, user.TenantId, user.CreationTime), ct);
+            user.Id, user.UserName, user.Email, user.CreationTime)
+        {
+            TenantId = user.TenantId,
+            OccurredAtUtc = DateTimeOffset.UtcNow,
+            Version = 1
+        }, ct);
 
         await uow.CompleteAsync();
 

@@ -15,6 +15,7 @@ using LHA.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using LHA.Shared.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 

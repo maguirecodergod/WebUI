@@ -1,11 +1,15 @@
+using System.Text.Json;
 using LHA.Notification.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LHA.Notification.Infrastructure.Persistences.Configurations;
 
 public sealed class NotificationConfiguration : IEntityTypeConfiguration<NotificationEntity>
 {
+    private static readonly JsonSerializerOptions JsonOptions = new();
+
     public void Configure(EntityTypeBuilder<NotificationEntity> b)
     {
         b.ToTable(DbSchemeConsts.Notification.Notifications);
@@ -43,7 +47,13 @@ public sealed class NotificationConfiguration : IEntityTypeConfiguration<Notific
             .HasMaxLength(NotificationDbConsts.MaxBodyLength);
 
         b.Property(e => e.Data)
-            .HasColumnType("text");
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, JsonOptions),
+                v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, JsonOptions) ?? new Dictionary<string, string>())
+            .Metadata.SetValueComparer(new ValueComparer<Dictionary<string, string>>(
+                (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.Key.GetHashCode(), v.Value.GetHashCode())),
+                c => new Dictionary<string, string>(c)));
 
         b.Property(e => e.ImageUrl)
             .HasMaxLength(NotificationDbConsts.MaxUrlLength);
@@ -54,7 +64,13 @@ public sealed class NotificationConfiguration : IEntityTypeConfiguration<Notific
         b.Property(e => e.TemplateId);
 
         b.Property(e => e.TemplateVariables)
-            .HasColumnType("text");
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, JsonOptions),
+                v => JsonSerializer.Deserialize<Dictionary<string, object>>(v, JsonOptions) ?? new Dictionary<string, object>())
+            .Metadata.SetValueComparer(new ValueComparer<Dictionary<string, object>>(
+                (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.Key.GetHashCode(), v.Value != null ? v.Value.GetHashCode() : 0)),
+                c => new Dictionary<string, object>(c)));
 
         b.Property(e => e.ScheduledAt);
         b.Property(e => e.ExpiresAt);
@@ -97,7 +113,13 @@ public sealed class NotificationConfiguration : IEntityTypeConfiguration<Notific
             channel.Property(c => c.RetryCount).IsRequired().HasDefaultValue(0);
 
             channel.Property(c => c.Metadata)
-                .HasColumnType("text");
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, JsonOptions),
+                    v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, JsonOptions) ?? new Dictionary<string, string>())
+                .Metadata.SetValueComparer(new ValueComparer<Dictionary<string, string>>(
+                    (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.Key.GetHashCode(), v.Value.GetHashCode())),
+                    c => new Dictionary<string, string>(c)));
         });
 
         b.HasIndex(e => e.TenantId);

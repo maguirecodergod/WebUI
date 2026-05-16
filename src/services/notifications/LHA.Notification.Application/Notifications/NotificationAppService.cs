@@ -4,6 +4,7 @@ using LHA.Notification.Domain;
 using LHA.Notification.Domain.Repositories;
 using LHA.Notification.Domain.Shared;
 using LHA.UnitOfWork;
+using LHA.MultiTenancy;
 
 namespace LHA.Notification.Application.Notifications;
 
@@ -12,15 +13,18 @@ public sealed class NotificationAppService : ApplicationService, INotificationSe
     private readonly INotificationRepository _notificationRepository;
     private readonly IUnitOfWorkManager _uowManager;
     private readonly IUnreadCountCache _unreadCountCache;
+    private readonly ICurrentTenant _currentTenant;
 
     public NotificationAppService(
         INotificationRepository notificationRepository,
         IUnitOfWorkManager uowManager,
-        IUnreadCountCache unreadCountCache)
+        IUnreadCountCache unreadCountCache,
+        ICurrentTenant currentTenant)
     {
         _notificationRepository = notificationRepository;
         _uowManager = uowManager;
         _unreadCountCache = unreadCountCache;
+        _currentTenant = currentTenant;
     }
 
     public async Task<NotificationDto> SendAsync(SendNotificationDto request, CancellationToken cancellationToken = default)
@@ -141,7 +145,7 @@ public sealed class NotificationAppService : ApplicationService, INotificationSe
 
     public async Task<int> GetUnreadCountAsync(Guid recipientId, CancellationToken cancellationToken = default)
     {
-        return await _notificationRepository.GetUnreadCountByRecipientAsync(recipientId, cancellationToken);
+        return await _notificationRepository.GetUnreadCountByRecipientAsync(_currentTenant.Id ?? Guid.Empty, recipientId, cancellationToken);
     }
 
     public async Task<bool> CancelAsync(Guid id, Guid tenantId, CancellationToken cancellationToken = default)
@@ -191,7 +195,7 @@ public sealed class NotificationAppService : ApplicationService, INotificationSe
 
     public async Task<int> GetUnreadCountByTenantAsync(Guid tenantId, CancellationToken cancellationToken = default)
     {
-        return await _notificationRepository.GetUnreadCountByTenantAsync(cancellationToken);
+        return await _notificationRepository.GetUnreadCountByTenantAsync(tenantId, cancellationToken);
     }
 
     public async Task<int> GetUnreadCountByUserAsync(Guid userId, Guid tenantId, CancellationToken cancellationToken = default)

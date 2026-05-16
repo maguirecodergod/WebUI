@@ -2,6 +2,7 @@ using LHA.AuditLog.Domain;
 using LHA.AuditLog.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace LHA.AuditLog.EntityFrameworkCore.MongoDB.Configurations;
 
@@ -10,7 +11,7 @@ public sealed class MongoDbAuditLogConfiguration : IEntityTypeConfiguration<Audi
     public void Configure(EntityTypeBuilder<AuditLogEntity> b)
     {
         // MongoDB uses collections mapped via ToTable in this provider version
-        b.ToTable(AuditLogDbConsts.AuditLog);
+        b.ToCollection(AuditLogDbConsts.AuditLog);
         b.HasKey(e => e.Id);
 
         b.Property(e => e.ApplicationName)
@@ -55,17 +56,39 @@ public sealed class MongoDbAuditLogConfiguration : IEntityTypeConfiguration<Audi
         // MongoDB handles relationships differently in EF Core.
         // Currently, EF Core MongoDB provider works best with owned entities or manual linking.
         // For simplicity and matching the relational structure:
-        b.HasMany(e => e.Actions)
-            .WithOne()
-            .HasForeignKey(a => a.AuditLogId);
+        var actionsBuilder = b.OwnsMany(e => e.Actions);
+        actionsBuilder.Property(x => x.ServiceName)
+            .IsRequired()
+            .HasMaxLength(AuditLogConsts.MaxServiceNameLength);
+        actionsBuilder.Property(x => x.MethodName)
+            .IsRequired()
+            .HasMaxLength(AuditLogConsts.MaxMethodNameLength);
+        actionsBuilder.Property(x => x.Parameters);
+
 
         b.Navigation(e => e.Actions)
             .HasField("_actions")
             .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-        b.HasMany(e => e.EntityChanges)
-            .WithOne()
-            .HasForeignKey(c => c.AuditLogId);
+        var entityChangesBuilder = b.OwnsMany(e => e.EntityChanges);
+        entityChangesBuilder.Property(x => x.EntityId)
+            .HasMaxLength(AuditLogConsts.MaxEntityIdLength);
+        entityChangesBuilder.Property(x => x.EntityTypeFullName)
+            .HasMaxLength(AuditLogConsts.MaxEntityTypeFullNameLength);
+
+
+        var propertyChangesBuilder = entityChangesBuilder.OwnsMany(x => x.PropertyChanges);
+        propertyChangesBuilder.Property(x => x.PropertyName)
+            .IsRequired()
+            .HasMaxLength(AuditLogConsts.MaxPropertyNameLength);
+        propertyChangesBuilder.Property(x => x.PropertyTypeFullName)
+            .IsRequired()
+            .HasMaxLength(AuditLogConsts.MaxPropertyTypeFullNameLength);
+        propertyChangesBuilder.Property(x => x.OriginalValue)
+            .HasMaxLength(AuditLogConsts.MaxPropertyValueLength);
+        propertyChangesBuilder.Property(x => x.NewValue)
+            .HasMaxLength(AuditLogConsts.MaxPropertyValueLength);
+
 
         b.Navigation(e => e.EntityChanges)
             .HasField("_entityChanges")

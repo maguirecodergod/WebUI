@@ -1,6 +1,7 @@
 using LHA.AuditLog.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace LHA.AuditLog.EntityFrameworkCore.MongoDB.Configurations;
 
@@ -8,7 +9,7 @@ public sealed class MongoDbAuditLogPipelineConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<AuditLogPipelineEntity> b)
     {
-        b.ToTable(AuditLogDbConsts.AuditLogPipeline);
+        b.ToCollection(AuditLogDbConsts.AuditLogPipeline);
         b.HasKey(e => e.Id);
         
         b.Property(e => e.Id).HasMaxLength(26);

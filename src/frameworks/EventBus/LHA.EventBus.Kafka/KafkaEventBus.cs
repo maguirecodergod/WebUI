@@ -99,14 +99,15 @@ internal sealed class KafkaEventBus : IEventBus
             Timestamp = metadata.OccurredAtUtc,
             Metadata = new Dictionary<string, string>
             {
-                ["x-event-name"] = metadata.EventName,
-                ["x-event-version"] = metadata.EventVersion.ToString(),
+                [MessageHeaders.EventName] = metadata.EventName,
+                [MessageHeaders.EventVersion] = metadata.EventVersion.ToString(),
             }
         };
 
         await _publisher.PublishAsync(topic, envelope, ct);
 
-        _logger.LogInformation("Published '{EventName}' to Kafka topic '{Topic}'.", metadata.EventName, topic);
+        _logger.LogInformation("🚀 [EventBus] Published '{EventName}' to topic '{Topic}'. Key: {Key}", 
+            metadata.EventName, topic, envelope.PartitionKey ?? envelope.MessageId);
     }
 
     private string ResolveTopic(string eventName)
@@ -148,7 +149,7 @@ internal sealed class KafkaEventBus : IEventBus
             CorrelationId = options.CorrelationId ?? ie?.CorrelationId,
             CausationId = options.CausationId ?? ie?.CausationId,
             TenantId = ie?.TenantId,
-            PartitionKey = options.PartitionKey ?? ie?.PartitionKey,
+            PartitionKey = options.PartitionKey ?? ie?.PartitionKey ?? eventName,
             Region = options.TargetRegion ?? ie?.Region ?? _options.CurrentRegion,
             Source = ie?.Source ?? _options.ApplicationName,
             ConsumerGroup = _options.ConsumerGroup

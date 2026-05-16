@@ -7,94 +7,77 @@ using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
 using LHA.Notification.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace LHA.Notification.Infrastructure.Persistences;
 
 /// <summary>
-/// MongoDB-backed DbContext for the Notification Service, combining all notification module
-/// entity mappings into a single context. Uses MongoDB.EntityFrameworkCore as the EF Core
-/// provider, so all standard EF Core model-building APIs map to MongoDB collections.
+/// MongoDB-backed DbContext for the Notification Service.
+/// This context uses composition by calling module configuration extensions 
+/// (e.g., ConfigureAuditLogMongoDb) instead of inheritance, allowing for 
+/// a more modular and flexible architecture.
 /// </summary>
 public sealed class NotificationDbContext
     : LhaDbContext<NotificationDbContext>, IHasEventOutbox, IHasEventInbox
 {
+    // --- Framework Entities ---
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
-
     public DbSet<InboxMessage> InboxMessages => Set<InboxMessage>();
 
-    internal DbSet<NotificationEntity> Notifications => Set<NotificationEntity>();
+    // --- Notification Entities ---
+    public DbSet<NotificationEntity> Notifications => Set<NotificationEntity>();
+    public DbSet<TemplateEntity> Templates => Set<TemplateEntity>();
+    public DbSet<UserPreferenceEntity> UserPreferences => Set<UserPreferenceEntity>();
+    public DbSet<ChannelConfigurationEntity> TenantChannelConfigurations => Set<ChannelConfigurationEntity>();
+    public DbSet<DeviceEntity> Devices => Set<DeviceEntity>();
+    public DbSet<NotificationBatchEntity> NotificationBatches => Set<NotificationBatchEntity>();
 
-    internal DbSet<TemplateEntity> Templates => Set<TemplateEntity>();
-
-    internal DbSet<UserPreferenceEntity> UserPreferences => Set<UserPreferenceEntity>();
-
-    internal DbSet<TenantChannelConfigurationEntity> TenantChannelConfigurations => Set<TenantChannelConfigurationEntity>();
-
-    internal DbSet<DeviceEntity> Devices => Set<DeviceEntity>();
-
-    internal DbSet<NotificationBatchEntity> NotificationBatches => Set<NotificationBatchEntity>();
-
-    internal DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
-
-    internal DbSet<AuditLogActionEntity> AuditLogActions => Set<AuditLogActionEntity>();
-
-    internal DbSet<EntityChangeEntity> EntityChanges => Set<EntityChangeEntity>();
-
-    internal DbSet<EntityPropertyChangeEntity> EntityPropertyChanges => Set<EntityPropertyChangeEntity>();
-
-    internal DbSet<AuditLogPipelineEntity> AuditLogPipeline => Set<AuditLogPipelineEntity>();
-
-    private readonly IServiceProvider _serviceProvider;
+    private readonly Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? _auditOptions;
 
     public NotificationDbContext(
         DbContextOptions<NotificationDbContext> options,
-        IServiceProvider serviceProvider,
+        Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? auditOptions = null,
         IAuditPropertySetter? auditPropertySetter = null,
         ICurrentTenant? currentTenant = null,
         ICurrentUser? currentUser = null)
         : base(options, auditPropertySetter, currentTenant, currentUser)
     {
-        _serviceProvider = serviceProvider;
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
+        _auditOptions = auditOptions;
+        
+        // Standalone MongoDB instances do not support transactions.
+        // Disable auto-transaction behavior to allow SaveChanges to work.
+        Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(NotificationDbContext).Assembly);
-
-        var auditOptions = _serviceProvider?.GetService<Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>>();
-        var auditMode = auditOptions?.Value.Mode ?? AuditLogStoreMode.All;
+        // --- Module Configurations (Composition) ---
+        
+        // 1. Audit Log Module
+        var auditMode = _auditOptions?.Value.Mode ?? AuditLogStoreMode.All;
         modelBuilder.ConfigureAuditLogMongoDb(auditMode);
-        modelBuilder.TryConfigureEventBus<NotificationDbContext>();
 
-        // Notification module
-        modelBuilder.Entity<NotificationEntity>().ToTable(DbSchemeConsts.Notification.Notifications);
-        modelBuilder.Entity<TemplateEntity>().ToTable(DbSchemeConsts.Notification.Templates);
-        modelBuilder.Entity<UserPreferenceEntity>().ToTable(DbSchemeConsts.Notification.UserPreferences);
-        modelBuilder.Entity<TenantChannelConfigurationEntity>().ToTable(DbSchemeConsts.Notification.TenantChannelConfigs);
-        modelBuilder.Entity<DeviceEntity>().ToTable(DbSchemeConsts.Notification.Devices);
-        modelBuilder.Entity<NotificationBatchEntity>().ToTable(DbSchemeConsts.Notification.NotificationBatches);
+        // 2. Notification Module
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(NotificationDbContext).Assembly);
+        
+        modelBuilder.Entity<NotificationEntity>().ToCollection(DbSchemeConsts.Notification.Notifications);
+        modelBuilder.Entity<TemplateEntity>().ToCollection(DbSchemeConsts.Notification.Templates);
+        modelBuilder.Entity<UserPreferenceEntity>().ToCollection(DbSchemeConsts.Notification.UserPreferences);
+        modelBuilder.Entity<ChannelConfigurationEntity>().ToCollection(DbSchemeConsts.Notification.TenantChannelConfigs);
+        modelBuilder.Entity<DeviceEntity>().ToCollection(DbSchemeConsts.Notification.Devices);
+        modelBuilder.Entity<NotificationBatchEntity>().ToCollection(DbSchemeConsts.Notification.NotificationBatches);
+        
+        // --- Audit Log Collection Mapping (Ensuring consistency) ---
+        modelBuilder.Entity<AuditLogEntity>().ToCollection(DbSchemeConsts.Audit.Log);
+        modelBuilder.Entity<AuditLogPipelineEntity>().ToCollection(DbSchemeConsts.Audit.LogPipeline);
 
-        // Audit Log
-        modelBuilder.Entity<AuditLogEntity>().ToTable(DbSchemeConsts.Audit.Log);
-        modelBuilder.Entity<AuditLogActionEntity>().ToTable(DbSchemeConsts.Audit.Action);
-        // modelBuilder.Entity<AuditLogPipelineEntity>().ToTable(DbSchemeConsts.Audit.LogPipeline);
-        modelBuilder.Entity<EntityChangeEntity>().ToTable(DbSchemeConsts.Audit.EntityChange);
-        modelBuilder.Entity<EntityPropertyChangeEntity>().ToTable(DbSchemeConsts.Audit.PropertyChange);
+        // 3. Event Bus / Outbox
+        modelBuilder.Entity<OutboxMessage>().ToCollection(DbSchemeConsts.Event.Outbox);
+        modelBuilder.Entity<InboxMessage>().ToCollection(DbSchemeConsts.Event.Inbox);
 
-        // Event Bus
-        modelBuilder.Entity<OutboxMessage>().ToTable(DbSchemeConsts.Event.Outbox);
-        modelBuilder.Entity<InboxMessage>().ToTable(DbSchemeConsts.Event.Inbox);
-
-        // ─── Global query filters (soft-delete, multi-tenant) ──────
-        // Must be called AFTER all entities are configured.
+        // Apply global query filters (IMultiTenant, ISoftDelete) after all entities are added
         ApplyGlobalFilters(modelBuilder);
     }
 }

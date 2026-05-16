@@ -1,13 +1,14 @@
 using LHA.Auditing;
 using LHA.BlazorWasm.Components;
 using LHA.BlazorWasm.Components.Pickers.Core;
-using LHA.BlazorWasm.Components.Select;
 using LHA.BlazorWasm.Components.Table;
 using LHA.BlazorWasm.HttpApi.Client.Core;
 using LHA.BlazorWasm.Shared;
 using LHA.Shared.Contracts.AuditLog;
 using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Shared.Models;
+using LHA.BlazorWasm.Shared.Helpers;
+using LHA.BlazorWasm.Shared.Models.Select;
 
 namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 {
@@ -25,6 +26,10 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         private bool _canDelete; // We'll derive this from HostRead for now since no specific delete permission exists
         private bool _isDetailsDialogVisible;
         private AuditLogDto? _viewingLog;
+
+        private CServiceType _selectedService = CServiceType.Account;
+
+        private List<SelectOption<CServiceType>> _serviceOptions => Localizer.ToSelectOptions<CServiceType>();
 
         private List<SelectOption<string>> _httpMethodOptions => Enum.GetValues<CHttpMethodType>()
             .Select(x => new SelectOption<string>
@@ -64,8 +69,8 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 _input.EndTime = _executionTimeRange.End?.ToUniversalTime();
 
                 var result = _canReadHostLogs
-                    ? await AuditLogService.GetHostListAsync(_input)
-                    : await AuditLogService.GetListAsync(_input);
+                    ? await AuditLogService.GetHostListAsync(_input, _selectedService)
+                    : await AuditLogService.GetListAsync(_input, _selectedService);
 
                 _logs = result.Items.ToList();
                 _totalCount = result.TotalCount;
@@ -186,7 +191,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             {
                 if (_itemToDelete != null)
                 {
-                    await AuditLogService.DeleteAsync(_itemToDelete.Id);
+                    await AuditLogService.DeleteAsync(_itemToDelete.Id, _selectedService);
                     ToastNotification.Success(L("Common.DeletedSuccessfully"));
                 }
                 else if (_dataTable != null && _dataTable.IsAllEntireDatasetSelected)
@@ -203,8 +208,8 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                     while (hasMore)
                     {
                         var result = _canReadHostLogs
-                            ? await AuditLogService.GetHostListAsync(_input)
-                            : await AuditLogService.GetListAsync(_input);
+                            ? await AuditLogService.GetHostListAsync(_input, _selectedService)
+                            : await AuditLogService.GetListAsync(_input, _selectedService);
 
                         if (result.Items == null || !result.Items.Any())
                         {
@@ -212,7 +217,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                             break;
                         }
 
-                        var deleteTasks = result.Items.Select(log => AuditLogService.DeleteAsync(log.Id));
+                        var deleteTasks = result.Items.Select(log => AuditLogService.DeleteAsync(log.Id, _selectedService));
                         await Task.WhenAll(deleteTasks);
                         deletedCount += result.Items.Count;
                     }
@@ -224,7 +229,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
                 }
                 else if (_selectedLogs.Any())
                 {
-                    var deleteTasks = _selectedLogs.Select(log => AuditLogService.DeleteAsync(log.Id));
+                    var deleteTasks = _selectedLogs.Select(log => AuditLogService.DeleteAsync(log.Id, _selectedService));
                     await Task.WhenAll(deleteTasks);
                     ToastNotification.Success(L("AuditLog.BulkDeletedSuccessfully", _selectedLogs.Count));
                 }

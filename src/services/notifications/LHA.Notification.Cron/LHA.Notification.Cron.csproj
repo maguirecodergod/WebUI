@@ -8,12 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.Mongo" Version="1.15.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LHA.Notification.Application\LHA.Notification.Application.csproj" />
     <ProjectReference Include="..\LHA.Notification.Infrastructure\LHA.Notification.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\frameworks\BackgroundWorker\LHA.BackgroundWorker\LHA.BackgroundWorker.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\BackgroundWorker\LHA.BackgroundWorker.Hangfire\LHA.BackgroundWorker.Hangfire.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Scheduling\LHA.Scheduling.Hangfire\LHA.Scheduling.Hangfire.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus.Kafka\LHA.EventBus.Kafka.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\MessageBroker\LHA.MessageBroker.Kafka\LHA.MessageBroker.Kafka.csproj" />
   </ItemGroup>
 </Project>

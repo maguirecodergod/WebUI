@@ -1,4 +1,5 @@
 using LHA.AuditLog.EntityFrameworkCore;
+using LHA.AuditLog.EntityFrameworkCore.PostgreSQL;
 using LHA.EntityFrameworkCore;
 using LHA.EntityFrameworkCore.Auditing;
 using LHA.EventBus;
@@ -62,18 +63,8 @@ public static class DependencyInjection
 
         services.AddAuditLogEntityFrameworkCore(builder =>
         {
-            // ─── AUDIT LOG STORE MODE EXAMPLES ───
-            // Uncomment ONE of the following modes to test different audit setups
-            // when creating your schema and writing logs:
-
-            // 1. All Mode (Default): Uses both Relational Structured Logs & Pipeline Logs
+            builder.UsePostgreSql();
             builder.UseAll(); 
-
-            // 2. Data Audit Only: Relational Data Action and Entity Logs (Pipeline ignored)
-            //builder.UseDataAuditOnly();
-
-            // 3. Pipeline Only: High-throughput API logs (Data Audit tables ignored)
-            //builder.UsePipelineOnly();
 
             builder.ConfigureDbContext(options =>
             {
@@ -82,6 +73,7 @@ public static class DependencyInjection
                         o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
             });
         });
+
 
         services.AddPermissionManagementEntityFrameworkCore(options =>
         {

@@ -106,7 +106,7 @@ public sealed class BatchAppService : ApplicationService, IBatchService
         if (status.HasValue)
             entities = await _batchRepository.GetByStatusAsync(status.Value, cancellationToken);
         else
-            entities = await _batchRepository.GetByTenantAsync(cancellationToken);
+            entities = await _batchRepository.GetByTenantAsync(tenantId, cancellationToken);
 
         return entities
             .Skip((page - 1) * pageSize)

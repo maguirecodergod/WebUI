@@ -14,7 +14,6 @@ public partial class TenantUserList : LHAComponentBase
     private List<IdentityUserDto> _users = [];
     private GetIdentityUsersInput _input = new() { PageSize = 20, PageNumber = 1 };
     private long _totalCount;
-    private bool _isLoading;
 
     private List<LHA.BlazorWasm.Components.Breadcrumb.BreadcrumbItemModel> _breadcrumbItems = [];
 
@@ -44,7 +43,6 @@ public partial class TenantUserList : LHAComponentBase
 
     private async Task LoadUsersAsync()
     {
-        _isLoading = true;
         try
         {
             var result = await UserAppService.GetListAsync(_input);
@@ -57,10 +55,6 @@ public partial class TenantUserList : LHAComponentBase
         catch (Exception ex)
         {
             ToastNotification.Error($"{L("Common.Error")}: {ex.Message}");
-        }
-        finally
-        {
-            _isLoading = false;
         }
     }
 

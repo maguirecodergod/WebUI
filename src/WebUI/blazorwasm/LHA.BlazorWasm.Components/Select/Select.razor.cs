@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
 using LHA.BlazorWasm.Components.Form;
+using LHA.BlazorWasm.Shared.Models.Select;
 
 namespace LHA.BlazorWasm.Components.Select;
 
@@ -244,11 +245,16 @@ public partial class Select<TValue> : LHAComponentBase
         await OnChange.InvokeAsync();
     }
 
+    private SelectOption<TValue>? GetSelectedOption(TValue? val)
+    {
+        if (val == null) return null;
+        return _internalOptions.FirstOrDefault(o => EqualityComparer<TValue>.Default.Equals(o.Value, val));
+    }
+
     private string GetLabel(TValue? val)
     {
-        if (val == null) return string.Empty;
-        var opt = _internalOptions.FirstOrDefault(o => EqualityComparer<TValue>.Default.Equals(o.Value, val));
-        return opt?.Label ?? val.ToString() ?? string.Empty;
+        var opt = GetSelectedOption(val);
+        return opt?.Label ?? val?.ToString() ?? string.Empty;
     }
 
     private bool IsOptionSelected(SelectOption<TValue> option)

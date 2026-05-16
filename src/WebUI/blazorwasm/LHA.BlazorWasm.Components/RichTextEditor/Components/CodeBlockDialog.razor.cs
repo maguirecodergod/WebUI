@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using LHA.BlazorWasm.Components.Select;
+using LHA.BlazorWasm.Shared.Models.Select;
 
 namespace LHA.BlazorWasm.Components.RichTextEditor.Components;
 

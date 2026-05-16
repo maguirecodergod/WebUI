@@ -54,21 +54,39 @@ public sealed class EfCoreInboxStore<TDbContext>(IDbContextProvider<TDbContext> 
         var inbox = await GetInboxContextAsync();
         var now = TimeProvider.System.GetUtcNow();
 
-        await inbox.InboxMessages
-            .Where(m => m.EventId == eventId && m.ConsumerGroup == consumerGroup)
-            .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.ProcessedAtUtc, now),
+        var message = await inbox.InboxMessages
+            .FirstOrDefaultAsync(
+                m => m.EventId == eventId && m.ConsumerGroup == consumerGroup,
                 cancellationToken);
+
+        if (message is not null)
+        {
+            message.ProcessedAtUtc = now;
+        }
     }
 
     /// <inheritdoc />
     public async Task PurgeAsync(TimeSpan retentionPeriod, CancellationToken cancellationToken = default)
     {
+        const int batchSize = 500;
         var inbox = await GetInboxContextAsync();
+        var dbContext = (DbContext)(object)inbox;
         var cutoff = TimeProvider.System.GetUtcNow() - retentionPeriod;
 
-        await inbox.InboxMessages
-            .Where(m => m.ProcessedAtUtc != null && m.ProcessedAtUtc < cutoff)
-            .ExecuteDeleteAsync(cancellationToken);
+        int deleted;
+        do
+        {
+            var batch = await inbox.InboxMessages
+                .Where(m => m.ProcessedAtUtc != null && m.ProcessedAtUtc < cutoff)
+                .Take(batchSize)
+                .ToListAsync(cancellationToken);
+
+            deleted = batch.Count;
+            if (deleted > 0)
+            {
+                dbContext.RemoveRange(batch);
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
+        } while (deleted == batchSize && !cancellationToken.IsCancellationRequested);
     }
 }

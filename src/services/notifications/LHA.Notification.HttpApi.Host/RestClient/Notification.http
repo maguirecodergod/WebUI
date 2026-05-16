@@ -1,0 +1,274 @@
+@host = https://localhost:8199
+@token = Bearer your_access_token_here
+@tenantId = 00000000-0000-0000-0000-000000000000
+@recipientId = 00000000-0000-0000-0000-000000000000
+@notificationId = 00000000-0000-0000-0000-000000000000
+@templateId = 00000000-0000-0000-0000-000000000000
+@version = 1
+
+# ==============================================================================
+# NOTIFICATIONS (MESSAGES)
+# ==============================================================================
+
+### Send a Notification
+POST {{host}}/api/v{{version}}/notification/notifications/send
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "tenantId": "{{tenantId}}",
+  "recipientId": "{{recipientId}}",
+  "type": "System",
+  "title": "Welcome to LHA System",
+  "body": "Your account has been successfully created.",
+  "channel": "InApp",
+  "data": {
+    "key1": "value1"
+  }
+}
+
+### Schedule a Notification
+POST {{host}}/api/v{{version}}/notification/notifications/schedule
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "tenantId": "{{tenantId}}",
+  "recipientId": "{{recipientId}}",
+  "type": "System",
+  "title": "Scheduled Maintenance",
+  "body": "System will be down for 2 hours.",
+  "channel": "Email",
+  "scheduledTime": "2026-12-31T23:59:59Z"
+}
+
+### Get Notifications for Recipient
+GET {{host}}/api/v{{version}}/notification/notifications?recipientId={{recipientId}}&page=1&pageSize=20
+Authorization: {{token}}
+
+### Get a Specific Notification
+GET {{host}}/api/v{{version}}/notification/notifications/{{notificationId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Mark Notification as Read
+POST {{host}}/api/v{{version}}/notification/notifications/{{notificationId}}/read?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Get Unread Count
+GET {{host}}/api/v{{version}}/notification/notifications/unread-count?recipientId={{recipientId}}
+Authorization: {{token}}
+
+### Search Notifications
+GET {{host}}/api/v{{version}}/notification/notifications/search?recipientId={{recipientId}}&type=System&status=Sent&page=1&pageSize=20
+Authorization: {{token}}
+
+### Delete a Notification
+DELETE {{host}}/api/v{{version}}/notification/notifications/{{notificationId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Cancel a Pending Notification
+POST {{host}}/api/v{{version}}/notification/notifications/{{notificationId}}/cancel?tenantId={{tenantId}}
+Authorization: {{token}}
+
+# ==============================================================================
+# TEMPLATES
+# ==============================================================================
+
+### Create Template
+POST {{host}}/api/v{{version}}/notification/templates?tenantId={{tenantId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "code": "WELCOME_EMAIL",
+  "name": "Welcome Email Template",
+  "description": "Template for welcoming new users",
+  "type": "System",
+  "supportedChannels": ["Email", "InApp"],
+  "defaultLocale": "en-US",
+  "tags": ["welcome", "onboarding"]
+}
+
+### Get Template by ID
+GET {{host}}/api/v{{version}}/notification/templates/{{templateId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Get Template by Code
+GET {{host}}/api/v{{version}}/notification/templates/code/WELCOME_EMAIL?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Update Template
+PUT {{host}}/api/v{{version}}/notification/templates/{{templateId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "name": "Welcome Email Template V2",
+  "description": "Updated template description",
+  "supportedChannels": ["Email", "InApp"],
+  "defaultLocale": "en-US",
+  "isActive": true
+}
+
+### Preview Template
+POST {{host}}/api/v{{version}}/notification/templates/preview?tenantId={{tenantId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "code": "WELCOME_EMAIL",
+  "type": "System",
+  "locale": "en-US",
+  "channel": "Email",
+  "priority": "Normal",
+  "variables": {
+    "Name": "John Doe"
+  }
+}
+
+### Delete Template
+DELETE {{host}}/api/v{{version}}/notification/templates/{{templateId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+# ==============================================================================
+# USER PREFERENCES
+# ==============================================================================
+
+### Get User Preference
+GET {{host}}/api/v{{version}}/notification/preferences/{{recipientId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Update User Preference
+PUT {{host}}/api/v{{version}}/notification/preferences/{{recipientId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "emailEnabled": true,
+  "smsEnabled": false,
+  "pushEnabled": true,
+  "inAppEnabled": true
+}
+
+### User Opt-Out
+POST {{host}}/api/v{{version}}/notification/preferences/{{recipientId}}/opt-out?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### User Opt-In
+POST {{host}}/api/v{{version}}/notification/preferences/{{recipientId}}/opt-in?tenantId={{tenantId}}
+Authorization: {{token}}
+
+# ==============================================================================
+# DEVICES
+# ==============================================================================
+
+@deviceId = 00000000-0000-0000-0000-000000000000
+
+### Register Device
+POST {{host}}/api/v{{version}}/notification/devices/register?tenantId={{tenantId}}&userId={{recipientId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "deviceToken": "device_token_abc123",
+  "deviceType": "iOS",
+  "deviceInfo": "iPhone 14 Pro"
+}
+
+### Get Device
+GET {{host}}/api/v{{version}}/notification/devices/{{deviceId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Get Devices By User
+GET {{host}}/api/v{{version}}/notification/devices/user/{{recipientId}}?tenantId={{tenantId}}&page=1&pageSize=20
+Authorization: {{token}}
+
+### Update Device
+PUT {{host}}/api/v{{version}}/notification/devices/{{deviceId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "deviceToken": "new_device_token_xyz",
+  "isActive": true
+}
+
+### Delete Device
+DELETE {{host}}/api/v{{version}}/notification/devices/{{deviceId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+
+# ==============================================================================
+# BATCHES
+# ==============================================================================
+
+@batchId = 00000000-0000-0000-0000-000000000000
+
+### Create Batch
+POST {{host}}/api/v{{version}}/notification/batches?tenantId={{tenantId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "name": "Monthly Newsletter",
+  "templateCode": "MONTHLY_NEWS",
+  "recipientType": "AllUsers",
+  "priority": "Normal",
+  "channel": "Email"
+}
+
+### Start Batch
+POST {{host}}/api/v{{version}}/notification/batches/{{batchId}}/start?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Cancel Batch
+POST {{host}}/api/v{{version}}/notification/batches/{{batchId}}/cancel?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Get Batch
+GET {{host}}/api/v{{version}}/notification/batches/{{batchId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Get Batch Progress
+GET {{host}}/api/v{{version}}/notification/batches/{{batchId}}/progress?tenantId={{tenantId}}
+Authorization: {{token}}
+
+# ==============================================================================
+# STATISTICS
+# ==============================================================================
+
+### Get Global Stats
+GET {{host}}/api/v{{version}}/notification/statistics/global?tenantId={{tenantId}}&from=2026-05-01T00:00:00Z&to=2026-05-31T23:59:59Z
+Authorization: {{token}}
+
+### Get Dashboard Stats
+GET {{host}}/api/v{{version}}/notification/statistics/dashboard?tenantId={{tenantId}}
+Authorization: {{token}}
+
+# ==============================================================================
+# BACKGROUND JOBS
+# ==============================================================================
+
+### Get Recurring Jobs
+GET {{host}}/api/v{{version}}/notification/background-jobs/recurring
+Authorization: {{token}}
+
+### Get Enqueued Jobs
+GET {{host}}/api/v{{version}}/notification/background-jobs/enqueued?queue=default
+Authorization: {{token}}
+
+### Get Failed Jobs
+GET {{host}}/api/v{{version}}/notification/background-jobs/failed
+Authorization: {{token}}
+
+### Get Queues
+GET {{host}}/api/v{{version}}/notification/background-jobs/queues
+Authorization: {{token}}
+
+### Get Servers
+GET {{host}}/api/v{{version}}/notification/background-jobs/servers
+Authorization: {{token}}
+
+### Get Statistics (Hangfire)
+GET {{host}}/api/v{{version}}/notification/background-jobs/statistics
+Authorization: {{token}}

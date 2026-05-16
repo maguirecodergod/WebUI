@@ -8,62 +8,68 @@ namespace LHA.BlazorWasm.HttpApi.Client.Clients;
 
 public class AuditLogApiClient : ApiClientBase, IAuditLogAppService
 {
-    private const string BaseUrl = "api/v1/account/audit-logs";
-
     public AuditLogApiClient(HttpClient httpClient, IApiErrorHandler errorHandler)
         : base(httpClient, errorHandler)
     {
     }
 
-    public async Task<PagedResultDto<AuditLogDto>> GetListAsync(GetAuditLogsInput input)
+    private string GetBaseUrl(CServiceType service) => service switch
     {
-        var url = BuildQueryString(BaseUrl, input);
+        CServiceType.Notification => "api/v1/notification/audit-logs",
+        CServiceType.Mega => "api/v1/mega/audit-logs",
+        CServiceType.Movie => "api/v1/movie/audit-logs",
+        _ => "api/v1/account/audit-logs"
+    };
+
+    public async Task<PagedResultDto<AuditLogDto>> GetListAsync(GetAuditLogsInput input, CServiceType service = CServiceType.Account)
+    {
+        var url = BuildQueryString(GetBaseUrl(service), input);
         var response = await GetAsync<PagedResultDto<AuditLogDto>>(url);
         return response.Result.Data!;
     }
 
-    public async Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input)
+    public async Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input, CServiceType service = CServiceType.Account)
     {
-        var url = BuildQueryString($"{BaseUrl}", input);
+        var url = BuildQueryString(GetBaseUrl(service), input);
         var response = await GetAsync<PagedResultDto<AuditLogDto>>(url);
         return response.Result.Data!;
     }
 
-    public async Task<AuditLogDto> GetAsync(Guid id)
+    public async Task<AuditLogDto> GetAsync(Guid id, CServiceType service = CServiceType.Account)
     {
-        var response = await GetAsync<AuditLogDto>($"{BaseUrl}/{id}");
+        var response = await GetAsync<AuditLogDto>($"{GetBaseUrl(service)}/{id}");
         return response.Result.Data!;
     }
 
-    public async Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(GetAuditLogActionsInput input)
+    public async Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(GetAuditLogActionsInput input, CServiceType service = CServiceType.Account)
     {
-        var url = BuildQueryString($"{BaseUrl}/actions", input);
+        var url = BuildQueryString($"{GetBaseUrl(service)}/actions", input);
         var response = await GetAsync<PagedResultDto<AuditLogActionDto>>(url);
         return response.Result.Data!;
     }
 
-    public async Task<PagedResultDto<EntityChangeDto>> GetEntityChangesAsync(GetEntityChangesInput input)
+    public async Task<PagedResultDto<EntityChangeDto>> GetEntityChangesAsync(GetEntityChangesInput input, CServiceType service = CServiceType.Account)
     {
-        var url = BuildQueryString($"{BaseUrl}/entity-changes", input);
+        var url = BuildQueryString($"{GetBaseUrl(service)}/entity-changes", input);
         var response = await GetAsync<PagedResultDto<EntityChangeDto>>(url);
         return response.Result.Data!;
     }
 
-    public async Task<PagedResultDto<EntityPropertyChangeDto>> GetEntityPropertyChangesAsync(GetEntityPropertyChangesInput input)
+    public async Task<PagedResultDto<EntityPropertyChangeDto>> GetEntityPropertyChangesAsync(GetEntityPropertyChangesInput input, CServiceType service = CServiceType.Account)
     {
-        var url = BuildQueryString($"{BaseUrl}/entity-property-changes", input);
+        var url = BuildQueryString($"{GetBaseUrl(service)}/entity-property-changes", input);
         var response = await GetAsync<PagedResultDto<EntityPropertyChangeDto>>(url);
         return response.Result.Data!;
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid id, CServiceType service = CServiceType.Account)
     {
-        await DeleteAsync<object>($"{BaseUrl}/{id}");
+        await DeleteAsync<object>($"{GetBaseUrl(service)}/{id}");
     }
 
-    public async Task<int> DeleteOlderThanAsync(DateTimeOffset cutoffTime)
+    public async Task<int> DeleteOlderThanAsync(DateTimeOffset cutoffTime, CServiceType service = CServiceType.Account)
     {
-        var url = QueryHelpers.AddQueryString($"{BaseUrl}/older-than", "cutoffTime", cutoffTime.ToString("o"));
+        var url = QueryHelpers.AddQueryString($"{GetBaseUrl(service)}/older-than", "cutoffTime", cutoffTime.ToString("o"));
         var response = await DeleteAsync<int>(url);
         return response.Result.Data;
     }

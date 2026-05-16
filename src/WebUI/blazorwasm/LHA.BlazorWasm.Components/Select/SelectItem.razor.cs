@@ -6,6 +6,8 @@ namespace LHA.BlazorWasm.Components.Select;
 public partial class SelectItem : LHAComponentBase
 {
     [Parameter] public string Label { get; set; } = string.Empty;
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public string? Description { get; set; }
     [Parameter] public bool IsSelected { get; set; }
     [Parameter] public bool IsFocused { get; set; }
     [Parameter] public bool Disabled { get; set; }

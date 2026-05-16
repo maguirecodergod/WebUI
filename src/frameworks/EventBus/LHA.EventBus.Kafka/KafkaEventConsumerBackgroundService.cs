@@ -81,10 +81,16 @@ internal sealed class KafkaEventConsumerBackgroundService(
         Confluent.Kafka.Headers? headers, byte[] payload, CancellationToken ct)
     {
         // Extract event name from headers
-        var eventName = GetHeaderValue(headers, "x-event-name");
+        var eventName = GetHeaderValue(headers, MessageHeaders.EventName);
         if (string.IsNullOrEmpty(eventName))
         {
-            logger.LogWarning("Received message without x-event-name header. Skipping.");
+            // Fallback to legacy MessageType if EventName is missing
+            eventName = GetHeaderValue(headers, MessageHeaders.MessageType);
+        }
+        
+        if (string.IsNullOrEmpty(eventName))
+        {
+            logger.LogWarning("Received message without event name header. Skipping.");
             return;
         }
 
@@ -104,7 +110,7 @@ internal sealed class KafkaEventConsumerBackgroundService(
         }
 
         // Build metadata
-        var versionStr = GetHeaderValue(headers, "x-event-version");
+        var versionStr = GetHeaderValue(headers, MessageHeaders.EventVersion);
         _ = int.TryParse(versionStr, out var eventVersion);
 
         var metadata = new EventMetadata
@@ -175,6 +181,13 @@ internal sealed class KafkaEventConsumerBackgroundService(
             ServiceProvider = sp,
             CancellationToken = ct
         };
+
+        if (!handlers.Any())
+        {
+            var logger = sp.GetRequiredService<ILogger<KafkaEventConsumerBackgroundService>>();
+            logger.LogWarning("Event type '{Type}' was resolved from name '{EventName}', but no handlers are registered for it.", eventType.Name, metadata.EventName);
+            return;
+        }
 
         foreach (var handler in handlers)
         {

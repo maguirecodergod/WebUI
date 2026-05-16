@@ -192,7 +192,13 @@ public sealed class KafkaProducer : IMessagePublisher
             : _serializer.Serialize(envelope.Payload);
         var headers = new Headers();
 
-        AddHeader(headers, MessageHeaders.MessageType, typeof(T).AssemblyQualifiedName!);
+        var messageType = typeof(T).AssemblyQualifiedName ?? string.Empty;
+        if (envelope.Metadata.TryGetValue(MessageHeaders.EventName, out var eventName))
+        {
+            messageType = eventName;
+        }
+
+        AddHeader(headers, MessageHeaders.MessageType, messageType);
         AddHeader(headers, MessageHeaders.Timestamp, envelope.Timestamp.ToString("O"));
         AddHeader(headers, MessageHeaders.SchemaVersion, envelope.SchemaVersion);
 

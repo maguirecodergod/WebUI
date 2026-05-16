@@ -86,7 +86,7 @@
                 <tr class="dt-header-row">
                     @if (SelectionMode != SelectionMode.None)
                     {
-                        <th class="dt-header-cell dt-col-select" style="text-align: center;">
+                        <th class="dt-header-cell dt-col-select" style="text-align: center; width: 48px; min-width: 48px; max-width: 48px;">
                             @if (SelectionMode == SelectionMode.Multiple)
                             {
                                 <input type="checkbox" checked="@_allPageSelected"
@@ -96,7 +96,7 @@
                     }
                     @if (ExpandedRowTemplate is not null)
                     {
-                        <th class="dt-header-cell dt-col-expand"></th>
+                        <th class="dt-header-cell dt-col-expand" style="width: 48px; min-width: 48px; max-width: 48px;"></th>
                     }
 
                     @foreach (var col in visibleCols)
@@ -203,7 +203,7 @@
 
                             @if (SelectionMode != SelectionMode.None)
                             {
-                                <td class="dt-cell" style="text-align: center;" @onclick:stopPropagation>
+                                <td class="dt-cell dt-col-select" style="text-align: center; width: 48px; min-width: 48px; max-width: 48px;" @onclick:stopPropagation>
                                     @if (SelectionMode == SelectionMode.Multiple)
                                     {
                                         <input type="checkbox" checked="@IsSelected(item)"
@@ -219,7 +219,7 @@
 
                             @if (ExpandedRowTemplate is not null)
                             {
-                                <td class="dt-cell dt-col-expand" style="text-align: center;" @onclick:stopPropagation>
+                                <td class="dt-cell dt-col-expand" style="text-align: center; width: 48px; min-width: 48px; max-width: 48px;" @onclick:stopPropagation>
                                     <button type="button" class="dt-expand-btn @(IsExpanded(item) ? "dt-expanded" : string.Empty)"
                                             @onclick="() => ToggleExpand(item)"><i class="bi bi-chevron-right"></i></button>
                                 </td>

@@ -19,7 +19,7 @@ public static class TenantEndpoints
     /// </summary>
     public static IEndpointRouteBuilder MapTenantEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapVersionedGroup("TenantManagement", "/api/v{version:apiVersion}/tenants")
+        var group = endpoints.MapVersionedGroup("TenantManagement", "/api/v{version:apiVersion}/tenant-management")
             .WithTags("Tenants")
             .RequireAuthorization();
 

@@ -58,11 +58,13 @@ public sealed class EfCoreOutboxStore<TDbContext>(IDbContextProvider<TDbContext>
         var outbox = await GetOutboxContextAsync();
         var now = TimeProvider.System.GetUtcNow();
 
-        await outbox.OutboxMessages
-            .Where(m => m.Id == id)
-            .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.ProcessedAtUtc, now),
-                cancellationToken);
+        var message = await outbox.OutboxMessages
+            .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
+
+        if (message is not null)
+        {
+            message.ProcessedAtUtc = now;
+        }
     }
 
     /// <inheritdoc />
@@ -70,10 +72,12 @@ public sealed class EfCoreOutboxStore<TDbContext>(IDbContextProvider<TDbContext>
     {
         var outbox = await GetOutboxContextAsync();
 
-        await outbox.OutboxMessages
-            .Where(m => m.Id == id)
-            .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.RetryCount, m => m.RetryCount + 1),
-                cancellationToken);
+        var message = await outbox.OutboxMessages
+            .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
+
+        if (message is not null)
+        {
+            message.RetryCount++;
+        }
     }
 }

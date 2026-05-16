@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using System;
+using LHA.BlazorWasm.Shared.Models.Select;
 
 namespace LHA.BlazorWasm.Components.Select;
 

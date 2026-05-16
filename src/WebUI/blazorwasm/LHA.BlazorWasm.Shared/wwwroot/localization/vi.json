@@ -4,6 +4,7 @@
         "Title": "Nhật ký hoạt động",
         "Subtitle": "Theo dõi và phân tích các hoạt động hệ thống",
         "PurgeLogs": "Xóa nhật ký",
+        "Service": "Dịch vụ",
         "TraceSource": "Nguồn truy vết",
         "Id": "ID",
         "ExecutionTime": "Thời gian thực thi",
@@ -222,7 +223,10 @@
     "Menu": {
         "Home": "Trang chủ",
         "Host": {
-            "Roles": "Quản lý vai trò"
+            "Roles": "Quản lý vai trò",
+            "Configuration": {
+                "Notification": "Cấu hình thông báo"
+            }
         }
     },
     "Permissions": {
@@ -360,14 +364,11 @@
         "Logs": "Nhật ký",
         "Config": "Cấu hình",
         "ApiTest": "Kiểm thử API",
+        "Roles": "Quản lý vai trò",
         "HostManagement": "Quản trị hệ thống",
         "Tenants": "Tenant (Khách hàng)",
-        "GlobalAuditLogs": "Nhật ký hệ thống",
-        "Management": "Quản lý",
-        "Users": "Người dùng",
-        "AuditLogs": "Nhật ký hoạt động",
-        "Sidebar.Home": "Trang chủ",
-        "Roles": "Quản lý vai trò"
+        "Configuration": "Cấu hình",
+        "Notification": "Thông báo"
     },
     "TenantRegister": {
         "Title": "Đăng ký Tenant mới",
@@ -437,5 +438,35 @@
     "User": {
         "Title": "Người dùng",
         "Create": "Tạo người dùng"
+    },
+    "ServiceType": {
+        "Account": "Dịch vụ Tài khoản",
+        "Notification": "Dịch vụ Thông báo",
+        "Mega": "Dịch vụ Mega",
+        "Movie": "Dịch vụ Phim"
+    },
+    "NotificationConfiguration": {
+        "PageTitle": "Cấu hình thông báo",
+        "PageDescription": "Quản lý các kênh gửi thông báo như Email, SMS, Push, InApp cho hệ thống hoặc tenant.",
+        "Channel": "Kênh",
+        "Provider": "Nhà cung cấp",
+        "IsEnabled": "Đang bật",
+        "Settings": "Cài đặt chi tiết",
+        "LoadError": "Lỗi tải cấu hình thông báo",
+        "UpdateSuccess": "Cập nhật cấu hình thành công",
+        "EditTitle": "Chỉnh sửa cấu hình {0}",
+        "ChannelType": {
+            "InApp": "Trong ứng dụng",
+            "Email": "Email",
+            "Sms": "SMS",
+            "Push": "Thông báo đẩy"
+        },
+        "ProviderType": {
+            "Smtp": "SMTP (Email)",
+            "SendGrid": "SendGrid",
+            "Firebase": "Firebase (Push)",
+            "Twilio": "Twilio (SMS)",
+            "SignalR": "SignalR (InApp)"
+        }
     }
 }

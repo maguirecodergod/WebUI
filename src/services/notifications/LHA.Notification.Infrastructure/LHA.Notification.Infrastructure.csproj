@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -11,14 +11,23 @@
     <ProjectReference Include="..\LHA.Notification.Domain\LHA.Notification.Domain.csproj" />
     <ProjectReference Include="..\LHA.Notification.Application.Contracts\LHA.Notification.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus.Abstraction\LHA.EventBus.Abstraction.csproj" />
-    <ProjectReference Include="..\..\..\frameworks\EntityFrameworkCore\LHA.EntityFrameworkCore.MongoDB\LHA.EntityFrameworkCore.MongoDB.csproj" />
     <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.EntityFrameworkCore.MongoDB\LHA.AuditLog.EntityFrameworkCore.MongoDB.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Caching\LHA.Caching.StackExchangeRedis\LHA.Caching.StackExchangeRedis.csproj" />
   </ItemGroup>
-<!-- 
+
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="3.8.1" />
-    <PackageReference Include="MongoDB.EntityFrameworkCore" Version="10.0.1" />
-  </ItemGroup> -->
+    <PackageReference Include="AWSSDK.SimpleEmailV2" Version="4.0.12.14" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="4.0.2.31" />
+    <PackageReference Include="FirebaseAdmin" Version="3.5.0" />
+    <PackageReference Include="Handlebars.Net" Version="2.1.6" />
+    <PackageReference Include="MailKit" Version="4.16.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Resilience" Version="10.6.0" />
+    <PackageReference Include="Polly" Version="8.6.6" />
+    <PackageReference Include="SendGrid" Version="9.29.3" />
+    <PackageReference Include="Twilio" Version="7.14.9" />
+    <PackageReference Include="WebPush" Version="1.0.13" />
+  </ItemGroup>
 
 </Project>

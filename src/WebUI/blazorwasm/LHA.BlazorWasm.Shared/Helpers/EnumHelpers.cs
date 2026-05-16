@@ -1,9 +1,31 @@
 using LHA;
+using LHA.Shared.Domain.Attributes;
+using LHA.BlazorWasm.Shared.Abstractions.Localization;
+using System.Reflection;
+using LHA.BlazorWasm.Shared.Models.Select;
 
 namespace LHA.BlazorWasm.Shared.Helpers
 {
     public static class EnumHelpers
     {
+        public static List<SelectOption<TEnum>> ToSelectOptions<TEnum>(this ILocalizationService localizer) where TEnum : struct, Enum
+        {
+            return Enum.GetValues<TEnum>()
+                .Select(x =>
+                {
+                    var fieldInfo = x.GetType().GetField(x.ToString());
+                    var attr = fieldInfo?.GetCustomAttribute<EnumMetadataAttribute>();
+                    return new SelectOption<TEnum>
+                    {
+                        Value = x,
+                        Label = localizer.L(attr?.DisplayName ?? x.ToString()),
+                        Icon = attr?.Icon,
+                        Description = attr?.Description
+                    };
+                })
+                .ToList();
+        }
+
         public static CBadgeStyle ToStyle(this CBadgeSemantic semantic) => semantic switch
         {
             // System

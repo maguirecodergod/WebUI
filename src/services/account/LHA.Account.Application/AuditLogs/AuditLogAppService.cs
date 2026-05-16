@@ -27,7 +27,7 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
         _entityPropertyChangeRepository = entityPropertyChangeRepository;
     }
 
-    public virtual async Task<PagedResultDto<AuditLogDto>> GetListAsync(GetAuditLogsInput input)
+    public virtual async Task<PagedResultDto<AuditLogDto>> GetListAsync(GetAuditLogsInput input, CServiceType service = CServiceType.Account)
     {
         var repoInput = new AuditLogGetListInput
         {
@@ -68,19 +68,19 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
         );
     }
 
-    public virtual async Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input)
+    public virtual async Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input, CServiceType service = CServiceType.Account)
     {
         input.DisableTenantFilter = true;
         return await GetListAsync(input);
     }
 
-    public virtual async Task<AuditLogDto> GetAsync(Guid id)
+    public virtual async Task<AuditLogDto> GetAsync(Guid id, CServiceType service = CServiceType.Account)
     {
         var log = await _auditLogRepository.GetAsync(id, includeDetails: true);
         return MapToDto(log);
     }
 
-    public virtual async Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(GetAuditLogActionsInput input)
+    public virtual async Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(GetAuditLogActionsInput input, CServiceType service = CServiceType.Account)
     {
         var actions = await _auditLogActionRepository.GetListAsync(
             input,
@@ -108,7 +108,7 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
         );
     }
 
-    public virtual async Task<PagedResultDto<EntityChangeDto>> GetEntityChangesAsync(GetEntityChangesInput input)
+    public virtual async Task<PagedResultDto<EntityChangeDto>> GetEntityChangesAsync(GetEntityChangesInput input, CServiceType service = CServiceType.Account)
     {
         var changes = await _entityChangeRepository.GetListAsync(
             input,
@@ -135,7 +135,7 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
         );
     }
 
-    public virtual async Task<PagedResultDto<EntityPropertyChangeDto>> GetEntityPropertyChangesAsync(GetEntityPropertyChangesInput input)
+    public virtual async Task<PagedResultDto<EntityPropertyChangeDto>> GetEntityPropertyChangesAsync(GetEntityPropertyChangesInput input, CServiceType service = CServiceType.Account)
     {
         var propChanges = await _entityPropertyChangeRepository.GetListAsync(
             input,
@@ -157,12 +157,12 @@ public class AuditLogAppService : ApplicationService, IAuditLogAppService
         );
     }
 
-    public virtual async Task DeleteAsync(Guid id)
+    public virtual async Task DeleteAsync(Guid id, CServiceType service = CServiceType.Account)
     {
         await _auditLogRepository.DeleteAsync(id);
     }
 
-    public virtual async Task<int> DeleteOlderThanAsync(DateTimeOffset cutoffTime)
+    public virtual async Task<int> DeleteOlderThanAsync(DateTimeOffset cutoffTime, CServiceType service = CServiceType.Account)
     {
         return await _auditLogRepository.DeleteOlderThanAsync(cutoffTime);
     }

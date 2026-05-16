@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -9,6 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\LHA.Notification.Domain.Shared\LHA.Notification.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Application.Contracts\LHA.Ddd.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Contracts\LHA.Shared.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
   </ItemGroup>
 
 </Project>

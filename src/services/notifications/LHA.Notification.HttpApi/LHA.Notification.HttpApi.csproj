@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -15,6 +15,10 @@
     <ProjectReference Include="..\..\..\frameworks\Grpc\LHA.Grpc.Server\LHA.Grpc.Server.csproj" />
     <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.HttpApi\LHA.AuditLog.HttpApi.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.8.23" />
   </ItemGroup>
 
 </Project>

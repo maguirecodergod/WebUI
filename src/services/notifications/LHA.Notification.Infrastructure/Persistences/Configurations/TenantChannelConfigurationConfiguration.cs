@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LHA.Notification.Infrastructure.Persistences.Configurations;
 
-public sealed class TenantChannelConfigurationConfiguration : IEntityTypeConfiguration<TenantChannelConfigurationEntity>
+public sealed class TenantChannelConfigurationConfiguration : IEntityTypeConfiguration<ChannelConfigurationEntity>
 {
-    public void Configure(EntityTypeBuilder<TenantChannelConfigurationEntity> b)
+    public void Configure(EntityTypeBuilder<ChannelConfigurationEntity> b)
     {
         b.ToTable(DbSchemeConsts.Notification.TenantChannelConfigs);
         b.HasKey(e => e.Id);
@@ -19,26 +19,7 @@ public sealed class TenantChannelConfigurationConfiguration : IEntityTypeConfigu
             .HasConversion<byte>()
             .HasColumnType("smallint");
 
-        b.Property(e => e.ServiceAccountJson)
-            .HasMaxLength(NotificationDbConsts.MaxServiceAccountLength);
-
-        b.Property(e => e.ApiKey)
-            .HasMaxLength(NotificationDbConsts.MaxApiKeyLength);
-
-        b.Property(e => e.Host)
-            .HasMaxLength(NotificationDbConsts.MaxHostLength);
-
-        b.Property(e => e.Port);
-
-        b.Property(e => e.Username)
-            .HasMaxLength(NotificationDbConsts.MaxUsernameLength);
-
-        b.Property(e => e.Password)
-            .HasMaxLength(NotificationDbConsts.MaxUsernameLength);
-
-        b.Property(e => e.UseSsl).IsRequired().HasDefaultValue(true);
-
-        b.Property(e => e.CustomSettings)
+        b.Property(e => e.SettingsJson)
             .HasColumnType("text");
 
         b.Property(e => e.IsEnabled).IsRequired().HasDefaultValue(true);

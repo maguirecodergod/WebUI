@@ -7,6 +7,7 @@ using LHA.Shared.Contracts.AuditLog;
 using LHA.Shared.Contracts.TenantManagement;
 using LHA.BlazorWasm.Modules.Host.BackgroundWorkers.Pages;
 using LHA.Shared.Contracts.Identity;
+using LHA.Shared.Contracts.Notification;
 
 namespace LHA.BlazorWasm.App.Layout.MainLayout;
 
@@ -38,6 +39,17 @@ public partial class MainLayout : LHALayoutComponentBase
                 new() { Id = "host-tenants", TitleKey = "Sidebar.Tenants", Href = "/host/tenants", Icon = """<i class="bi bi-building"></i>""", RequiredPermission = TenantManagementPermissions.Tenants.Read },
                 new() { Id = "host-roles", TitleKey = "Sidebar.Roles", Href = "/host/roles", Icon = """<i class="bi bi-person-vcard"></i>""", RequiredPermission = IdentityPermissions.Roles.Read },
                 new() { Id = "background-workers", TitleKey = "Sidebar.BackgroundWorkers", Href = "/host/background-workers", Icon = """<i class="bi bi-gear"></i>""", RequiredPermission = null }
+            }
+        },
+        new()
+        {
+            Id = "configurations",
+            GroupName = "Settings",
+            TitleKey = "Sidebar.Configuration",
+            Icon = """<i class="bi bi-sliders"></i>""",
+            Children = new()
+            {
+                new() { Id = "config-notification", TitleKey = "Sidebar.Notification", Href = "/host/configurations/notification", Icon = """<i class="bi bi-bell"></i>""", RequiredPermission = NotificationPermissions.Configuration.Read }
             }
         },
         new()

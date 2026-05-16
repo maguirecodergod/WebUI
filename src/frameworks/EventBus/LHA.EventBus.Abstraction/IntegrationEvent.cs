@@ -40,7 +40,7 @@ public abstract record IntegrationEvent : IIntegrationEvent
     /// Logical partition key for ordered processing (e.g., aggregate ID).
     /// Kafka/RabbitMQ transports use this for partition/shard selection.
     /// </summary>
-    public string? PartitionKey { get; init; }
+    public virtual string? PartitionKey { get; init; }
 
     /// <summary>
     /// Data residency region code (e.g., "EU", "US", "APAC").

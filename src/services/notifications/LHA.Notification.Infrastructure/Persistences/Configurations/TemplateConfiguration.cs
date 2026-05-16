@@ -1,11 +1,16 @@
+using System.Text.Json;
 using LHA.Notification.Domain;
+using LHA.Notification.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LHA.Notification.Infrastructure.Persistences.Configurations;
 
 public sealed class TemplateConfiguration : IEntityTypeConfiguration<TemplateEntity>
 {
+    private static readonly JsonSerializerOptions JsonOptions = new();
+
     public void Configure(EntityTypeBuilder<TemplateEntity> b)
     {
         b.ToTable(DbSchemeConsts.Notification.Templates);
@@ -27,7 +32,13 @@ public sealed class TemplateConfiguration : IEntityTypeConfiguration<TemplateEnt
             .HasColumnType("smallint");
 
         b.Property(e => e.SupportedChannels)
-            .HasColumnType("text");
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, JsonOptions),
+                v => JsonSerializer.Deserialize<List<CNotificationChannel>>(v, JsonOptions) ?? new List<CNotificationChannel>())
+            .Metadata.SetValueComparer(new ValueComparer<List<CNotificationChannel>>(
+                (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList()));
 
         b.Property(e => e.IsActive).IsRequired().HasDefaultValue(true);
         b.Property(e => e.IsSystem).IsRequired().HasDefaultValue(false);
@@ -38,7 +49,13 @@ public sealed class TemplateConfiguration : IEntityTypeConfiguration<TemplateEnt
             .HasDefaultValue("en");
 
         b.Property(e => e.Tags)
-            .HasColumnType("text");
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, JsonOptions),
+                v => JsonSerializer.Deserialize<List<string>>(v, JsonOptions) ?? new List<string>())
+            .Metadata.SetValueComparer(new ValueComparer<List<string>>(
+                (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList()));
 
         b.OwnsMany(e => e.Versions, version =>
         {

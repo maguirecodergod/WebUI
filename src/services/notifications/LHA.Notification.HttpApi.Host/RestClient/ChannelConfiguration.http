@@ -1,0 +1,74 @@
+@host = https://localhost:7199
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJMaWVuSG9hQXBwIiwiaXNzIjoiTGllbkhvYUFwcC5BY2NvdW50IiwiZXhwIjoxNzc4ODkzMDQ1LCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDIiLCJqdGkiOiIwMTllMmUyZS00NzlhLTcxMTYtOTVmOS01ODU2NjdjZDEyM2UiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbGllbmhvYWFwcC5jb20iLCJyb2xlIjpbIlN5c3RlbVN1cGVyQWRtaW4iLCJUZW5hbnRBZG1pbiJdLCJwZXJtaXNzaW9ucyI6WyJpZGVudGl0eS51c2Vycy5yZWFkIiwicGVybWlzc2lvbnMuZ3JvdXBzLm1hbmFnZSIsInRlbmFudHMuY3JlYXRlIiwiaWRlbnRpdHkuY2xhaW0tdHlwZXMudXBkYXRlIiwiaWRlbnRpdHkudXNlcnMudXBkYXRlIiwiaWRlbnRpdHkucm9sZXMuY3JlYXRlIiwiaWRlbnRpdHkuY2xhaW0tdHlwZXMuZGVsZXRlIiwiaWRlbnRpdHkudXNlcnMuZGVsZXRlIiwiaWRlbnRpdHkucm9sZXMudXBkYXRlIiwicGVybWlzc2lvbnMuZ3JhbnRzLm1hbmFnZSIsInBlcm1pc3Npb25zLmdyb3Vwcy5yZWFkIiwicGVybWlzc2lvbnMudGVtcGxhdGVzLnJlYWQiLCJwZXJtaXNzaW9ucy50ZW1wbGF0ZXMubWFuYWdlIiwiaWRlbnRpdHkucm9sZXMuZGVsZXRlIiwicGVybWlzc2lvbnMuZ3JhbnRzLnJlYWQiLCJpZGVudGl0eS5jbGFpbS10eXBlcy5jcmVhdGUiLCJpZGVudGl0eS5jbGFpbS10eXBlcy5yZWFkIiwiYXVkaXQtbG9ncy5yZWFkIiwiYXVkaXQtbG9ncy5ob3N0LXJlYWQiLCJpZGVudGl0eS51c2Vycy5jcmVhdGUiLCJ0ZW5hbnRzLnVwZGF0ZSIsInBlcm1pc3Npb25zLmRlZmluaXRpb25zLnJlYWQiLCJ0ZW5hbnRzLmRlbGV0ZSIsImlkZW50aXR5LnJvbGVzLnJlYWQiLCJpZGVudGl0eS5zZWN1cml0eS1sb2dzLnJlYWQiLCJ0ZW5hbnRzLnJlYWQiLCJwZXJtaXNzaW9ucy5kZWZpbml0aW9ucy5tYW5hZ2UiLCJtZWdhLmFjY291bnRzLnJlYWQiLCJtZWdhLmFjY291bnRzLmRlbGV0ZSIsIm1lZ2EuYWNjb3VudHMuY3JlYXRlIiwibWVnYS5hY2NvdW50cy51cGRhdGUiLCJOb3RpZmljYXRpb24uVGVtcGxhdGVzLlVwZGF0ZSIsIk5vdGlmaWNhdGlvbi5QcmVmZXJlbmNlcyIsIk5vdGlmaWNhdGlvbi5Db25maWd1cmF0aW9uIiwiTm90aWZpY2F0aW9uLkF1ZGl0TG9ncyIsIk5vdGlmaWNhdGlvbi5CYXRjaGVzIiwiTm90aWZpY2F0aW9uLlByZWZlcmVuY2VzLlJlYWQiLCJOb3RpZmljYXRpb24uTm90aWZpY2F0aW9ucy5TZW5kIiwiTm90aWZpY2F0aW9uLkRldmljZXMiLCJOb3RpZmljYXRpb24uVGVtcGxhdGVzIiwiTm90aWZpY2F0aW9uLk5vdGlmaWNhdGlvbnMuUmVhZCIsIk5vdGlmaWNhdGlvbi5TdGF0aXN0aWNzLlJlYWQiLCJOb3RpZmljYXRpb24uRGV2aWNlcy5SZWFkIiwiTm90aWZpY2F0aW9uLkNvbmZpZ3VyYXRpb24uUmVhZCIsIk5vdGlmaWNhdGlvbi5QcmVmZXJlbmNlcy5VcGRhdGUiLCJOb3RpZmljYXRpb24uQmF0Y2hlcy5DcmVhdGUiLCJOb3RpZmljYXRpb24uTm90aWZpY2F0aW9ucy5EZWxldGUiLCJOb3RpZmljYXRpb24uVGVtcGxhdGVzLkRlbGV0ZSIsIk5vdGlmaWNhdGlvbi5UZW1wbGF0ZXMuUmVhZCIsIk5vdGlmaWNhdGlvbi5CYXRjaGVzLk1hbmFnZSIsIk5vdGlmaWNhdGlvbi5CYXRjaGVzLlJlYWQiLCJOb3RpZmljYXRpb24uVGVtcGxhdGVzLkNyZWF0ZSIsIk5vdGlmaWNhdGlvbi5EZXZpY2VzLk1hbmFnZSIsIk5vdGlmaWNhdGlvbi5BdWRpdExvZ3MuUmVhZCIsIk5vdGlmaWNhdGlvbi5TdGF0aXN0aWNzIiwiTm90aWZpY2F0aW9uLkNvbmZpZ3VyYXRpb24uTWFuYWdlIiwiTm90aWZpY2F0aW9uLk5vdGlmaWNhdGlvbnMiXSwiaWF0IjoxNzc4ODkxMjQ1LCJuYmYiOjE3Nzg4OTEyNDV9.jf0btVecb8xmtUNeex36LWuZrNfccYVYxD6lZO0AKLE
+@tenantId = 00000000-0000-0000-0000-000000000000
+@version = 1
+
+# ==============================================================================
+# CHANNEL CONFIGURATIONS
+# ==============================================================================
+
+@configId = 00000000-0000-0000-0000-000000000000
+
+### Get Paged Channel Configurations (Super Admin)
+GET {{host}}/api/v{{version}}/notification/configurations?tenantId={{tenantId}}&pageNumber=1&pageSize=20&isEnabled=true
+Authorization: {{token}}
+
+### Get Channel Configuration by ID
+GET {{host}}/api/v{{version}}/notification/configurations/{{configId}}?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Get Channel Configuration by Channel (with Tenant fallback)
+GET {{host}}/api/v{{version}}/notification/configurations/channel/Email?tenantId={{tenantId}}
+Authorization: {{token}}
+
+### Get Current Channel Configuration (uses ICurrentTenant automatically)
+GET {{host}}/api/v{{version}}/notification/configurations/current/Email
+Authorization: {{token}}
+
+### Create Channel Configuration
+POST {{host}}/api/v{{version}}/notification/configurations?tenantId={{tenantId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "channel": "Email",
+  "providerType": "Smtp",
+  "isEnabled": true,
+  "settings": {
+    "host": "smtp.mailtrap.io",
+    "port": "2525",
+    "userName": "user",
+    "password": "password",
+    "enableSsl": "true"
+  }
+}
+
+### Update Channel Configuration
+PUT {{host}}/api/v{{version}}/notification/configurations/{{configId}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "channel": "Email",
+  "providerType": "Smtp",
+  "isEnabled": true,
+  "settings": {
+    "host": "smtp.updated.io",
+    "port": "587",
+    "userName": "user",
+    "password": "newpassword",
+    "enableSsl": "true"
+  }
+}
+
+### Enable Channel Configuration
+POST {{host}}/api/v{{version}}/notification/configurations/{{configId}}/enable
+Authorization: {{token}}
+
+### Disable Channel Configuration
+POST {{host}}/api/v{{version}}/notification/configurations/{{configId}}/disable
+Authorization: {{token}}
+
+### Delete Channel Configuration
+DELETE {{host}}/api/v{{version}}/notification/configurations/{{configId}}
+Authorization: {{token}}

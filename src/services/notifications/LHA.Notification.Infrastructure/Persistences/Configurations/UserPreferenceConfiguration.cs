@@ -1,11 +1,16 @@
+using System.Text.Json;
 using LHA.Notification.Domain;
+using LHA.Notification.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LHA.Notification.Infrastructure.Persistences.Configurations;
 
 public sealed class UserPreferenceConfiguration : IEntityTypeConfiguration<UserPreferenceEntity>
 {
+    private static readonly JsonSerializerOptions JsonOptions = new();
+
     public void Configure(EntityTypeBuilder<UserPreferenceEntity> b)
     {
         b.ToTable(DbSchemeConsts.Notification.UserPreferences);
@@ -38,7 +43,13 @@ public sealed class UserPreferenceConfiguration : IEntityTypeConfiguration<UserP
             channel.Property(c => c.Enabled).IsRequired().HasDefaultValue(true);
 
             channel.Property(c => c.Categories)
-                .HasColumnType("text");
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, JsonOptions),
+                    v => JsonSerializer.Deserialize<List<string>>(v, JsonOptions) ?? new List<string>())
+                .Metadata.SetValueComparer(new ValueComparer<List<string>>(
+                    (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
         });
 
         b.OwnsMany(e => e.Categories, category =>
@@ -54,7 +65,13 @@ public sealed class UserPreferenceConfiguration : IEntityTypeConfiguration<UserP
             category.Property(c => c.Enabled).IsRequired().HasDefaultValue(true);
 
             category.Property(c => c.Channels)
-                .HasColumnType("text");
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, JsonOptions),
+                    v => JsonSerializer.Deserialize<List<CNotificationChannel>>(v, JsonOptions) ?? new List<CNotificationChannel>())
+                .Metadata.SetValueComparer(new ValueComparer<List<CNotificationChannel>>(
+                    (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
         });
 
         b.OwnsOne(e => e.QuietHours, quietHours =>

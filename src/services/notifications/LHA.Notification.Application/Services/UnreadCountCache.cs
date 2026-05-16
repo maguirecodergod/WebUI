@@ -20,7 +20,7 @@ public sealed class UnreadCountCache : ApplicationService, IUnreadCountCache
     /// <inheritdoc />
     public async Task<int> GetUnreadCountAsync(Guid tenantId, Guid recipientId, CancellationToken cancellationToken = default)
     {
-        return await _notificationRepository.GetUnreadCountByRecipientAsync(recipientId, cancellationToken);
+        return await _notificationRepository.GetUnreadCountByRecipientAsync(tenantId, recipientId, cancellationToken);
     }
 
     /// <inheritdoc />

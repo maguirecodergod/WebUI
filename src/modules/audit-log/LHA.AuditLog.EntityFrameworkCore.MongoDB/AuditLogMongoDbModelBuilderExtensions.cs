@@ -22,9 +22,6 @@ public static class AuditLogMongoDbModelBuilderExtensions
         if (mode.HasFlag(AuditLogStoreMode.DataAudit))
         {
             modelBuilder.ApplyConfiguration(new MongoDbAuditLogConfiguration());
-            modelBuilder.ApplyConfiguration(new MongoDbAuditLogActionConfiguration());
-            modelBuilder.ApplyConfiguration(new MongoDbEntityChangeConfiguration());
-            modelBuilder.ApplyConfiguration(new MongoDbEntityPropertyChangeConfiguration());
         }
 
         if (mode.HasFlag(AuditLogStoreMode.Pipeline))
@@ -40,6 +37,8 @@ public static class AuditLogMongoDbModelBuilderExtensions
     /// </summary>
     public static AuditLogEntityFrameworkCoreBuilder UseMongoDb(this AuditLogEntityFrameworkCoreBuilder builder)
     {
+        builder.SetAutoTransactionBehavior(AutoTransactionBehavior.Never);
+        
         return builder.ConfigureModel(modelBuilder => 
         {
             modelBuilder.ConfigureAuditLogMongoDb(builder.Mode);

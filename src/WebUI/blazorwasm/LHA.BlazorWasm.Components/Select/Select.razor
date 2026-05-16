@@ -22,7 +22,14 @@
                     }
                     else
                     {
-                        @GetLabel(Value)
+                        var opt = GetSelectedOption(Value);
+                        <div class="d-flex align-items-center">
+                            @if (!string.IsNullOrEmpty(opt?.Icon))
+                            {
+                                <i class="@opt.Icon me-2 opacity-75"></i>
+                            }
+                            <span>@(opt?.Label ?? Value?.ToString())</span>
+                        </div>
                     }
                 }
                 else
@@ -37,7 +44,12 @@
                     @foreach (var val in Values)
                     {
                         <div class="select-tag" @onclick:stopPropagation="true">
-                            <span class="select-tag-label">@GetLabel(val)</span>
+                            @{ var opt = GetSelectedOption(val); }
+                            @if (!string.IsNullOrEmpty(opt?.Icon))
+                            {
+                                <i class="@opt.Icon me-1 small opacity-75"></i>
+                            }
+                            <span class="select-tag-label">@(opt?.Label ?? val?.ToString())</span>
                             @if (!Disabled && !ReadOnly)
                             {
                                 <span class="select-tag-remove" @onclick="() => RemoveValue(val)"><i class="bi bi-x"></i></span>

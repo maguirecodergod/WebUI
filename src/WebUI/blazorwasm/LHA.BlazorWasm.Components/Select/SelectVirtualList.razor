@@ -1,6 +1,7 @@
 @namespace LHA.BlazorWasm.Components.Select
 @typeparam TValue
 @using Microsoft.AspNetCore.Components.Web.Virtualization
+@using LHA.BlazorWasm.Shared.Models.Select
 
 <div class="select-virtual-list" style="max-height: @MaxHeight; overflow-y: auto;" role="listbox">
     @if (ItemsProvider != null)
@@ -8,6 +9,8 @@
         <Virtualize @ref="_virtualizeProvider" ItemsProvider="ItemsProvider" Context="option" OverscanCount="5" ItemSize="38">
             <ItemContent>
                 <SelectItem Label="@option.Label"
+                            Icon="@option.Icon"
+                            Description="@option.Description"
                             IsSelected="@IsSelected(option)"
                             IsFocused="@IsFocused(option)"
                             Disabled="@option.Disabled"
@@ -27,6 +30,8 @@
         <Virtualize @ref="_virtualizeItems" Items="Items" Context="option" OverscanCount="5" ItemSize="38">
             <ItemContent>
                 <SelectItem Label="@option.Label"
+                            Icon="@option.Icon"
+                            Description="@option.Description"
                             IsSelected="@IsSelected(option)"
                             IsFocused="@IsFocused(option)"
                             Disabled="@option.Disabled"

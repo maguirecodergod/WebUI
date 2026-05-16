@@ -1,10 +1,10 @@
 using System.Text;
-using LHA.Caching;
 using LHA.AspNetCore;
 using LHA.Auditing;
 using LHA.Auditing.Interceptors;
 using LHA.DistributedLocking;
-using LHA.EventBus;
+using LHA.EventBus.Kafka;
+using LHA.MessageBroker.Kafka;
 using LHA.Grpc.Server;
 using LHA.MultiTenancy;
 using LHA.Swagger;
@@ -15,6 +15,15 @@ using Microsoft.IdentityModel.Tokens;
 using LHA.Notification.Infrastructure.Persistences;
 using LHA.Notification.Domain.Shared.Localization;
 using LHA.Shared.Contracts;
+using LHA.Caching.StackExchangeRedis;
+using LHA.Notification.Infrastructure;
+using LHA.Scheduling.Hangfire;
+using Hangfire.Mongo;
+using LHA.Notification.Application.DependencyInjection;
+using LHA.Notification.HttpApi;
+using LHA.Notification.HttpApi.Host.BackgroundJobs;
+using LHA.Grpc.Client;
+using LHA.Grpc.Contracts.Services.Account.V1;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,22 +35,46 @@ builder.Services.AddLHAMultiTenancyHosting(options =>
 });
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
-builder.Services.AddLHACaching();
-builder.Services.AddLHAInMemoryEventBus();
+builder.Services.AddLHAStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "LHA.Notification:";
+});
+
+// ── Kafka infrastructure ────────────────────────────────────────
+builder.Services.AddLHAKafka(kafka =>
+{
+    kafka.BootstrapServers = builder.Configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
+});
+
+// ── Kafka event bus (producer mode with outbox) ─────────────────
+builder.Services.AddLHAKafkaEventBus(
+    eventBus =>
+    {
+        eventBus.ConsumerGroup = "notification-service";
+        eventBus.ApplicationName = "NotificationService";
+        eventBus.EnableOutbox = true;
+    },
+    kafka =>
+    {
+        kafka.DefaultTopic = LHA.Shared.Contracts.EventTopics.NotificationEvents;
+    });
+builder.Services.AddKafkaOutboxProcessor();
 
 // ── Module services (Application + EF Core) ──────────────────────
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Missing 'Default' connection string.");
 
-// builder.Services.AddAccountApplication();
-// builder.Services.AddAccountEntityFrameworkCore(connectionString);
+builder.Services.AddNotificationApplication();
+builder.Services.AddNotificationInfrastructure(builder.Configuration);
 
-// builder.Services.AddLHAHangfireScheduling(options =>
-// {
-//     options.ConfigureHangfire = config =>
-//         config.UsePostgreSqlStorage(opt => opt.UseNpgsqlConnection(connectionString));
-//     options.EnableServer = false; // API node only enqueues and monitors, does not process jobs
-// });
+builder.Services.AddLHAHangfireScheduling(options =>
+{
+    options.ConfigureHangfire = config =>
+        config.UseMongoStorage(builder.Configuration.GetConnectionString("Default")
+    ?? throw new InvalidOperationException("Missing 'Default' connection string."));
+    options.EnableServer = false; // API node only enqueues and monitors, does not process jobs
+});
 
 // ─── AUDIT LOG PRODUCER ───
 // Use AuditingMode to control which audit producers run in this App.
@@ -50,12 +83,12 @@ builder.Services.AddLHAAuditLogging(
     mode: CAuditingMode.All,
     configureDataAudit: options =>
     {
-        options.ApplicationName = "Account";
+        options.ApplicationName = "Notification";
         options.CaptureRequestBody = true;
     },
     configurePipeline: options =>
     {
-        options.ServiceName = "Account";
+        options.ServiceName = "Notification";
     });
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
@@ -89,6 +122,12 @@ builder.Services
     });
 
 builder.Services.AddLHAPermissionAuthorization();
+builder.Services.AddHostedService<PermissionRegistrationHostedService>();
+
+// ── gRPC client registration ─────────────────────────────────────
+builder.Services.AddLHAGrpcClientDefaults();
+builder.Services.AddLHAGrpcClient<PermissionRegistrationService.PermissionRegistrationServiceClient>(
+    builder.Configuration["AccountService:GrpcUrl"] ?? "https://localhost:8150");
 
 // ── gRPC server ───────────────────────────────────────────────────
 builder.Services.AddLHAGrpcServer();
@@ -110,14 +149,15 @@ app.UseLHAAuditLogging(mode: CAuditingMode.DataAudit);
 app.UseAuthorization();
 
 // ── Endpoints ────────────────────────────────────────────────────
-// app.MapAccountEndpoints();
+app.MapNotificationEndpoints();
 app.MapLHAGrpcInfrastructure();
 
 // ── Auto Migration ───────────────────────────────────────────────
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<NotificationDbContext>();
-    await context.Database.MigrateAsync();
+    // For MongoDB, MigrateAsync() is not supported. Use EnsureCreatedAsync() instead.
+    await context.Database.EnsureCreatedAsync();
 }
 
 app.Run();

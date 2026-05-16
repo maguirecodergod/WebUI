@@ -101,12 +101,15 @@ internal sealed class KafkaOutboxProcessor
             Timestamp = message.CreatedAtUtc,
             Metadata = new Dictionary<string, string>
             {
-                ["x-event-name"] = message.EventName,
-                ["x-event-version"] = message.EventVersion.ToString(),
+                [MessageHeaders.EventName] = message.EventName,
+                [MessageHeaders.MessageType] = message.EventName, // Ensure compatibility
+                [MessageHeaders.EventVersion] = message.EventVersion.ToString(),
             }
         };
 
         await _publisher.PublishAsync(topic, envelope, ct);
+        _logger.LogInformation("📬 [Outbox] Forwarded message {Id} ('{EventName}') to Kafka topic '{Topic}'.", 
+            message.Id, message.EventName, topic);
 
         _logger.LogDebug("Forwarded outbox message {Id} to Kafka topic '{Topic}'.", message.Id, topic);
     }

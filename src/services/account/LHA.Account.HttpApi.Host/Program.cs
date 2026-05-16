@@ -10,7 +10,6 @@ using LHA.Scheduling.Hangfire;
 using LHA.Auditing;
 using LHA.Auditing.Interceptors;
 using LHA.DistributedLocking;
-using LHA.EventBus;
 using LHA.Grpc.Server;
 using LHA.Identity.Domain.Shared.Localization;
 using LHA.MultiTenancy;
@@ -20,6 +19,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using LHA.Shared.Contracts;
+using LHA.MessageBroker.Kafka;
+using LHA.EventBus.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,27 @@ builder.Services.AddLHAMultiTenancyHosting(options =>
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
 builder.Services.AddLHACaching();
-builder.Services.AddLHAInMemoryEventBus();
+
+// ── Kafka infrastructure ────────────────────────────────────────
+builder.Services.AddLHAKafka(kafka =>
+{
+    kafka.BootstrapServers = builder.Configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
+});
+
+// ── Kafka event bus (publisher mode) ────────────────────────────
+builder.Services.AddLHAKafkaEventBus(
+    eventBus =>
+    {
+        eventBus.ConsumerGroup = "account-service";
+        eventBus.ApplicationName = "AccountHttpApi";
+        eventBus.EnableOutbox = true;
+    },
+    kafka =>
+    {
+        kafka.DefaultTopic = LHA.Shared.Contracts.EventTopics.AccountEvents;
+    });
+
+builder.Services.AddKafkaOutboxProcessor();
 
 // ── Module services (Application + EF Core) ──────────────────────
 var connectionString = builder.Configuration.GetConnectionString("Default")

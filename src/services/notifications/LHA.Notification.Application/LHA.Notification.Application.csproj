@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -12,6 +12,7 @@
     <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Application\LHA.Ddd.Application.csproj" />
     <ProjectReference Include="..\..\..\frameworks\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
     <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus.Abstraction\LHA.EventBus.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.Application\LHA.AuditLog.Application.csproj" />
   </ItemGroup>
 
 </Project>

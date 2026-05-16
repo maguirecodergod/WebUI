@@ -32,4 +32,10 @@ public static class MessageHeaders
 
     /// <summary>Content type of the serialized payload (e.g. "application/json").</summary>
     public const string ContentType = "x-content-type";
+
+    /// <summary>Logical event name for dispatching (e.g. "UserCreated").</summary>
+    public const string EventName = "x-event-name";
+
+    /// <summary>Event schema version.</summary>
+    public const string EventVersion = "x-event-version";
 }

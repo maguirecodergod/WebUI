@@ -4,6 +4,7 @@
         "Title": "Operation Logs",
         "Subtitle": "Monitor and analyze system activities",
         "PurgeLogs": "Purge Logs",
+        "Service": "Service",
         "TraceSource": "Trace Source",
         "Id": "ID",
         "ExecutionTime": "Execution Time",
@@ -222,7 +223,10 @@
     "Menu": {
         "Home": "Home",
         "Host": {
-            "Roles": "Roles Management"
+            "Roles": "Roles Management",
+            "Configuration": {
+                "Notification": "Notification Configuration"
+            }
         }
     },
     "Permissions": {
@@ -360,14 +364,11 @@
         "Logs": "Logs",
         "Config": "Configuration",
         "ApiTest": "API Test",
+        "Roles": "Roles Management",
         "HostManagement": "Host Management",
         "Tenants": "Tenants",
-        "GlobalAuditLogs": "Global Audit Logs",
-        "Management": "Management",
-        "Users": "Users",
-        "AuditLogs": "Audit Logs",
-        "Sidebar.Home": "Home",
-        "Roles": "Role Management"
+        "Configuration": "Configuration",
+        "Notification": "Notification"
     },
     "TenantRegister": {
         "Title": "Register New Tenant",
@@ -437,5 +438,35 @@
     "User": {
         "Title": "Users",
         "Create": "Create User"
+    },
+    "ServiceType": {
+        "Account": "Account Service",
+        "Notification": "Notification Service",
+        "Mega": "Mega Service",
+        "Movie": "Movie Service"
+    },
+    "NotificationConfiguration": {
+        "PageTitle": "Notification Configuration",
+        "PageDescription": "Manage notification channels such as Email, SMS, Push, and InApp for the system or specific tenants.",
+        "Channel": "Channel",
+        "Provider": "Provider",
+        "IsEnabled": "Is Enabled",
+        "Settings": "Detail Settings",
+        "LoadError": "Error loading notification configurations",
+        "UpdateSuccess": "Configuration updated successfully",
+        "EditTitle": "Edit {0} Configuration",
+        "ChannelType": {
+            "InApp": "In-App",
+            "Email": "Email",
+            "Sms": "SMS",
+            "Push": "Push Notification"
+        },
+        "ProviderType": {
+            "Smtp": "SMTP (Email)",
+            "SendGrid": "SendGrid",
+            "Firebase": "Firebase (Push)",
+            "Twilio": "Twilio (SMS)",
+            "SignalR": "SignalR (InApp)"
+        }
     }
 }

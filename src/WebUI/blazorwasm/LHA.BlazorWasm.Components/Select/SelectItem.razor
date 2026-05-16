@@ -12,6 +12,22 @@
     }
     else
     {
-        @Label
+        <div class="d-flex align-items-center w-100">
+            @if (!string.IsNullOrEmpty(Icon))
+            {
+                <i class="@Icon me-2 opacity-75"></i>
+            }
+            <div class="flex-grow-1">
+                <div class="select-item-label">@Label</div>
+                @if (!string.IsNullOrEmpty(Description))
+                {
+                    <div class="select-item-description small opacity-50">@Description</div>
+                }
+            </div>
+            @if (IsSelected)
+            {
+                <i class="bi bi-check2 ms-2 text-primary"></i>
+            }
+        </div>
     }
 </div>

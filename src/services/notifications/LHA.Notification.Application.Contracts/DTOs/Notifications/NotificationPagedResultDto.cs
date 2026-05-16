@@ -1,4 +1,4 @@
-﻿namespace LHA.Notification.Application.Contracts;
+namespace LHA.Notification.Application.Contracts;
 
 public record NotificationPagedResultDto<TDto>(
     List<TDto> Items,

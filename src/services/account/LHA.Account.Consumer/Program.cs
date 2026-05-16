@@ -40,7 +40,7 @@ builder.Services.AddLHAKafkaEventBus(
     },
     kafka =>
     {
-        kafka.DefaultTopic = "mega-events";
+        kafka.DefaultTopic = LHA.Shared.Contracts.EventTopics.AccountEvents;
     });
 
 // ── Event handlers ──────────────────────────────────────────────
@@ -48,8 +48,8 @@ builder.Services.AddScoped<IEventHandler<MegaAccountCreatedEvent>, MegaAccountCr
 builder.Services.AddScoped<IEventHandler<MegaAccountUpdatedEvent>, MegaAccountUpdatedEventHandler>();
 builder.Services.AddScoped<IEventHandler<MegaAccountDeletedEvent>, MegaAccountDeletedEventHandler>();
 
-// ── Consume from Mega events topic ──────────────────────────────
-builder.Services.AddKafkaEventConsumer("mega-events");
+// ── Consume from Account events topic ──────────────────────────────
+builder.Services.AddKafkaEventConsumer(LHA.Shared.Contracts.EventTopics.AccountEvents);
 
 var host = builder.Build();
 host.Run();

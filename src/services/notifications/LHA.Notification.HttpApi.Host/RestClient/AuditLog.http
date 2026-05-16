@@ -1,0 +1,39 @@
+@host = https://localhost:8199
+@token = Bearer your_access_token_here
+@tenantId = 00000000-0000-0000-0000-000000000000
+@auditLogId = 00000000-0000-0000-0000-000000000000
+@version = 1
+
+# ==============================================================================
+# NOTIFICATION AUDIT LOGS
+# ==============================================================================
+
+### Get Audit Logs (Paged)
+GET {{host}}/api/v{{version}}/notification/audit-logs?pageNumber=1&pageSize=20&sorterKey=executionTime&sorterIsAsc=false
+Authorization: {{token}}
+
+### Get Specific Audit Log
+GET {{host}}/api/v{{version}}/notification/audit-logs/{{auditLogId}}
+Authorization: {{token}}
+
+### Get Audit Log Actions
+GET {{host}}/api/v{{version}}/notification/audit-logs/actions?auditLogId={{auditLogId}}&pageNumber=1&pageSize=20
+Authorization: {{token}}
+
+### Get Entity Changes
+GET {{host}}/api/v{{version}}/notification/audit-logs/entity-changes?auditLogId={{auditLogId}}&pageNumber=1&pageSize=20
+Authorization: {{token}}
+
+### Get Entity Property Changes
+@entityChangeId = 00000000-0000-0000-0000-000000000000
+GET {{host}}/api/v{{version}}/notification/audit-logs/entity-property-changes?entityChangeId={{entityChangeId}}&pageNumber=1&pageSize=20
+Authorization: {{token}}
+
+### Delete Audit Log
+DELETE {{host}}/api/v{{version}}/notification/audit-logs/{{auditLogId}}
+Authorization: {{token}}
+
+### Delete Older Than
+@cutoffTime = 2026-01-01T00:00:00Z
+DELETE {{host}}/api/v{{version}}/notification/audit-logs/older-than?cutoffTime={{cutoffTime}}
+Authorization: {{token}}

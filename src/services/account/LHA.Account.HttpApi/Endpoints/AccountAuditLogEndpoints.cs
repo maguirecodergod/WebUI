@@ -3,6 +3,7 @@ using LHA.Ddd.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc;
 using LHA.Account.Application.Contracts.Permissions;
 using LHA.Auditing;
 
@@ -21,7 +22,7 @@ public static class AccountAuditLogEndpoints
         // Hệ thống tự động nhận diện Host Admin tại DbContext level để ngắt tenant filter.
         group.MapGet("/", async (
             [AsParameters] GetAuditLogsInput input,
-            IAuditLogAppService service) =>
+            [FromServices] IAuditLogAppService service) =>
         {
             var result = await service.GetListAsync(input);
             return Results.Ok(ApiResponse<PagedResultDto<AuditLogDto>>.Ok(result));
@@ -32,7 +33,7 @@ public static class AccountAuditLogEndpoints
 
         group.MapGet("/{id:guid}", async (
             Guid id,
-            IAuditLogAppService service) =>
+            [FromServices] IAuditLogAppService service) =>
         {
             var result = await service.GetAsync(id);
             return Results.Ok(ApiResponse<AuditLogDto>.Ok(result));
@@ -43,7 +44,7 @@ public static class AccountAuditLogEndpoints
 
         group.MapGet("/actions", async (
             [AsParameters] GetAuditLogActionsInput input,
-            IAuditLogAppService service) =>
+            [FromServices] IAuditLogAppService service) =>
         {
             var result = await service.GetActionsAsync(input);
             return Results.Ok(ApiResponse<PagedResultDto<AuditLogActionDto>>.Ok(result));
@@ -54,7 +55,7 @@ public static class AccountAuditLogEndpoints
 
         group.MapGet("/entity-changes", async (
             [AsParameters] GetEntityChangesInput input,
-            IAuditLogAppService service) =>
+            [FromServices] IAuditLogAppService service) =>
         {
             var result = await service.GetEntityChangesAsync(input);
             return Results.Ok(ApiResponse<PagedResultDto<EntityChangeDto>>.Ok(result));
@@ -65,7 +66,7 @@ public static class AccountAuditLogEndpoints
 
         group.MapGet("/entity-property-changes", async (
             [AsParameters] GetEntityPropertyChangesInput input,
-            IAuditLogAppService service) =>
+            [FromServices] IAuditLogAppService service) =>
         {
             var result = await service.GetEntityPropertyChangesAsync(input);
             return Results.Ok(ApiResponse<PagedResultDto<EntityPropertyChangeDto>>.Ok(result));
@@ -76,7 +77,7 @@ public static class AccountAuditLogEndpoints
 
         group.MapDelete("/{id:guid}", async (
             Guid id,
-            IAuditLogAppService service) =>
+            [FromServices] IAuditLogAppService service) =>
         {
             await service.DeleteAsync(id);
             return Results.NoContent();
@@ -87,7 +88,7 @@ public static class AccountAuditLogEndpoints
 
         group.MapDelete("/older-than", async (
             DateTimeOffset cutoffTime,
-            IAuditLogAppService service) =>
+            [FromServices] IAuditLogAppService service) =>
         {
             var count = await service.DeleteOlderThanAsync(cutoffTime);
             return Results.Ok(ApiResponse<int>.Ok(count));

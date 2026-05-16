@@ -14,7 +14,7 @@ namespace LHA.AuditLog.EntityFrameworkCore;
 /// because audit logs are write-once, fire-and-forget records with no domain events.
 /// </para>
 /// </summary>
-public sealed class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
+public class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
 {
     // ── Data Audit (relational, structured) ────────────────────────────
     public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
@@ -39,6 +39,11 @@ public sealed class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
         : base(options, auditPropertySetter, currentTenant, currentUser)
     {
         _options = auditOptions;
+
+        if (_options?.Value.AutoTransactionBehavior.HasValue == true)
+        {
+            Database.AutoTransactionBehavior = _options.Value.AutoTransactionBehavior.Value;
+        }
     }
 
     /// <summary>

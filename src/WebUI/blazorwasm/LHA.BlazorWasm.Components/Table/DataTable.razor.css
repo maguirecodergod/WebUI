@@ -142,7 +142,7 @@
 .dt-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: fixed; /* Prevents overflow when width: 100% is used */
 }
 
 /* ── Headers ── */
@@ -160,6 +160,8 @@
     letter-spacing: 0.05em;
     border-bottom: 1px solid var(--dt-border);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ── Body ── */
@@ -169,6 +171,9 @@
     font-size: 0.84rem;
     color: var(--dt-text-primary);
     vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 ::deep .dt-row-hoverable:hover {
@@ -460,11 +465,21 @@
     border-radius: 4px;
 }
 
+.dt-table .dt-col-select {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 /* ── Expand Button ── */
-::deep .dt-col-expand {
-    width: 40px;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+.dt-table .dt-col-expand {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 ::deep .dt-expand-btn {

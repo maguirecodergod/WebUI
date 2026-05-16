@@ -30,6 +30,7 @@ public static class AuditLogEntityFrameworkCoreDependencyInjection
         {
             opt.Mode = builder.Mode;
             opt.ModelConfigurator = builder.ModelConfigurator;
+            opt.AutoTransactionBehavior = builder.AutoTransactionBehavior;
         });
 
         // Always register the single shared DbContext
@@ -61,6 +62,7 @@ public static class AuditLogEntityFrameworkCoreDependencyInjection
 public sealed class AuditLogEntityFrameworkCoreBuilder
 {
     public AuditLogStoreMode Mode { get; private set; } = AuditLogStoreMode.All;
+    public Microsoft.EntityFrameworkCore.AutoTransactionBehavior? AutoTransactionBehavior { get; private set; }
     internal Action<LhaDbContextOptions>? DbContextConfig { get; private set; }
     internal Action<Microsoft.EntityFrameworkCore.ModelBuilder>? ModelConfigurator { get; private set; }
 
@@ -115,6 +117,15 @@ public sealed class AuditLogEntityFrameworkCoreBuilder
         DbContextConfig = configureOptions;
         return this;
     }
+
+    /// <summary>
+    /// Sets the automatic transaction behavior for the Audit Log DbContext.
+    /// </summary>
+    public AuditLogEntityFrameworkCoreBuilder SetAutoTransactionBehavior(Microsoft.EntityFrameworkCore.AutoTransactionBehavior behavior)
+    {
+        AutoTransactionBehavior = behavior;
+        return this;
+    }
 }
 
 /// <summary>
@@ -140,4 +151,5 @@ public sealed class AuditLogEntityFrameworkCoreOptions
 {
     public AuditLogStoreMode Mode { get; set; } = AuditLogStoreMode.All;
     public Action<Microsoft.EntityFrameworkCore.ModelBuilder>? ModelConfigurator { get; set; }
+    public Microsoft.EntityFrameworkCore.AutoTransactionBehavior? AutoTransactionBehavior { get; set; }
 }
