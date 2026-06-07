@@ -1,11 +1,19 @@
 using LHA.Grpc.Contracts.Services.Account.V1;
 namespace LHA.Notification.HttpApi.Host.BackgroundJobs;
 
+/// <summary>
+/// Background service to register Notification permissions with Account Service (gRPC).
+/// </summary>
 public class PermissionRegistrationHostedService : IHostedService
 {
     private readonly PermissionRegistrationService.PermissionRegistrationServiceClient _client;
     private readonly ILogger<PermissionRegistrationHostedService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PermissionRegistrationHostedService"/> class.
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="logger"></param>
     public PermissionRegistrationHostedService(
         PermissionRegistrationService.PermissionRegistrationServiceClient client,
         ILogger<PermissionRegistrationHostedService> logger)
@@ -14,6 +22,11 @@ public class PermissionRegistrationHostedService : IHostedService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Registers the Notification permissions with Account Service (gRPC).
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Registering Notification permissions with Account Service (gRPC)...");
@@ -55,6 +68,11 @@ public class PermissionRegistrationHostedService : IHostedService
         }
     }
 
+    /// <summary>
+    /// Stops the background service.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     private static RegisterPermissionsRequest BuildPermissionRegistrationRequest()
