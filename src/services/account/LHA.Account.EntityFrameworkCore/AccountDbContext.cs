@@ -8,6 +8,8 @@ using LHA.TenantManagement.EntityFrameworkCore;
 using LHA.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using LHA.AuditLog.EntityFrameworkCore.PostgreSQL;
+using LHA.AuditLog.EntityFrameworkCore.Contracts.Options;
+using LHA.AuditLog.Domain.Shared;
 
 namespace LHA.Account.EntityFrameworkCore;
 
@@ -64,7 +66,7 @@ public sealed class AccountDbContext
         modelBuilder.ConfigureTenantManagement();
 
         // 3. Audit Log Module
-        var auditMode = _auditOptions?.Value.Mode ?? AuditLogStoreMode.All;
+        var auditMode = _auditOptions?.Value.Mode ?? CAuditLogStoreMode.All;
         modelBuilder.ConfigureAuditLogPostgreSql(auditMode); 
 
         // 4. Permission Management Module

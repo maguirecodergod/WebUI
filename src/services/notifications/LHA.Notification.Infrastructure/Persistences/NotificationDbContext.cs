@@ -1,6 +1,7 @@
 using LHA.Auditing;
 using LHA.AuditLog.Domain;
-using LHA.AuditLog.EntityFrameworkCore;
+using LHA.AuditLog.Domain.Shared;
+using LHA.AuditLog.EntityFrameworkCore.Contracts.Options;
 using LHA.AuditLog.EntityFrameworkCore.MongoDB;
 using LHA.Core.Users;
 using LHA.EntityFrameworkCore;
@@ -56,7 +57,7 @@ public sealed class NotificationDbContext
         // --- Module Configurations (Composition) ---
         
         // 1. Audit Log Module
-        var auditMode = _auditOptions?.Value.Mode ?? AuditLogStoreMode.All;
+        var auditMode = _auditOptions?.Value.Mode ?? CAuditLogStoreMode.All;
         modelBuilder.ConfigureAuditLogMongoDb(auditMode);
 
         // 2. Notification Module

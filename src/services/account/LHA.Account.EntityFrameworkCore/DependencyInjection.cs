@@ -9,8 +9,7 @@ using LHA.TenantManagement.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using LHA.Account.Domain.Repositories;
-using LHA.Account.EntityFrameworkCore.Repositories;
+
 
 namespace LHA.Account.EntityFrameworkCore;
 
@@ -61,9 +60,8 @@ public static class DependencyInjection
                 ctx.DbContextOptions.UseNpgsql(connectionString));
         });
 
-        services.AddAuditLogEntityFrameworkCore(builder =>
+        services.AddAuditLogEntityFrameworkCorePostgreSQL(builder =>
         {
-            builder.UsePostgreSql();
             builder.UseAll(); 
 
             builder.ConfigureDbContext(options =>
@@ -87,11 +85,7 @@ public static class DependencyInjection
         services.Replace(ServiceDescriptor.Scoped(typeof(IOutboxStore), typeof(EfCoreOutboxStore<AccountDbContext>)));
         services.Replace(ServiceDescriptor.Scoped(typeof(IInboxStore), typeof(EfCoreInboxStore<AccountDbContext>)));
 
-        // 3) Register Account specialized Audit Log Repositories
-        services.AddScoped<Domain.Repositories.IAuditLogRepository, Repositories.EfCoreAuditLogRepository>();
-        services.AddScoped<IAuditLogActionRepository, EfCoreAuditLogActionRepository>();
-        services.AddScoped<IEntityChangeRepository, EfCoreEntityChangeRepository>();
-        services.AddScoped<IEntityPropertyChangeRepository, EfCoreEntityPropertyChangeRepository>();
+
 
         // 4) Register the Tenant Provisioning Migrator for AccountDbContext
         services.AddTransient<LHA.MultiTenancy.Provisioning.ITenantDatabaseMigrator, LHA.EntityFrameworkCore.Provisioning.EfCoreTenantDatabaseMigrator<AccountDbContext>>();

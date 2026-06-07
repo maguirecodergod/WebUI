@@ -12,12 +12,10 @@ public sealed class MongoDbAuditLogPipelineConfiguration : IEntityTypeConfigurat
         b.ToCollection(AuditLogDbConsts.AuditLogPipeline);
         b.HasKey(e => e.Id);
         
-        b.Property(e => e.Id).HasMaxLength(26);
         b.Property(e => e.ServiceName).HasMaxLength(256);
         b.Property(e => e.InstanceId).HasMaxLength(256);
         b.Property(e => e.ActionName).HasMaxLength(512);
         b.Property(e => e.UserId).HasMaxLength(40);
-        b.Property(e => e.TenantId).HasMaxLength(40);
         b.Property(e => e.UserName).HasMaxLength(256);
         b.Property(e => e.TraceId).HasMaxLength(64);
         b.Property(e => e.SpanId).HasMaxLength(64);

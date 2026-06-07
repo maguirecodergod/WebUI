@@ -117,7 +117,8 @@ public class PermissionRegistrationHostedService : IHostedService
 
             // AuditLogs
             new PermissionDefinitionDto { Name = NotificationPermissions.AuditLogs.Default, DisplayName = NotificationPermissions.AuditLogs.L.Default, GroupName = NotificationPermissions.GroupName },
-            new PermissionDefinitionDto { Name = NotificationPermissions.AuditLogs.Read, DisplayName = NotificationPermissions.AuditLogs.L.Read, GroupName = NotificationPermissions.GroupName }
+            new PermissionDefinitionDto { Name = NotificationPermissions.AuditLogs.Read, DisplayName = NotificationPermissions.AuditLogs.L.Read, GroupName = NotificationPermissions.GroupName },
+            new PermissionDefinitionDto { Name = NotificationPermissions.AuditLogs.Delete, DisplayName = NotificationPermissions.AuditLogs.L.Delete, GroupName = NotificationPermissions.GroupName }
         ]);
 
         return request;

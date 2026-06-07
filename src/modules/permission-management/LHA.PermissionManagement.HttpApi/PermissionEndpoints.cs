@@ -36,7 +36,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<PagedResultDto<PermissionDefinitionDto>>.Ok(result));
         })
         .RequireAuthorization(P.Definitions.Read)
-        .WithName("GetPermissionDefinitions");
+        .WithName("GetPermissionDefinitions")
+        .Produces<ApiResponse<PagedResultDto<PermissionDefinitionDto>>>();
 
         group.MapGet("/{id:guid}", async (
             Guid id,
@@ -46,7 +47,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<PermissionDefinitionDto>.Ok(dto));
         })
         .RequireAuthorization(P.Definitions.Read)
-        .WithName("GetPermissionDefinition");
+        .WithName("GetPermissionDefinition")
+        .Produces<ApiResponse<PermissionDefinitionDto>>();
 
         group.MapGet("/by-name/{name}", async (
             string name,
@@ -59,7 +61,8 @@ public static class PermissionEndpoints
                     404, "PERMISSION_NOT_FOUND", $"Permission '{name}' not found."));
         })
         .RequireAuthorization(P.Definitions.Read)
-        .WithName("FindPermissionDefinitionByName");
+        .WithName("FindPermissionDefinitionByName")
+        .Produces<ApiResponse<PermissionDefinitionDto>>();
 
         group.MapPost("/register", async (
             List<CreatePermissionDefinitionInput> inputs,
@@ -69,7 +72,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<List<PermissionDefinitionDto>>.Ok(dtos));
         })
         .RequireAuthorization(P.Definitions.Manage)
-        .WithName("RegisterPermissionDefinitions");
+        .WithName("RegisterPermissionDefinitions")
+        .Produces<ApiResponse<List<PermissionDefinitionDto>>>();
 
         group.MapDelete("/{id:guid}", async (
             Guid id,
@@ -79,7 +83,8 @@ public static class PermissionEndpoints
             return Results.NoContent();
         })
         .RequireAuthorization(P.Definitions.Manage)
-        .WithName("DeletePermissionDefinition");
+        .WithName("DeletePermissionDefinition")
+        .Produces(204);
     }
 
     // ── Permission Groups ────────────────────────────────────────
@@ -98,7 +103,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<PagedResultDto<PermissionGroupDto>>.Ok(result));
         })
         .RequireAuthorization(P.Groups.Read)
-        .WithName("GetPermissionGroups");
+        .WithName("GetPermissionGroups")
+        .Produces<ApiResponse<PagedResultDto<PermissionGroupDto>>>();
 
         group.MapGet("/{id:guid}", async (
             Guid id,
@@ -108,7 +114,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<PermissionGroupDto>.Ok(dto));
         })
         .RequireAuthorization(P.Groups.Read)
-        .WithName("GetPermissionGroup");
+        .WithName("GetPermissionGroup")
+        .Produces<ApiResponse<PermissionGroupDto>>();
 
         group.MapPost("/", async (
             CreatePermissionGroupInput input,
@@ -119,7 +126,8 @@ public static class PermissionEndpoints
                 ApiResponse<PermissionGroupDto>.Ok(dto, 201));
         })
         .RequireAuthorization(P.Groups.Manage)
-        .WithName("CreatePermissionGroup");
+        .WithName("CreatePermissionGroup")
+        .Produces<ApiResponse<PermissionGroupDto>>(201);
 
         group.MapPut("/{id:guid}", async (
             Guid id,
@@ -130,7 +138,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<PermissionGroupDto>.Ok(dto));
         })
         .RequireAuthorization(P.Groups.Manage)
-        .WithName("UpdatePermissionGroup");
+        .WithName("UpdatePermissionGroup")
+        .Produces<ApiResponse<PermissionGroupDto>>();
 
         group.MapDelete("/{id:guid}", async (
             Guid id,
@@ -140,7 +149,8 @@ public static class PermissionEndpoints
             return Results.NoContent();
         })
         .RequireAuthorization(P.Groups.Manage)
-        .WithName("DeletePermissionGroup");
+        .WithName("DeletePermissionGroup")
+        .Produces(204);
     }
 
     // ── Permission Templates ─────────────────────────────────────
@@ -159,7 +169,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<PagedResultDto<PermissionTemplateDto>>.Ok(result));
         })
         .RequireAuthorization(P.Templates.Read)
-        .WithName("GetPermissionTemplates");
+        .WithName("GetPermissionTemplates")
+        .Produces<ApiResponse<PagedResultDto<PermissionTemplateDto>>>();
 
         group.MapGet("/{id:guid}", async (
             Guid id,
@@ -169,7 +180,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<PermissionTemplateDto>.Ok(dto));
         })
         .RequireAuthorization(P.Templates.Read)
-        .WithName("GetPermissionTemplate");
+        .WithName("GetPermissionTemplate")
+        .Produces<ApiResponse<PermissionTemplateDto>>();
 
         group.MapPost("/", async (
             CreatePermissionTemplateInput input,
@@ -180,7 +192,8 @@ public static class PermissionEndpoints
                 ApiResponse<PermissionTemplateDto>.Ok(dto, 201));
         })
         .RequireAuthorization(P.Templates.Manage)
-        .WithName("CreatePermissionTemplate");
+        .WithName("CreatePermissionTemplate")
+        .Produces<ApiResponse<PermissionTemplateDto>>(201);
 
         group.MapPut("/{id:guid}", async (
             Guid id,
@@ -191,7 +204,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<PermissionTemplateDto>.Ok(dto));
         })
         .RequireAuthorization(P.Templates.Manage)
-        .WithName("UpdatePermissionTemplate");
+        .WithName("UpdatePermissionTemplate")
+        .Produces<ApiResponse<PermissionTemplateDto>>();
 
         group.MapDelete("/{id:guid}", async (
             Guid id,
@@ -201,7 +215,8 @@ public static class PermissionEndpoints
             return Results.NoContent();
         })
         .RequireAuthorization(P.Templates.Manage)
-        .WithName("DeletePermissionTemplate");
+        .WithName("DeletePermissionTemplate")
+        .Produces(204);
     }
 
     // ── Permission Grants ────────────────────────────────────────
@@ -220,7 +235,8 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<List<PermissionGrantDto>>.Ok(result));
         })
         .RequireAuthorization(P.Grants.Read)
-        .WithName("GetPermissionGrants");
+        .WithName("GetPermissionGrants")
+        .Produces<ApiResponse<List<PermissionGrantDto>>>();
 
         group.MapPost("/grant", async (
             GrantPermissionInput input,
@@ -230,7 +246,8 @@ public static class PermissionEndpoints
             return Results.NoContent();
         })
         .RequireAuthorization(P.Grants.Manage)
-        .WithName("GrantPermission");
+        .WithName("GrantPermission")
+        .Produces(204);
 
         group.MapPost("/revoke", async (
             RevokePermissionInput input,
@@ -240,7 +257,8 @@ public static class PermissionEndpoints
             return Results.NoContent();
         })
         .RequireAuthorization(P.Grants.Manage)
-        .WithName("RevokePermission");
+        .WithName("RevokePermission")
+        .Produces(204);
 
         group.MapGet("/check", async (
             string permissionName,
@@ -252,6 +270,7 @@ public static class PermissionEndpoints
             return Results.Ok(ApiResponse<bool>.Ok(isGranted));
         })
         .RequireAuthorization(P.Grants.Read)
-        .WithName("CheckPermission");
+        .WithName("CheckPermission")
+        .Produces<ApiResponse<bool>>();
     }
 }

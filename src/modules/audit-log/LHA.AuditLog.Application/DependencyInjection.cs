@@ -14,7 +14,7 @@ public static class DependencyInjection
     /// </summary>
     public static IServiceCollection AddAuditLogApplication(this IServiceCollection services)
     {
-        services.TryAddScoped<LHA.AuditLog.Application.Contracts.IAuditLogAppService, AuditLogAppService>();
+        services.TryAddScoped<IAuditLogAppService, AuditLogAppService>();
 
         return services;
     }

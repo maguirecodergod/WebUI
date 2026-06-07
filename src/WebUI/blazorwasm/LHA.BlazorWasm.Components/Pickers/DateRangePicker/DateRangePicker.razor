@@ -34,7 +34,10 @@
                 <CalendarView State="LeftState" 
                                SelectedDate="RangeConverter.MapRange(_tempValue).Start" 
                                Range="ConvertToLegacyRange(_tempValue)"
+                               PreviewRange="GetPreviewRange()"
                                OnDateSelected="HandleDateSelected"
+                               OnDateHovered="HandleDateHovered"
+                               OnDateHoverEnded="HandleDateHoverEnded"
                                Min="Min"
                                Max="Max"
                                DisabledDateFunc="DisabledDateFunc" />
@@ -44,7 +47,10 @@
                 <CalendarView State="RightState" 
                                SelectedDate="RangeConverter.MapRange(_tempValue).End" 
                                Range="ConvertToLegacyRange(_tempValue)"
+                               PreviewRange="GetPreviewRange()"
                                OnDateSelected="HandleDateSelected"
+                               OnDateHovered="HandleDateHovered"
+                               OnDateHoverEnded="HandleDateHoverEnded"
                                Min="Min"
                                Max="Max"
                                DisabledDateFunc="DisabledDateFunc" />

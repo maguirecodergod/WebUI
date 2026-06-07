@@ -35,6 +35,8 @@
                 <div class="datetime-split">
                     <CalendarView State="StartState" SelectedDate="RangeConverter.MapRange(_tempValue).Start"
                                   Range="ConvertToLegacyRange(_tempValue)" OnDateSelected="(d) => HandleDateSelected(d, true)"
+                                  PreviewRange="GetPreviewRange()" OnDateHovered="HandleDateHovered"
+                                  OnDateHoverEnded="HandleDateHoverEnded"
                                   Min="Min" Max="Max" DisabledDateFunc="DisabledDateFunc" />
 
                     <div class="split-divider"></div>
@@ -51,6 +53,8 @@
                 <div class="datetime-split">
                     <CalendarView State="EndState" SelectedDate="RangeConverter.MapRange(_tempValue).End"
                                   Range="ConvertToLegacyRange(_tempValue)" OnDateSelected="(d) => HandleDateSelected(d, false)"
+                                  PreviewRange="GetPreviewRange()" OnDateHovered="HandleDateHovered"
+                                  OnDateHoverEnded="HandleDateHoverEnded"
                                   Min="Min" Max="Max" DisabledDateFunc="DisabledDateFunc" />
 
                     <div class="split-divider"></div>

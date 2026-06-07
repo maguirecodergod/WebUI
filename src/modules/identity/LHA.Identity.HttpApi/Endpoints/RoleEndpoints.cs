@@ -1,5 +1,6 @@
 using LHA.Ddd.Application;
 using LHA.Identity.Application.Contracts;
+using LHA.Shared.Contracts.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -29,7 +30,8 @@ public static class RoleEndpoints
         })
         .RequireAuthorization(P.Roles.Read)
         .WithName("GetIdentityRoles")
-        .WithSummary("Returns a filtered, paged list of roles.");
+        .WithSummary("Returns a filtered, paged list of roles.")
+        .Produces<ApiResponse<PagedResultDto<IdentityRoleDto>>>();
 
         // ── All (no paging) ──────────────────────────────────────────
         group.MapGet("/all", async (
@@ -40,7 +42,8 @@ public static class RoleEndpoints
         })
         .RequireAuthorization(P.Roles.Read)
         .WithName("GetAllIdentityRoles")
-        .WithSummary("Returns all roles (no paging).");
+        .WithSummary("Returns all roles (no paging).")
+        .Produces<ApiResponse<List<IdentityRoleDto>>>();
 
         // ── Get by ID ────────────────────────────────────────────────
         group.MapGet("/{id:guid}", async (
@@ -52,7 +55,8 @@ public static class RoleEndpoints
         })
         .RequireAuthorization(P.Roles.Read)
         .WithName("GetIdentityRole")
-        .WithSummary("Gets a role by ID.");
+        .WithSummary("Gets a role by ID.")
+        .Produces<ApiResponse<IdentityRoleDto>>();
 
         // ── Create ───────────────────────────────────────────────────
         group.MapPost("/", async (
@@ -65,7 +69,8 @@ public static class RoleEndpoints
         })
         .RequireAuthorization(P.Roles.Create)
         .WithName("CreateIdentityRole")
-        .WithSummary("Creates a new role.");
+        .WithSummary("Creates a new role.")
+        .Produces<ApiResponse<IdentityRoleDto>>(201);
 
         // ── Update ───────────────────────────────────────────────────
         group.MapPut("/{id:guid}", async (
@@ -78,7 +83,8 @@ public static class RoleEndpoints
         })
         .RequireAuthorization(P.Roles.Update)
         .WithName("UpdateIdentityRole")
-        .WithSummary("Updates a role. Requires concurrency stamp.");
+        .WithSummary("Updates a role. Requires concurrency stamp.")
+        .Produces<ApiResponse<IdentityRoleDto>>();
 
         // ── Delete ───────────────────────────────────────────────────
         group.MapDelete("/{id:guid}", async (
@@ -90,7 +96,8 @@ public static class RoleEndpoints
         })
         .RequireAuthorization(P.Roles.Delete)
         .WithName("DeleteIdentityRole")
-        .WithSummary("Deletes a role (non-static only).");
+        .WithSummary("Deletes a role (non-static only).")
+        .Produces(204);
 
         // ── Activation ───────────────────────────────────────────────
         group.MapPost("/{id:guid}/activate", async (
@@ -102,7 +109,8 @@ public static class RoleEndpoints
         })
         .RequireAuthorization(P.Roles.Update)
         .WithName("ActivateRole")
-        .WithSummary("Activates a role.");
+        .WithSummary("Activates a role.")
+        .Produces<ApiResponse<IdentityRoleDto>>();
 
         group.MapPost("/{id:guid}/deactivate", async (
             Guid id,
@@ -113,7 +121,8 @@ public static class RoleEndpoints
         })
         .RequireAuthorization(P.Roles.Update)
         .WithName("DeactivateRole")
-        .WithSummary("Deactivates a role.");
+        .WithSummary("Deactivates a role.")
+        .Produces<ApiResponse<IdentityRoleDto>>();
 
         return endpoints;
     }

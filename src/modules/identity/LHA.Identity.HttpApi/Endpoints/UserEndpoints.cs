@@ -1,5 +1,6 @@
 using LHA.Ddd.Application;
 using LHA.Identity.Application.Contracts;
+using LHA.Shared.Contracts.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -29,7 +30,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Read)
         .WithName("GetIdentityUsers")
-        .WithSummary("Returns a filtered, paged list of users.");
+        .WithSummary("Returns a filtered, paged list of users.")
+        .Produces<ApiResponse<PagedResultDto<IdentityUserDto>>>();
 
         // ── Get by ID ────────────────────────────────────────────────
         group.MapGet("/{id:guid}", async (
@@ -41,7 +43,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Read)
         .WithName("GetIdentityUser")
-        .WithSummary("Gets a user by ID.");
+        .WithSummary("Gets a user by ID.")
+        .Produces<ApiResponse<IdentityUserDto>>();
 
         // ── Find by username ─────────────────────────────────────────
         group.MapGet("/by-username/{userName}", async (
@@ -56,7 +59,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Read)
         .WithName("FindUserByUserName")
-        .WithSummary("Finds a user by user name.");
+        .WithSummary("Finds a user by user name.")
+        .Produces<ApiResponse<IdentityUserDto>>();
 
         // ── Find by email ────────────────────────────────────────────
         group.MapGet("/by-email/{email}", async (
@@ -71,7 +75,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Read)
         .WithName("FindUserByEmail")
-        .WithSummary("Finds a user by email.");
+        .WithSummary("Finds a user by email.")
+        .Produces<ApiResponse<IdentityUserDto>>();
 
         // ── Create ───────────────────────────────────────────────────
         group.MapPost("/", async (
@@ -84,7 +89,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Create)
         .WithName("CreateIdentityUser")
-        .WithSummary("Creates a new user.");
+        .WithSummary("Creates a new user.")
+        .Produces<ApiResponse<IdentityUserDto>>(201);
 
         // ── Update ───────────────────────────────────────────────────
         group.MapPut("/{id:guid}", async (
@@ -97,7 +103,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Update)
         .WithName("UpdateIdentityUser")
-        .WithSummary("Updates a user. Requires concurrency stamp.");
+        .WithSummary("Updates a user. Requires concurrency stamp.")
+        .Produces<ApiResponse<IdentityUserDto>>();
 
         // ── Delete ───────────────────────────────────────────────────
         group.MapDelete("/{id:guid}", async (
@@ -109,7 +116,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Delete)
         .WithName("DeleteIdentityUser")
-        .WithSummary("Soft-deletes a user.");
+        .WithSummary("Soft-deletes a user.")
+        .Produces(204);
 
         // ── Roles ────────────────────────────────────────────────────
         group.MapGet("/{id:guid}/roles", async (
@@ -121,7 +129,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Read)
         .WithName("GetUserRoles")
-        .WithSummary("Gets roles assigned to a user.");
+        .WithSummary("Gets roles assigned to a user.")
+        .Produces<ApiResponse<List<IdentityRoleDto>>>();
 
         group.MapPut("/{id:guid}/roles", async (
             Guid id,
@@ -133,7 +142,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Update)
         .WithName("UpdateUserRoles")
-        .WithSummary("Updates the roles assigned to a user.");
+        .WithSummary("Updates the roles assigned to a user.")
+        .Produces<ApiResponse<IdentityUserDto>>();
 
         // ── Password ─────────────────────────────────────────────────
         group.MapPost("/{id:guid}/change-password", async (
@@ -146,7 +156,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Update)
         .WithName("ChangeUserPassword")
-        .WithSummary("Changes a user's password.");
+        .WithSummary("Changes a user's password.")
+        .Produces(204);
 
         // ── Activation ───────────────────────────────────────────────
         group.MapPost("/{id:guid}/activate", async (
@@ -158,7 +169,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Update)
         .WithName("ActivateUser")
-        .WithSummary("Activates a user.");
+        .WithSummary("Activates a user.")
+        .Produces<ApiResponse<IdentityUserDto>>();
 
         group.MapPost("/{id:guid}/deactivate", async (
             Guid id,
@@ -169,7 +181,8 @@ public static class UserEndpoints
         })
         .RequireAuthorization(P.Users.Update)
         .WithName("DeactivateUser")
-        .WithSummary("Deactivates a user.");
+        .WithSummary("Deactivates a user.")
+        .Produces<ApiResponse<IdentityUserDto>>();
 
         return endpoints;
     }

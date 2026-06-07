@@ -390,7 +390,7 @@
                                                         <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.ApplicationName")" Width="140px" Sortable
                                                                          Filterable Property="@(x => x.ApplicationName)">
                                                             <FilterTemplate>
-                                                                <CInput TValue="string" @bind-Value="_input.ApplicationName"
+                                                                <CInput TValue="string" @bind-Value="_filter.ApplicationName"
                                                                         Placeholder="@L("AuditLog.ApplicationName")" Clearable Size="CInputSize.Small" />
                                                             </FilterTemplate>
                                                         </DataTableColumn>
@@ -404,7 +404,7 @@
                                                                 </StatusBadge>
                                                             </CellTemplate>
                                                             <FilterTemplate>
-                                                                <Select TValue="string" @bind-Value="_input.HttpMethod" Options="_httpMethodOptions"
+                                                                <Select TValue="string" @bind-Value="_filter.HttpMethod" Options="_httpMethodOptions"
                                                                         Placeholder="@L("Common.All")" Size="CInputSize.Small" ShowClear />
                                                             </FilterTemplate>
                                                         </DataTableColumn>
@@ -417,7 +417,7 @@
                                                                 </StatusBadge>
                                                             </CellTemplate>
                                                             <FilterTemplate>
-                                                                <Select TValue="CRequestType?" @bind-Value="_input.RequestType"
+                                                                <Select TValue="CRequestType?" @bind-Value="_filter.RequestType"
                                                                         Options="_requestTypeOptions" Placeholder="@L("Common.All")" Size="CInputSize.Small"
                                                                         ShowClear />
                                                             </FilterTemplate>
@@ -426,7 +426,7 @@
                                                         <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.Url")" Width="auto" Sortable Filterable
                                                                          Property="@(x => x.Url)">
                                                             <FilterTemplate>
-                                                                <CInput TValue="string" @bind-Value="_input.Url" Placeholder="@L("AuditLog.Url")" Clearable
+                                                                <CInput TValue="string" @bind-Value="_filter.Url" Placeholder="@L("AuditLog.Url")" Clearable
                                                                         Size="CInputSize.Small" />
                                                             </FilterTemplate>
                                                             <CellTemplate>
@@ -460,7 +460,7 @@
                                                             <DataTableColumn TItem="AuditLogDto" Title="@L("AuditLog.User")" Width="180px" Sortable Filterable
                                                                              Property="@(x => x.UserName)">
                                                                  <FilterTemplate>
-                                                                    <CInput TValue="string" @bind-Value="_input.UserName" Placeholder="@L("AuditLog.UserName")"
+                                                                    <CInput TValue="string" @bind-Value="_filter.UserName" Placeholder="@L("AuditLog.UserName")"
                                                                             Clearable Size="CInputSize.Small" />
                                                                 </FilterTemplate>
                                                                 <CellTemplate>
@@ -480,11 +480,11 @@
                                                                     <FilterTemplate>
                                                                         <div class="row g-2">
                                                                             <div class="col-6">
-                                                                                <CInput TValue="int?" @bind-Value="_input.MinStatusCode" Type="number"
+                                                                                <CInput TValue="int?" @bind-Value="_filter.MinStatusCode" Type="number"
                                                                                         Placeholder="Min" Size="CInputSize.Small" />
                                                                             </div>
                                                                             <div class="col-6">
-                                                                                <CInput TValue="int?" @bind-Value="_input.MaxStatusCode" Type="number"
+                                                                                <CInput TValue="int?" @bind-Value="_filter.MaxStatusCode" Type="number"
                                                                                         Placeholder="Max" Size="CInputSize.Small" />
                                                                             </div>
                                                                         </div>
@@ -502,11 +502,11 @@
                                                                     <FilterTemplate>
                                                                         <div class="row g-2">
                                                                             <div class="col-6">
-                                                                                <CInput TValue="int?" @bind-Value="_input.MinExecutionDuration" Placeholder="Min"
+                                                                                <CInput TValue="int?" @bind-Value="_filter.MinExecutionDuration" Placeholder="Min"
                                                                                         Size="CInputSize.Small" />
                                                                             </div>
                                                                             <div class="col-6">
-                                                                                <CInput TValue="int?" @bind-Value="_input.MaxExecutionDuration" Type="number"
+                                                                                <CInput TValue="int?" @bind-Value="_filter.MaxExecutionDuration" Type="number"
                                                                                         Placeholder="Max" Size="CInputSize.Small" />
                                                                             </div>
                                                                         </div>
@@ -522,13 +522,13 @@
                                                                     <FilterTemplate>
                                                                         <div class="d-flex flex-column gap-3 mt-1">
                                                                             <FormField Label="@L("AuditLog.CorrelationId")">
-                                                                                <CInput TValue="string" @bind-Value="_input.CorrelationId"
+                                                                                <CInput TValue="string" @bind-Value="_filter.CorrelationId"
                                                                                         Placeholder="@L("AuditLog.CorrelationId")" Clearable Size="CInputSize.Small" />
                                                                             </FormField>
                                                                             <div class="d-flex align-items-center justify-content-between px-1">
                                                                                 <span class="small text-muted">@L("AuditLog.OnlyExceptions")</span>
-                                                                                <Switch Value="_input.HasException ?? false"
-                                                                                        ValueChanged="@(v => _input.HasException = v)" Size="CSwitchSize.Small" />
+                                                                                <Switch Value="_filter.HasException ?? false"
+                                                                                        ValueChanged="@(v => _filter.HasException = v)" Size="CSwitchSize.Small" />
                                                                             </div>
                                                                         </div>
                                                                     </FilterTemplate>

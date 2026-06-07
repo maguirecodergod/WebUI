@@ -71,7 +71,7 @@ builder.Services.AddLHAHangfireScheduling(options =>
 
 // ─── AUDIT LOG PRODUCER ───
 // Use AuditingMode to control which audit producers run in this App.
-// Make sure it matches the storage setup (AuditLogStoreMode) in Account.EntityFrameworkCore!
+// Make sure it matches the storage setup (CAuditLogStoreMode) in Account.EntityFrameworkCore!
 builder.Services.AddLHAAuditLogging(
     mode: CAuditingMode.All,
     configureDataAudit: options =>

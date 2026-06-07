@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LHA.Tax.Domain\LHA.Tax.Domain.csproj" />
+    <ProjectReference Include="..\LHA.Tax.Application.Contracts\LHA.Tax.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EventBus\LHA.EventBus.Abstraction\LHA.EventBus.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\Caching\LHA.Caching.StackExchangeRedis\LHA.Caching.StackExchangeRedis.csproj" />
+    <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.EntityFrameworkCore.PostgreSQL\LHA.AuditLog.EntityFrameworkCore.PostgreSQL.csproj" />
+  </ItemGroup>
+
+</Project>

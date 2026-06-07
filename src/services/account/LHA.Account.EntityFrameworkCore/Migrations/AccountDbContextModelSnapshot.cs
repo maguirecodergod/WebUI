@@ -17,7 +17,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.6")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -163,9 +163,9 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
 
             modelBuilder.Entity("LHA.AuditLog.Domain.AuditLogPipelineEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(26)
-                        .HasColumnType("character varying(26)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ActionName")
                         .HasMaxLength(512)
@@ -229,9 +229,8 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.Property<string>("Tags")
                         .HasColumnType("text");
 
-                    b.Property<string>("TenantId")
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)");
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("Timestamp")
                         .HasColumnType("timestamp with time zone");

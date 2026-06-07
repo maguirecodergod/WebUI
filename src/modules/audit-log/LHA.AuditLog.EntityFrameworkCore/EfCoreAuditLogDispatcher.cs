@@ -32,9 +32,31 @@ internal sealed class EfCoreAuditLogDispatcher : IAuditLogDispatcher
 
         foreach (var record in records)
         {
-            entities.Add(new AuditLogPipelineEntity
+            Guid recordGuid = Guid.Empty;
+            if (System.Guid.TryParse(record.Id, out var parsedGuid))
             {
-                Id = record.Id,
+                recordGuid = parsedGuid;
+            }
+            else
+            {
+                try
+                {
+                    recordGuid = System.Ulid.Parse(record.Id).ToGuid();
+                }
+                catch
+                {
+                    recordGuid = System.Guid.NewGuid();
+                }
+            }
+
+            Guid? tenantGuid = null;
+            if (!string.IsNullOrEmpty(record.TenantId) && System.Guid.TryParse(record.TenantId, out var tId))
+            {
+                tenantGuid = tId;
+            }
+
+            entities.Add(new AuditLogPipelineEntity(recordGuid)
+            {
                 Timestamp = record.Timestamp,
                 DurationMs = record.DurationMs,
                 ServiceName = record.ServiceName,
@@ -43,7 +65,7 @@ internal sealed class EfCoreAuditLogDispatcher : IAuditLogDispatcher
                 ActionType = (byte)record.ActionType,
                 RequestType = (byte)record.RequestType,
                 UserId = record.UserId,
-                TenantId = record.TenantId,
+                TenantId = tenantGuid,
                 UserName = record.UserName,
                 Roles = record.Roles,
                 TraceId = record.TraceId,
@@ -62,7 +84,7 @@ internal sealed class EfCoreAuditLogDispatcher : IAuditLogDispatcher
             });
         }
 
-        dbContext.AuditLogPipeline.AddRange(entities);
+        dbContext.AuditLogPipelines.AddRange(entities);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         _logger.LogDebug("Dispatched {Count} pipeline audit logs to database.", records.Count);

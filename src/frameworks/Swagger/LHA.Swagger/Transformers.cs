@@ -1,4 +1,7 @@
 using System.Text.Json.Nodes;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
@@ -282,5 +285,308 @@ internal sealed class LhaOperationSecurityTransformer(
         operation.Responses.TryAdd("403", new OpenApiResponse { Description = "Forbidden" });
 
         return Task.CompletedTask;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// 4. Enriches schemas with XML comments and enum names
+// ─────────────────────────────────────────────────────────────────────
+
+/// <summary>
+/// Adds XML documentation comments to generated schemas and exposes enum names
+/// even when enum members do not have XML comments.
+/// </summary>
+internal sealed partial class LhaSchemaDocumentationTransformer : IOpenApiSchemaTransformer
+{
+    internal static readonly object CacheLock = new();
+    internal static readonly Dictionary<Assembly, Dictionary<string, string>> XmlDocsByAssembly = [];
+
+    public Task TransformAsync(
+        OpenApiSchema schema,
+        OpenApiSchemaTransformerContext context,
+        CancellationToken cancellationToken)
+    {
+        ApplyTypeSummary(schema, context);
+        ApplyPropertySummary(schema, context);
+        ApplyParameterSummary(schema, context);
+        ApplyEnumDocumentation(schema, context);
+
+        return Task.CompletedTask;
+    }
+
+    private static void ApplyTypeSummary(
+        OpenApiSchema schema,
+        OpenApiSchemaTransformerContext context)
+    {
+        if (!string.IsNullOrWhiteSpace(schema.Description))
+            return;
+
+        var type = Nullable.GetUnderlyingType(context.JsonTypeInfo.Type) ?? context.JsonTypeInfo.Type;
+        if (TryGetXmlSummary(type, out var summary))
+        {
+            schema.Description = summary;
+        }
+    }
+
+    private static void ApplyPropertySummary(
+        OpenApiSchema schema,
+        OpenApiSchemaTransformerContext context)
+    {
+        if (!string.IsNullOrWhiteSpace(schema.Description))
+            return;
+
+        PropertyInfo? property = context.JsonPropertyInfo?.AttributeProvider as PropertyInfo;
+
+        // Fallback: resolve via reflection when AttributeProvider is null
+        // (source-generated JSON or certain .NET 10+ scenarios)
+        if (property is null && context.JsonPropertyInfo is not null)
+        {
+            var declaringType = Nullable.GetUnderlyingType(context.JsonTypeInfo.Type)
+                                ?? context.JsonTypeInfo.Type;
+            property = declaringType.GetProperty(context.JsonPropertyInfo.Name);
+        }
+
+        if (property is null)
+            return;
+
+        if (TryGetXmlSummary(property, out var summary))
+        {
+            schema.Description = summary;
+        }
+    }
+
+    private static void ApplyParameterSummary(
+        OpenApiSchema schema,
+        OpenApiSchemaTransformerContext context)
+    {
+        if (!string.IsNullOrWhiteSpace(schema.Description))
+            return;
+
+        var description = context.ParameterDescription?.ModelMetadata?.Description;
+        if (!string.IsNullOrWhiteSpace(description))
+        {
+            schema.Description = NormalizeXmlText(description);
+        }
+    }
+
+    private static void ApplyEnumDocumentation(
+        OpenApiSchema schema,
+        OpenApiSchemaTransformerContext context)
+    {
+        var type = Nullable.GetUnderlyingType(context.JsonTypeInfo.Type) ?? context.JsonTypeInfo.Type;
+        if (!type.IsEnum)
+            return;
+
+        var names = Enum.GetNames(type);
+        if (names.Length == 0)
+            return;
+
+        // Resolve underlying integer values for each member
+        var underlyingValues = names
+            .Select(name => Convert.ToInt64(type.GetField(name)!.GetValue(null)))
+            .ToArray();
+
+        // Use XML summary if available; otherwise fall back to "Name = numericValue"
+        var descriptions = new string[names.Length];
+        for (var i = 0; i < names.Length; i++)
+        {
+            descriptions[i] = TryGetXmlSummary(type.GetField(names[i])!, out var summary)
+                ? summary
+                : $"{underlyingValues[i]}";
+        }
+
+        schema.Extensions ??= new Dictionary<string, IOpenApiExtension>();
+        schema.Extensions["x-enumNames"] = new JsonNodeExtension(CreateStringArray(names));
+        schema.Extensions["x-enumDescriptions"] = new JsonNodeExtension(CreateStringArray(descriptions));
+
+        var enumDescription = BuildEnumDescription(names, descriptions);
+        schema.Description = string.IsNullOrWhiteSpace(schema.Description)
+            ? enumDescription
+            : $"{schema.Description}{Environment.NewLine}{Environment.NewLine}{enumDescription}";
+    }
+
+    private static string BuildEnumDescription(string[] names, string[] descriptions)
+    {
+        var lines = new List<string> { "Allowed values:" };
+
+        for (var i = 0; i < names.Length; i++)
+        {
+            lines.Add($"- `{names[i]}`: {descriptions[i]}");
+        }
+
+        return string.Join(Environment.NewLine, lines);
+    }
+
+    private static JsonArray CreateStringArray(IEnumerable<string> values)
+    {
+        var array = new JsonArray();
+
+        foreach (var value in values)
+        {
+            array.Add(JsonValue.Create(value));
+        }
+
+        return array;
+    }
+
+    internal static bool TryGetXmlSummary(MemberInfo member, out string summary)
+    {
+        var docs = GetXmlDocs(member.Module.Assembly);
+        var memberName = GetXmlMemberName(member);
+
+        return docs.TryGetValue(memberName, out summary!);
+    }
+
+    internal static Dictionary<string, string> GetXmlDocs(Assembly assembly)
+    {
+        lock (CacheLock)
+        {
+            if (XmlDocsByAssembly.TryGetValue(assembly, out var cached))
+                return cached;
+
+            var docs = LoadXmlDocs(assembly);
+            XmlDocsByAssembly[assembly] = docs;
+            return docs;
+        }
+    }
+
+    private static Dictionary<string, string> LoadXmlDocs(Assembly assembly)
+    {
+        var xmlPath = Path.ChangeExtension(assembly.Location, ".xml");
+        if (string.IsNullOrWhiteSpace(xmlPath) || !File.Exists(xmlPath))
+            return [];
+
+        var document = XDocument.Load(xmlPath);
+
+        return document.Descendants("member")
+            .Select(member => new
+            {
+                Name = member.Attribute("name")?.Value,
+                Summary = NormalizeXmlText(member.Element("summary")?.Value)
+            })
+            .Where(member => !string.IsNullOrWhiteSpace(member.Name) &&
+                             !string.IsNullOrWhiteSpace(member.Summary))
+            .ToDictionary(member => member.Name!, member => member.Summary!);
+    }
+
+    internal static string GetXmlMemberName(MemberInfo member)
+        => member switch
+        {
+            Type type => $"T:{GetXmlTypeName(type)}",
+            PropertyInfo property => $"P:{GetXmlTypeName(property.DeclaringType!)}.{property.Name}",
+            FieldInfo field => $"F:{GetXmlTypeName(field.DeclaringType!)}.{field.Name}",
+            _ => member.Name
+        };
+
+    internal static string GetXmlTypeName(Type type)
+    {
+        if (!type.IsGenericType)
+            return (type.FullName ?? type.Name).Replace('+', '.');
+
+        // Preserve the generic arity (e.g. `1, `2) — the C# compiler includes it
+        // in XML documentation member names: "ApiResponse`1" not "ApiResponse".
+        var genericTypeName = type.GetGenericTypeDefinition().FullName ?? type.Name;
+        return genericTypeName.Replace('+', '.');
+    }
+
+    internal static string? NormalizeXmlText(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+
+        return WhitespaceRegex().Replace(value, " ").Trim();
+    }
+
+    [GeneratedRegex(@"\s+")]
+    private static partial Regex WhitespaceRegex();
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// 5. Enriches operation parameters with XML documentation comments
+// ─────────────────────────────────────────────────────────────────────
+
+/// <summary>
+/// An operation transformer that enriches endpoint parameters (including those
+/// from <c>[AsParameters]</c>) with XML documentation descriptions and sets
+/// the operation summary from method-level XML comments when available.
+/// </summary>
+internal sealed class LhaOperationDocumentationTransformer : IOpenApiOperationTransformer
+{
+    public Task TransformAsync(
+        OpenApiOperation operation,
+        OpenApiOperationTransformerContext context,
+        CancellationToken cancellationToken)
+    {
+        EnrichParameterDescriptions(operation, context);
+        EnrichRequestBodyDescription(operation, context);
+        return Task.CompletedTask;
+    }
+
+    private static void EnrichParameterDescriptions(
+        OpenApiOperation operation,
+        OpenApiOperationTransformerContext context)
+    {
+        if (operation.Parameters is null or { Count: 0 })
+            return;
+
+        // Build lookup: parameter name → (ContainerType, PropertyName)
+        // from ApiDescription which tracks [AsParameters] decomposition
+        var paramLookup = new Dictionary<string, (Type? ContainerType, string? PropertyName)>(
+            StringComparer.OrdinalIgnoreCase);
+
+        foreach (var paramDesc in context.Description.ParameterDescriptions)
+        {
+            var metadata = paramDesc.ModelMetadata;
+            if (metadata?.ContainerType is not null
+                && !string.IsNullOrWhiteSpace(metadata.PropertyName))
+            {
+                paramLookup[paramDesc.Name] = (metadata.ContainerType, metadata.PropertyName);
+            }
+        }
+
+        foreach (var param in operation.Parameters)
+        {
+            if (!string.IsNullOrWhiteSpace(param.Description))
+                continue;
+
+            if (param.Name is null
+                || !paramLookup.TryGetValue(param.Name, out var info)
+                || info.ContainerType is null
+                || info.PropertyName is null)
+                continue;
+
+            var property = info.ContainerType.GetProperty(info.PropertyName);
+            if (property is not null
+                && LhaSchemaDocumentationTransformer.TryGetXmlSummary(property, out var summary))
+            {
+                param.Description = summary;
+            }
+        }
+    }
+
+    private static void EnrichRequestBodyDescription(
+        OpenApiOperation operation,
+        OpenApiOperationTransformerContext context)
+    {
+        if (operation.RequestBody is null)
+            return;
+
+        // For body parameters, try to find the XML summary from the DTO type
+        foreach (var paramDesc in context.Description.ParameterDescriptions)
+        {
+            if (paramDesc.Source is not null
+                && !string.Equals(paramDesc.Source.DisplayName, "Body", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            var type = paramDesc.Type;
+            if (type is null)
+                continue;
+
+            if (LhaSchemaDocumentationTransformer.TryGetXmlSummary(type, out var summary)
+                && string.IsNullOrWhiteSpace(operation.RequestBody.Description))
+            {
+                operation.RequestBody.Description = summary;
+            }
+        }
     }
 }

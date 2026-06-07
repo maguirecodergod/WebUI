@@ -1,6 +1,4 @@
 using LHA.AuditLog.Application;
-using LHA.Shared.Contracts.AuditLog;
-
 using LHA.Notification.Application.Batches;
 using LHA.Notification.Application.Contracts;
 using LHA.Notification.Application.Devices;
@@ -26,11 +24,8 @@ namespace LHA.Notification.Application.DependencyInjection
             services.AddScoped<ITemplateService, TemplateAppService>();
             services.AddScoped<INotificationStatsService, NotificationStatsAppService>();
             services.AddScoped<IChannelConfigurationAppService, ChannelConfigurationAppService>();
-            
+        
             services.AddAuditLogApplication();
-            services.AddScoped<IAuditLogAppService, LHA.Notification.Application.AuditLogs.AuditLogAppService>();
-
-
             return services;
         }
     }

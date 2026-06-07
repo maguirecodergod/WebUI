@@ -440,10 +440,10 @@
         "Create": "Tạo người dùng"
     },
     "ServiceType": {
-        "Account": "Dịch vụ Tài khoản",
-        "Notification": "Dịch vụ Thông báo",
-        "Mega": "Dịch vụ Mega",
-        "Movie": "Dịch vụ Phim"
+        "Account": "Tài khoản",
+        "Notification": "Thông báo",
+        "Mega": "Mega",
+        "Movie": "Phim"
     },
     "NotificationConfiguration": {
         "PageTitle": "Cấu hình thông báo",

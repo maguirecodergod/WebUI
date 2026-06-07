@@ -2,11 +2,15 @@ using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.HttpApi.Client.Core;
 using LHA.Ddd.Application;
 using LHA.Shared.Contracts.AuditLog;
+using LHA.Shared.Domain.AuditLogActions;
+using LHA.Shared.Domain.AuditLogs;
+using LHA.Shared.Domain.EntityChanges;
+using LHA.Shared.Domain.EntityPropertyChanges;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Clients;
 
-public class AuditLogApiClient : ApiClientBase, IAuditLogAppService
+public class AuditLogApiClient : ApiClientBase
 {
     public AuditLogApiClient(HttpClient httpClient, IApiErrorHandler errorHandler)
         : base(httpClient, errorHandler)
@@ -21,14 +25,7 @@ public class AuditLogApiClient : ApiClientBase, IAuditLogAppService
         _ => "api/v1/account/audit-logs"
     };
 
-    public async Task<PagedResultDto<AuditLogDto>> GetListAsync(GetAuditLogsInput input, CServiceType service = CServiceType.Account)
-    {
-        var url = BuildQueryString(GetBaseUrl(service), input);
-        var response = await GetAsync<PagedResultDto<AuditLogDto>>(url);
-        return response.Result.Data!;
-    }
-
-    public async Task<PagedResultDto<AuditLogDto>> GetHostListAsync(GetAuditLogsInput input, CServiceType service = CServiceType.Account)
+    public async Task<PagedResultDto<AuditLogDto>> GetListAsync(AuditLogPagedRequest input, CServiceType service = CServiceType.Account)
     {
         var url = BuildQueryString(GetBaseUrl(service), input);
         var response = await GetAsync<PagedResultDto<AuditLogDto>>(url);
@@ -41,21 +38,22 @@ public class AuditLogApiClient : ApiClientBase, IAuditLogAppService
         return response.Result.Data!;
     }
 
-    public async Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(GetAuditLogActionsInput input, CServiceType service = CServiceType.Account)
+    public async Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(AuditLogActionPagedRequest input, CServiceType service = CServiceType.Account)
     {
         var url = BuildQueryString($"{GetBaseUrl(service)}/actions", input);
         var response = await GetAsync<PagedResultDto<AuditLogActionDto>>(url);
         return response.Result.Data!;
     }
 
-    public async Task<PagedResultDto<EntityChangeDto>> GetEntityChangesAsync(GetEntityChangesInput input, CServiceType service = CServiceType.Account)
+    public async Task<PagedResultDto<EntityChangeDto>> GetEntityChangesAsync(EntityChangePagedRequest input, CServiceType service = CServiceType.Account)
     {
         var url = BuildQueryString($"{GetBaseUrl(service)}/entity-changes", input);
         var response = await GetAsync<PagedResultDto<EntityChangeDto>>(url);
         return response.Result.Data!;
     }
 
-    public async Task<PagedResultDto<EntityPropertyChangeDto>> GetEntityPropertyChangesAsync(GetEntityPropertyChangesInput input, CServiceType service = CServiceType.Account)
+    public async Task<PagedResultDto<EntityPropertyChangeDto>> GetEntityPropertyChangesAsync(EntityPropertyChangePagedRequest input,
+        CServiceType service = CServiceType.Account)
     {
         var url = BuildQueryString($"{GetBaseUrl(service)}/entity-property-changes", input);
         var response = await GetAsync<PagedResultDto<EntityPropertyChangeDto>>(url);
@@ -78,33 +76,82 @@ public class AuditLogApiClient : ApiClientBase, IAuditLogAppService
     {
         if (input == null) return baseUrl;
 
-        var queryParams = new Dictionary<string, string?>();
-        var properties = typeof(T).GetProperties();
-
-        foreach (var prop in properties)
-        {
-            var val = prop.GetValue(input);
-            if (val != null)
-            {
-                if (val is DateTimeOffset dto)
-                {
-                    queryParams.Add(prop.Name, dto.ToString("o"));
-                }
-                else if (val is bool b)
-                {
-                    queryParams.Add(prop.Name, b.ToString().ToLower());
-                }
-                else if (val is Guid g)
-                {
-                    queryParams.Add(prop.Name, g.ToString());
-                }
-                else
-                {
-                    queryParams.Add(prop.Name, val.ToString());
-                }
-            }
-        }
+        var queryParams = new List<KeyValuePair<string, string?>>();
+        AddQueryParameters(queryParams, input);
 
         return QueryHelpers.AddQueryString(baseUrl, queryParams);
+    }
+
+    private static void AddQueryParameters(
+        List<KeyValuePair<string, string?>> queryParams,
+        object input)
+    {
+        foreach (var prop in input.GetType().GetProperties())
+        {
+            if (prop.Name == "Sorter")
+            {
+                continue;
+            }
+
+            var val = prop.GetValue(input);
+            if (val == null)
+            {
+                continue;
+            }
+
+            if (val is string[] strings)
+            {
+                foreach (var item in strings.Where(x => !string.IsNullOrWhiteSpace(x)))
+                {
+                    queryParams.Add(new KeyValuePair<string, string?>(prop.Name, item));
+                }
+
+                continue;
+            }
+
+            if (val is System.Collections.IEnumerable values && val is not string)
+            {
+                foreach (var item in values)
+                {
+                    AddValue(queryParams, prop.Name, item);
+                }
+
+                continue;
+            }
+
+            if (prop.Name == "Filter")
+            {
+                AddQueryParameters(queryParams, val);
+                continue;
+            }
+
+            AddValue(queryParams, prop.Name, val);
+        }
+    }
+
+    private static void AddValue(
+        List<KeyValuePair<string, string?>> queryParams,
+        string name,
+        object? value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+
+        var formatted = value switch
+        {
+            DateTimeOffset dateTimeOffset => dateTimeOffset.ToString("o"),
+            DateTime dateTime => dateTime.ToString("o"),
+            bool boolean => boolean.ToString().ToLowerInvariant(),
+            Guid guid => guid.ToString(),
+            Enum enumValue => enumValue.ToString(),
+            _ => value.ToString()
+        };
+
+        if (!string.IsNullOrWhiteSpace(formatted))
+        {
+            queryParams.Add(new KeyValuePair<string, string?>(name, formatted));
+        }
     }
 }

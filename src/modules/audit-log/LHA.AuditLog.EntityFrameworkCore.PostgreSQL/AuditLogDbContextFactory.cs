@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using LHA.AuditLog.EntityFrameworkCore;
 
 namespace LHA.AuditLog.EntityFrameworkCore.PostgreSQL;
 

@@ -41,21 +41,24 @@ public static class BackgroundJobEndpoints
             }).ToList();
 
             return Results.Ok(ApiResponse<List<Shared.Contracts.BackgroundJobs.RecurringJobDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<LHA.Shared.Contracts.BackgroundJobs.RecurringJobDto>>>();
 
         // 2. Trigger a Recurring Job
         group.MapPost("/recurring/{id}/trigger", ([FromServices] IRecurringJobManager recurringJobManager, string id) =>
         {
             recurringJobManager.Trigger(id);
             return Results.Ok(ApiResponse<bool>.Ok(true));
-        });
+        })
+        .Produces<ApiResponse<bool>>();
 
         // 3. Delete a Recurring Job
         group.MapDelete("/recurring/{id}", ([FromServices] IRecurringJobManager recurringJobManager, string id) =>
         {
             recurringJobManager.RemoveIfExists(id);
             return Results.Ok(ApiResponse<bool>.Ok(true));
-        });
+        })
+        .Produces<ApiResponse<bool>>();
 
         // 4. Get Enqueued Jobs
         group.MapGet("/enqueued", ([FromServices] JobStorage jobStorage, string queue = "default") =>
@@ -71,7 +74,8 @@ public static class BackgroundJobEndpoints
             }).ToList();
 
             return Results.Ok(ApiResponse<List<EnqueuedJobDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<EnqueuedJobDto>>>();
 
         // 5. Get Failed Jobs
         group.MapGet("/failed", ([FromServices] JobStorage jobStorage) =>
@@ -88,21 +92,24 @@ public static class BackgroundJobEndpoints
             }).ToList();
 
             return Results.Ok(ApiResponse<List<FailedJobDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<FailedJobDto>>>();
 
         // 6. Delete a specific Job (e.g., failed job)
         group.MapDelete("/{jobId}", ([FromServices] IBackgroundJobClient backgroundJobClient, string jobId) =>
         {
             var deleted = backgroundJobClient.Delete(jobId);
             return Results.Ok(ApiResponse<bool>.Ok(deleted));
-        });
+        })
+        .Produces<ApiResponse<bool>>();
 
         // 7. Requeue a specific Job (e.g., retry failed job)
         group.MapPost("/{jobId}/requeue", ([FromServices] IBackgroundJobClient backgroundJobClient, string jobId) =>
         {
             var requeued = backgroundJobClient.Requeue(jobId);
             return Results.Ok(ApiResponse<bool>.Ok(requeued));
-        });
+        })
+        .Produces<ApiResponse<bool>>();
 
         // 8. Queues
         group.MapGet("/queues", ([FromServices] JobStorage jobStorage) =>
@@ -122,7 +129,8 @@ public static class BackgroundJobEndpoints
                 }).ToList()
             }).ToList();
             return Results.Ok(ApiResponse<List<QueueWithTopEnqueuedJobsDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<QueueWithTopEnqueuedJobsDto>>>();
 
         // 9. Servers
         group.MapGet("/servers", ([FromServices] JobStorage jobStorage) =>
@@ -138,7 +146,8 @@ public static class BackgroundJobEndpoints
                 Heartbeat = s.Heartbeat
             }).ToList();
             return Results.Ok(ApiResponse<List<ServerDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<ServerDto>>>();
 
         // 10. Job Details
         group.MapGet("/{jobId}/details", ([FromServices] JobStorage jobStorage, string jobId) =>
@@ -163,7 +172,8 @@ public static class BackgroundJobEndpoints
                 ExpireAt = details.ExpireAt
             };
             return Results.Ok(ApiResponse<JobDetailsDto>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<JobDetailsDto>>();
 
         // 11. Statistics
         group.MapGet("/statistics", ([FromServices] JobStorage jobStorage) =>
@@ -185,7 +195,8 @@ public static class BackgroundJobEndpoints
                 Awaiting = stats.Awaiting
             };
             return Results.Ok(ApiResponse<StatisticsDto>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<StatisticsDto>>();
 
         // 12. Fetched Jobs
         group.MapGet("/fetched", ([FromServices] JobStorage jobStorage, string queue = "default", int from = 0, int perPage = 50) =>
@@ -201,7 +212,8 @@ public static class BackgroundJobEndpoints
                 FetchedAt = x.Value.FetchedAt
             }).ToList();
             return Results.Ok(ApiResponse<List<FetchedJobDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<FetchedJobDto>>>();
 
         // 13. Processing Jobs
         group.MapGet("/processing", ([FromServices] JobStorage jobStorage, int from = 0, int count = 50) =>
@@ -218,7 +230,8 @@ public static class BackgroundJobEndpoints
                 StartedAt = x.Value.StartedAt
             }).ToList();
             return Results.Ok(ApiResponse<List<ProcessingJobDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<ProcessingJobDto>>>();
 
         // 14. Scheduled Jobs
         group.MapGet("/scheduled", ([FromServices] JobStorage jobStorage, int from = 0, int count = 50) =>
@@ -235,7 +248,8 @@ public static class BackgroundJobEndpoints
                 InScheduledState = x.Value.InScheduledState
             }).ToList();
             return Results.Ok(ApiResponse<List<ScheduledJobDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<ScheduledJobDto>>>();
 
         // 15. Succeeded Jobs
         group.MapGet("/succeeded", ([FromServices] JobStorage jobStorage, int from = 0, int count = 50) =>
@@ -253,7 +267,8 @@ public static class BackgroundJobEndpoints
                 InSucceededState = x.Value.InSucceededState
             }).ToList();
             return Results.Ok(ApiResponse<List<SucceededJobDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<SucceededJobDto>>>();
 
         // 16. Deleted Jobs
         group.MapGet("/deleted", ([FromServices] JobStorage jobStorage, int from = 0, int count = 50) =>
@@ -269,35 +284,40 @@ public static class BackgroundJobEndpoints
                 InDeletedState = x.Value.InDeletedState
             }).ToList();
             return Results.Ok(ApiResponse<List<DeletedJobDto>>.Ok(result));
-        });
+        })
+        .Produces<ApiResponse<List<DeletedJobDto>>>();
 
         // 17. Succeeded by Dates
         group.MapGet("/succeeded-by-dates", ([FromServices] JobStorage jobStorage) =>
         {
             var result = jobStorage.GetMonitoringApi().SucceededByDatesCount();
             return Results.Ok(ApiResponse<Dictionary<DateTime, long>>.Ok(new Dictionary<DateTime, long>(result)));
-        });
+        })
+        .Produces<ApiResponse<Dictionary<DateTime, long>>>();
 
         // 18. Failed by Dates
         group.MapGet("/failed-by-dates", ([FromServices] JobStorage jobStorage) =>
         {
             var result = jobStorage.GetMonitoringApi().FailedByDatesCount();
             return Results.Ok(ApiResponse<Dictionary<DateTime, long>>.Ok(new Dictionary<DateTime, long>(result)));
-        });
+        })
+        .Produces<ApiResponse<Dictionary<DateTime, long>>>();
 
         // 19. Hourly Succeeded
         group.MapGet("/hourly-succeeded", ([FromServices] JobStorage jobStorage) =>
         {
             var result = jobStorage.GetMonitoringApi().HourlySucceededJobs();
             return Results.Ok(ApiResponse<Dictionary<DateTime, long>>.Ok(new Dictionary<DateTime, long>(result)));
-        });
+        })
+        .Produces<ApiResponse<Dictionary<DateTime, long>>>();
 
         // 20. Hourly Failed
         group.MapGet("/hourly-failed", ([FromServices] JobStorage jobStorage) =>
         {
             var result = jobStorage.GetMonitoringApi().HourlyFailedJobs();
             return Results.Ok(ApiResponse<Dictionary<DateTime, long>>.Ok(new Dictionary<DateTime, long>(result)));
-        });
+        })
+        .Produces<ApiResponse<Dictionary<DateTime, long>>>();
 
         return endpoints;
     }

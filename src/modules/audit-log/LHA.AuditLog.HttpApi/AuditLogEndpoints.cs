@@ -1,5 +1,8 @@
 using LHA.AuditLog.Application.Contracts;
 using LHA.Ddd.Application;
+using LHA.Shared.Contracts.AuditLog;
+using LHA.Shared.Domain.AuditLogs;
+using LHA.Shared.Domain.EntityChanges;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -28,42 +31,45 @@ public static class AuditLogEndpoints
 
         // ── List (paged + filtered) ──────────────────────────────────
         group.MapGet("/", async (
-            [AsParameters] GetAuditLogsInput input,
-            LHA.AuditLog.Application.Contracts.IAuditLogAppService service,
+            [AsParameters] AuditLogPagedQuery input,
+            IAuditLogAppService service,
             CancellationToken cancellationToken) =>
         {
-            var result = await service.GetListAsync(input, cancellationToken);
+            var result = await service.GetAuditLogWithPaginationAsync(input.ToRequest(), cancellationToken);
             return Results.Ok(ApiResponse<PagedResultDto<AuditLogDto>>.Ok(result));
         })
         .RequireAuthorization(P.AuditLogs.Read)
         .WithName("GetAuditLogs")
-        .WithSummary("Returns a filtered, paged list of audit logs.");
+        .WithSummary("Returns a filtered, paged list of audit logs.")
+        .Produces<ApiResponse<PagedResultDto<AuditLogDto>>>();
 
         // ── Get by ID ────────────────────────────────────────────────
         group.MapGet("/{id:guid}", async (
             Guid id,
-            LHA.AuditLog.Application.Contracts.IAuditLogAppService service,
+            IAuditLogAppService service,
             CancellationToken cancellationToken) =>
         {
-            var dto = await service.GetAsync(id, cancellationToken);
+            var dto = await service.GetAuditLogDetailAsync(id, cancellationToken);
             return Results.Ok(ApiResponse<AuditLogDto>.Ok(dto));
         })
         .RequireAuthorization(P.AuditLogs.Read)
         .WithName("GetAuditLog")
-        .WithSummary("Gets an audit log by its unique identifier, including actions and entity changes.");
+        .WithSummary("Gets an audit log by its unique identifier, including actions and entity changes.")
+        .Produces<ApiResponse<AuditLogDto>>();
 
         // ── Entity changes (filtered) ────────────────────────────────
         group.MapGet("/entity-changes", async (
-            [AsParameters] GetEntityChangesInput input,
-            LHA.AuditLog.Application.Contracts.IAuditLogAppService service,
+            [AsParameters] EntityChangePagedQuery input,
+            IAuditLogAppService service,
             CancellationToken cancellationToken) =>
         {
-            var result = await service.GetEntityChangesAsync(input, cancellationToken);
+            var result = await service.GetEntityChangesWithPaginationAsync(input.ToRequest(), cancellationToken);
             return Results.Ok(ApiResponse<PagedResultDto<EntityChangeDto>>.Ok(result));
         })
         .RequireAuthorization(P.AuditLogs.Read)
         .WithName("GetEntityChanges")
-        .WithSummary("Returns entity changes filtered by type and/or entity ID. Useful for viewing entity history.");
+        .WithSummary("Returns entity changes filtered by type and/or entity ID. Useful for viewing entity history.")
+        .Produces<ApiResponse<PagedResultDto<EntityChangeDto>>>();
 
         return endpoints;
     }

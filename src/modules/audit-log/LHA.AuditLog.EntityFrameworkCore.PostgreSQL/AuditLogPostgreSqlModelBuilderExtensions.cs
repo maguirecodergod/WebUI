@@ -1,6 +1,6 @@
-using LHA.AuditLog.EntityFrameworkCore;
-using LHA.AuditLog.EntityFrameworkCore.PostgreSQL.Configurations;
+using LHA.AuditLog.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
+using LHA.AuditLog.EntityFrameworkCore.PostgreSQL.Configurations;
 
 namespace LHA.AuditLog.EntityFrameworkCore.PostgreSQL;
 
@@ -14,12 +14,12 @@ public static class AuditLogPostgreSqlModelBuilderExtensions
     /// </summary>
     public static ModelBuilder ConfigureAuditLogPostgreSql(
         this ModelBuilder modelBuilder, 
-        AuditLogStoreMode mode = AuditLogStoreMode.All)
+        CAuditLogStoreMode mode = CAuditLogStoreMode.All)
     {
         // Global ignores
         modelBuilder.Ignore<LHA.Ddd.Domain.DomainEventRecord>();
 
-        if (mode.HasFlag(AuditLogStoreMode.DataAudit))
+        if (mode.HasFlag(CAuditLogStoreMode.DataAudit))
         {
             modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
             modelBuilder.ApplyConfiguration(new AuditLogActionConfiguration());
@@ -27,7 +27,7 @@ public static class AuditLogPostgreSqlModelBuilderExtensions
             modelBuilder.ApplyConfiguration(new EntityPropertyChangeConfiguration());
         }
 
-        if (mode.HasFlag(AuditLogStoreMode.Pipeline))
+        if (mode.HasFlag(CAuditLogStoreMode.Pipeline))
         {
             modelBuilder.ApplyConfiguration(new AuditLogPipelineConfiguration());
         }

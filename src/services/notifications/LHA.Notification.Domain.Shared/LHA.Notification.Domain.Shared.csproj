@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.Domain.Shared\LHA.AuditLog.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\..\shared\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
-    <ProjectReference Include="..\..\..\shared\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
   </ItemGroup>
 
 </Project>

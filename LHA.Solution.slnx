@@ -12,6 +12,18 @@
     <Project Path="src/services/notifications/LHA.Notification.Infrastructure/LHA.Notification.Infrastructure.csproj" />
     <Project Path="src/services/notifications/LHA.Notification.Migrator/LHA.Notification.Migrator.csproj" />
   </Folder>
+  <Folder Name="/src/services/tax/">
+    <Project Path="src/services/tax/LHA.Tax.Application.Contracts/LHA.Tax.Application.Contracts.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.Application/LHA.Tax.Application.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.Consumer/LHA.Tax.Consumer.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.Cron/LHA.Tax.Cron.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.Domain.Shared/LHA.Tax.Domain.Shared.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.Domain/LHA.Tax.Domain.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.EntityFrameworkCore/LHA.Tax.EntityFrameworkCore.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.HttpApi.Host/LHA.Tax.HttpApi.Host.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.HttpApi/LHA.Tax.HttpApi.csproj" />
+    <Project Path="src/services/tax/LHA.Tax.Migrator/LHA.Tax.Migrator.csproj" />
+  </Folder>
   <Folder Name="/src/shared/">
     <Project Path="src/shared/LHA.Shared.Contracts/LHA.Shared.Contracts.csproj" />
     <Project Path="src/shared/LHA.Shared.Domain/LHA.Shared.Domain.csproj" />

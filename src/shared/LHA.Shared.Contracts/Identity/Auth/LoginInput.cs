@@ -2,13 +2,16 @@ using FluentValidation;
 
 namespace LHA.Shared.Contracts.Identity.Auth;
 
-/// Professional Login Input for both UI and API contracts.
-/// Uses FluentValidation for enterprise-grade validation.
-/// </summary>
+/// <summary>Input for authenticating a user via login credentials.</summary>
 public sealed class LoginInput
 {
+    /// <summary>Username or email address used to identify the account.</summary>
     public string UserNameOrEmail { get; set; } = string.Empty;
+
+    /// <summary>Plaintext password supplied by the user.</summary>
     public string Password { get; set; } = string.Empty;
+
+    /// <summary>Indicates whether to issue a persistent cookie that survives browser restarts.</summary>
     public bool RememberMe { get; set; } = false;
 }
 

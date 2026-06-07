@@ -1,5 +1,6 @@
 using LHA.Ddd.Application;
 using LHA.Identity.Application.Contracts;
+using LHA.Shared.Contracts.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -29,7 +30,8 @@ public static class PermissionEndpoints
         })
         .RequireAuthorization(P.Grants.Read)
         .WithName("GetPermissions")
-        .WithSummary("Gets permission grants for a provider (role or user).");
+        .WithSummary("Gets permission grants for a provider (role or user).")
+        .Produces<ApiResponse<List<PermissionGrantDto>>>();
 
         // ── Update permissions ───────────────────────────────────────
         group.MapPut("/", async (
@@ -41,7 +43,8 @@ public static class PermissionEndpoints
         })
         .RequireAuthorization(P.Grants.Manage)
         .WithName("UpdatePermissions")
-        .WithSummary("Batch grants/revokes permissions for a provider.");
+        .WithSummary("Batch grants/revokes permissions for a provider.")
+        .Produces(204);
 
         return endpoints;
     }

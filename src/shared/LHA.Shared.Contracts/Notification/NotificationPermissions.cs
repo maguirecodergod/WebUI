@@ -112,11 +112,13 @@ public static class NotificationPermissions
     {
         public const string Default = GroupName + ".AuditLogs";
         public const string Read = Default + ".Read";
+        public const string Delete = Default + ".Delete";
 
         public static class L
         {
             public const string Default = "Permissions.Notification.AuditLogs.Default";
             public const string Read = "Permissions.Notification.AuditLogs.Read";
+            public const string Delete = "Permissions.Notification.AuditLogs.Delete";
         }
     }
 

@@ -3,7 +3,8 @@
 
 using LHA.Auditing;
 using LHA.Auditing.Pipeline;
-using LHA.AuditLog.Domain;
+using LHA.AuditLog.Domain.Shared;
+using LHA.AuditLog.EntityFrameworkCore.Contracts.Options;
 using LHA.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -12,13 +13,15 @@ namespace LHA.AuditLog.EntityFrameworkCore;
 
 /// <summary>
 /// Registers EntityFrameworkCore infrastructure for the Audit Log module.
+/// Provider-specific implementations (PostgreSQL, MongoDB) must be registered separately.
 /// </summary>
 public static class AuditLogEntityFrameworkCoreDependencyInjection
 {
     /// <summary>
-    /// Registers the <see cref="AuditLogDbContext"/>, repository, and audit stores
-    /// backed by EF Core. Use the builder configuration to specify which audit modes to enable.
+    /// Registers the AuditLogDbContext, audit stores, and pipeline dispatcher.
+    /// Provider-specific repositories (PostgreSQL/MongoDB) are registered separately.
     /// </summary>
+    [Obsolete("Use Register instead. Because AddAuditLogEntityFrameworkCore is not thread-safe. ")]
     public static IServiceCollection AddAuditLogEntityFrameworkCore(
         this IServiceCollection services,
         Action<AuditLogEntityFrameworkCoreBuilder>? configure = null)
@@ -26,42 +29,51 @@ public static class AuditLogEntityFrameworkCoreDependencyInjection
         var builder = new AuditLogEntityFrameworkCoreBuilder();
         configure?.Invoke(builder);
 
-        services.Configure<AuditLogEntityFrameworkCoreOptions>(opt => 
-        {
-            opt.Mode = builder.Mode;
-            opt.ModelConfigurator = builder.ModelConfigurator;
-            opt.AutoTransactionBehavior = builder.AutoTransactionBehavior;
-        });
+        return Register(services, builder);
+    }
 
-        // Always register the single shared DbContext
+
+    public static IServiceCollection Register(
+        IServiceCollection services,
+        AuditLogEntityFrameworkCoreBuilder builder)
+    {
+        RegisterOptions(services, builder);
+
         services.AddLhaDbContext<AuditLogDbContext>(builder.DbContextConfig);
 
-        if (builder.Mode.HasFlag(AuditLogStoreMode.DataAudit))
+        if (builder.Mode.HasFlag(CAuditLogStoreMode.DataAudit))
         {
-            // Repository for querying/managing structured audit logs
-            services.AddEfCoreRepository<AuditLogDbContext, AuditLogEntity, Guid>();
-            services.TryAddScoped<IAuditLogRepository, EfCoreAuditLogRepository>();
-
-            // Replaces LoggingAuditingStore so structured logs go to the DB
-            services.Replace(ServiceDescriptor.Scoped<IAuditingStore, EfCoreAuditingStore>());
+            services.Replace(
+                ServiceDescriptor.Scoped<IAuditingStore, EfCoreAuditingStore>());
         }
 
-        if (builder.Mode.HasFlag(AuditLogStoreMode.Pipeline))
+        if (builder.Mode.HasFlag(CAuditLogStoreMode.Pipeline))
         {
-            // Replaces the default (logging) pipeline dispatcher with EF Core bulk insert
             services.AddSingleton<IAuditLogDispatcher, EfCoreAuditLogDispatcher>();
         }
 
         return services;
     }
+
+    private static void RegisterOptions(
+        IServiceCollection services,
+        AuditLogEntityFrameworkCoreBuilder builder)
+    {
+        services.Configure<AuditLogEntityFrameworkCoreOptions>(opt =>
+        {
+            opt.Mode = builder.Mode;
+            opt.ModelConfigurator = builder.ModelConfigurator;
+            opt.AutoTransactionBehavior = builder.AutoTransactionBehavior;
+        });
+    }
 }
 
 /// <summary>
-/// Builder for configuring AuditLog Entity Framework Core options elegantly.
+/// Builder for configuring Audit Log Entity Framework Core options elegantly.
 /// </summary>
 public sealed class AuditLogEntityFrameworkCoreBuilder
 {
-    public AuditLogStoreMode Mode { get; private set; } = AuditLogStoreMode.All;
+    public CAuditLogStoreMode Mode { get; private set; } = CAuditLogStoreMode.All;
     public Microsoft.EntityFrameworkCore.AutoTransactionBehavior? AutoTransactionBehavior { get; private set; }
     internal Action<LhaDbContextOptions>? DbContextConfig { get; private set; }
     internal Action<Microsoft.EntityFrameworkCore.ModelBuilder>? ModelConfigurator { get; private set; }
@@ -69,7 +81,7 @@ public sealed class AuditLogEntityFrameworkCoreBuilder
     /// <summary>
     /// Explicitly sets the audit store modes using flags.
     /// </summary>
-    public AuditLogEntityFrameworkCoreBuilder UseMode(AuditLogStoreMode mode)
+    public AuditLogEntityFrameworkCoreBuilder UseMode(CAuditLogStoreMode mode)
     {
         Mode = mode;
         return this;
@@ -81,7 +93,7 @@ public sealed class AuditLogEntityFrameworkCoreBuilder
     /// </summary>
     public AuditLogEntityFrameworkCoreBuilder UseAll()
     {
-        Mode = AuditLogStoreMode.All;
+        Mode = CAuditLogStoreMode.All;
         return this;
     }
 
@@ -90,7 +102,7 @@ public sealed class AuditLogEntityFrameworkCoreBuilder
     /// </summary>
     public AuditLogEntityFrameworkCoreBuilder UsePipelineOnly()
     {
-        Mode = AuditLogStoreMode.Pipeline;
+        Mode = CAuditLogStoreMode.Pipeline;
         return this;
     }
 
@@ -99,7 +111,7 @@ public sealed class AuditLogEntityFrameworkCoreBuilder
     /// </summary>
     public AuditLogEntityFrameworkCoreBuilder UseDataAuditOnly()
     {
-        Mode = AuditLogStoreMode.DataAudit;
+        Mode = CAuditLogStoreMode.DataAudit;
         return this;
     }
 
@@ -126,30 +138,4 @@ public sealed class AuditLogEntityFrameworkCoreBuilder
         AutoTransactionBehavior = behavior;
         return this;
     }
-}
-
-/// <summary>
-/// Controls which audit subsystems are wired to EF Core storage.
-/// </summary>
-[Flags]
-public enum AuditLogStoreMode
-{
-    /// <summary>Structured relational audit log (AuditLog / Action / EntityChange tables).</summary>
-    DataAudit = 1,
-
-    /// <summary>High-throughput pipeline audit log (AuditLogPipeline table).</summary>
-    Pipeline = 2,
-
-    /// <summary>Both subsystems active simultaneously.</summary>
-    All = DataAudit | Pipeline
-}
-
-/// <summary>
-/// Holds runtime configuration for the AuditLog EntityFrameworkCore module.
-/// </summary>
-public sealed class AuditLogEntityFrameworkCoreOptions
-{
-    public AuditLogStoreMode Mode { get; set; } = AuditLogStoreMode.All;
-    public Action<Microsoft.EntityFrameworkCore.ModelBuilder>? ModelConfigurator { get; set; }
-    public Microsoft.EntityFrameworkCore.AutoTransactionBehavior? AutoTransactionBehavior { get; set; }
 }

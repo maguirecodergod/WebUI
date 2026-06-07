@@ -2,7 +2,6 @@ using LHA.BlazorWasm.HttpApi.Client.Abstractions;
 using LHA.BlazorWasm.HttpApi.Client.Core;
 using LHA.BlazorWasm.Shared.Constants;
 using LHA.Ddd.Application;
-using LHA.Shared.Contracts.Identity;
 using LHA.Shared.Contracts.Identity.Permissions;
 using LHA.Shared.Contracts.PermissionManagement;
 using Microsoft.AspNetCore.WebUtilities;

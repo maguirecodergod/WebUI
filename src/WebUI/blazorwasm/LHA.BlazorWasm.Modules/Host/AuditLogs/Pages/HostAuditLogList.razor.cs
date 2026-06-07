@@ -9,12 +9,14 @@ using Microsoft.AspNetCore.Components;
 using LHA.BlazorWasm.Shared.Models;
 using LHA.BlazorWasm.Shared.Helpers;
 using LHA.BlazorWasm.Shared.Models.Select;
+using LHA.Shared.Domain.AuditLogs;
+using LHA.BlazorWasm.HttpApi.Client.Clients;
 
 namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 {
     public partial class HostAuditLogList : LHAComponentBase
     {
-        [Inject] private IAuditLogAppService AuditLogService { get; set; } = default!;
+        [Inject] private AuditLogApiClient AuditLogService { get; set; } = default!;
         private List<AuditLogDto> _logs = new();
         private long _totalCount;
         private DateRange<DateTimeOffset?> _executionTimeRange = new();
@@ -47,12 +49,14 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             })
             .ToList();
 
-        private GetAuditLogsInput _input = new()
+        private AuditLogPagedRequest _input = new()
         {
             PageSize = 10,
             SorterKey = nameof(AuditLogDto.ExecutionTime),
-            SorterIsAsc = false
+            SorterIsAsc = false,
         };
+
+        private AuditLogFilter _filter = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -65,12 +69,12 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
         {
             try
             {
-                _input.StartTime = _executionTimeRange.Start?.ToUniversalTime();
-                _input.EndTime = _executionTimeRange.End?.ToUniversalTime();
+                _input.Filter = _filter;
+                _input.Filter.StartTime = _executionTimeRange.Start?.ToUniversalTime();
+                _input.Filter.EndTime = _executionTimeRange.End?.ToUniversalTime();
+                _input.DisableTenantFilter = _canReadHostLogs;
 
-                var result = _canReadHostLogs
-                    ? await AuditLogService.GetHostListAsync(_input, _selectedService)
-                    : await AuditLogService.GetListAsync(_input, _selectedService);
+                var result = await AuditLogService.GetListAsync(_input, _selectedService);
 
                 _logs = result.Items.ToList();
                 _totalCount = result.TotalCount;
@@ -201,15 +205,14 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 
                     _input.PageSize = 100;
                     _input.PageNumber = 1;
+                    _input.DisableTenantFilter = _canReadHostLogs;
 
                     int deletedCount = 0;
                     bool hasMore = true;
 
                     while (hasMore)
                     {
-                        var result = _canReadHostLogs
-                            ? await AuditLogService.GetHostListAsync(_input, _selectedService)
-                            : await AuditLogService.GetListAsync(_input, _selectedService);
+                        var result = await AuditLogService.GetListAsync(_input, _selectedService);
 
                         if (result.Items == null || !result.Items.Any())
                         {

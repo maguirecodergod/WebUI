@@ -4,6 +4,7 @@ using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
 using LHA.Core.Users;
 using Microsoft.EntityFrameworkCore;
+using LHA.AuditLog.EntityFrameworkCore.Contracts.Options;
 
 namespace LHA.AuditLog.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ public class AuditLogDbContext : LhaDbContext<AuditLogDbContext>
     public DbSet<EntityPropertyChangeEntity> EntityPropertyChanges => Set<EntityPropertyChangeEntity>();
 
     // ── Pipeline Audit (high-throughput, lightweight) ──────────────────
-    public DbSet<AuditLogPipelineEntity> AuditLogPipeline => Set<AuditLogPipelineEntity>();
+    public DbSet<AuditLogPipelineEntity> AuditLogPipelines => Set<AuditLogPipelineEntity>();
 
     private readonly Microsoft.Extensions.Options.IOptions<AuditLogEntityFrameworkCoreOptions>? _options;
 

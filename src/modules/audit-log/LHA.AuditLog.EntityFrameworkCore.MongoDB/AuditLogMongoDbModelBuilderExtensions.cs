@@ -1,4 +1,4 @@
-using LHA.AuditLog.EntityFrameworkCore;
+using LHA.AuditLog.Domain.Shared;
 using LHA.AuditLog.EntityFrameworkCore.MongoDB.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,17 +14,17 @@ public static class AuditLogMongoDbModelBuilderExtensions
     /// </summary>
     public static ModelBuilder ConfigureAuditLogMongoDb(
         this ModelBuilder modelBuilder, 
-        AuditLogStoreMode mode = AuditLogStoreMode.All)
+        CAuditLogStoreMode mode = CAuditLogStoreMode.All)
     {
         // Global ignores
         modelBuilder.Ignore<LHA.Ddd.Domain.DomainEventRecord>();
 
-        if (mode.HasFlag(AuditLogStoreMode.DataAudit))
+        if (mode.HasFlag(CAuditLogStoreMode.DataAudit))
         {
             modelBuilder.ApplyConfiguration(new MongoDbAuditLogConfiguration());
         }
 
-        if (mode.HasFlag(AuditLogStoreMode.Pipeline))
+        if (mode.HasFlag(CAuditLogStoreMode.Pipeline))
         {
             modelBuilder.ApplyConfiguration(new MongoDbAuditLogPipelineConfiguration());
         }

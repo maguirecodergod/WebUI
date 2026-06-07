@@ -33,7 +33,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Read)
         .WithName("GetTenants")
-        .WithSummary("Returns a filtered, paged list of tenants.");
+        .WithSummary("Returns a filtered, paged list of tenants.")
+        .Produces<ApiResponse<PagedResultDto<TenantDto>>>();
 
         // ── Get by ID ────────────────────────────────────────────────
         group.MapGet("/{id:guid}", async (
@@ -45,7 +46,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Read)
         .WithName("GetTenant")
-        .WithSummary("Gets a tenant by its unique identifier.");
+        .WithSummary("Gets a tenant by its unique identifier.")
+        .Produces<ApiResponse<TenantDto>>();
 
         // ── Find by name ─────────────────────────────────────────────
         group.MapGet("/by-name/{name}", async (
@@ -59,7 +61,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Read)
         .WithName("FindTenantByName")
-        .WithSummary("Finds a tenant by display name (case-insensitive).");
+        .WithSummary("Finds a tenant by display name (case-insensitive).")
+        .Produces<ApiResponse<TenantDto>>();
 
         // ── Create ───────────────────────────────────────────────────
         group.MapPost("/", async (
@@ -71,7 +74,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Create)
         .WithName("CreateTenant")
-        .WithSummary("Creates a new tenant.");
+        .WithSummary("Creates a new tenant.")
+        .Produces<ApiResponse<TenantDto>>(201);
 
         // ── Update ───────────────────────────────────────────────────
         group.MapPut("/{id:guid}", async (
@@ -84,7 +88,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Update)
         .WithName("UpdateTenant")
-        .WithSummary("Updates a tenant (name). Requires concurrency stamp.");
+        .WithSummary("Updates a tenant (name). Requires concurrency stamp.")
+        .Produces<ApiResponse<TenantDto>>();
 
         // ── Delete ───────────────────────────────────────────────────
         group.MapDelete("/{id:guid}", async (
@@ -96,7 +101,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Delete)
         .WithName("DeleteTenant")
-        .WithSummary("Soft-deletes a tenant.");
+        .WithSummary("Soft-deletes a tenant.")
+        .Produces(204);
 
         // ── Connection Strings ───────────────────────────────────────
         group.MapGet("/{id:guid}/connection-strings", async (
@@ -108,7 +114,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Read)
         .WithName("GetTenantConnectionStrings")
-        .WithSummary("Returns all connection strings for a tenant.");
+        .WithSummary("Returns all connection strings for a tenant.")
+        .Produces<ApiResponse<List<TenantConnectionStringDto>>>();
 
         group.MapPut("/{id:guid}/connection-strings/{name}", async (
             Guid id,
@@ -121,7 +128,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Update)
         .WithName("SetTenantConnectionString")
-        .WithSummary("Adds or updates a named connection string on the tenant.");
+        .WithSummary("Adds or updates a named connection string on the tenant.")
+        .Produces<ApiResponse<TenantDto>>();
 
         group.MapDelete("/{id:guid}/connection-strings/{name}", async (
             Guid id,
@@ -133,7 +141,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Update)
         .WithName("RemoveTenantConnectionString")
-        .WithSummary("Removes a named connection string from the tenant.");
+        .WithSummary("Removes a named connection string from the tenant.")
+        .Produces<ApiResponse<TenantDto>>();
 
         // ── Activation ───────────────────────────────────────────────
         group.MapPost("/{id:guid}/activate", async (
@@ -145,7 +154,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Update)
         .WithName("ActivateTenant")
-        .WithSummary("Activates a tenant.");
+        .WithSummary("Activates a tenant.")
+        .Produces<ApiResponse<TenantDto>>();
 
         group.MapPost("/{id:guid}/deactivate", async (
             Guid id,
@@ -156,7 +166,8 @@ public static class TenantEndpoints
         })
         .RequireAuthorization(P.Tenants.Update)
         .WithName("DeactivateTenant")
-        .WithSummary("Deactivates a tenant.");
+        .WithSummary("Deactivates a tenant.")
+        .Produces<ApiResponse<TenantDto>>();
 
         return endpoints;
     }

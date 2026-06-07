@@ -91,11 +91,19 @@ public sealed class LhaSwaggerOptions
     /// <summary>Route prefix for Scalar UI (default: <c>"scalar"</c>).</summary>
     public string ScalarRoutePrefix { get; set; } = "scalar";
 
+    /// <summary>Route prefix for Redoc UI (default: <c>"redoc"</c>).</summary>
+    public string RedocRoutePrefix { get; set; } = "redoc";
+
+    // ─── Scalar customization ───────────────────────────────────────
+
+    /// <summary>Scalar API reference customization.</summary>
+    public LhaScalarOptions Scalar { get; set; } = new();
+
     // ─── Server URLs ─────────────────────────────────────────────────
 
     /// <summary>
     /// Server URLs to include in the OpenAPI document.
-    /// Useful for gateway / public-facing URLs.
+    /// Useful for gateway / public-facing URLs and Scalar deploy environment selector.
     /// </summary>
     public List<SwaggerServer> Servers { get; set; } = [];
 }
@@ -167,6 +175,76 @@ public sealed class SwaggerServer
     public string? Description { get; set; }
 }
 
+/// <summary>Scalar-specific UI options.</summary>
+public sealed class LhaScalarOptions
+{
+    /// <summary>Controls Scalar developer tools visibility.</summary>
+    public LhaScalarDeveloperToolsVisibility ShowDeveloperTools { get; set; } =
+        LhaScalarDeveloperToolsVisibility.Always;
+
+    /// <summary>Whether to show the Scalar API Client button.</summary>
+    public bool ShowClientButton { get; set; } = true;
+
+    /// <summary>
+    /// Adds the current public request origin as a Scalar server, respecting reverse proxy headers.
+    /// This makes Scalar use the deployed/ngrok host instead of localhost.
+    /// </summary>
+    public bool UseRequestOriginAsServer { get; set; } = true;
+
+    /// <summary>Default HTTP clients used by Scalar's development tools / code samples.</summary>
+    public List<ScalarHttpClientPreference> DefaultHttpClients { get; set; } =
+    [
+        new() { Target = "CSharp", Client = "HttpClient" },
+        new() { Target = "JavaScript", Client = "Fetch" },
+        new() { Target = "Shell", Client = "Curl" }
+    ];
+
+    /// <summary>MCP server displayed in Scalar.</summary>
+    public ScalarMcpServerOptions McpServer { get; set; } = new();
+}
+
+/// <summary>Default HTTP client preference for a Scalar language target.</summary>
+public sealed class ScalarHttpClientPreference
+{
+    /// <summary>Scalar target language, e.g. <c>"CSharp"</c>, <c>"JavaScript"</c>, <c>"Shell"</c>.</summary>
+    public required string Target { get; set; }
+
+    /// <summary>Scalar client, e.g. <c>"HttpClient"</c>, <c>"Fetch"</c>, <c>"Curl"</c>.</summary>
+    public required string Client { get; set; }
+}
+
+/// <summary>Scalar MCP server integration options.</summary>
+public sealed class ScalarMcpServerOptions
+{
+    /// <summary>Whether Scalar should expose MCP integration.</summary>
+    public bool Enabled { get; set; } = true;
+
+    /// <summary>Display name for the MCP server.</summary>
+    public string? Name { get; set; }
+
+    /// <summary>
+    /// URL of the MCP server. If unset, the URL is resolved from the public request origin and <see cref="Path"/>.
+    /// Relative URLs such as <c>"/mcp"</c> are also resolved against the public request origin.
+    /// </summary>
+    public string? Url { get; set; }
+
+    /// <summary>Relative MCP path used when <see cref="Url"/> is unset.</summary>
+    public string Path { get; set; } = "/mcp";
+}
+
+/// <summary>Visibility policy for Scalar developer tools.</summary>
+public enum LhaScalarDeveloperToolsVisibility
+{
+    /// <summary>Always show the developer tools toolbar, including MCP generation, in every allowed environment.</summary>
+    Always = 0,
+
+    /// <summary>Use Scalar's default localhost-only visibility.</summary>
+    Localhost = 1,
+
+    /// <summary>Hide the developer tools toolbar.</summary>
+    Never = 2
+}
+
 /// <summary>Available UI providers for interactive docs.</summary>
 public enum SwaggerUiProvider
 {
@@ -176,9 +254,15 @@ public enum SwaggerUiProvider
     /// <summary>Swashbuckle Swagger UI — classic, widely adopted.</summary>
     SwaggerUi = 1,
 
+    /// <summary>Redoc — powerful OpenAPI/Swagger documentation renderer.</summary>
+    Redoc = 2,
+
     /// <summary>Both Scalar and Swagger UI simultaneously.</summary>
-    Both = 2,
+    All = 3,
+
+    /// <summary>Alias for <see cref="All"/>. Kept for configuration readability.</summary>
+    Both = All,
 
     /// <summary>No UI — only the JSON endpoint.</summary>
-    None = 3
+    None = 4
 }

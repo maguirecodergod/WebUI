@@ -440,10 +440,10 @@
         "Create": "Create User"
     },
     "ServiceType": {
-        "Account": "Account Service",
-        "Notification": "Notification Service",
-        "Mega": "Mega Service",
-        "Movie": "Movie Service"
+        "Account": "Account",
+        "Notification": "Notification",
+        "Mega": "Mega",
+        "Movie": "Movie"
     },
     "NotificationConfiguration": {
         "PageTitle": "Notification Configuration",

@@ -5,12 +5,18 @@ namespace LHA.Auditing;
 /// </summary>
 public enum CEntityChangeType : byte
 {
-    /// <summary>Entity was created.</summary>
+    /// <summary>
+    /// A new entity was created.
+    /// </summary>
     Created = 0,
 
-    /// <summary>Entity was updated.</summary>
+    /// <summary>
+    /// An existing entity was modified.
+    /// </summary>
     Updated = 1,
 
-    /// <summary>Entity was deleted (soft or hard).</summary>
+    /// <summary>
+    /// An entity was deleted (or soft-deleted).
+    /// </summary>
     Deleted = 2
 }

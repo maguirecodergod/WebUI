@@ -5,9 +5,16 @@ namespace LHA.Shared.Contracts.Identity.Auth;
 /// <summary>Input for registering a new tenant (onboarding).</summary>
 public sealed class RegisterTenantInput
 {
+    /// <summary>Display name of the new tenant. Maximum length: 128 characters.</summary>
     public string TenantName { get; set; } = string.Empty;
+
+    /// <summary>Login name for the tenant's initial administrator account. Defaults to <c>"admin"</c>. Maximum length: 256 characters.</summary>
     public string AdminUserName { get; set; } = "admin";
+
+    /// <summary>Email address for the tenant's initial administrator. Maximum length: 256 characters.</summary>
     public string AdminEmail { get; set; } = string.Empty;
+
+    /// <summary>Password for the tenant's initial administrator. Minimum length: 6 characters.</summary>
     public string AdminPassword { get; set; } = string.Empty;
 
     /// <summary>

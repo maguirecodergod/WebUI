@@ -1,5 +1,6 @@
 using LHA.Ddd.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LHA.EntityFrameworkCore;
 
@@ -22,6 +23,15 @@ public class EfCoreRepository<TDbContext, TEntity, TKey>
     public EfCoreRepository(IDbContextProvider<TDbContext> dbContextProvider)
     {
         _dbContextProvider = dbContextProvider;
+    }
+
+    /// <summary>
+    /// Creates a separate DbContext instance using the provided service provider.
+    /// This is useful for executing concurrent queries without violating EF Core's thread-safety constraints.
+    /// </summary>
+    protected virtual TDbContext CreateSecondDbContext(IServiceProvider serviceProvider)
+    {
+        return ActivatorUtilities.CreateInstance<TDbContext>(serviceProvider);
     }
 
     /// <summary>

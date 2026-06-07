@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using LHA.Ddd.Application;
 using LHA.Identity.Application.Contracts;
+using LHA.Shared.Contracts.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -27,7 +28,8 @@ public static class AuthEndpoints
         })
         .AllowAnonymous()
         .WithName("Login")
-        .WithSummary("Authenticates a user and returns JWT tokens.");
+        .WithSummary("Authenticates a user and returns JWT tokens.")
+        .Produces<ApiResponse<AuthResultDto>>();
 
         // ── Register ─────────────────────────────────────────────────
         group.MapPost("/register", async (
@@ -40,7 +42,8 @@ public static class AuthEndpoints
         })
         .AllowAnonymous()
         .WithName("Register")
-        .WithSummary("Registers a new user account.");
+        .WithSummary("Registers a new user account.")
+        .Produces<ApiResponse<IdentityUserDto>>(201);
 
         // ── Register Tenant ──────────────────────────────────────────
         group.MapPost("/register-tenant", async (
@@ -53,7 +56,8 @@ public static class AuthEndpoints
         })
         .AllowAnonymous()
         .WithName("RegisterTenant")
-        .WithSummary("Self-service onboarding: creates a new tenant, an admin, and returns tokens.");
+        .WithSummary("Self-service onboarding: creates a new tenant, an admin, and returns tokens.")
+        .Produces<ApiResponse<AuthResultDto>>();
 
         // ── Refresh Token ────────────────────────────────────────────
         group.MapPost("/refresh", async (
@@ -65,7 +69,8 @@ public static class AuthEndpoints
         })
         .AllowAnonymous()
         .WithName("RefreshToken")
-        .WithSummary("Refreshes an access token using a refresh token.");
+        .WithSummary("Refreshes an access token using a refresh token.")
+        .Produces<ApiResponse<AuthResultDto>>();
 
         // ── Current User ─────────────────────────────────────────────
         group.MapGet("/me", async (
@@ -83,7 +88,8 @@ public static class AuthEndpoints
         })
         .RequireAuthorization()
         .WithName("GetCurrentUser")
-        .WithSummary("Gets the currently authenticated user's profile.");
+        .WithSummary("Gets the currently authenticated user's profile.")
+        .Produces<ApiResponse<CurrentUserDto>>();
 
         return endpoints;
     }

@@ -22,6 +22,7 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
 
     private DateRange<TInner> _tempValue;
     private int _clickCount = 0;
+    private DateTime? _hoverDate;
 
     private DateRangeConverter<TInner> RangeConverter => new();
 
@@ -126,6 +127,7 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
                 new DateTime(date.Year, date.Month, date.Day, startTime.Hour, startTime.Minute, 0),
                 null);
             _clickCount = 1;
+            _hoverDate = null;
         }
         else if (_clickCount == 1 && currentStart.HasValue)
         {
@@ -143,9 +145,32 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
                 _tempValue = RangeConverter.CreateRange(existingStart, newBoundary);
             }
             _clickCount = 0;
+            _hoverDate = null;
         }
 
         StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private Task HandleDateHovered(DateTime date)
+    {
+        if (_clickCount == 1 && !_tempValue.IsComplete)
+        {
+            _hoverDate = date;
+            StateHasChanged();
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private Task HandleDateHoverEnded()
+    {
+        if (_hoverDate.HasValue)
+        {
+            _hoverDate = null;
+            StateHasChanged();
+        }
+
         return Task.CompletedTask;
     }
 
@@ -202,6 +227,7 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
     {
         _tempValue = default;
         _clickCount = 0;
+        _hoverDate = null;
         return base.ClearAsync();
     }
 
@@ -209,5 +235,16 @@ public partial class DateTimeRangePicker<TInner> : PickerBase<DateRange<TInner>>
     {
         var (s, e) = RangeConverter.MapRange(range);
         return new DateRange(s, e);
+    }
+
+    private DateRange? GetPreviewRange()
+    {
+        if (_clickCount != 1 || _tempValue.IsComplete || !_hoverDate.HasValue)
+        {
+            return null;
+        }
+
+        var (start, _) = RangeConverter.MapRange(_tempValue);
+        return start.HasValue ? new DateRange(start.Value, _hoverDate.Value) : null;
     }
 }

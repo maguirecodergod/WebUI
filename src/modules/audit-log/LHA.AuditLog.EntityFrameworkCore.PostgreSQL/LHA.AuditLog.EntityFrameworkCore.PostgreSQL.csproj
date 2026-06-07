@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\frameworks\EntityFrameworkCore\LHA.EntityFrameworkCore.PostgreSQL\LHA.EntityFrameworkCore.PostgreSQL.csproj" />
     <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore\LHA.AuditLog.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\frameworks\EntityFrameworkCore\LHA.EntityFrameworkCore.PostgreSQL\LHA.EntityFrameworkCore.PostgreSQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

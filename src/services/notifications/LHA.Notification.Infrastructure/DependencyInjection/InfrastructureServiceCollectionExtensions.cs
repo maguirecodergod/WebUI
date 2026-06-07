@@ -160,9 +160,8 @@ namespace LHA.Notification.Infrastructure
             });
 
             // 2) Register Audit Log EF Core storage with MongoDB provider.
-            services.AddAuditLogEntityFrameworkCore(builder =>
+            services.AddAuditLogMongoDb(builder =>
             {
-                builder.UseMongoDb(); // REQUIRED: Configure model mappings for MongoDB
                 builder.UseAll();
 
                 builder.ConfigureDbContext(options =>
@@ -179,7 +178,7 @@ namespace LHA.Notification.Infrastructure
             services.Replace(ServiceDescriptor.Scoped(typeof(IInboxStore), typeof(EfCoreInboxStore<NotificationDbContext>)));
 
             // 3) Register Account specialized Audit Log Repositories
-            services.AddScoped<IAuditLogRepository, EfCoreAuditLogRepository>();
+            // services.AddScoped<IAuditLogRepository, EfCoreAuditLogRepository>();
             // services.AddScoped<IAuditLogActionRepository, EfCoreAuditLogActionRepository>();
             // services.AddScoped<IEntityChangeRepository, EfCoreEntityChangeRepository>();
             // services.AddScoped<IEntityPropertyChangeRepository, EfCoreEntityPropertyChangeRepository>();

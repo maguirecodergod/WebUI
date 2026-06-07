@@ -28,7 +28,8 @@ public static class ClaimTypeAndSecurityLogEndpoints
         })
         .RequireAuthorization(P.ClaimTypes.Read)
         .WithName("GetClaimTypes")
-        .WithSummary("Returns a paged list of claim types.");
+        .WithSummary("Returns a paged list of claim types.")
+        .Produces<ApiResponse<PagedResultDto<IdentityClaimTypeDto>>>();
 
         group.MapGet("/{id:guid}", async (
             Guid id,
@@ -39,7 +40,8 @@ public static class ClaimTypeAndSecurityLogEndpoints
         })
         .RequireAuthorization(P.ClaimTypes.Read)
         .WithName("GetClaimType")
-        .WithSummary("Gets a claim type by ID.");
+        .WithSummary("Gets a claim type by ID.")
+        .Produces<ApiResponse<IdentityClaimTypeDto>>();
 
         group.MapPost("/", async (
             CreateOrUpdateClaimTypeInput input,
@@ -51,7 +53,8 @@ public static class ClaimTypeAndSecurityLogEndpoints
         })
         .RequireAuthorization(P.ClaimTypes.Create)
         .WithName("CreateClaimType")
-        .WithSummary("Creates a new claim type.");
+        .WithSummary("Creates a new claim type.")
+        .Produces<ApiResponse<IdentityClaimTypeDto>>(201);
 
         group.MapPut("/{id:guid}", async (
             Guid id,
@@ -63,7 +66,8 @@ public static class ClaimTypeAndSecurityLogEndpoints
         })
         .RequireAuthorization(P.ClaimTypes.Update)
         .WithName("UpdateClaimType")
-        .WithSummary("Updates a claim type.");
+        .WithSummary("Updates a claim type.")
+        .Produces<ApiResponse<IdentityClaimTypeDto>>();
 
         group.MapDelete("/{id:guid}", async (
             Guid id,
@@ -74,7 +78,8 @@ public static class ClaimTypeAndSecurityLogEndpoints
         })
         .RequireAuthorization(P.ClaimTypes.Delete)
         .WithName("DeleteClaimType")
-        .WithSummary("Deletes a claim type.");
+        .WithSummary("Deletes a claim type.")
+        .Produces(204);
 
         return endpoints;
     }
@@ -94,7 +99,8 @@ public static class ClaimTypeAndSecurityLogEndpoints
         })
         .RequireAuthorization(P.SecurityLogs.Read)
         .WithName("GetSecurityLogs")
-        .WithSummary("Returns a paged list of security logs.");
+        .WithSummary("Returns a paged list of security logs.")
+        .Produces<ApiResponse<PagedResultDto<IdentitySecurityLogDto>>>();
 
         return endpoints;
     }

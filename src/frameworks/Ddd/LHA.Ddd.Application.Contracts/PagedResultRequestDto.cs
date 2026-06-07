@@ -11,7 +11,7 @@ public class PagedResultRequestDto : PagingParam, IPagedResultRequest
     public string? SearchQuery { get; set; }
 
     /// <summary>Columns to apply search to. Using array for better Minimal API binding.</summary>
-    public string[] AllowSearchColumns { get; set; } = [];
+    public string[] AllowSearchColumns { get; set; } = new string[0];
 
     /// <summary>Sorting property name.</summary>
     public string? SorterKey { get; set; }

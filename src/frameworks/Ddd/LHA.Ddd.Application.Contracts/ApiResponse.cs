@@ -6,7 +6,14 @@ namespace LHA.Ddd.Application;
 /// <typeparam name="T">The data type.</typeparam>
 public sealed class ApiResponse<T>
 {
+    /// <summary>
+    /// HTTP status code of the response (e.g., 200, 201, 400).
+    /// </summary>
     public int StatusCode { get; init; }
+
+    /// <summary>
+    /// Contains the success flag, payload data, and error details.
+    /// </summary>
     public ResponseResult<T> Result { get; init; } = new();
 
     /// <summary>Creates a successful response with the given data.</summary>
@@ -40,8 +47,19 @@ public sealed class ApiResponse<T>
 /// </summary>
 public sealed class ResponseResult<T>
 {
+    /// <summary>
+    /// Indicates whether the operation completed successfully.
+    /// </summary>
     public bool Success { get; init; }
+
+    /// <summary>
+    /// The response payload. <c>null</c> when <see cref="Success"/> is <c>false</c>.
+    /// </summary>
     public T? Data { get; init; }
+
+    /// <summary>
+    /// Collection of error details. Empty when <see cref="Success"/> is <c>true</c>.
+    /// </summary>
     public List<ErrorDetailDto> Errors { get; init; } = [];
 }
 

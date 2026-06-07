@@ -2,6 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\frameworks\Ddd\LHA.Ddd.Domain\LHA.Ddd.Domain.csproj" />
     <ProjectReference Include="..\LHA.AuditLog.Domain.Shared\LHA.AuditLog.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>

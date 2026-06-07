@@ -6,13 +6,11 @@ using LHA.BlazorWasm.HttpApi.Client.Core;
 using LHA.BlazorWasm.HttpApi.Client.Handlers;
 using LHA.BlazorWasm.HttpApi.Client.Options;
 using LHA.BlazorWasm.HttpApi.Client.Clients;
-using LHA.Shared.Contracts.AuditLog;
 using LHA.Security.Encryption;
 using LHA.Security.Keys;
 using LHA.Security.Signing;
 using LHA.Security.Device;
 using LHA.BlazorWasm.HttpApi.Client.Clients.PermissionManagement;
-using LHA.Shared.Contracts.Notification;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Extensions;
 
@@ -54,17 +52,15 @@ public static class HttpApiClientExtensions
 
         // 4. Register Typed Clients (extend this list as new clients are created)
         RegisterTypedClient<AuditLogApiClient>(services);
-        services.AddScoped<IAuditLogAppService>(sp => sp.GetRequiredService<AuditLogApiClient>());
 
         RegisterTypedClient<AuthApiClient>(services);
         RegisterTypedClient<RoleApiClient>(services);
         RegisterTypedClient<UserApiClient>(services);
         RegisterTypedClient<PermissionApiClient>(services);
         RegisterTypedClient<PermissionGroupApiClient>(services);
-        RegisterTypedClient<LHA.BlazorWasm.HttpApi.Client.Clients.BackgroundJobs.BackgroundJobApiClient>(services);
+        RegisterTypedClient<Clients.BackgroundJobs.BackgroundJobApiClient>(services);
         RegisterTypedClient<ChannelConfigurationApiClient>(services);
-        services.AddScoped<IChannelConfigurationAppService>(sp => sp.GetRequiredService<ChannelConfigurationApiClient>());
-        RegisterTypedClient<LHA.BlazorWasm.HttpApi.Client.Clients.TenantManagement.TenantApiClient>(services);
+        RegisterTypedClient<Clients.TenantManagement.TenantApiClient>(services);
 
         return services;
     }

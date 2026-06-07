@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Clients;
 
-public class ChannelConfigurationApiClient : ApiClientBase, IChannelConfigurationAppService
+public class ChannelConfigurationApiClient : ApiClientBase
 {
     private const string BaseUrl = "api/v1/notification/configurations";
 
