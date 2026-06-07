@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DistributedLock.Core" Version="1.0.9" />
+    <PackageReference Include="DistributedLock.Core" />
   </ItemGroup>
 
   <ItemGroup>
