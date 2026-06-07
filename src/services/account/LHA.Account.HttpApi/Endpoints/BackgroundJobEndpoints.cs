@@ -49,6 +49,8 @@ public static class BackgroundJobEndpoints
 
             return Results.Ok(ApiResponse<List<Shared.Contracts.BackgroundJobs.RecurringJobDto>>.Ok(result));
         })
+        .WithName("GetRecurringJobs")
+        .WithSummary("Get a list of all recurring background jobs")
         .Produces<ApiResponse<List<LHA.Shared.Contracts.BackgroundJobs.RecurringJobDto>>>();
 
         // 2. Trigger a Recurring Job
@@ -57,6 +59,8 @@ public static class BackgroundJobEndpoints
             recurringJobManager.Trigger(id);
             return Results.Ok(ApiResponse<bool>.Ok(true));
         })
+        .WithName("TriggerRecurringJob")
+        .WithSummary("Trigger a specific recurring background job by ID")
         .Produces<ApiResponse<bool>>();
 
         // 3. Delete a Recurring Job
@@ -65,6 +69,8 @@ public static class BackgroundJobEndpoints
             recurringJobManager.RemoveIfExists(id);
             return Results.Ok(ApiResponse<bool>.Ok(true));
         })
+        .WithName("DeleteRecurringJob")
+        .WithSummary("Delete a specific recurring background job by ID")
         .Produces<ApiResponse<bool>>();
 
         // 4. Get Enqueued Jobs
@@ -82,6 +88,8 @@ public static class BackgroundJobEndpoints
 
             return Results.Ok(ApiResponse<List<EnqueuedJobDto>>.Ok(result));
         })
+        .WithName("GetEnqueuedJobs")
+        .WithSummary("Get a list of enqueued background jobs")
         .Produces<ApiResponse<List<EnqueuedJobDto>>>();
 
         // 5. Get Failed Jobs
@@ -100,6 +108,8 @@ public static class BackgroundJobEndpoints
 
             return Results.Ok(ApiResponse<List<FailedJobDto>>.Ok(result));
         })
+        .WithName("GetFailedJobs")
+        .WithSummary("Get a list of failed background jobs")
         .Produces<ApiResponse<List<FailedJobDto>>>();
 
         // 6. Delete a specific Job (e.g., failed job)
@@ -108,6 +118,8 @@ public static class BackgroundJobEndpoints
             var deleted = backgroundJobClient.Delete(jobId);
             return Results.Ok(ApiResponse<bool>.Ok(deleted));
         })
+        .WithName("DeleteBackgroundJob")
+        .WithSummary("Delete a specific background job by ID")
         .Produces<ApiResponse<bool>>();
 
         // 7. Requeue a specific Job (e.g., retry failed job)
@@ -116,6 +128,8 @@ public static class BackgroundJobEndpoints
             var requeued = backgroundJobClient.Requeue(jobId);
             return Results.Ok(ApiResponse<bool>.Ok(requeued));
         })
+        .WithName("RequeueBackgroundJob")
+        .WithSummary("Requeue a specific background job by ID")
         .Produces<ApiResponse<bool>>();
 
         // 8. Queues
@@ -137,6 +151,8 @@ public static class BackgroundJobEndpoints
             }).ToList();
             return Results.Ok(ApiResponse<List<QueueWithTopEnqueuedJobsDto>>.Ok(result));
         })
+        .WithName("GetBackgroundJobQueues")
+        .WithSummary("Get list of background job queues")
         .Produces<ApiResponse<List<QueueWithTopEnqueuedJobsDto>>>();
 
         // 9. Servers
@@ -154,6 +170,8 @@ public static class BackgroundJobEndpoints
             }).ToList();
             return Results.Ok(ApiResponse<List<ServerDto>>.Ok(result));
         })
+        .WithName("GetBackgroundJobServers")
+        .WithSummary("Get list of active background job servers")
         .Produces<ApiResponse<List<ServerDto>>>();
 
         // 10. Job Details
@@ -180,6 +198,8 @@ public static class BackgroundJobEndpoints
             };
             return Results.Ok(ApiResponse<JobDetailsDto>.Ok(result));
         })
+        .WithName("GetBackgroundJobDetails")
+        .WithSummary("Get details of a specific background job by ID")
         .Produces<ApiResponse<JobDetailsDto>>();
 
         // 11. Statistics
@@ -203,6 +223,8 @@ public static class BackgroundJobEndpoints
             };
             return Results.Ok(ApiResponse<StatisticsDto>.Ok(result));
         })
+        .WithName("GetBackgroundJobStatistics")
+        .WithSummary("Get background job system statistics")
         .Produces<ApiResponse<StatisticsDto>>();
 
         // 12. Fetched Jobs
@@ -220,6 +242,8 @@ public static class BackgroundJobEndpoints
             }).ToList();
             return Results.Ok(ApiResponse<List<FetchedJobDto>>.Ok(result));
         })
+        .WithName("GetFetchedBackgroundJobs")
+        .WithSummary("Get a list of fetched background jobs")
         .Produces<ApiResponse<List<FetchedJobDto>>>();
 
         // 13. Processing Jobs
@@ -238,6 +262,8 @@ public static class BackgroundJobEndpoints
             }).ToList();
             return Results.Ok(ApiResponse<List<ProcessingJobDto>>.Ok(result));
         })
+        .WithName("GetProcessingBackgroundJobs")
+        .WithSummary("Get a list of processing background jobs")
         .Produces<ApiResponse<List<ProcessingJobDto>>>();
 
         // 14. Scheduled Jobs
@@ -256,6 +282,8 @@ public static class BackgroundJobEndpoints
             }).ToList();
             return Results.Ok(ApiResponse<List<ScheduledJobDto>>.Ok(result));
         })
+        .WithName("GetScheduledBackgroundJobs")
+        .WithSummary("Get a list of scheduled background jobs")
         .Produces<ApiResponse<List<ScheduledJobDto>>>();
 
         // 15. Succeeded Jobs
@@ -275,6 +303,8 @@ public static class BackgroundJobEndpoints
             }).ToList();
             return Results.Ok(ApiResponse<List<SucceededJobDto>>.Ok(result));
         })
+        .WithName("GetSucceededBackgroundJobs")
+        .WithSummary("Get a list of succeeded background jobs")
         .Produces<ApiResponse<List<SucceededJobDto>>>();
 
         // 16. Deleted Jobs
@@ -292,6 +322,8 @@ public static class BackgroundJobEndpoints
             }).ToList();
             return Results.Ok(ApiResponse<List<DeletedJobDto>>.Ok(result));
         })
+        .WithName("GetDeletedBackgroundJobs")
+        .WithSummary("Get a list of deleted background jobs")
         .Produces<ApiResponse<List<DeletedJobDto>>>();
 
         // 17. Succeeded by Dates
@@ -300,6 +332,8 @@ public static class BackgroundJobEndpoints
             var result = jobStorage.GetMonitoringApi().SucceededByDatesCount();
             return Results.Ok(ApiResponse<Dictionary<DateTime, long>>.Ok(new Dictionary<DateTime, long>(result)));
         })
+        .WithName("GetSucceededBackgroundJobsByDates")
+        .WithSummary("Get counts of succeeded background jobs grouped by date")
         .Produces<ApiResponse<Dictionary<DateTime, long>>>();
 
         // 18. Failed by Dates
@@ -308,6 +342,8 @@ public static class BackgroundJobEndpoints
             var result = jobStorage.GetMonitoringApi().FailedByDatesCount();
             return Results.Ok(ApiResponse<Dictionary<DateTime, long>>.Ok(new Dictionary<DateTime, long>(result)));
         })
+        .WithName("GetFailedBackgroundJobsByDates")
+        .WithSummary("Get counts of failed background jobs grouped by date")
         .Produces<ApiResponse<Dictionary<DateTime, long>>>();
 
         // 19. Hourly Succeeded
@@ -316,6 +352,8 @@ public static class BackgroundJobEndpoints
             var result = jobStorage.GetMonitoringApi().HourlySucceededJobs();
             return Results.Ok(ApiResponse<Dictionary<DateTime, long>>.Ok(new Dictionary<DateTime, long>(result)));
         })
+        .WithName("GetHourlySucceededBackgroundJobs")
+        .WithSummary("Get counts of hourly succeeded background jobs")
         .Produces<ApiResponse<Dictionary<DateTime, long>>>();
 
         // 20. Hourly Failed
@@ -324,6 +362,8 @@ public static class BackgroundJobEndpoints
             var result = jobStorage.GetMonitoringApi().HourlyFailedJobs();
             return Results.Ok(ApiResponse<Dictionary<DateTime, long>>.Ok(new Dictionary<DateTime, long>(result)));
         })
+        .WithName("GetHourlyFailedBackgroundJobs")
+        .WithSummary("Get counts of hourly failed background jobs")
         .Produces<ApiResponse<Dictionary<DateTime, long>>>();
 
         return endpoints;
