@@ -13,7 +13,7 @@ public class ToolbarConfig
 
     /// <summary>
     /// Default toolbar matching richtexteditor.com demo layout.
-    /// Row 1: Text formatting. Row 2: Utilities & Insert.
+    /// Row 1: Text formatting. Row 2: Utilities and Insert.
     /// </summary>
     public static ToolbarConfig Default => new()
     {

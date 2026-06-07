@@ -10,8 +10,16 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Clients;
 
+/// <summary>
+/// Audit Log API client.
+/// </summary>
 public class AuditLogApiClient : ApiClientBase
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuditLogApiClient"/> class.
+    /// </summary>
+    /// <param name="httpClient"></param>
+    /// <param name="errorHandler"></param>
     public AuditLogApiClient(HttpClient httpClient, IApiErrorHandler errorHandler)
         : base(httpClient, errorHandler)
     {
@@ -25,6 +33,12 @@ public class AuditLogApiClient : ApiClientBase
         _ => "api/v1/account/audit-logs"
     };
 
+    /// <summary>
+    /// Gets the list of audit logs.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="service"></param>
+    /// <returns></returns>
     public async Task<PagedResultDto<AuditLogDto>> GetListAsync(AuditLogPagedRequest input, CServiceType service = CServiceType.Account)
     {
         var url = BuildQueryString(GetBaseUrl(service), input);
@@ -32,12 +46,24 @@ public class AuditLogApiClient : ApiClientBase
         return response.Result.Data!;
     }
 
+    /// <summary>
+    /// Gets the audit log by ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="service"></param>
+    /// <returns></returns>
     public async Task<AuditLogDto> GetAsync(Guid id, CServiceType service = CServiceType.Account)
     {
         var response = await GetAsync<AuditLogDto>($"{GetBaseUrl(service)}/{id}");
         return response.Result.Data!;
     }
 
+    /// <summary>
+    /// Gets the list of audit log actions.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="service"></param>
+    /// <returns></returns>
     public async Task<PagedResultDto<AuditLogActionDto>> GetActionsAsync(AuditLogActionPagedRequest input, CServiceType service = CServiceType.Account)
     {
         var url = BuildQueryString($"{GetBaseUrl(service)}/actions", input);
@@ -45,6 +71,12 @@ public class AuditLogApiClient : ApiClientBase
         return response.Result.Data!;
     }
 
+    /// <summary>
+    /// Gets the list of entity changes.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="service"></param>
+    /// <returns></returns>
     public async Task<PagedResultDto<EntityChangeDto>> GetEntityChangesAsync(EntityChangePagedRequest input, CServiceType service = CServiceType.Account)
     {
         var url = BuildQueryString($"{GetBaseUrl(service)}/entity-changes", input);
@@ -52,6 +84,12 @@ public class AuditLogApiClient : ApiClientBase
         return response.Result.Data!;
     }
 
+    /// <summary>
+    /// Gets the list of entity property changes.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="service"></param>
+    /// <returns></returns>
     public async Task<PagedResultDto<EntityPropertyChangeDto>> GetEntityPropertyChangesAsync(EntityPropertyChangePagedRequest input,
         CServiceType service = CServiceType.Account)
     {
@@ -60,11 +98,23 @@ public class AuditLogApiClient : ApiClientBase
         return response.Result.Data!;
     }
 
+    /// <summary>
+    /// Deletes the audit log by ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="service"></param>
+    /// <returns></returns>
     public async Task DeleteAsync(Guid id, CServiceType service = CServiceType.Account)
     {
         await DeleteAsync<object>($"{GetBaseUrl(service)}/{id}");
     }
 
+    /// <summary>
+    /// Deletes all audit logs older than the specified cutoff.
+    /// </summary>
+    /// <param name="cutoffTime"></param>
+    /// <param name="service"></param>
+    /// <returns></returns>
     public async Task<int> DeleteOlderThanAsync(DateTimeOffset cutoffTime, CServiceType service = CServiceType.Account)
     {
         var url = QueryHelpers.AddQueryString($"{GetBaseUrl(service)}/older-than", "cutoffTime", cutoffTime.ToString("o"));

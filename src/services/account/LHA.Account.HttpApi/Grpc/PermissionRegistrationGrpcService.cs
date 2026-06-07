@@ -12,6 +12,9 @@ public sealed class PermissionRegistrationGrpcServiceV1(
     IPermissionRegistrationService registrationService)
     : PermissionRegistrationService.PermissionRegistrationServiceBase
 {
+    /// <summary>
+    /// Registers a batch of permissions from an external microservice via gRPC.
+    /// </summary>
     public override async Task<RegisterPermissionsResponse> RegisterPermissions(
         RegisterPermissionsRequest request, ServerCallContext context)
     {

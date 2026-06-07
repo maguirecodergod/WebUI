@@ -7,8 +7,16 @@ using P = LHA.Mega.Application.Contracts.Permissions.MegaPermissions;
 
 namespace LHA.Mega.HttpApi;
 
+/// <summary>
+/// Mega Account endpoints.
+/// </summary>
 public static class MegaAccountEndpoints
 {
+    /// <summary>
+    /// Maps endpoints for Mega Account management.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapMegaAccountEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Mega", "/api/v{version:apiVersion}/mega/accounts")

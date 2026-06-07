@@ -9,8 +9,15 @@ using Microsoft.AspNetCore.Routing;
 
 namespace LHA.Account.HttpApi;
 
+/// <summary>
+/// Background job management endpoints powered by Hangfire.
+/// Provides monitoring, scheduling, and administration capabilities.
+/// </summary>
 public static class BackgroundJobEndpoints
 {
+    /// <summary>
+    /// Maps all background job management endpoints.
+    /// </summary>
     public static IEndpointRouteBuilder MapBackgroundJobEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapGroup("/api/v1/account/background-jobs")

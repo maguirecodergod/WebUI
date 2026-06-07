@@ -6,15 +6,28 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Clients.PermissionManagement;
 
+/// <summary>
+/// Represents the API client for permission group management.
+/// </summary>
 public class PermissionGroupApiClient : ApiClientBase
 {
     private const string BaseUrl = "api/v1/permission-management/groups";
 
+    /// <summary>
+    /// Initializes a new instance of the PermissionGroupApiClient class.
+    /// </summary>
+    /// <param name="httpClient"></param>
+    /// <param name="errorHandler"></param>
     public PermissionGroupApiClient(HttpClient httpClient, IApiErrorHandler errorHandler)
         : base(httpClient, errorHandler)
     {
     }
 
+    /// <summary>
+    /// Gets the list of permission groups.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public async Task<PagedResultDto<PermissionGroupDto>?> GetListAsync(GetPermissionGroupsInput input)
     {
         var queryString = new Dictionary<string, string?>();

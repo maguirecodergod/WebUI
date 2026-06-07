@@ -7,9 +7,9 @@ namespace LHA.BlazorWasm.Services.Storage;
 /// 
 /// Example usage:
 /// 
-/// // Inject ILocalStorageService (from LHA.BlazorWasm.Services.Storage, not Blazored)
+/// Inject ILocalStorageService (from LHA.BlazorWasm.Services.Storage, not Blazored)
 /// await storage.SetAsync("language", "en");
-/// var lang = await storage.GetAsync<string>("language");
+/// var lang = await storage.GetAsync("language");
 /// </summary>
 internal sealed class LocalStorageService : ILocalStorageService
 {

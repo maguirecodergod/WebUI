@@ -4,7 +4,7 @@ namespace LHA.UnitOfWork;
 /// Represents a logical unit of work that may span one or more databases and transactions.
 /// <para>
 /// <b>Lifecycle:</b> Create via <see cref="IUnitOfWorkManager.Begin"/>,
-/// perform work, call <see cref="CompleteAsync"/>, and <see cref="Dispose"/>.
+/// perform work, call <see cref="CompleteAsync"/>, and <see ref="Dispose"/>.
 /// Failure to call <see cref="CompleteAsync"/> before disposal triggers rollback.
 /// </para>
 /// <para>

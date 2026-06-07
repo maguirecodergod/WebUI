@@ -10,11 +10,22 @@ public class AuthMessageHandler : DelegatingHandler
 {
     private readonly IAccessTokenProvider _tokenProvider;
 
+    /// <summary>
+    /// Initializes a new instance of the AuthMessageHandler class.
+    /// </summary>
+    /// <param name="tokenProvider"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public AuthMessageHandler(IAccessTokenProvider tokenProvider)
     {
         _tokenProvider = tokenProvider ?? throw new ArgumentNullException(nameof(tokenProvider));
     }
 
+    /// <summary>
+    /// Sends an HTTP request with authentication handling.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         // Skip adding the token if it's a refresh token request to avoid infinite loops

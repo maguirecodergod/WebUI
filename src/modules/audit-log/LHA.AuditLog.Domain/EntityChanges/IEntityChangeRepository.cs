@@ -31,7 +31,6 @@ public interface IEntityChangeRepository : IRepository<EntityChangeEntity, Guid>
 
     /// <summary>
     /// Get entity changes count.
-    /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>

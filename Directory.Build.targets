@@ -1,0 +1,51 @@
+<Project>
+  <!--
+    ═══════════════════════════════════════════════════════════════════
+     XML Documentation (CS1591) — selective enforcement
+    ═══════════════════════════════════════════════════════════════════
+
+     GenerateDocumentationFile is ON globally (→ XML files are produced
+     for every project) so the Swagger transformer can read them.
+
+     CS1591 (Missing XML comment) is only enforced for API-facing
+     projects — the ones whose public surface ends up in OpenAPI:
+
+       ✓  *.HttpApi (NOT .Host)         — endpoint definitions
+       ✓  *.Host                        — runtime warning via LhaOperationDocumentationTransformer
+       ✓  *.Contracts / *.Shared.Contracts — DTOs, inputs, enums
+       ✓  *.Shared.Domain / *.Domain.Shared — query/filter/enum types
+       ✓  LHA.Core / *.Swagger / *.Abstraction — core enums & transformers
+
+     CS1591 is SUPPRESSED for implementation projects:
+       ✗  *.Domain (except .Shared / .Domain.Shared)
+       ✗  *.Application (except .Contracts)
+       ✗  *.EntityFrameworkCore*
+       ✗  *.Consumer / *.Cron / *.Migrator
+       ✗  Infrastructure frameworks (AspNetCore, EventBus, Caching …)
+
+     To add a project to the "enforce" list, add another
+     <LhaEnforceXmlDocs> condition below.
+    ═══════════════════════════════════════════════════════════════════
+  -->
+
+  <!-- ── Mark API-facing projects ────────────────────────────────────── -->
+  <PropertyGroup>
+    <!-- Endpoints & controllers (NOT .Host, .Client — Host contains infrastructure too, Client contains infrastructure too) -->
+    <LhaEnforceXmlDocs Condition="$(MSBuildProjectName.Contains('HttpApi')) And !$(MSBuildProjectName.Contains('.Host'))">true</LhaEnforceXmlDocs>
+    <LhaEnforceXmlDocs Condition="$(MSBuildProjectName.Contains('HttpApi')) And !$(MSBuildProjectName.Contains('.Client'))">true</LhaEnforceXmlDocs>
+    <!-- DTOs, inputs, interfaces -->
+    <LhaEnforceXmlDocs Condition="$(MSBuildProjectName.Contains('Contracts'))">true</LhaEnforceXmlDocs>
+    <!-- Query/filter/enum types surfaced via [AsParameters] -->
+    <LhaEnforceXmlDocs Condition="$(MSBuildProjectName.Contains('Shared.Domain'))">true</LhaEnforceXmlDocs>
+    <LhaEnforceXmlDocs Condition="$(MSBuildProjectName.Contains('Domain.Shared'))">true</LhaEnforceXmlDocs>
+    <!-- Core enums & OpenAPI transformers -->
+    <LhaEnforceXmlDocs Condition="$(MSBuildProjectName.Equals('LHA.Core'))">true</LhaEnforceXmlDocs>
+    <LhaEnforceXmlDocs Condition="$(MSBuildProjectName.Contains('Swagger'))">true</LhaEnforceXmlDocs>
+    <LhaEnforceXmlDocs Condition="$(MSBuildProjectName.Contains('Abstraction'))">true</LhaEnforceXmlDocs>
+  </PropertyGroup>
+
+  <!-- ── Suppress CS1591 for everything else ────────────────────────── -->
+  <PropertyGroup Condition="'$(LhaEnforceXmlDocs)' != 'true'">
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+</Project>

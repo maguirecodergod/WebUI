@@ -4,7 +4,7 @@ namespace LHA.Core.Security;
 /// Standard and custom claim types used throughout the LHA platform.
 /// <para>
 /// JWT tokens issued by the Account Service should include these claim types
-/// so that <see cref="HttpContextCurrentUser"/> can read them consistently.
+/// so that <see ref="HttpContextCurrentUser"/> can read them consistently.
 /// </para>
 /// </summary>
 public static class LhaClaimTypes

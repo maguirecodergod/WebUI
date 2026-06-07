@@ -14,6 +14,11 @@ namespace LHA.Identity.HttpApi;
 /// </summary>
 public static class PermissionEndpoints
 {
+    /// <summary>
+    /// Maps permission management endpoints under <c>/api/identity/permissions</c>.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapPermissionEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/permissions")

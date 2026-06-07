@@ -12,7 +12,7 @@ public static class InMemoryEventBusServiceCollectionExtensions
     /// Adds the LHA in-memory event bus with saga orchestration, event versioning,
     /// and optional outbox/inbox processing.
     /// <para>
-    /// Call <see cref="EventBusServiceCollectionExtensions.AddLHAEventBus"/> implicitly
+    /// Call <see ref="EventBusServiceCollectionExtensions.AddLHAEventBus"/> implicitly
     /// through this method, which registers all core + in-memory services.
     /// </para>
     /// </summary>

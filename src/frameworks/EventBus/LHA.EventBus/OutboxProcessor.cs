@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 namespace LHA.EventBus;
 
 /// <summary>
-/// Background processor that reads pending <see cref="OutboxMessage"/> entries
+/// Background processor that reads pending <see ref="OutboxMessage"/> entries
 /// and forwards them to the <see cref="IEventBus"/> for delivery.
 /// <para>
 /// Uses <see cref="IDistributedLock"/> to ensure only one processor instance

@@ -8,6 +8,10 @@ using System.Net.Http.Json;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Handlers;
 
+/// <summary>
+/// Secure HTTP handler for API requests.
+/// Encrypts the request body, adds device info, and signs the request.
+/// </summary>
 public class SecureHttpHandler : DelegatingHandler
 {
     private readonly IAesEncryptionService _aesService;
@@ -16,6 +20,14 @@ public class SecureHttpHandler : DelegatingHandler
     private readonly IClientContextProvider _contextProvider;
     private readonly IDeviceFingerprintService _fingerprintService;
 
+    /// <summary>
+    /// Initializes a new instance of the SecureHttpHandler class.
+    /// </summary>
+    /// <param name="aesService"></param>
+    /// <param name="keyRotation"></param>
+    /// <param name="signer"></param>
+    /// <param name="contextProvider"></param>
+    /// <param name="fingerprintService"></param>
     public SecureHttpHandler(
         IAesEncryptionService aesService,
         IKeyRotationService keyRotation,
@@ -30,6 +42,12 @@ public class SecureHttpHandler : DelegatingHandler
         _fingerprintService = fingerprintService;
     }
 
+    /// <summary>
+    /// Sends an HTTP request with secure handling.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();

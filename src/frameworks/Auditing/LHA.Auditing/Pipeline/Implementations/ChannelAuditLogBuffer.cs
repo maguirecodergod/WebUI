@@ -8,7 +8,7 @@ namespace LHA.Auditing.Pipeline;
 /// <para>
 /// Lock-free, high-throughput, backpressure-aware.
 /// When the buffer is full, the oldest records are dropped (DropOldest policy)
-/// and the <see cref="AuditPipelineMetrics.DroppedLogs"/> counter is incremented.
+/// and the <see cref="AuditPipelineMetrics.IncrementDroppedLogs()"/> counter is incremented.
 /// </para>
 /// </summary>
 internal sealed class ChannelAuditLogBuffer : IAuditLogBuffer

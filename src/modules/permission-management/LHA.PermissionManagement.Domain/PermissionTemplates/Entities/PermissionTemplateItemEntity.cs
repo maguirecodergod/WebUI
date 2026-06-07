@@ -1,4 +1,5 @@
 using LHA.Ddd.Domain;
+using LHA.PermissionManagement.Domain.PermissionGroups;
 
 namespace LHA.PermissionManagement.Domain.PermissionTemplates;
 

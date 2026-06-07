@@ -12,11 +12,4 @@
     <ProjectReference Include="..\..\..\frameworks\EntityFrameworkCore\LHA.EntityFrameworkCore.PostgreSQL\LHA.EntityFrameworkCore.PostgreSQL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>

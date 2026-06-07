@@ -7,8 +7,16 @@ using LHA.Ddd.Application;
 
 namespace LHA.Notification.HttpApi;
 
+/// <summary>
+/// Device endpoints.
+/// </summary>
 public static class DeviceEndpoints
 {
+    /// <summary>
+    /// Maps endpoints for Device management.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapDeviceEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Notification", "/api/v{version:apiVersion}/notification/devices")

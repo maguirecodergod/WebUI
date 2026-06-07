@@ -23,7 +23,7 @@ public sealed class EfCoreTransactionApi : ITransactionApi, ISupportsRollback
 
     /// <summary>
     /// Additional DbContexts that have joined this transaction via
-    /// <see cref="RelationalDatabaseFacadeExtensions.UseTransaction"/>.
+    /// <see ref="RelationalDatabaseFacadeExtensions.UseTransaction"/>.
     /// </summary>
     public List<DbContext> AttendedDbContexts { get; } = [];
 

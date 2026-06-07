@@ -14,8 +14,14 @@ using LHA.Shared.Domain.EntityPropertyChanges;
 
 namespace LHA.Account.HttpApi;
 
+/// <summary>
+/// Audit log endpoints scoped to the Account service, providing cross-tenant visibility for host admins.
+/// </summary>
 public static class AccountAuditLogEndpoints
 {
+    /// <summary>
+    /// Maps all account-level audit log endpoints.
+    /// </summary>
     public static IEndpointRouteBuilder MapAccountAuditLogEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Account", "/api/v{version:apiVersion}/account/audit-logs")

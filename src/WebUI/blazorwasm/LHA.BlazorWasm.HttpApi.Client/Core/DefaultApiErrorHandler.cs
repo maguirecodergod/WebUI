@@ -9,6 +9,15 @@ namespace LHA.BlazorWasm.HttpApi.Client.Core;
 /// </summary>
 public class DefaultApiErrorHandler : IApiErrorHandler
 {
+    /// <summary>
+    /// Handles errors from the API response payload.
+    /// If the response content type is application/json or application/problem+json, it attempts to parse the error model.
+    /// If the response content type is not application/json or application/problem+json, it throws an ApiException.
+    /// </summary>
+    /// <param name="responseMessage"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="ApiException"></exception>
     public virtual async Task HandleErrorAsync(HttpResponseMessage responseMessage, CancellationToken cancellationToken = default)
     {
         var requestPath = responseMessage.RequestMessage?.RequestUri?.ToString();
@@ -82,6 +91,14 @@ public class DefaultApiErrorHandler : IApiErrorHandler
             rawResponse);
     }
 
+    /// <summary>
+    /// Handles exceptions that occur during API requests.
+    /// By default, it rethrows the exception.
+    /// </summary>
+    /// <param name="exception"></param>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public virtual Task HandleExceptionAsync(Exception exception, HttpRequestMessage request, CancellationToken cancellationToken = default)
     {
         // Default implementation just rethrows or wraps the exception

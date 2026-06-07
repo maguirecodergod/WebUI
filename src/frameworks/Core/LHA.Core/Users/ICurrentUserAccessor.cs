@@ -2,7 +2,7 @@ namespace LHA.Core.Users;
 
 /// <summary>
 /// Low-level accessor for the ambient current-user information,
-/// analogous to <see cref="LHA.MultiTenancy.ICurrentTenantAccessor"/>.
+/// analogous to <see ref="ICurrentTenantAccessor"/>.
 /// <para>
 /// Backed by <see cref="AsyncLocal{T}"/> so that user context
 /// flows correctly across async operations.

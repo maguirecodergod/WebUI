@@ -10,7 +10,7 @@ namespace LHA.BlazorWasm.Components.Form;
 /// Example usage:
 ///
 /// <FormField Label="Email" Required="true" Help="We'll never share your email.">
-///     <InputText @bind-Value="Model.Email" class="form-control" />
+///     <InputText bind-Value="Model.Email" class="form-control" />
 /// </FormField>
 /// </summary>
 public partial class FormField : LHAComponentBase

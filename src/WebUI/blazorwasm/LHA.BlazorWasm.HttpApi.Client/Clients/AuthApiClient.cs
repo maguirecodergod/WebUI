@@ -12,6 +12,11 @@ public class AuthApiClient : ApiClientBase
 {
     private const string BaseUrl = "api/v1/identity/auth";
 
+    /// <summary>
+    /// Initializes a new instance of the AuthApiClient class.
+    /// </summary>
+    /// <param name="httpClient"></param>
+    /// <param name="errorHandler"></param>
     public AuthApiClient(HttpClient httpClient, IApiErrorHandler errorHandler)
         : base(httpClient, errorHandler)
     {

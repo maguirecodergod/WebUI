@@ -1,5 +1,4 @@
 using Hangfire.PostgreSql;
-using LHA.Account.Cron;
 using LHA.Account.Cron.Workers;
 using LHA.Account.EntityFrameworkCore;
 using LHA.Auditing;

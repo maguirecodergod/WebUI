@@ -8,8 +8,16 @@ using LHA.Notification.Domain.Shared;
 
 namespace LHA.Notification.HttpApi;
 
+/// <summary>
+/// Notification message endpoints.
+/// </summary>
 public static class NotificationMessageEndpoints
 {
+    /// <summary>
+    /// Maps the notification message endpoints.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapNotificationMessageEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Notification", "/api/v{version:apiVersion}/notification/notifications")

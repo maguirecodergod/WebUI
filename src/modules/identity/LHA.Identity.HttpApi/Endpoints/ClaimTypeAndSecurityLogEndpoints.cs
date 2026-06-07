@@ -13,6 +13,11 @@ namespace LHA.Identity.HttpApi;
 /// </summary>
 public static class ClaimTypeAndSecurityLogEndpoints
 {
+    /// <summary>
+    /// Maps claim type management endpoints under <c>/api/identity/claim-types</c>.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapClaimTypeEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/claim-types")
@@ -84,6 +89,11 @@ public static class ClaimTypeAndSecurityLogEndpoints
         return endpoints;
     }
 
+    /// <summary>
+    /// Maps security log management endpoints under <c>/api/identity/security-logs</c>.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapSecurityLogEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/security-logs")

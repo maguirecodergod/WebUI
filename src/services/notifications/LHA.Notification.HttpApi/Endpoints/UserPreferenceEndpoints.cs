@@ -7,8 +7,16 @@ using LHA.Ddd.Application;
 
 namespace LHA.Notification.HttpApi;
 
+/// <summary>
+/// User preference endpoints.
+/// </summary>
 public static class UserPreferenceEndpoints
 {
+    /// <summary>
+    /// Maps the user preference endpoints.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapUserPreferenceEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Notification", "/api/v{version:apiVersion}/notification/preferences")

@@ -11,15 +11,29 @@ using IdentityPermissionGrantDto = LHA.Shared.Contracts.Identity.PermissionGrant
 
 namespace LHA.BlazorWasm.HttpApi.Client.Clients;
 
+/// <summary>
+/// Represents the API client for permission management.
+/// </summary>
 public class PermissionApiClient : ApiClientBase
 {
     private const string BaseUrl = "api/v1/identity/permissions";
 
+    /// <summary>
+    /// Initializes a new instance of the PermissionApiClient class.
+    /// </summary>
+    /// <param name="httpClient"></param>
+    /// <param name="errorHandler"></param>
     public PermissionApiClient(HttpClient httpClient, IApiErrorHandler errorHandler)
         : base(httpClient, errorHandler)
     {
     }
 
+    /// <summary>
+    /// Gets the list of permissions for a provider.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="tenantId"></param>
+    /// <returns></returns>
     public async Task<List<IdentityPermissionGrantDto>?> GetAsync(GetPermissionListInput input, Guid? tenantId = null)
     {
         var queryString = new Dictionary<string, string?>
@@ -39,6 +53,12 @@ public class PermissionApiClient : ApiClientBase
         return response.Result.Data;
     }
 
+    /// <summary>
+    /// Updates the permissions for a provider.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="tenantId"></param>
+    /// <returns></returns>
     public async Task UpdateAsync(UpdatePermissionsInput input, Guid? tenantId = null)
     {
         await PutAsync<UpdatePermissionsInput, object>(BaseUrl, input, req =>
@@ -51,7 +71,11 @@ public class PermissionApiClient : ApiClientBase
     }
 
     // ── Template Fallback Methods ─────────────────────────
-
+    /// <summary>
+    /// Gets the list of permission templates.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public async Task<PagedResultDto<PermissionTemplateDto>?> GetTemplatesAsync(GetPermissionTemplatesInput input)
     {
         var queryString = new Dictionary<string, string?>();

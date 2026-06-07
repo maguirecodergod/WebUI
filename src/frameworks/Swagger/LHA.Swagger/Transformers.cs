@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.OpenApi;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
 
@@ -509,17 +510,42 @@ internal sealed partial class LhaSchemaDocumentationTransformer : IOpenApiSchema
 /// An operation transformer that enriches endpoint parameters (including those
 /// from <c>[AsParameters]</c>) with XML documentation descriptions and sets
 /// the operation summary from method-level XML comments when available.
+/// Emits structured warnings for undocumented endpoints and parameters.
 /// </summary>
-internal sealed class LhaOperationDocumentationTransformer : IOpenApiOperationTransformer
+internal sealed class LhaOperationDocumentationTransformer(
+    ILogger<LhaOperationDocumentationTransformer> logger) : IOpenApiOperationTransformer
 {
     public Task TransformAsync(
         OpenApiOperation operation,
         OpenApiOperationTransformerContext context,
         CancellationToken cancellationToken)
     {
+        WarnIfUndocumented(operation, context);
         EnrichParameterDescriptions(operation, context);
         EnrichRequestBodyDescription(operation, context);
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Emits a warning when an endpoint is missing a summary or when
+    /// parameters lack descriptions and no XML doc fallback was found.
+    /// </summary>
+    private void WarnIfUndocumented(
+        OpenApiOperation operation,
+        OpenApiOperationTransformerContext context)
+    {
+        var httpMethod = context.Description.HttpMethod ?? "GET";
+        var route = context.Description.RelativePath ?? "(unknown)";
+
+        // Warn if the operation has no summary/description at all
+        if (string.IsNullOrWhiteSpace(operation.Summary) &&
+            string.IsNullOrWhiteSpace(operation.Description))
+        {
+            logger.LogWarning(
+                "OpenAPI: {Method} {Route} is missing a summary. " +
+                "Add .WithSummary(\"...\") or XML <summary> on the endpoint method.",
+                httpMethod, route);
+        }
     }
 
     private static void EnrichParameterDescriptions(

@@ -1,8 +1,4 @@
 using LHA.Grpc.Contracts.Services.Account.V1;
-
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
 namespace LHA.Notification.HttpApi.Host.BackgroundJobs;
 
 public class PermissionRegistrationHostedService : IHostedService

@@ -5,7 +5,7 @@ namespace LHA.Ddd.Domain;
 /// communicated to the client with a machine-readable <see cref="Code"/>
 /// and an optional HTTP <see cref="StatusCode"/> hint.
 /// <para>
-/// <b>Localization pattern:</b> omit <paramref name="message"/> and call
+/// <b>Localization pattern:</b> omit paramref name="message" and call
 /// <see cref="WithData"/> to supply format arguments.  The presentation layer
 /// (<c>BusinessExceptionLocalizer</c>) looks up <see cref="Code"/> as a key
 /// across all registered localization resources and formats the template with

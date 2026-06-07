@@ -8,8 +8,16 @@ using P = LHA.Shared.Contracts.PermissionManagement.PermissionManagementPermissi
 
 namespace LHA.PermissionManagement.HttpApi;
 
+/// <summary>
+/// Permission management endpoints.
+/// </summary>
 public static class PermissionEndpoints
 {
+    /// <summary>
+    /// Maps the permission management endpoints.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapPermissionManagementEndpoints(
         this IEndpointRouteBuilder endpoints)
     {

@@ -98,7 +98,7 @@ public sealed class AuditLogEntity : Entity<Guid>, IMultiTenant, IHasCreationTim
     private AuditLogEntity() { }
 
     /// <summary>
-    /// Creates a new audit log entity from the framework's <see cref="AuditLogEntry"/>.
+    /// Creates a new audit log entity from the framework's <see ref="AuditLogEntry"/>.
     /// </summary>
     public AuditLogEntity(
         Guid id,

@@ -25,12 +25,13 @@ public static class LhaAspNetCoreServiceCollectionExtensions
     /// <item><description><see cref="IClientInfoProvider"/> for audit/security log context</description></item>
     /// <item><description>Localization services for API responses and business exceptions</description></item>
     /// </list>
-    /// <para>>
-    /// The generic type parameter <typeparamref name="TResource"/> should be the root localization resource of the module (e.g. <c>IdentityResource</c> in the
+    /// <para>
+    /// Registers the provided localization resource types.
+    /// </para>
     /// </summary>
-    /// <typeparam name="TResource"></typeparam>
-    /// <param name="services"></param>
-    /// <returns></returns>
+    /// <param name="services">Service collection.</param>
+    /// <param name="resources">Localization resource types to register.</param>
+    /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddLHAAspNetCore(
         this IServiceCollection services,
         params Type[] resources)
@@ -39,7 +40,7 @@ public static class LhaAspNetCoreServiceCollectionExtensions
         services.AddLHACurrentUserContext();
 
         // Register the global MVC filter for audit enrichment
-        services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options => 
+        services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options =>
         {
             options.Filters.Add<AuditEnrichmentResultFilter>();
         });
@@ -210,10 +211,10 @@ public static class LhaAspNetCoreApplicationBuilderExtensions
     {
         app.UseLHALocalization();
         app.UseLHAExceptionHandler();
-        
+
         // MultiTenancy middleware runs before UoW and Auth
         app.UseMiddleware<Security.MultiTenancyMiddleware>();
-        
+
         app.UseLHAUnitOfWork();
         return app;
     }

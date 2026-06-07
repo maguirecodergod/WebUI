@@ -1,5 +1,6 @@
 using LHA.Ddd.Domain;
 using LHA.Localization.Abstraction;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 namespace LHA.AspNetCore;

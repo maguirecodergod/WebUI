@@ -9,8 +9,16 @@ using Microsoft.AspNetCore.Routing;
 
 namespace LHA.Notification.HttpApi;
 
+/// <summary>
+/// Notification Background Job endpoints.
+/// </summary>
 public static class NotificationBackgroundJobEndpoints
 {
+    /// <summary>
+    /// Maps endpoints for Notification Background Job management.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapNotificationBackgroundJobEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Notification", "/api/v{version:apiVersion}/notification/background-jobs")

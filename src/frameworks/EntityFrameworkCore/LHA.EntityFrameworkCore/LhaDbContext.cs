@@ -255,8 +255,9 @@ public abstract class LhaDbContext<TDbContext> : DbContext, IHasCurrentUnitOfWor
     }
 
     /// <summary>
-    /// Builds combined lambda: e => (!IsSoftDeleteFilterEnabled || !((ISoftDelete)e).IsDeleted) 
-    ///                         && (!IsMultiTenantFilterEnabled || ((IMultiTenant)e).TenantId == CurrentTenantId)
+    /// Builds combined lambda:
+    /// e =&gt; (!IsSoftDeleteFilterEnabled || !((ISoftDelete)e).IsDeleted)
+    /// &amp;&amp; (!IsMultiTenantFilterEnabled || ((IMultiTenant)e).TenantId == CurrentTenantId)
     /// </summary>
     private System.Linq.Expressions.LambdaExpression CombinedQueryFilterExpression(Type entityType)
     {

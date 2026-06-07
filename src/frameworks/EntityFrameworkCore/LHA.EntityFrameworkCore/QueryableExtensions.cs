@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using LHA.Core;
+using LHA.Ddd.Domain;
 
 namespace LHA.EntityFrameworkCore;
 
@@ -180,7 +181,7 @@ public static class QueryableExtensions
     /// </summary>
     public static IQueryable<T> SortByDynamic<T>(
         this IQueryable<T> source,
-        LHA.Ddd.Domain.SorterParam? sorter,
+        SorterParam? sorter,
         string defaultProperty = "Id",
         bool defaultAscending = true)
     {

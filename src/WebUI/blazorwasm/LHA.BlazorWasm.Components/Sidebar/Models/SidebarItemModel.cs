@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.Routing;
+
 namespace LHA.BlazorWasm.Components.Sidebar.Models;
 
 /// <summary>

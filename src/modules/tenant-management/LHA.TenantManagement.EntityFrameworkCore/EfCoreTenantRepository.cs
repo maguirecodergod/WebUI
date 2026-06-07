@@ -12,7 +12,7 @@ namespace LHA.TenantManagement.EntityFrameworkCore;
 /// with tenant-specific queries including eager-loaded connection strings.
 /// <para>
 /// Uses the framework-level <see cref="QueryableExtensions.SearchDynamic{T}"/>
-/// and <see cref="QueryableExtensions.SortByDynamic{T}"/> for dynamic filtering
+/// and <see ref="QueryableExtensions.SortByDynamic{T}"/> for dynamic filtering
 /// and sorting — no hardcoded switch/case required.
 /// </para>
 /// </summary>

@@ -8,6 +8,9 @@ namespace LHA.BlazorWasm.HttpApi.Client.Serialization;
 /// </summary>
 public static class JsonOptionsProvider
 {
+    /// <summary>
+    /// The default JSON serializer options for the API client.
+    /// </summary>
     public static JsonSerializerOptions Default { get; }
 
     static JsonOptionsProvider()

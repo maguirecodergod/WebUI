@@ -18,7 +18,7 @@ namespace LHA.Tax.EntityFrameworkCore
     public static class DependencyInjection
     {
         /// <summary>
-        /// Registers the unified <see cref="AccountDbContext"/> and all module EF Core services
+        /// Registers the unified <see ref="AccountDbContext"/> and all module EF Core services
         /// against a shared connection string.
         /// </summary>
         public static IServiceCollection AddTaxEntityFrameworkCore(
@@ -42,18 +42,18 @@ namespace LHA.Tax.EntityFrameworkCore
             //    The module DbContexts are still registered in DI (used by EfCoreAuditingStore,
             //    EfCoreTenantStore, etc. which bypass UoW), but within a UoW the replacement
             //    map routes all providers to TaxDbContext.
-            services.AddAuditLogEntityFrameworkCore(builder =>
-            {
-                builder.UsePostgreSql();
-                builder.UseAll();
+            var auditBuilder = new AuditLogEntityFrameworkCoreBuilder();
+            auditBuilder.UsePostgreSql();
+            auditBuilder.UseAll();
 
-                builder.ConfigureDbContext(options =>
-                {
-                    options.Configure<AuditLogDbContext>(ctx =>
-                        ctx.DbContextOptions.UseNpgsql(connectionString,
-                            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
-                });
+            auditBuilder.ConfigureDbContext(options =>
+            {
+                options.Configure<AuditLogDbContext>(ctx =>
+                    ctx.DbContextOptions.UseNpgsql(connectionString,
+                        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
             });
+
+            AuditLogEntityFrameworkCoreDependencyInjection.Register(services, auditBuilder);
 
             // Re-register outbox/inbox stores for the unified AccountDbContext.
             // Module DbContext registrations above each call TryAddEventStores,

@@ -14,8 +14,16 @@ using LHA.Shared.Domain.EntityPropertyChanges;
 
 namespace LHA.Notification.HttpApi;
 
+/// <summary>
+/// Notification Audit Log endpoints.
+/// </summary>
 public static class NotificationAuditLogEndpoints
 {
+    /// <summary>
+    /// Maps endpoints for Notification Audit Log management.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapNotificationAuditLogEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Notification", "/api/v{version:apiVersion}/notification/audit-logs")

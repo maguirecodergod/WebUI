@@ -14,6 +14,9 @@ using LHA.BlazorWasm.HttpApi.Client.Clients.PermissionManagement;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Extensions;
 
+/// <summary>
+/// Extension methods for the HTTP API client.
+/// </summary>
 public static class HttpApiClientExtensions
 {
     /// <summary>

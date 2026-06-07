@@ -10,11 +10,22 @@ public class ContextMessageHandler : DelegatingHandler
 {
     private readonly IClientContextProvider _contextProvider;
 
+    /// <summary>
+    /// Initializes a new instance of the ContextMessageHandler class.
+    /// </summary>
+    /// <param name="contextProvider"></param>
+    /// <exception cref="System.ArgumentNullException"></exception>
     public ContextMessageHandler(IClientContextProvider contextProvider)
     {
         _contextProvider = contextProvider ?? throw new System.ArgumentNullException(nameof(contextProvider));
     }
 
+    /// <summary>
+    /// Sends the HTTP request to the inner handler in the pipeline.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         TryAddHeader(request, CustomHttpHeaderNames.TenantId, _contextProvider.GetTenantId());

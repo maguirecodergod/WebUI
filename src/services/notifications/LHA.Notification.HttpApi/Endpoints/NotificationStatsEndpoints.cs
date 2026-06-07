@@ -2,14 +2,20 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using LHA.Notification.Application.Contracts;
-
 using LHA.Ddd.Application;
-using LHA.Notification.Domain.Shared;
 
 namespace LHA.Notification.HttpApi;
 
+/// <summary>
+/// Notification statistics endpoints.
+/// </summary>
 public static class NotificationStatsEndpoints
 {
+    /// <summary>
+    /// Maps the notification statistics endpoints.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapNotificationStatsEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Notification", "/api/v{version:apiVersion}/notification/statistics")

@@ -14,6 +14,11 @@ namespace LHA.Identity.HttpApi;
 /// </summary>
 public static class UserEndpoints
 {
+    /// <summary>
+    /// Maps Identity User management endpoints under <c>/api/identity/users</c>.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/users")

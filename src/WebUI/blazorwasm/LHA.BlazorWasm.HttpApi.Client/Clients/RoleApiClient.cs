@@ -7,15 +7,28 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace LHA.BlazorWasm.HttpApi.Client.Clients;
 
+/// <summary>
+/// Represents the API client for role operations.
+/// </summary>
 public class RoleApiClient : ApiClientBase
 {
     private const string BaseUrl = "api/v1/identity/roles";
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RoleApiClient"/> class.
+    /// </summary>
+    /// <param name="httpClient"></param>
+    /// <param name="errorHandler"></param>
     public RoleApiClient(HttpClient httpClient, IApiErrorHandler errorHandler)
         : base(httpClient, errorHandler)
     {
     }
 
+    /// <summary>
+    /// Gets a list of roles.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public async Task<PagedResultDto<IdentityRoleDto>?> GetListAsync(GetIdentityRolesInput input)
     {
         var queryString = new Dictionary<string, string?>();
@@ -31,30 +44,54 @@ public class RoleApiClient : ApiClientBase
         return response.Result.Data;
     }
 
+    /// <summary>
+    /// Gets all roles.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<IdentityRoleDto>?> GetAllAsync()
     {
         var response = await GetAsync<List<IdentityRoleDto>>($"{BaseUrl}/all");
         return response.Result.Data;
     }
 
+    /// <summary>
+    /// Gets a role by ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IdentityRoleDto?> GetAsync(Guid id)
     {
         var response = await GetAsync<IdentityRoleDto>($"{BaseUrl}/{id}");
         return response.Result.Data;
     }
 
+    /// <summary>
+    /// Creates a new role.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public async Task<IdentityRoleDto?> CreateAsync(CreateIdentityRoleInput input)
     {
         var response = await PostAsync<CreateIdentityRoleInput, IdentityRoleDto>(BaseUrl, input);
         return response.Result.Data;
     }
 
+    /// <summary>
+    /// Updates a role.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public async Task<IdentityRoleDto?> UpdateAsync(Guid id, UpdateIdentityRoleInput input)
     {
         var response = await PutAsync<UpdateIdentityRoleInput, IdentityRoleDto>($"{BaseUrl}/{id}", input);
         return response.Result.Data;
     }
 
+    /// <summary>
+    /// Deletes a role by ID.
+    /// </summary>
+    /// <param name="id"></param>
     public async Task DeleteAsync(Guid id)
     {
         await DeleteAsync<object>($"{BaseUrl}/{id}");

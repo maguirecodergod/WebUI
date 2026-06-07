@@ -2,14 +2,20 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using LHA.Notification.Application.Contracts;
-
 using LHA.Ddd.Application;
-using LHA.Notification.Domain.Shared;
 
 namespace LHA.Notification.HttpApi;
 
+/// <summary>
+/// Batch endpoints.
+/// </summary>
 public static class BatchEndpoints
 {
+    /// <summary>
+    /// Maps the batch endpoints.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapBatchEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Notification", "/api/v{version:apiVersion}/notification/batches")

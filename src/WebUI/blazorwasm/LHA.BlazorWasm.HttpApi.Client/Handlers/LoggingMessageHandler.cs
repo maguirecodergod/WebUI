@@ -11,11 +11,22 @@ public class LoggingMessageHandler : DelegatingHandler
 {
     private readonly ILogger<LoggingMessageHandler> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the LoggingMessageHandler class.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public LoggingMessageHandler(ILogger<LoggingMessageHandler> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
+    /// <summary>
+    /// Sends an HTTP request with logging and correlation ID injection.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var correlationId = Guid.NewGuid().ToString("N");

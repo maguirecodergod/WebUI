@@ -2,15 +2,21 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc;
-using LHA.Shared.Contracts.Notification;
-using LHA.Shared.Domain.Enums.Notification;
 using LHA.Ddd.Application;
 using LHA.MultiTenancy;
 
 namespace LHA.Notification.HttpApi;
 
+/// <summary>
+/// Channel Configuration endpoints.
+/// </summary>
 public static class ChannelConfigurationEndpoints
 {
+    /// <summary>
+    /// Maps endpoints for Channel Configuration management.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapChannelConfigurationEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Notification", "/api/v{version:apiVersion}/notification/configurations")

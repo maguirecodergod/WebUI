@@ -6,8 +6,14 @@ using Microsoft.AspNetCore.Routing;
 
 namespace LHA.Account.HttpApi;
 
+/// <summary>
+/// Internal endpoints for inter-service communication (excluded from OpenAPI documentation).
+/// </summary>
 public static class InternalEndpoints
 {
+    /// <summary>
+    /// Maps internal-only endpoints that are not exposed via Scalar/Swagger.
+    /// </summary>
     public static IEndpointRouteBuilder MapInternalEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Account", "/api/v{version:apiVersion}/internal")

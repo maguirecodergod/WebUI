@@ -11,7 +11,7 @@ namespace LHA.Caching;
 /// display names in UI without hitting the database on every request.
 /// </para>
 /// <para>
-/// The factory delegate <see cref="UserLookupFactory"/> must be supplied
+/// The factory delegate <see ref="UserLookupFactory"/> must be supplied
 /// by the application layer (e.g., from Identity module's user repository).
 /// </para>
 /// </summary>

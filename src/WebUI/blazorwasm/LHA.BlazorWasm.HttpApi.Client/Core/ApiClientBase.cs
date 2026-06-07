@@ -11,15 +11,36 @@ namespace LHA.BlazorWasm.HttpApi.Client.Core;
 /// </summary>
 public abstract class ApiClientBase : IApiClient
 {
+    /// <summary>
+    /// The HTTP client used for API requests.
+    /// </summary>
     protected readonly HttpClient HttpClient;
+    /// <summary>
+    /// The error handler used to handle API errors.
+    /// </summary>
     protected readonly IApiErrorHandler ErrorHandler;
 
+    /// <summary>
+    /// Initializes a new instance of the ApiClientBase class.
+    /// </summary>
+    /// <param name="httpClient"></param>
+    /// <param name="errorHandler"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     protected ApiClientBase(HttpClient httpClient, IApiErrorHandler errorHandler)
     {
         HttpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         ErrorHandler = errorHandler ?? throw new ArgumentNullException(nameof(errorHandler));
     }
 
+    /// <summary>
+    /// Sends a GET request to the specified URI.
+    /// Handles the response and returns it as a strongly typed object.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="uri"></param>
+    /// <param name="configureRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected virtual Task<ApiResponse<T>> GetAsync<T>(string uri, Action<HttpRequestMessage>? configureRequest = null, CancellationToken cancellationToken = default)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, uri);
@@ -27,6 +48,17 @@ public abstract class ApiClientBase : IApiClient
         return SendAsync<T>(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Sends a POST request to the specified URI.
+    /// Handles the response and returns it as a strongly typed object.
+    /// </summary>
+    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TResponse"></typeparam>
+    /// <param name="uri"></param>
+    /// <param name="requestData"></param>
+    /// <param name="configureRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected virtual Task<ApiResponse<TResponse>> PostAsync<TRequest, TResponse>(string uri, TRequest requestData, Action<HttpRequestMessage>? configureRequest = null, CancellationToken cancellationToken = default)
     {
         var request = new HttpRequestMessage(HttpMethod.Post, uri)
@@ -37,6 +69,17 @@ public abstract class ApiClientBase : IApiClient
         return SendAsync<TResponse>(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Sends a PUT request to the specified URI.
+    /// Handles the response and returns it as a strongly typed object.
+    /// </summary>
+    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TResponse"></typeparam>
+    /// <param name="uri"></param>
+    /// <param name="requestData"></param>
+    /// <param name="configureRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected virtual Task<ApiResponse<TResponse>> PutAsync<TRequest, TResponse>(string uri, TRequest requestData, Action<HttpRequestMessage>? configureRequest = null, CancellationToken cancellationToken = default)
     {
         var request = new HttpRequestMessage(HttpMethod.Put, uri)
@@ -47,6 +90,15 @@ public abstract class ApiClientBase : IApiClient
         return SendAsync<TResponse>(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Sends a DELETE request to the specified URI.
+    /// Handles the response and returns it as a strongly typed object.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="uri"></param>
+    /// <param name="configureRequest"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected virtual Task<ApiResponse<T>> DeleteAsync<T>(string uri, Action<HttpRequestMessage>? configureRequest = null, CancellationToken cancellationToken = default)
     {
         var request = new HttpRequestMessage(HttpMethod.Delete, uri);
@@ -54,6 +106,14 @@ public abstract class ApiClientBase : IApiClient
         return SendAsync<T>(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Sends the specified HTTP request and handles the response.
+    /// Returns the response as a strongly typed object.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected virtual async Task<ApiResponse<T>> SendAsync<T>(HttpRequestMessage request, CancellationToken cancellationToken = default)
     {
         try
@@ -68,6 +128,14 @@ public abstract class ApiClientBase : IApiClient
         }
     }
 
+    /// <summary>
+    /// Handles the specified HTTP response and returns it as a strongly typed object.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="response"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="ApiException"></exception>
     protected virtual async Task<ApiResponse<T>> HandleResponseAsync<T>(HttpResponseMessage response, CancellationToken cancellationToken)
     {
         if (!response.IsSuccessStatusCode)

@@ -21,6 +21,7 @@ public sealed class TenantManager : DomainService
     /// </summary>
     /// <param name="name">The tenant display name.</param>
     /// <param name="databaseStyle">Database isolation strategy.</param>
+    /// <param name="cancellationToken">Cancellation token for async operations.</param>
     /// <returns>The newly created <see cref="TenantEntity"/> (not yet persisted).</returns>
     /// <exception cref="InvalidOperationException">When a tenant with the same name already exists.</exception>
     public async Task<TenantEntity> CreateAsync(

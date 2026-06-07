@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.EntityFrameworkCore" Version="10.0.1" />
     <ProjectReference Include="..\..\..\frameworks\EntityFrameworkCore\LHA.EntityFrameworkCore.MongoDB\LHA.EntityFrameworkCore.MongoDB.csproj" />
     <ProjectReference Include="..\LHA.AuditLog.EntityFrameworkCore\LHA.AuditLog.EntityFrameworkCore.csproj" />
   </ItemGroup>

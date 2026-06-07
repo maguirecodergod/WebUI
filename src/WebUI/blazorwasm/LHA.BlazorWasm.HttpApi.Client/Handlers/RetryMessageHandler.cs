@@ -11,12 +11,24 @@ public class RetryMessageHandler : DelegatingHandler
     private readonly ILogger<RetryMessageHandler> _logger;
     private readonly int _maxRetries;
 
+    /// <summary>
+    /// Initializes a new instance of the RetryMessageHandler class.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="maxRetries"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public RetryMessageHandler(ILogger<RetryMessageHandler> logger, int maxRetries = 3)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _maxRetries = maxRetries;
     }
 
+    /// <summary>
+    /// Sends an HTTP request with retry capability.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         int retryCount = 0;

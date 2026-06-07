@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using System.Collections.Generic;
 
 namespace LHA.BlazorWasm.Components.Forms;
 
 /// <summary>
-/// A component to be placed inside an <EditForm> to display validation errors
+/// A component to be placed inside an <EditForm></EditForm> to display validation errors
 /// returned from the server API calls.
 /// </summary>
 public class ServerSideValidator : ComponentBase

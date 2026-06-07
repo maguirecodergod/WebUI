@@ -2,7 +2,7 @@ namespace LHA.Tax.EntityFrameworkCore.Configurations;
 
 /// <summary>
 /// Column length constants for Tax entity properties.
-/// Used by <see cref="IEntityTypeConfiguration{TEntity}"/> classes.
+/// Used by <see ref="IEntityTypeConfiguration{TEntity}"/> classes.
 /// </summary>
 internal static class TaxDbConsts
 {

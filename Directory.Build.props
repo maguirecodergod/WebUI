@@ -1,6 +1,12 @@
 <Project>
   <PropertyGroup>
+    <!--
+      GenerateDocumentationFile=true produces the .xml file consumed by Swagger/Swashbuckle.
+      CS1591 (missing XML comment) is only meaningful on HttpApi projects where the doc file
+      feeds endpoint documentation. All other layers suppress it here at the solution level.
+    -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <!-- <NoWarn>$(NoWarn);0419;1570;1572;1573;1574;1584;1591;1711;1712;1734</NoWarn> -->
+    <NoWarn Condition="!$(MSBuildProjectName.Contains('HttpApi'))">$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 </Project>
+

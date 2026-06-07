@@ -5,11 +5,11 @@ namespace LHA.TenantManagement.Domain;
 
 /// <summary>
 /// Represents a connection string associated with a specific tenant.
-/// Managed exclusively through the <see cref="Tenant"/> aggregate root.
+/// Managed exclusively through the <see cref="TenantEntity"/> aggregate root.
 /// </summary>
 public sealed class TenantConnectionString : Entity<Guid>
 {
-    /// <summary>Foreign key to the owning <see cref="Tenant"/>.</summary>
+    /// <summary>Foreign key to the owning <see cref="TenantEntity"/>.</summary>
     public Guid TenantId { get; private init; }
 
     /// <summary>Logical connection string name (e.g., "Default").</summary>

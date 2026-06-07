@@ -1,6 +1,5 @@
 using LHA.Ddd.Application;
 using LHA.Identity.Application.Contracts;
-using LHA.Shared.Contracts.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -14,13 +13,17 @@ namespace LHA.Identity.HttpApi;
 /// </summary>
 public static class RoleEndpoints
 {
+    /// <summary>
+    /// Maps Identity Role management endpoints under <c>/api/identity/roles</c>.
+    /// </summary>
+    /// <param name="endpoints"></param>
+    /// <returns></returns>
     public static IEndpointRouteBuilder MapRoleEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapVersionedGroup("Identity", "/api/v{version:apiVersion}/identity/roles")
             .WithTags("Identity - Roles")
             .RequireAuthorization();
 
-        // ── List ─────────────────────────────────────────────────────
         group.MapGet("/", async (
             [AsParameters] GetIdentityRolesInput input,
             IIdentityRoleAppService service) =>

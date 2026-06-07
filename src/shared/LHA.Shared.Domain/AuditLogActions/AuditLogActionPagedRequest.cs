@@ -47,6 +47,10 @@ namespace LHA.Shared.Domain.AuditLogActions
         /// </summary>
         public int? MaxExecutionDuration { get; set; }
 
+        /// <summary>
+        /// Converts the query to a request.
+        /// </summary>
+        /// <returns></returns>
         public AuditLogActionPagedRequest ToRequest()
         {
             return new AuditLogActionPagedRequest

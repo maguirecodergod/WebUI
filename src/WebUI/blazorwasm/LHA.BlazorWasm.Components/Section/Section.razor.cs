@@ -9,7 +9,7 @@ namespace LHA.BlazorWasm.Components.Section;
 ///
 /// <Section Title="User Information" Collapsible="true">
 ///     <FormField Label="Name">
-///         <InputText @bind-Value="User.Name" />
+///         <InputText bind-Value="User.Name" />
 ///     </FormField>
 /// </Section>
 /// </summary>

@@ -9,11 +9,11 @@ namespace LHA.BlazorWasm.Components.Switch;
 /// 
 /// Example usage:
 /// 
-/// <Switch @bind-Value="isEnabled" Label="Enable feature" />
+/// <Switch bind-Value="isEnabled" Label="Enable feature" />
 /// 
-/// <Switch @bind-Value="isEnabled" OffIcon="fas fa-times" OnIcon="fas fa-check" />
+/// <Switch bind-Value="isEnabled" OffIcon="fas fa-times" OnIcon="fas fa-check" />
 /// 
-/// <Switch @bind-Value="isEnabled" Tooltip="Toggle feature on/off" />
+/// <Switch bind-Value="isEnabled" Tooltip="Toggle feature on/off" />
 /// </summary>
 public partial class Switch : LHAComponentBase
 {

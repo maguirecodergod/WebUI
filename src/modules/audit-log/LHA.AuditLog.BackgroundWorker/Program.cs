@@ -22,31 +22,29 @@ builder.Services.AddLHAUnitOfWork();
 
 // ── Module services ──────────────────────────────────────────────
 builder.Services.AddAuditLogApplication();
-builder.Services.AddAuditLogEntityFrameworkCore(auditBuilder =>
+var auditBuilder = new AuditLogEntityFrameworkCoreBuilder();
+auditBuilder.UseAll();
+
+// ─── POSTGRESQL CONFIGURATION ───
+// auditBuilder.UsePostgreSql();
+// auditBuilder.ConfigureDbContext(options =>
+// {
+//     options.Configure<AuditLogDbContext>(ctx =>
+//         ctx.DbContextOptions.UseNpgsql(connectionString));
+// });
+
+// ─── MONGODB CONFIGURATION (Uncomment to use) ───
+// Note: Requires referencing LHA.AuditLog.EntityFrameworkCore.MongoDB project
+if (!string.IsNullOrEmpty(mongoConnectionString))
 {
-    // 1. All Mode (Default): Uses both Relational Structured Logs & Pipeline Logs
-    auditBuilder.UseAll();
-
-    // ─── POSTGRESQL CONFIGURATION ───
-    // auditBuilder.UsePostgreSql();
-    // auditBuilder.ConfigureDbContext(options =>
-    // {
-    //     options.Configure<AuditLogDbContext>(ctx =>
-    //         ctx.DbContextOptions.UseNpgsql(connectionString));
-    // });
-
-    // ─── MONGODB CONFIGURATION (Uncomment to use) ───
-    // Note: Requires referencing LHA.AuditLog.EntityFrameworkCore.MongoDB project
-    if (!string.IsNullOrEmpty(mongoConnectionString))
+    auditBuilder.UseMongoDb();
+    auditBuilder.ConfigureDbContext(options =>
     {
-        auditBuilder.UseMongoDb();
-        auditBuilder.ConfigureDbContext(options =>
-        {
-            options.Configure<AuditLogDbContext>(ctx =>
-                ctx.DbContextOptions.UseMongoDB(mongoConnectionString, "LienHoaApp_AuditLog"));
-        });
-    }
-});
+        options.Configure<AuditLogDbContext>(ctx =>
+            ctx.DbContextOptions.UseMongoDB(mongoConnectionString, "LienHoaApp_AuditLog"));
+    });
+}
+AuditLogEntityFrameworkCoreDependencyInjection.Register(builder.Services, auditBuilder);
 
 // ── Background workers ───────────────────────────────────────────
 builder.Services.AddHostedService<AuditLogCleanupWorker>();

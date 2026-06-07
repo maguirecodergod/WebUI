@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace LHA.Notification.Infrastructure.Persistences.Configurations;
 
 /// <summary>
