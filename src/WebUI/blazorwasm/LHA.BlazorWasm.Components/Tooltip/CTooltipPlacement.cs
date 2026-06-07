@@ -5,8 +5,20 @@ namespace LHA.BlazorWasm.Components.Tooltip;
 /// </summary>
 public enum CTooltipPlacement
 {
+    /// <summary>
+    /// 0 - Top
+    /// </summary>
     Top,
+    /// <summary>
+    /// 1 - Bottom
+    /// </summary>
     Bottom,
+    /// <summary>
+    /// 2 - Left
+    /// </summary>
     Left,
+    /// <summary>
+    /// 3 - Right
+    /// </summary>
     Right
 }

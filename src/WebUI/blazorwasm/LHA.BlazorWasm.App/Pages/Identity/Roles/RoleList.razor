@@ -21,7 +21,7 @@
 
     <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
         <div class="card-body p-0">
-            <DataTable TItem="IdentityRoleDto" Items="_roles" Mode="DataTableMode.ServerSide"
+            <DataTable TItem="IdentityRoleDto" Items="_roles" Mode="CDataTableMode.ServerSide"
                        TotalCount="(int)_totalCount" ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="20"
                        Searchable="true" ShowToolbar="true" KeySelector="@(x => x.Id)" TableId="DataTableIds.IdentityRoles"
                        SearchPlaceholder="Tìm kiếm theo tên nhóm quyền" OnSearchContentChanged="OnSearchChanged">
@@ -35,7 +35,7 @@
                     </DataTableColumn>
 
                     <DataTableColumn TItem="IdentityRoleDto" Title="Thao tác" Width="120px"
-                                     Alignment="ColumnAlignment.Center">
+                                     Alignment="CColumnAlignment.Center">
                         <CellTemplate>
                             <div class="d-flex justify-content-center gap-2">
                                 <button class="btn btn-sm text-primary p-0 border-0 bg-transparent"

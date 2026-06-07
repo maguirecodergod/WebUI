@@ -5,7 +5,7 @@
     Usage:
       <DataTable TItem="Product">
           <DataTableColumn TItem="Product" Property="@(x => x.Name)" Title="Name" Sortable Filterable />
-          <DataTableColumn TItem="Product" Property="@(x => x.Price)" Format="N2" Alignment="ColumnAlignment.Right" />
+          <DataTableColumn TItem="Product" Property="@(x => x.Price)" Format="N2" Alignment="CColumnAlignment.Right" />
           <DataTableColumn TItem="Product" Title="Actions">
               <CellTemplate>
                   <button @onclick="() => Edit(context)">Edit</button>
@@ -35,7 +35,7 @@
     // ── Features ─────────────────────────────────────────────
     [Parameter] public bool Sortable { get; set; }
     [Parameter] public bool Filterable { get; set; }
-    [Parameter] public FilterType FilterType { get; set; } = FilterType.Text;
+    [Parameter] public CFilterType CFilterType { get; set; } = CFilterType.Text;
     [Parameter] public IReadOnlyList<SelectOption>? FilterOptions { get; set; }
 
     // ── Visibility ───────────────────────────────────────────
@@ -47,8 +47,8 @@
     [Parameter] public string? MaxWidth { get; set; }
 
     // ── Position / Alignment ─────────────────────────────────
-    [Parameter] public FixedPosition Fixed { get; set; } = FixedPosition.None;
-    [Parameter] public ColumnAlignment Alignment { get; set; } = ColumnAlignment.Left;
+    [Parameter] public CFixedPosition Fixed { get; set; } = CFixedPosition.None;
+    [Parameter] public CColumnAlignment Alignment { get; set; } = CColumnAlignment.Left;
 
     // ── Styling ──────────────────────────────────────────────
     [Parameter] public bool Highlight { get; set; }
@@ -97,7 +97,7 @@
             Format = Format,
             Sortable = Sortable,
             Filterable = Filterable,
-            FilterType = FilterType,
+            CFilterType = CFilterType,
             FilterOptions = FilterOptions,
             Visible = Visible,
             Width = Width,

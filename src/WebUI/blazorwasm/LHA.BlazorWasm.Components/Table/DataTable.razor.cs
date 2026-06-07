@@ -34,7 +34,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
     [Parameter] public int? TotalCount { get; set; }
 
     /// <summary>Data source mode.</summary>
-    [Parameter] public DataTableMode Mode { get; set; } = DataTableMode.ClientSide;
+    [Parameter] public CDataTableMode Mode { get; set; } = CDataTableMode.ClientSide;
 
     /// <summary>Stable key selector for efficient diffing and cross-page selection tracking.</summary>
     [Parameter] public Func<TItem, object>? KeySelector { get; set; }
@@ -48,7 +48,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
     [Parameter] public bool ShowPager { get; set; } = true;
     [Parameter] public bool ShowInfo { get; set; } = true;
     [Parameter] public bool ShowColumnToggle { get; set; } = true;
-    [Parameter] public SelectionMode SelectionMode { get; set; } = SelectionMode.None;
+    [Parameter] public CSelectionMode CSelectionMode { get; set; } = CSelectionMode.None;
     [Parameter] public bool SelectOnRowClick { get; set; }
     [Parameter] public bool AllowMultiSort { get; set; }
     [Parameter] public bool Striped { get; set; } = true;
@@ -160,7 +160,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
         get
         {
             var cols = VisibleColumns.Count;
-            if (SelectionMode != SelectionMode.None) cols++;
+            if (CSelectionMode != CSelectionMode.None) cols++;
             if (ExpandedRowTemplate is not null) cols++;
             return cols;
         }
@@ -232,12 +232,12 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
 
     protected override void OnParametersSet()
     {
-        if (Mode == DataTableMode.ClientSide && Items is not null && !ReferenceEquals(Items, _previousItems))
+        if (Mode == CDataTableMode.ClientSide && Items is not null && !ReferenceEquals(Items, _previousItems))
         {
             _previousItems = Items;
             ProcessClientData();
         }
-        else if (Mode == DataTableMode.ServerSide && ServerDataSource is null)
+        else if (Mode == CDataTableMode.ServerSide && ServerDataSource is null)
         {
             // Manual server mode: parent provides Items + TotalCount
             _displayItems = Items ?? [];
@@ -255,7 +255,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
             await RestoreColumnVisibilityAsync();
             await RestoreSelectionAsync();
 
-            if (Mode == DataTableMode.ServerSide && ServerDataSource is not null)
+            if (Mode == CDataTableMode.ServerSide && ServerDataSource is not null)
             {
                 await LoadServerDataAsync();
             }
@@ -274,11 +274,11 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
     /// <summary>Public API: Refresh data from source.</summary>
     public async Task RefreshAsync()
     {
-        if (Mode == DataTableMode.ServerSide && ServerDataSource is not null)
+        if (Mode == CDataTableMode.ServerSide && ServerDataSource is not null)
         {
             await LoadServerDataAsync();
         }
-        else if (Mode == DataTableMode.ServerSide && OnDataRequest.HasDelegate)
+        else if (Mode == CDataTableMode.ServerSide && OnDataRequest.HasDelegate)
         {
             _isLoading = true;
             StateHasChanged();
@@ -354,17 +354,17 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
 
         // ── Sort ──
         IOrderedEnumerable<TItem>? ordered = null;
-        foreach (var sort in _request.Sorts.Where(s => s.Direction != SortDirection.None))
+        foreach (var sort in _request.Sorts.Where(s => s.Direction != CSortDirection.None))
         {
             var col = _columns.FirstOrDefault(c => c.Field == sort.Field);
             if (col?.ValueSelector is null) continue;
 
             if (ordered is null)
-                ordered = sort.Direction == SortDirection.Ascending
+                ordered = sort.Direction == CSortDirection.Ascending
                     ? query.OrderBy(col.ValueSelector)
                     : query.OrderByDescending(col.ValueSelector);
             else
-                ordered = sort.Direction == SortDirection.Ascending
+                ordered = sort.Direction == CSortDirection.Ascending
                     ? ordered.ThenBy(col.ValueSelector)
                     : ordered.ThenByDescending(col.ValueSelector);
         }
@@ -401,34 +401,34 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
     {
         return filter.Operator switch
         {
-            FilterOperator.Contains => query.Where(item =>
+            CFilterOperator.Contains => query.Where(item =>
                 col.GetDisplayValue(item).Contains(filter.Value!, StringComparison.OrdinalIgnoreCase)),
 
-            FilterOperator.Equals => query.Where(item =>
+            CFilterOperator.Equals => query.Where(item =>
                 col.GetDisplayValue(item).Equals(filter.Value!, StringComparison.OrdinalIgnoreCase)),
 
-            FilterOperator.NotEquals => query.Where(item =>
+            CFilterOperator.NotEquals => query.Where(item =>
                 !col.GetDisplayValue(item).Equals(filter.Value!, StringComparison.OrdinalIgnoreCase)),
 
-            FilterOperator.StartsWith => query.Where(item =>
+            CFilterOperator.StartsWith => query.Where(item =>
                 col.GetDisplayValue(item).StartsWith(filter.Value!, StringComparison.OrdinalIgnoreCase)),
 
-            FilterOperator.EndsWith => query.Where(item =>
+            CFilterOperator.EndsWith => query.Where(item =>
                 col.GetDisplayValue(item).EndsWith(filter.Value!, StringComparison.OrdinalIgnoreCase)),
 
-            FilterOperator.GreaterThan => query.Where(item =>
+            CFilterOperator.GreaterThan => query.Where(item =>
                 CompareValues(col.ValueSelector!(item), filter.Value) > 0),
 
-            FilterOperator.GreaterThanOrEqual => query.Where(item =>
+            CFilterOperator.GreaterThanOrEqual => query.Where(item =>
                 CompareValues(col.ValueSelector!(item), filter.Value) >= 0),
 
-            FilterOperator.LessThan => query.Where(item =>
+            CFilterOperator.LessThan => query.Where(item =>
                 CompareValues(col.ValueSelector!(item), filter.Value) < 0),
 
-            FilterOperator.LessThanOrEqual => query.Where(item =>
+            CFilterOperator.LessThanOrEqual => query.Where(item =>
                 CompareValues(col.ValueSelector!(item), filter.Value) <= 0),
 
-            FilterOperator.Between => query.Where(item =>
+            CFilterOperator.Between => query.Where(item =>
                 CompareValues(col.ValueSelector!(item), filter.Value) >= 0 &&
                 CompareValues(col.ValueSelector!(item), filter.ValueTo) <= 0),
 
@@ -466,12 +466,12 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
         {
             _request.Sorts.Remove(existing);
             var toggled = existing.Toggle();
-            if (toggled.Direction != SortDirection.None)
+            if (toggled.Direction != CSortDirection.None)
                 _request.Sorts.Add(toggled);
         }
         else
         {
-            _request.Sorts.Add(new SortDefinition(field, SortDirection.Ascending));
+            _request.Sorts.Add(new SortDefinition(field, CSortDirection.Ascending));
         }
 
         _request.PageNumber = 1;
@@ -480,14 +480,14 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
 
     private SortDefinition GetSort(string field) =>
         _request.Sorts.FirstOrDefault(s => s.Field == field)
-        ?? new SortDefinition(field, SortDirection.None);
+        ?? new SortDefinition(field, CSortDirection.None);
 
     // ═══════════════════════════════════════════════════════════
     // FILTERING
     // ═══════════════════════════════════════════════════════════
 
-    private void SetFilter(string field, string? value, FilterType type,
-        FilterOperator op = FilterOperator.Contains, string? valueTo = null)
+    private void SetFilter(string field, string? value, CFilterType type,
+        CFilterOperator op = CFilterOperator.Contains, string? valueTo = null)
     {
         var existing = _request.Filters.FirstOrDefault(f => f.Field == field);
         if (existing is not null) _request.Filters.Remove(existing);
@@ -507,7 +507,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
         _request.PageNumber = 1;
     }
 
-    private async Task HandleFilterTextInput(string field, string? value, FilterType type)
+    private async Task HandleFilterTextInput(string field, string? value, CFilterType type)
     {
         SetFilter(field, value, type);
         if (_filterDebouncer is not null)
@@ -520,15 +520,15 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
         }
     }
 
-    private async Task HandleFilterChange(string field, string? value, FilterType type, FilterOperator op)
+    private async Task HandleFilterChange(string field, string? value, CFilterType type, CFilterOperator op)
     {
         SetFilter(field, value, type, op);
         await RefreshAsync();
     }
 
-    private async Task HandleFilterRangeChange(string field, string? from, string? to, FilterType type)
+    private async Task HandleFilterRangeChange(string field, string? from, string? to, CFilterType type)
     {
-        SetFilter(field, from, type, FilterOperator.Between, to);
+        SetFilter(field, from, type, CFilterOperator.Between, to);
         await RefreshAsync();
     }
 
@@ -594,7 +594,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
         var key = GetItemKey(item);
         var isChecked = checkedValue is true or "true" or "True";
 
-        if (SelectionMode == SelectionMode.Single)
+        if (CSelectionMode == CSelectionMode.Single)
         {
             _selectedItems.Clear();
             if (isChecked)
@@ -638,7 +638,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
 
     private async Task SelectAllEntireDataset()
     {
-        if (Mode == DataTableMode.ClientSide && _allProcessedItems.Count > 0)
+        if (Mode == CDataTableMode.ClientSide && _allProcessedItems.Count > 0)
         {
             foreach (var item in _allProcessedItems)
                 _selectedItems[GetItemKey(item)] = item;
@@ -677,7 +677,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
 
     private async Task HandleRowClickInternal(TItem item)
     {
-        if (SelectOnRowClick && SelectionMode != SelectionMode.None)
+        if (SelectOnRowClick && CSelectionMode != CSelectionMode.None)
         {
             var isCurrentlySelected = IsSelected(item);
             await HandleSelectionToggle(item, !isCurrentlySelected);
@@ -764,7 +764,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
 
     private async Task PersistSelectionAsync()
     {
-        if (string.IsNullOrEmpty(TableId) || SelectionMode == SelectionMode.None) return;
+        if (string.IsNullOrEmpty(TableId) || CSelectionMode == CSelectionMode.None) return;
         try
         {
             // Combine current active selection keys with any still-restored keys
@@ -792,7 +792,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
 
     private async Task RestoreSelectionAsync()
     {
-        if (string.IsNullOrEmpty(TableId) || SelectionMode == SelectionMode.None) return;
+        if (string.IsNullOrEmpty(TableId) || CSelectionMode == CSelectionMode.None) return;
         try
         {
             var state = await LocalStorage.GetAsync<SelectionState>(SelectionStorageKey);
@@ -896,8 +896,8 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
     private string? GetStagedFilterValue(string field) =>
         _stagedFilters.FirstOrDefault(f => f.Field == field)?.Value;
 
-    private void SetStagedFilter(string field, string? value, FilterType type,
-        FilterOperator op = FilterOperator.Contains, string? valueTo = null)
+    private void SetStagedFilter(string field, string? value, CFilterType type,
+        CFilterOperator op = CFilterOperator.Contains, string? valueTo = null)
     {
         var existing = _stagedFilters.FirstOrDefault(f => f.Field == field);
         if (existing is not null) _stagedFilters.Remove(existing);
@@ -923,7 +923,7 @@ public partial class DataTable<TItem> : LHAComponentBase, IDisposable
     {
         var parts = new List<string>(3) { "dt-row" };
         if (IsSelected(item)) parts.Add("dt-row-selected");
-        if (SelectionMode != SelectionMode.None || OnRowClick.HasDelegate) parts.Add("dt-row-clickable");
+        if (CSelectionMode != CSelectionMode.None || OnRowClick.HasDelegate) parts.Add("dt-row-clickable");
         var custom = RowClass?.Invoke(item);
         if (!string.IsNullOrEmpty(custom)) parts.Add(custom);
         return string.Join(' ', parts);

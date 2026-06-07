@@ -6,12 +6,12 @@ namespace LHA.Core;
 public enum CMasterStatus
 {
     /// <summary>
-    /// The entity is active and operational.
+    /// 1 - Active: The entity is active and operational.
     /// </summary>
     Active = 1,
 
     /// <summary>
-    /// The entity has been deactivated and is non-operational.
+    /// 2 - InActive: The entity has been deactivated and is non-operational.
     /// </summary>
     InActive = 2
 }

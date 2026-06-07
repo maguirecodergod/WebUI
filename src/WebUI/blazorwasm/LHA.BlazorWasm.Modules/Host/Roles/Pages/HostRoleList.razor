@@ -34,9 +34,9 @@
 
             <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
                 <div class="card-body p-0">
-                    <DataTable @ref="_dataTable" TItem="IdentityRoleDto" Items="_roles" Mode="DataTableMode.ServerSide"
+                    <DataTable @ref="_dataTable" TItem="IdentityRoleDto" Items="_roles" Mode="CDataTableMode.ServerSide"
                                TotalCount="(int)_totalCount" ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10"
-                               Searchable="true" ShowToolbar="true" SelectionMode="SelectionMode.None" KeySelector="@(x => x.Id)"
+                               Searchable="true" ShowToolbar="true" CSelectionMode="CSelectionMode.None" KeySelector="@(x => x.Id)"
                                TableId="HostRoleTable">
 
                         <ToolbarTemplate>
@@ -112,7 +112,7 @@
                                 </DataTableColumn>
 
                                 <DataTableColumn TItem="IdentityRoleDto" Title="@L("Common.Operations")" Width="120px"
-                                                 Alignment="ColumnAlignment.Left">
+                                                 Alignment="CColumnAlignment.Left">
                                     <CellTemplate>
                                         <div class="d-flex justify-content-start gap-1">
                                             <LHAButton Style="CButtonStyle.Info" Outline="true" Size="CButtonSize.Small"

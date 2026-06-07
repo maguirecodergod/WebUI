@@ -75,7 +75,7 @@
     @* ─── Jobs Table ─── *@
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
         <div class="card-body p-0">
-            <DataTable @ref="_dataTable" TItem="RecurringJobDto" Mode="DataTableMode.ServerSide"
+            <DataTable @ref="_dataTable" TItem="RecurringJobDto" Mode="CDataTableMode.ServerSide"
                        ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="20" Searchable="false" ShowToolbar="true"
                        KeySelector="@(x => x.Id)" IsLoading="_isLoading">
 
@@ -145,7 +145,7 @@
                     </DataTableColumn>
 
                     <DataTableColumn TItem="RecurringJobDto" Title="@L("Common.Actions")" Width="120px"
-                                     Alignment="ColumnAlignment.Center">
+                                     Alignment="CColumnAlignment.Center">
                         <CellTemplate Context="item">
                             <div class="d-flex justify-content-center gap-2">
                                 <LHAButton Style="CButtonStyle.Primary" Outline="@true" Size="CButtonSize.Small"

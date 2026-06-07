@@ -6,12 +6,18 @@ namespace LHA.MultiTenancy;
 /// </summary>
 public enum CTenantCircuitStateType
 {
-    /// <summary>Normal operation; all requests pass through.</summary>
+    /// <summary>
+    /// 1 - Closed: Normal operation; all requests pass through.
+    /// </summary>
     Closed = 1,
 
-    /// <summary>Failures exceeded threshold; requests are rejected immediately.</summary>
+    /// <summary>
+    /// 2 - Open: Failures exceeded threshold; requests are rejected immediately.
+    /// </summary>
     Open = 2,
 
-    /// <summary>Recovery probe; a limited number of requests are allowed through.</summary>
+    /// <summary>
+    /// 3 - HalfOpen: Recovery probe; a limited number of requests are allowed through.
+    /// </summary>
     HalfOpen = 3
 }

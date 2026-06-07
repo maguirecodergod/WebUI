@@ -6,13 +6,19 @@ namespace LHA.Shared.Domain.TenantManagement;
 [Flags]
 public enum CMultiTenancyDatabaseStyle
 {
-    /// <summary>All tenants share a single database, isolated by TenantId column.</summary>
+    /// <summary>
+    /// 1 - Shared: All tenants share a single database, isolated by TenantId column.
+    /// </summary>
     Shared = 1,
 
-    /// <summary>Each tenant has its own dedicated database.</summary>
+    /// <summary>
+    /// 2 - PerTenant: Each tenant has its own dedicated database.
+    /// </summary>
     PerTenant = 2,
 
-    /// <summary>Each tenant has its own dedicated schema within a shared database.</summary>
+    /// <summary>
+    /// 4 - PerSchema: Each tenant has its own dedicated schema within a shared database.
+    /// </summary>
     PerSchema = 4,
 
     /// <summary>Mix of shared and per-tenant — some tenants have dedicated databases, others share.</summary>

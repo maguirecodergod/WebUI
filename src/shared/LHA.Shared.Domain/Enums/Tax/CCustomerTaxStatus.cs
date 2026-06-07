@@ -7,27 +7,27 @@ namespace LHA.Shared.Domain
     public enum CCustomerTaxStatus
     {
         /// <summary>
-        /// Private individual — charge tax at supplier's rate
+        /// 1 - B2C: Private individual — charge tax at supplier's rate
         /// </summary>
         B2C = 1,
         /// <summary>
-        /// VAT-registered business, verified — reverse charge eligible
+        /// 2 - B2B_Verified: VAT-registered business, verified — reverse charge eligible
         /// </summary>
         B2B_Verified = 2,
         /// <summary>
-        /// Claimed B2B but VAT ID not yet validated
+        /// 3 - B2B_Unverified: Claimed B2B but VAT ID not yet validated
         /// </summary>
         B2B_Unverified = 3,
         /// <summary>
-        /// Public bodies — often exempt by statute
+        /// 4 - Government: Public bodies — often exempt by statute
         /// </summary>
         Government = 4,
         /// <summary>
-        /// Non-profit organizations — exempt from tax
+        /// 5 - NonProfit: Non-profit organizations — exempt from tax
         /// </summary>
         NonProfit = 5,
         /// <summary>
-        /// Resellers — exempt from tax
+        /// 6 - Reseller: Resellers — exempt from tax
         /// </summary>
         Reseller = 6
     }

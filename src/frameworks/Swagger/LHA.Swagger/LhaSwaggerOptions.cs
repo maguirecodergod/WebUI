@@ -235,34 +235,50 @@ public sealed class ScalarMcpServerOptions
 /// <summary>Visibility policy for Scalar developer tools.</summary>
 public enum LhaScalarDeveloperToolsVisibility
 {
-    /// <summary>Always show the developer tools toolbar, including MCP generation, in every allowed environment.</summary>
+    /// <summary>
+    /// 0 - Always: Always show the developer tools toolbar, including MCP generation, in every allowed environment.
+    /// </summary>
     Always = 0,
 
-    /// <summary>Use Scalar's default localhost-only visibility.</summary>
+    /// <summary>
+    /// 1 - Localhost: Use Scalar's default localhost-only visibility.
+    /// </summary>
     Localhost = 1,
 
-    /// <summary>Hide the developer tools toolbar.</summary>
+    /// <summary>
+    /// 2 - Never: Hide the developer tools toolbar.
+    /// </summary>
     Never = 2
 }
 
 /// <summary>Available UI providers for interactive docs.</summary>
 public enum SwaggerUiProvider
 {
-    /// <summary>Scalar — modern, fast, beautiful API reference.</summary>
+    /// <summary>
+    /// 0 - Scalar: Scalar — modern, fast, beautiful API reference.
+    /// </summary>
     Scalar = 0,
 
-    /// <summary>Swashbuckle Swagger UI — classic, widely adopted.</summary>
+    /// <summary>
+    /// 1 - SwaggerUi: Swashbuckle Swagger UI — classic, widely adopted.
+    /// </summary>
     SwaggerUi = 1,
 
-    /// <summary>Redoc — powerful OpenAPI/Swagger documentation renderer.</summary>
+    /// <summary>
+    /// 2 - Redoc: Redoc — powerful OpenAPI/Swagger documentation renderer.
+    /// </summary>
     Redoc = 2,
 
-    /// <summary>Both Scalar and Swagger UI simultaneously.</summary>
+    /// <summary>
+    /// 3 - All: Both Scalar and Swagger UI simultaneously.
+    /// </summary>
     All = 3,
 
     /// <summary>Alias for <see cref="All"/>. Kept for configuration readability.</summary>
     Both = All,
 
-    /// <summary>No UI — only the JSON endpoint.</summary>
+    /// <summary>
+    /// 4 - None: No UI — only the JSON endpoint.
+    /// </summary>
     None = 4
 }

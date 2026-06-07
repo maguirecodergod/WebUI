@@ -3,23 +3,23 @@ namespace LHA.Shared.Domain.Enums
     public enum CNudeType
     {
         /// <summary>
-        /// Không xác định
+        /// 0 - None: Không xác định
         /// </summary>
         None = 0,
         /// <summary>
-        /// Không che
+        /// 1 - Uncensored: Không che
         /// </summary>
         Uncensored = 1,
         /// <summary>
-        /// Có che
+        /// 2 - Censored: Có che
         /// </summary>
         Censored = 2,
         /// <summary>
-        /// Bán nude
+        /// 3 - SemiNude: Bán nude
         /// </summary>
         SemiNude = 3,
         /// <summary>
-        /// Toàn thân
+        /// 4 - FullBody: Toàn thân
         /// </summary>
         FullBody = 4
     }

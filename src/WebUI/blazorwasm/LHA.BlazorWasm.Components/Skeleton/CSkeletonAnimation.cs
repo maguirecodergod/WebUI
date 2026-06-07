@@ -6,17 +6,17 @@ namespace LHA.BlazorWasm.Components.Skeleton;
 public enum CSkeletonAnimation
 {
     /// <summary>
-    /// A smooth fading opacity pulse effect.
+    /// 0 - Pulse: A smooth fading opacity pulse effect.
     /// </summary>
     Pulse,
 
     /// <summary>
-    /// A shimmering gradient moving linearly across the skeleton.
+    /// 1 - Wave: A shimmering gradient moving linearly across the skeleton.
     /// </summary>
     Wave,
 
     /// <summary>
-    /// No animation (static background).
+    /// 2 - None: No animation (static background).
     /// </summary>
     None
 }

@@ -6,22 +6,22 @@ namespace LHA.BlazorWasm.Components.Skeleton;
 public enum CSkeletonVariant
 {
     /// <summary>
-    /// A rectangular block representing text lines. Typically adapts to the font height.
+    /// 0 - Text: A rectangular block representing text lines. Typically adapts to the font height.
     /// </summary>
     Text,
 
     /// <summary>
-    /// A sharp-edged rectangular block. Useful for cards or images.
+    /// 1 - Rectangular: A sharp-edged rectangular block. Useful for cards or images.
     /// </summary>
     Rectangular,
 
     /// <summary>
-    /// A perfectly circular shape. Useful for avatars.
+    /// 2 - Circular: A perfectly circular shape. Useful for avatars.
     /// </summary>
     Circular,
 
     /// <summary>
-    /// A rectangle with rounded corners. Useful for buttons or custom rounded shapes.
+    /// 3 - Rounded: A rectangle with rounded corners. Useful for buttons or custom rounded shapes.
     /// </summary>
     Rounded
 }

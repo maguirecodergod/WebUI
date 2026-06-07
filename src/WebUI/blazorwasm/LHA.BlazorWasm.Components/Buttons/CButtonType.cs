@@ -6,17 +6,17 @@ namespace LHA.BlazorWasm.Components.Buttons;
 public enum CButtonType
 {
     /// <summary>
-    /// A clickable button.
+    /// 0 - Button: A clickable button.
     /// </summary>
     Button,
 
     /// <summary>
-    /// A button that submits form data to a server.
+    /// 1 - Submit: A button that submits form data to a server.
     /// </summary>
     Submit,
 
     /// <summary>
-    /// A button that resets form data to its initial values.
+    /// 2 - Reset: A button that resets form data to its initial values.
     /// </summary>
     Reset
 }

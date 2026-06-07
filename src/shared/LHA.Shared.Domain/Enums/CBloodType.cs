@@ -6,27 +6,27 @@ namespace LHA.Shared.Domain
     public enum CBloodType
     {
         /// <summary>
-        /// Không xác định
+        /// 0 - None: Không xác định
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Nhóm máu A
+        /// 1 - A: Nhóm máu A
         /// </summary>
         A = 1,
 
         /// <summary>
-        /// Nhóm máu B
+        /// 2 - B: Nhóm máu B
         /// </summary>
         B = 2,
 
         /// <summary>
-        /// Nhóm máu AB
+        /// 3 - AB: Nhóm máu AB
         /// </summary>
         AB = 3,
 
         /// <summary>
-        /// Nhóm máu O
+        /// 4 - O: Nhóm máu O
         /// </summary>
         O = 4
     }

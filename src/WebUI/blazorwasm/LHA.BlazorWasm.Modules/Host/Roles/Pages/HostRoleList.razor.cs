@@ -57,7 +57,7 @@ public partial class HostRoleList : LHAComponentBase
         {
             var sort = request.Sorts[0];
             _input.SorterKey = sort.Field;
-            _input.SorterIsAsc = sort.Direction == SortDirection.Ascending;
+            _input.SorterIsAsc = sort.Direction == CSortDirection.Ascending;
         }
         else
         {

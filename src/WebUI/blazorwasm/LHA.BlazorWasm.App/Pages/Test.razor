@@ -38,7 +38,7 @@
                 <ChildContent>
                     <DataTableColumn TItem="TestResult" Title="Action" Property="@(x => x.Action)" Sortable
                                      Width="250px" />
-                    <DataTableColumn TItem="TestResult" Title="Status" Width="120px" Alignment="ColumnAlignment.Center">
+                    <DataTableColumn TItem="TestResult" Title="Status" Width="120px" Alignment="CColumnAlignment.Center">
                         <CellTemplate>
                             <span class='badge rounded-pill @(context.Success ? "bg-success" : "bg-danger") px-3'>
                                 @(context.Success ? "PASSED" : "FAILED")

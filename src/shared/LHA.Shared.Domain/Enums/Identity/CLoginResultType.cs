@@ -5,27 +5,39 @@ namespace LHA.Shared.Domain.Identity
     /// </summary>
     public enum CLoginResultType
     {
-        /// <summary>Login succeeded.</summary>
+        /// <summary>
+        /// 1 - Success: Login succeeded.
+        /// </summary>
         Success = 1,
 
-        /// <summary>Invalid username or email.</summary>
+        /// <summary>
+        /// 2 - InvalidUserNameOrEmail: Invalid username or email.
+        /// </summary>
         InvalidUserNameOrEmail = 2,
 
-        /// <summary>Invalid password.</summary>
+        /// <summary>
+        /// 3 - InvalidPassword: Invalid password.
+        /// </summary>
         InvalidPassword = 3,
 
-        /// <summary>User account is not active / disabled.</summary>
+        /// <summary>
+        /// 4 - NotAllowed: User account is not active / disabled.
+        /// </summary>
         NotAllowed = 4,
 
-        /// <summary>User account is locked out due to excessive failed attempts.</summary>
+        /// <summary>
+        /// 5 - LockedOut: User account is locked out due to excessive failed attempts.
+        /// </summary>
         LockedOut = 5,
 
         /// <summary>
-        /// Two-factor authentication is required but not yet completed.
+        /// 6 - RequiresTwoFactor: Two-factor authentication is required but not yet completed.
         /// </summary>
         RequiresTwoFactor = 6,
 
-        /// <summary>User's tenant is inactive.</summary>
+        /// <summary>
+        /// 7 - TenantIsNotActive: User's tenant is inactive.
+        /// </summary>
         TenantIsNotActive = 7
     }
 }

@@ -22,7 +22,7 @@ public sealed class ColumnDefinition<TItem>
     // ── Sort / Filter ────────────────────────────────────────
     public bool Sortable { get; set; }
     public bool Filterable { get; set; }
-    public FilterType FilterType { get; set; } = FilterType.Text;
+    public CFilterType CFilterType { get; set; } = CFilterType.Text;
     public IReadOnlyList<SelectOption>? FilterOptions { get; set; }
 
     // ── Visibility & Order ───────────────────────────────────
@@ -38,8 +38,8 @@ public sealed class ColumnDefinition<TItem>
     public string? MaxWidth { get; set; }
 
     // ── Position ─────────────────────────────────────────────
-    public FixedPosition Fixed { get; set; } = FixedPosition.None;
-    public ColumnAlignment Alignment { get; set; } = ColumnAlignment.Left;
+    public CFixedPosition Fixed { get; set; } = CFixedPosition.None;
+    public CColumnAlignment Alignment { get; set; } = CColumnAlignment.Left;
 
     // ── Styling ──────────────────────────────────────────────
     public bool Highlight { get; set; }
@@ -71,8 +71,8 @@ public sealed class ColumnDefinition<TItem>
         var parts = new List<string>(3);
         var align = Alignment switch
         {
-            ColumnAlignment.Center => "dt-text-center",
-            ColumnAlignment.Right => "dt-text-right",
+            CColumnAlignment.Center => "dt-text-center",
+            CColumnAlignment.Right => "dt-text-right",
             _ => ""
         };
         if (align.Length > 0) parts.Add(align);
@@ -97,8 +97,8 @@ public sealed class ColumnDefinition<TItem>
     /// <summary>CSS class for sticky (fixed) columns.</summary>
     public string GetFixedCss() => Fixed switch
     {
-        FixedPosition.Left => "dt-sticky-left",
-        FixedPosition.Right => "dt-sticky-right",
+        CFixedPosition.Left => "dt-sticky-left",
+        CFixedPosition.Right => "dt-sticky-right",
         _ => ""
     };
 

@@ -5,12 +5,18 @@ namespace LHA.Core;
 /// </summary>
 public enum CSearchOperatorType
 {
-    /// <summary>Property value contains the keyword.</summary>
+    /// <summary>
+    /// 0 - Contains: Property value contains the keyword.
+    /// </summary>
     Contains = 0,
 
-    /// <summary>Property value equals the keyword exactly.</summary>
+    /// <summary>
+    /// 1 - Equals: Property value equals the keyword exactly.
+    /// </summary>
     Equals = 1,
 
-    /// <summary>Property value starts with the keyword.</summary>
+    /// <summary>
+    /// 2 - StartsWith: Property value starts with the keyword.
+    /// </summary>
     StartsWith = 2
 }

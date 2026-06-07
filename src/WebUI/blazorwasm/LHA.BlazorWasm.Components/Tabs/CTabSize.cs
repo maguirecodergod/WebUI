@@ -5,12 +5,18 @@ namespace LHA.BlazorWasm.Components.Tabs;
 /// </summary>
 public enum CTabSize
 {
-    /// <summary>Compact, small tabs.</summary>
+    /// <summary>
+    /// 0 - Small: Compact, small tabs.
+    /// </summary>
     Small,
 
-    /// <summary>Standard-sized tabs (default).</summary>
+    /// <summary>
+    /// 1 - Medium: Standard-sized tabs (default).
+    /// </summary>
     Medium,
 
-    /// <summary>Large, prominent tabs.</summary>
+    /// <summary>
+    /// 2 - Large: Large, prominent tabs.
+    /// </summary>
     Large
 }

@@ -323,9 +323,9 @@
                                         </PremiumDialog>
                                         <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
                                             <div class="card-body p-0">
-                                                <DataTable @ref="_dataTable" TItem="AuditLogDto" Items="_logs" Mode="DataTableMode.ServerSide"
+                                                <DataTable @ref="_dataTable" TItem="AuditLogDto" Items="_logs" Mode="CDataTableMode.ServerSide"
                                                            TotalCount="(int)_totalCount" ServerDataSource="GetDataTableResponseAsync" DefaultPageSize="10"
-                                                           Searchable="false" ShowToolbar="true" SelectionMode="SelectionMode.Multiple" KeySelector="@(x => x.Id)"
+                                                           Searchable="false" ShowToolbar="true" CSelectionMode="CSelectionMode.Multiple" KeySelector="@(x => x.Id)"
                                                            TableId="@DataTableIds.AuditLogs" OnSelectionChanged="(items) => _selectedLogs = items.ToList()">
                                                     <ToolbarTemplate>
                                                         <div class="d-flex justify-content-between align-items-center w-100 px-3 py-2 border-bottom"
@@ -535,7 +535,7 @@
                                                                 </DataTableColumn>
 
                                                                 <DataTableColumn TItem="AuditLogDto" Title="@L("Common.Operations")" Width="100px"
-                                                                                 Alignment="ColumnAlignment.Right">
+                                                                                 Alignment="CColumnAlignment.Right">
                                                                     <CellTemplate>
                                                                         <div class="d-flex justify-content-end gap-1">
                                                                             <Tooltip Text="@L("Common.ViewDetails")">

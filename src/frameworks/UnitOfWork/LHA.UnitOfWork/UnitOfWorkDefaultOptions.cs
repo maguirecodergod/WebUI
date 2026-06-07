@@ -56,12 +56,18 @@ public sealed class UnitOfWorkDefaultOptions
 /// </summary>
 public enum TransactionBehavior
 {
-    /// <summary>Automatically decide based on context (e.g. read-only queries → no tx).</summary>
+    /// <summary>
+    /// 0 - Auto: Automatically decide based on context (e.g. read-only queries → no tx).
+    /// </summary>
     Auto = 0,
 
-    /// <summary>Always wrap in a transaction.</summary>
+    /// <summary>
+    /// 1 - Enabled: Always wrap in a transaction.
+    /// </summary>
     Enabled = 1,
 
-    /// <summary>Never use a transaction.</summary>
+    /// <summary>
+    /// 2 - Disabled: Never use a transaction.
+    /// </summary>
     Disabled = 2
 }

@@ -6,12 +6,12 @@ namespace LHA.BlazorWasm.Services.Localization;
 public enum CLanguageSelectorMode
 {
     /// <summary>
-    /// Renders a dropdown menu to select the language.
+    /// 0 - Dropdown: Renders a dropdown menu to select the language.
     /// </summary>
     Dropdown,
 
     /// <summary>
-    /// Renders a series of inline toggle buttons.
+    /// 1 - Inline: Renders a series of inline toggle buttons.
     /// </summary>
     Inline
 }

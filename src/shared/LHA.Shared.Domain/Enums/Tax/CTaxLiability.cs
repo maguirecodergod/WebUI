@@ -6,25 +6,19 @@ namespace LHA.Shared.Domain
     public enum CTaxLiability
     {
         /// <summary>
-        /// Normal: supplier collects and remits
+        /// 1 - SupplierCharged: Normal: supplier collects and remits
         /// </summary>
-        /// <remarks>
-        /// This is the default case for most businesses.
-        /// </remarks>
         SupplierCharged = 1,
         /// <summary>
-        /// B2B cross-border: customer self-accounts
+        /// 2 - ReverseCharge: B2B cross-border: customer self-accounts
         /// </summary>
         ReverseCharge = 2,
         /// <summary>
-        /// IT/TR: customer self-accounts
+        /// 3 - SplitPayment: IT/TR: customer self-accounts
         /// </summary>
-        /// <remarks>
-        /// This is the default case for most businesses.
-        /// </remarks>
         SplitPayment = 3,
         /// <summary>
-        /// Zero/Exempt — no tax recovery on costs
+        /// 4 - NotApplicable: Zero/Exempt — no tax recovery on costs
         /// </summary>
         NotApplicable = 4
     }

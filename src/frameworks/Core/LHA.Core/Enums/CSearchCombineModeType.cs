@@ -6,12 +6,12 @@ namespace LHA.Core;
 public enum CSearchCombineModeType
 {
     /// <summary>
-    /// Any keyword must match at least one column (logical OR across keywords).
+    /// 0 - Or: Any keyword must match at least one column (logical OR across keywords).
     /// </summary>
     Or = 0,
 
     /// <summary>
-    /// Every keyword must match at least one column (logical AND across keywords).
+    /// 1 - And: Every keyword must match at least one column (logical AND across keywords).
     /// </summary>
     And = 1
 }

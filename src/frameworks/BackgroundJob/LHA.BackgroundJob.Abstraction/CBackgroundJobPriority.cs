@@ -6,18 +6,28 @@ namespace LHA.BackgroundJob;
 /// </summary>
 public enum CBackgroundJobPriority : byte
 {
-    /// <summary>Low priority.</summary>
+    /// <summary>
+    /// 5 - Low: Low priority.
+    /// </summary>
     Low = 5,
 
-    /// <summary>Below normal priority.</summary>
+    /// <summary>
+    /// 10 - BelowNormal: Below normal priority.
+    /// </summary>
     BelowNormal = 10,
 
-    /// <summary>Normal (default) priority.</summary>
+    /// <summary>
+    /// 15 - Normal: Normal (default) priority.
+    /// </summary>
     Normal = 15,
 
-    /// <summary>Above normal priority.</summary>
+    /// <summary>
+    /// 20 - AboveNormal: Above normal priority.
+    /// </summary>
     AboveNormal = 20,
 
-    /// <summary>High priority.</summary>
+    /// <summary>
+    /// 25 - High: High priority.
+    /// </summary>
     High = 25
 }

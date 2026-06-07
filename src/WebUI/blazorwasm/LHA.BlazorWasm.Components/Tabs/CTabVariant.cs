@@ -5,12 +5,18 @@ namespace LHA.BlazorWasm.Components.Tabs;
 /// </summary>
 public enum CTabVariant
 {
-    /// <summary>Underline ink indicator — clean, minimal (default).</summary>
+    /// <summary>
+    /// 0 - Line: Underline ink indicator — clean, minimal (default).
+    /// </summary>
     Line,
 
-    /// <summary>Pill / filled background on active tab.</summary>
+    /// <summary>
+    /// 1 - Pills: Pill / filled background on active tab.
+    /// </summary>
     Pills,
 
-    /// <summary>Card-style tabs with border and background panel.</summary>
+    /// <summary>
+    /// 2 - Card: Card-style tabs with border and background panel.
+    /// </summary>
     Card
 }

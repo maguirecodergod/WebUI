@@ -6,10 +6,14 @@ namespace LHA.Auditing
     [Flags]
     public enum CAuditingMode
     {
-        /// <summary>Relational Data Action and Entity Logs</summary>
+        /// <summary>
+        /// 1 - DataAudit: Relational Data Action and Entity Logs
+        /// </summary>
         DataAudit = 1,
 
-        /// <summary>High-throughput API logs pipeline</summary>
+        /// <summary>
+        /// 2 - Pipeline: High-throughput API logs pipeline
+        /// </summary>
         Pipeline = 2,
 
         /// <summary>Both auditing mechanisms</summary>

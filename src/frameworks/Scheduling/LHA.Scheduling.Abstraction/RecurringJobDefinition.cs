@@ -77,13 +77,19 @@ public sealed record RecurringJobDefinition
 /// </summary>
 public enum RecurringJobStatus
 {
-    /// <summary>Actively scheduled — will fire at the next cron interval.</summary>
+    /// <summary>
+    /// 0 - Active: Actively scheduled — will fire at the next cron interval.
+    /// </summary>
     Active,
 
-    /// <summary>Paused — will not fire until resumed.</summary>
+    /// <summary>
+    /// 1 - Paused: Paused — will not fire until resumed.
+    /// </summary>
     Paused,
 
-    /// <summary>Removed/completed — no longer scheduled.</summary>
+    /// <summary>
+    /// 2 - Removed: Removed/completed — no longer scheduled.
+    /// </summary>
     Removed
 }
 
@@ -93,21 +99,17 @@ public enum RecurringJobStatus
 public enum MisfirePolicy
 {
     /// <summary>
-    /// Fire once immediately, then resume normal cron schedule.
-    /// Best for: idempotent jobs where catching up matters.
+    /// 0 - FireOnceNow: Fire once immediately, then resume normal cron schedule. Best for: idempotent jobs where catching up matters.
     /// </summary>
     FireOnceNow,
 
     /// <summary>
-    /// Ignore the missed fire and wait for the next scheduled time.
-    /// Best for: jobs where stale executions have no value.
+    /// 1 - IgnoreMisfire: Ignore the missed fire and wait for the next scheduled time. Best for: jobs where stale executions have no value.
     /// </summary>
     IgnoreMisfire,
 
     /// <summary>
-    /// Fire all missed executions sequentially, then resume normal schedule.
-    /// Best for: jobs where every execution matters (e.g. daily reports).
-    /// Warning: can cause burst load after prolonged downtime.
+    /// 2 - FireAll: Fire all missed executions sequentially, then resume normal schedule. Best for: jobs where every execution matters (e.g. daily reports). Warning: can cause burst load after prolonged downtime.
     /// </summary>
     FireAll
 }

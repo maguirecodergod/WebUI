@@ -84,10 +84,10 @@
         <table class="dt-table">
             <thead>
                 <tr class="dt-header-row">
-                    @if (SelectionMode != SelectionMode.None)
+                    @if (CSelectionMode != CSelectionMode.None)
                     {
                         <th class="dt-header-cell dt-col-select" style="text-align: center; width: 48px; min-width: 48px; max-width: 48px;">
-                            @if (SelectionMode == SelectionMode.Multiple)
+                            @if (CSelectionMode == CSelectionMode.Multiple)
                             {
                                 <input type="checkbox" checked="@_allPageSelected"
                                        @onchange="async () => await ToggleSelectAllPage()" />
@@ -118,11 +118,11 @@
                             @if (col.Sortable)
                             {
                                 <span class="dt-sort-icon">
-                                    @if (sort.Direction == SortDirection.Ascending)
+                                    @if (sort.Direction == CSortDirection.Ascending)
                                     {
                                         <i class="bi bi-caret-up-fill dt-svg-icon"></i>
                                     }
-                                    else if (sort.Direction == SortDirection.Descending)
+                                    else if (sort.Direction == CSortDirection.Descending)
                                     {
                                         <i class="bi bi-caret-down-fill dt-svg-icon"></i>
                                     }
@@ -138,7 +138,7 @@
             </thead>
 
             <tbody>
-                @if (SelectionMode == SelectionMode.Multiple && _allPageSelected && _totalCount > _displayItems.Count)
+                @if (CSelectionMode == CSelectionMode.Multiple && _allPageSelected && _totalCount > _displayItems.Count)
                 {
                     <tr class="dt-selection-msg-row">
                         <td colspan="@_totalColumns" class="dt-cell" style="padding: 0.5rem 1rem;">
@@ -169,7 +169,7 @@
                     @for (var i = 0; i < 5; i++)
                     {
                         <tr class="dt-row">
-                            @for (var j = 0; j < (visibleCols.Count + (SelectionMode != SelectionMode.None ? 1 : 0) +
+                            @for (var j = 0; j < (visibleCols.Count + (CSelectionMode != CSelectionMode.None ? 1 : 0) +
                     (ExpandedRowTemplate is not null ? 1 : 0)); j++)
                             {
                                 <td class="dt-cell">
@@ -201,10 +201,10 @@
                         <tr class="dt-row dt-row-hoverable @(IsSelected(item) ? "dt-row-selected" : string.Empty)"
                             @onclick="async () => await HandleRowClickInternal(item)">
 
-                            @if (SelectionMode != SelectionMode.None)
+                            @if (CSelectionMode != CSelectionMode.None)
                             {
                                 <td class="dt-cell dt-col-select" style="text-align: center; width: 48px; min-width: 48px; max-width: 48px;" @onclick:stopPropagation>
-                                    @if (SelectionMode == SelectionMode.Multiple)
+                                    @if (CSelectionMode == CSelectionMode.Multiple)
                                     {
                                         <input type="checkbox" checked="@IsSelected(item)"
                                                @onchange="async e => await HandleSelectionToggle(item, e.Value)" />
@@ -314,16 +314,16 @@
         }
 
         // ── Built-in defaults ────────────────────────────────
-        switch (col.FilterType)
+        switch (col.CFilterType)
         {
-            case FilterType.Text:
+            case CFilterType.Text:
                 <CInput TValue="string" Value="@GetStagedFilterValue(col.Field)"
-                        ValueChanged="@(v => SetStagedFilter(col.Field, v, FilterType.Text))" ValueExpression="@(() => _dummyFilter)"
+                        ValueChanged="@(v => SetStagedFilter(col.Field, v, CFilterType.Text))" ValueExpression="@(() => _dummyFilter)"
                         Placeholder="@col.Title" Clearable="true" Size="CInputSize.Small" />
                 break;
-            case FilterType.Select:
+            case CFilterType.Select:
                 <select class="dt-filter-input" value="@GetStagedFilterValue(col.Field)"
-                        @onchange="e => SetStagedFilter(col.Field, e.Value?.ToString(), FilterType.Select, FilterOperator.Equals)">
+                        @onchange="e => SetStagedFilter(col.Field, e.Value?.ToString(), CFilterType.Select, CFilterOperator.Equals)">
                     <option value="">@L("Common.All")</option>
                     @if (col.FilterOptions is not null)
                     {

@@ -6,17 +6,17 @@ namespace LHA.Auditing;
 public enum CEntityChangeType : byte
 {
     /// <summary>
-    /// A new entity was created.
+    /// 0 - Created: A new entity was created.
     /// </summary>
     Created = 0,
 
     /// <summary>
-    /// An existing entity was modified.
+    /// 1 - Updated: An existing entity was modified.
     /// </summary>
     Updated = 1,
 
     /// <summary>
-    /// An entity was deleted (or soft-deleted).
+    /// 2 - Deleted: An entity was deleted (or soft-deleted).
     /// </summary>
     Deleted = 2
 }

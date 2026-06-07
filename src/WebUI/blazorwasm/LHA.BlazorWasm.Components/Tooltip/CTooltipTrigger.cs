@@ -5,8 +5,20 @@ namespace LHA.BlazorWasm.Components.Tooltip;
 /// </summary>
 public enum CTooltipTrigger
 {
+    /// <summary>
+    /// 0 - Hover
+    /// </summary>
     Hover,
+    /// <summary>
+    /// 1 - Click
+    /// </summary>
     Click,
+    /// <summary>
+    /// 2 - Focus
+    /// </summary>
     Focus,
+    /// <summary>
+    /// 3 - Manual
+    /// </summary>
     Manual
 }

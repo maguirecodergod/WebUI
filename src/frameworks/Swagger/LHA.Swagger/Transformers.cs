@@ -387,13 +387,13 @@ internal sealed partial class LhaSchemaDocumentationTransformer : IOpenApiSchema
             .Select(name => Convert.ToInt64(type.GetField(name)!.GetValue(null)))
             .ToArray();
 
-        // Use XML summary if available; otherwise fall back to "Name = numericValue"
+        // Use XML summary if available; otherwise fall back to "{value} - {Name}"
         var descriptions = new string[names.Length];
         for (var i = 0; i < names.Length; i++)
         {
             descriptions[i] = TryGetXmlSummary(type.GetField(names[i])!, out var summary)
                 ? summary
-                : $"{underlyingValues[i]}";
+                : $"{underlyingValues[i]} - {names[i]}";
         }
 
         schema.Extensions ??= new Dictionary<string, IOpenApiExtension>();
@@ -412,7 +412,9 @@ internal sealed partial class LhaSchemaDocumentationTransformer : IOpenApiSchema
 
         for (var i = 0; i < names.Length; i++)
         {
-            lines.Add($"- `{names[i]}`: {descriptions[i]}");
+            // descriptions already contain "{value} - {Name}: {summary}"
+            // so we skip prepending the name to avoid redundancy
+            lines.Add($"- {descriptions[i]}");
         }
 
         return string.Join(Environment.NewLine, lines);

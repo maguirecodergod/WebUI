@@ -25,7 +25,16 @@ public sealed class PermissionGroupInput
 
 public enum PermissionRegistrationMultiTenancySide
 {
+    /// <summary>
+    /// 0 - Both
+    /// </summary>
     Both = 0,
+    /// <summary>
+    /// 1 - Host
+    /// </summary>
     Host = 1,
+    /// <summary>
+    /// 2 - Tenant
+    /// </summary>
     Tenant = 2,
 }

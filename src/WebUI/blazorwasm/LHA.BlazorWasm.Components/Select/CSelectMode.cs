@@ -6,12 +6,12 @@ namespace LHA.BlazorWasm.Components.Select;
 public enum CSelectMode
 {
     /// <summary>
-    /// Single item selection.
+    /// 0 - Single: Single item selection.
     /// </summary>
     Single,
 
     /// <summary>
-    /// Multiple items selection.
+    /// 1 - Multiple: Multiple items selection.
     /// </summary>
     Multiple
 }

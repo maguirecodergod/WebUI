@@ -104,7 +104,7 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
             {
                 var sort = request.Sorts[0]; // Primary sort
                 _input.SorterKey = sort.Field;
-                _input.SorterIsAsc = sort.Direction == SortDirection.Ascending;
+                _input.SorterIsAsc = sort.Direction == CSortDirection.Ascending;
             }
             else
             {

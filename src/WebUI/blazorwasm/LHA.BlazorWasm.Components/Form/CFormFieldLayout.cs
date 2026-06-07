@@ -6,12 +6,12 @@ namespace LHA.BlazorWasm.Components.Form;
 public enum CFormFieldLayout
 {
     /// <summary>
-    /// Label above the control (default).
+    /// 0 - Vertical: Label above the control (default).
     /// </summary>
     Vertical,
 
     /// <summary>
-    /// Label to the left, control to the right.
+    /// 1 - Horizontal: Label to the left, control to the right.
     /// </summary>
     Horizontal
 }

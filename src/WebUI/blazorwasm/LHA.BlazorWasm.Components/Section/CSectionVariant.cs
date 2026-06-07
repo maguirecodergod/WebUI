@@ -6,17 +6,17 @@ namespace LHA.BlazorWasm.Components.Section;
 public enum CSectionVariant
 {
     /// <summary>
-    /// Default bordered card style.
+    /// 0 - Default: Default bordered card style.
     /// </summary>
     Default,
 
     /// <summary>
-    /// Subtle style with minimal border.
+    /// 1 - Subtle: Subtle style with minimal border.
     /// </summary>
     Subtle,
 
     /// <summary>
-    /// Flush style with no outer border or padding — ideal for nesting.
+    /// 2 - Flush: Flush style with no outer border or padding — ideal for nesting.
     /// </summary>
     Flush
 }

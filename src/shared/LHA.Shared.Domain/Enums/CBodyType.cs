@@ -7,17 +7,17 @@ namespace LHA.Shared.Domain
     public enum CBodyType
     {
         /// <summary>
-        /// Hoàn toàn tự nhiên, không can thiệp thẩm mỹ
+        /// 0 - Natural: Hoàn toàn tự nhiên, không can thiệp thẩm mỹ
         /// </summary>
         Natural = 0,
 
         /// <summary>
-        /// Có can thiệp phẫu thuật / thẩm mỹ
+        /// 1 - Surgical: Có can thiệp phẫu thuật / thẩm mỹ
         /// </summary>
         Surgical = 1,
 
         /// <summary>
-        /// Không xác định / không rõ
+        /// 99 - Unknown: Không xác định / không rõ
         /// </summary>
         Unknown = 99
     }

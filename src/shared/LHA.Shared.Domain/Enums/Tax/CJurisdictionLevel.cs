@@ -3,27 +3,27 @@ namespace LHA.Shared.Domain
     public enum CJurisdictionLevel
     {
         /// <summary>
-        /// Placeholder root
+        /// 0 - Global: Placeholder root
         /// </summary>
         Global = 0,
         /// <summary>
-        /// EU, GCC bloc
+        /// 1 - Regional: EU, GCC bloc
         /// </summary>
         Regional = 1,
         /// <summary>
-        /// DE, AU, US
+        /// 2 - Country: DE, AU, US
         /// </summary>
         Country = 2,
         /// <summary>
-        /// Bavaria, Queensland, California
+        /// 3 - State: Bavaria, Queensland, California
         /// </summary>
         State = 3,
         /// <summary>
-        /// US county
+        /// 4 - County: US county
         /// </summary>
         County = 4,
         /// <summary>
-        /// City / Municipality
+        /// 5 - City: City / Municipality
         /// </summary>
         City = 5
     }

@@ -5,9 +5,13 @@ namespace LHA.Auditing.Pipeline;
 /// </summary>
 public enum AuditLogStatus : byte
 {
-    /// <summary>Operation completed successfully.</summary>
+    /// <summary>
+    /// 0 - Success: Operation completed successfully.
+    /// </summary>
     Success = 0,
 
-    /// <summary>Operation failed with an exception.</summary>
+    /// <summary>
+    /// 1 - Failure: Operation failed with an exception.
+    /// </summary>
     Failure = 1
 }

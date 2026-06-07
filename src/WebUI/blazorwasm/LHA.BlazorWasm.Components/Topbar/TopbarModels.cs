@@ -4,10 +4,25 @@ namespace LHA.BlazorWasm.Components.Topbar;
 
 public enum TopbarActionType
 {
+    /// <summary>
+    /// 0 - Link
+    /// </summary>
     Link,
+    /// <summary>
+    /// 1 - Button
+    /// </summary>
     Button,
+    /// <summary>
+    /// 2 - Toggle
+    /// </summary>
     Toggle,
+    /// <summary>
+    /// 3 - Dropdown
+    /// </summary>
     Dropdown,
+    /// <summary>
+    /// 4 - Custom
+    /// </summary>
     Custom
 }
 
@@ -39,9 +54,21 @@ public class NotificationModel
 
 public enum NotificationSeverity
 {
+    /// <summary>
+    /// 0 - Info
+    /// </summary>
     Info,
+    /// <summary>
+    /// 1 - Success
+    /// </summary>
     Success,
+    /// <summary>
+    /// 2 - Warning
+    /// </summary>
     Warning,
+    /// <summary>
+    /// 3 - Error
+    /// </summary>
     Error
 }
 

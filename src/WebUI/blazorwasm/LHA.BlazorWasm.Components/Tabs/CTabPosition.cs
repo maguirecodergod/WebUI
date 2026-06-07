@@ -5,15 +5,23 @@ namespace LHA.BlazorWasm.Components.Tabs;
 /// </summary>
 public enum CTabPosition
 {
-    /// <summary>Tab headers appear above the content (default).</summary>
+    /// <summary>
+    /// 0 - Top: Tab headers appear above the content (default).
+    /// </summary>
     Top,
 
-    /// <summary>Tab headers appear below the content.</summary>
+    /// <summary>
+    /// 1 - Bottom: Tab headers appear below the content.
+    /// </summary>
     Bottom,
 
-    /// <summary>Tab headers appear to the left of the content.</summary>
+    /// <summary>
+    /// 2 - Left: Tab headers appear to the left of the content.
+    /// </summary>
     Left,
 
-    /// <summary>Tab headers appear to the right of the content.</summary>
+    /// <summary>
+    /// 3 - Right: Tab headers appear to the right of the content.
+    /// </summary>
     Right
 }

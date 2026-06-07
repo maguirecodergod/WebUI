@@ -180,7 +180,7 @@
                                                 <DataTableColumn TItem="IdentityUserDto" Property="@(u => u.Email)"
                                                                  Title="@L("Roles.Email")" />
                                                 <DataTableColumn TItem="IdentityUserDto" Title="@L("Common.Actions")"
-                                                                 Alignment="ColumnAlignment.Right">
+                                                                 Alignment="CColumnAlignment.Right">
                                                     <CellTemplate Context="item">
                                                         <div class="flex gap-2 justify-end">
                                                             <LHAButton Style="CButtonStyle.Ghost" Size="CButtonSize.Small" Icon="bi bi-shield-lock" OnClick="@(() => SelectUser(item))" />
@@ -326,7 +326,7 @@
                             </CellTemplate>
                         </DataTableColumn>
                         <DataTableColumn TItem="IdentityUserDto" Property="@(u => u.Email)" Title="@L("Roles.Email")" />
-                        <DataTableColumn TItem="IdentityUserDto" Title="@L("Common.Actions")" Alignment="ColumnAlignment.Right">
+                        <DataTableColumn TItem="IdentityUserDto" Title="@L("Common.Actions")" Alignment="CColumnAlignment.Right">
                             <CellTemplate Context="item">
                                 <LHAButton Style="CButtonStyle.Primary" Size="CButtonSize.Small" Icon="bi bi-plus-lg" OnClick="@(() => AssignUserToRoleAsync(item))" IsLoading="@(_isAssigningUser)" Class="shadow-sm">
                                     @L("Roles.Assign")

@@ -113,9 +113,13 @@ public sealed class SidebarItemModel
 /// </summary>
 public enum CNavLinkMatchMode
 {
-    /// <summary>Matches when the current URI starts with the item's Href.</summary>
+    /// <summary>
+    /// 0 - Prefix: Matches when the current URI starts with the item's Href.
+    /// </summary>
     Prefix,
 
-    /// <summary>Matches only when the current URI exactly equals the item's Href.</summary>
+    /// <summary>
+    /// 1 - Exact: Matches only when the current URI exactly equals the item's Href.
+    /// </summary>
     Exact
 }

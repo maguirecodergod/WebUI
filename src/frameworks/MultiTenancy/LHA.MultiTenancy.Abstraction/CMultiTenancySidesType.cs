@@ -6,10 +6,14 @@ namespace LHA.MultiTenancy;
 [Flags]
 public enum CMultiTenancySidesType : byte
 {
-    /// <summary>Tenant side.</summary>
+    /// <summary>
+    /// 1 - Tenant: Tenant side.
+    /// </summary>
     Tenant = 1,
 
-    /// <summary>Host (platform) side.</summary>
+    /// <summary>
+    /// 2 - Host: Host (platform) side.
+    /// </summary>
     Host = 2,
 
     /// <summary>Both tenant and host.</summary>

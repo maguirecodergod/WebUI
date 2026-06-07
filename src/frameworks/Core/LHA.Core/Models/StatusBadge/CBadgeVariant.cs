@@ -5,7 +5,16 @@ namespace LHA;
 /// </summary>
 public enum CBadgeVariant
 {
+    /// <summary>
+    /// 0 - Solid
+    /// </summary>
     Solid,
+    /// <summary>
+    /// 1 - Soft
+    /// </summary>
     Soft,
+    /// <summary>
+    /// 2 - Outline
+    /// </summary>
     Outline
 }

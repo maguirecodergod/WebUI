@@ -61,20 +61,20 @@ public sealed class DataTableResponse<T>
 // ═══════════════════════════════════════════════════════════════
 
 /// <summary>Describes a single sort criterion.</summary>
-public sealed record SortDefinition(string Field, SortDirection Direction)
+public sealed record SortDefinition(string Field, CSortDirection Direction)
 {
     /// <summary>Build "Field desc" or "Field" expression for API.</summary>
     public string ToExpression() =>
-        Direction == SortDirection.Descending ? $"{Field} desc" : Field;
+        Direction == CSortDirection.Descending ? $"{Field} desc" : Field;
 
     /// <summary>Cycle: None → Asc → Desc → None.</summary>
     public SortDefinition Toggle() => this with
     {
         Direction = Direction switch
         {
-            SortDirection.None => SortDirection.Ascending,
-            SortDirection.Ascending => SortDirection.Descending,
-            _ => SortDirection.None
+            CSortDirection.None => CSortDirection.Ascending,
+            CSortDirection.Ascending => CSortDirection.Descending,
+            _ => CSortDirection.None
         }
     };
 }
@@ -87,8 +87,8 @@ public sealed record SortDefinition(string Field, SortDirection Direction)
 public sealed class FilterDefinition
 {
     public required string Field { get; init; }
-    public FilterType Type { get; init; } = FilterType.Text;
-    public FilterOperator Operator { get; set; } = FilterOperator.Contains;
+    public CFilterType Type { get; init; } = CFilterType.Text;
+    public CFilterOperator Operator { get; set; } = CFilterOperator.Contains;
     public string? Value { get; set; }
     public string? ValueTo { get; set; }
 

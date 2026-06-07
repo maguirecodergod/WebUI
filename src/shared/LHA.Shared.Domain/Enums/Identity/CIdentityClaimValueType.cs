@@ -5,16 +5,24 @@ namespace LHA.Shared.Domain.Identity
     /// </summary>
     public enum CIdentityClaimValueType
     {
-        /// <summary>Free-form string.</summary>
+        /// <summary>
+        /// 0 - String: Free-form string.
+        /// </summary>
         String = 0,
 
-        /// <summary>Integer value.</summary>
+        /// <summary>
+        /// 1 - Int: Integer value.
+        /// </summary>
         Int = 1,
 
-        /// <summary>Boolean (true / false).</summary>
+        /// <summary>
+        /// 2 - Boolean: Boolean (true / false).
+        /// </summary>
         Boolean = 2,
 
-        /// <summary>ISO-8601 date/time.</summary>
+        /// <summary>
+        /// 3 - DateTime: ISO-8601 date/time.
+        /// </summary>
         DateTime = 3
     }
 }

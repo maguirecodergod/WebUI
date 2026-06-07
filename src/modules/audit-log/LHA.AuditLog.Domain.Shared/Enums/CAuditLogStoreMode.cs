@@ -6,10 +6,14 @@ namespace LHA.AuditLog.Domain.Shared
     [Flags]
     public enum CAuditLogStoreMode
     {
-        /// <summary>Structured relational audit log (AuditLog / Action / EntityChange tables).</summary>
+        /// <summary>
+        /// 1 - DataAudit: Structured relational audit log (AuditLog / Action / EntityChange tables).
+        /// </summary>
         DataAudit = 1,
 
-        /// <summary>High-throughput pipeline audit log (AuditLogPipeline table).</summary>
+        /// <summary>
+        /// 2 - Pipeline: High-throughput pipeline audit log (AuditLogPipeline table).
+        /// </summary>
         Pipeline = 2,
 
         /// <summary>Both subsystems active simultaneously.</summary>

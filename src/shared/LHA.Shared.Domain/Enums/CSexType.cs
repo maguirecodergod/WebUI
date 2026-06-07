@@ -6,22 +6,22 @@ namespace LHA.Shared.Domain
     public enum CSexType
     {
         /// <summary>
-        /// Không xác định
+        /// 0 - None: Không xác định
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Nam
+        /// 1 - Male: Nam
         /// </summary>
         Male = 1,
 
         /// <summary>
-        /// Nữ
+        /// 2 - Female: Nữ
         /// </summary>
         Female = 2,
 
         /// <summary>
-        /// Khác
+        /// 3 - Other: Khác
         /// </summary>
         Other = 3
     }

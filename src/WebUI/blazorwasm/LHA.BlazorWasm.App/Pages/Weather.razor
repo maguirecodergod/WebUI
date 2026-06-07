@@ -15,7 +15,7 @@
     @* Premium DataTable Integration *@
     <div class="dt-container-outer">
 
-            <DataTable TItem="WeatherForecast" Items="_forecasts" Mode="DataTableMode.ClientSide"
+            <DataTable TItem="WeatherForecast" Items="_forecasts" Mode="CDataTableMode.ClientSide"
                        TableId="@DataTableIds.Weather"
                        Searchable="true" ShowToolbar="true" ShowPager="true" DefaultPageSize="5">
                 
@@ -31,14 +31,14 @@
                     </DataTableColumn>
 
                     <DataTableColumn TItem="WeatherForecast" Title="Station Temp (C)" Property="@(x => x.TemperatureC)" 
-                                   Alignment="ColumnAlignment.Right" Sortable Filterable>
+                                   Alignment="CColumnAlignment.Right" Sortable Filterable>
                         <CellTemplate>
                             <span class="dt-text-right">@context.TemperatureC°C</span>
                         </CellTemplate>
                     </DataTableColumn>
                         
                     <DataTableColumn TItem="WeatherForecast" Title="Station Temp (F)" Property="@(x => x.TemperatureF)" 
-                                   Alignment="ColumnAlignment.Right" Sortable Filterable>
+                                   Alignment="CColumnAlignment.Right" Sortable Filterable>
                         <CellTemplate>
                             <span class="dt-text-right text-muted">@context.TemperatureF°F</span>
                         </CellTemplate>
@@ -53,7 +53,7 @@
                     </DataTableColumn>
 
 
-                    <DataTableColumn TItem="WeatherForecast" Title="Actions" Width="100px" Alignment="ColumnAlignment.Right">
+                    <DataTableColumn TItem="WeatherForecast" Title="Actions" Width="100px" Alignment="CColumnAlignment.Right">
                         <CellTemplate>
                             <div class="d-flex justify-content-end gap-2">
                                 <Tooltip Text="View Details" Placement="CTooltipPlacement.Top">

@@ -6,17 +6,17 @@ namespace LHA.PermissionManagement.Domain.Shared;
 public enum MultiTenancySides
 {
     /// <summary>
-    /// Permission is available on both Host and Tenant sides.
+    /// 0 - Both: Permission is available on both Host and Tenant sides.
     /// </summary>
     Both = 0,
 
     /// <summary>
-    /// Permission is only available on the Host side (e.g., tenant management).
+    /// 1 - Host: Permission is only available on the Host side (e.g., tenant management).
     /// </summary>
     Host = 1,
 
     /// <summary>
-    /// Permission is only available on the Tenant side.
+    /// 2 - Tenant: Permission is only available on the Tenant side.
     /// </summary>
     Tenant = 2,
 }
