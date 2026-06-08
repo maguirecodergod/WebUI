@@ -40,10 +40,10 @@ internal sealed class PermissionSeeder : IDataSeeder
 
         await SeedTenantAdminTemplateAsync(templateRepo, groupEntities);
         await GrantPermissionsToRoleAsync(permGrantRepo, defEntities, context.SystemSuperAdminRoleId, filterTenantSide: false);
-        await GrantPermissionsToRoleAsync(permGrantRepo, defEntities, context.TenantAdminRoleId,      filterTenantSide: true);
+        await GrantPermissionsToRoleAsync(permGrantRepo, defEntities, context.TenantAdminRoleId,      filterTenantSide: true, readOnly: true);
 
-        _logger.LogInformation("All permissions granted to 'SystemSuperAdmin' role.");
-        _logger.LogInformation("Tenant-specific permissions granted to 'TenantAdmin' role.");
+        _logger.LogInformation("All permissions (including Delete) granted to 'SystemSuperAdmin' role.");
+        _logger.LogInformation("Read-only permissions granted to 'TenantAdmin' role (no Create/Update/Delete).");
 
         await uow.CompleteAsync();
     }
@@ -82,8 +82,10 @@ internal sealed class PermissionSeeder : IDataSeeder
             (AccountPermissions.TenantManagement.Update, AccountPermissions.TenantManagement.L.Update, "TenantManagement", AccountPermissions.TenantManagement.GroupName, MultiTenancySides.Host),
             (AccountPermissions.TenantManagement.Delete, AccountPermissions.TenantManagement.L.Delete, "TenantManagement", AccountPermissions.TenantManagement.GroupName, MultiTenancySides.Host),
             // Audit Logs
-            (AccountPermissions.AuditLogManagement.Read,     AccountPermissions.AuditLogManagement.L.Read,     "AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Both),
-            (AccountPermissions.AuditLogManagement.HostRead, AccountPermissions.AuditLogManagement.L.HostRead, "AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Host),
+            (AccountPermissions.AuditLogManagement.Read,   AccountPermissions.AuditLogManagement.L.Read,   "AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.AuditLogManagement.Create, AccountPermissions.AuditLogManagement.L.Create, "AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.AuditLogManagement.Update, AccountPermissions.AuditLogManagement.L.Update, "AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Both),
+            (AccountPermissions.AuditLogManagement.Delete, AccountPermissions.AuditLogManagement.L.Delete, "AuditLog", AccountPermissions.AuditLogManagement.GroupName, MultiTenancySides.Both),
             // Permission Management
             (AccountPermissions.PermissionMgmt.DefinitionsRead,   AccountPermissions.PermissionMgmt.L.DefinitionsRead,   "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
             (AccountPermissions.PermissionMgmt.DefinitionsManage, AccountPermissions.PermissionMgmt.L.DefinitionsManage, "PermissionManagement", AccountPermissions.PermissionMgmt.GroupName, MultiTenancySides.Both),
@@ -185,17 +187,25 @@ internal sealed class PermissionSeeder : IDataSeeder
     /// When <c>true</c>, only grants permissions with <see cref="MultiTenancySides.Both"/>
     /// or <see cref="MultiTenancySides.Tenant"/> — used for the TenantAdmin role.
     /// </param>
+    /// <param name="readOnly">
+    /// When <c>true</c>, only grants <c>.read</c> permissions (excludes Create, Update, Delete).
+    /// Used for the TenantAdmin role so it can view but not modify or delete data.
+    /// </param>
     private static async Task GrantPermissionsToRoleAsync(
         IPermissionGrantRepository permGrantRepo,
         List<PermissionDefinitionEntity> defEntities,
         Guid roleId,
-        bool filterTenantSide)
+        bool filterTenantSide,
+        bool readOnly = false)
     {
         var roleKey = roleId.ToString();
 
-        var candidates = filterTenantSide
+        IEnumerable<PermissionDefinitionEntity> candidates = filterTenantSide
             ? defEntities.Where(d => d.MultiTenancySide is MultiTenancySides.Both or MultiTenancySides.Tenant)
-            : defEntities.AsEnumerable();
+            : defEntities;
+
+        if (readOnly)
+            candidates = candidates.Where(d => d.Name.EndsWith(".read", StringComparison.OrdinalIgnoreCase));
 
         foreach (var def in candidates)
         {

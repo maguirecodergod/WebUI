@@ -70,9 +70,9 @@
                             </ul>
                         </div>
 
-                        @* Hybrid Plan *@
-                        <div class="plan-card @(SelectedStyle == CMultiTenancyDatabaseStyle.Hybrid ? "selected" : "")"
-                             @onclick="() => SelectedStyle = CMultiTenancyDatabaseStyle.Hybrid">
+                        @* PerSchema Plan *@
+                        <div class="plan-card @(SelectedStyle == CMultiTenancyDatabaseStyle.PerSchema ? "selected" : string.Empty)"
+                             @onclick="() => SelectedStyle = CMultiTenancyDatabaseStyle.PerSchema">
                             <div class="plan-icon plan-icon-purple">
                                 <i class="bi bi-gear"></i>
                             </div>

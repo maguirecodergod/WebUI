@@ -57,9 +57,9 @@ builder.Services.AddScoped<IAccessTokenProvider, StorageAccessTokenProvider>();
 // Integrate IToastService into API error handling
 builder.Services.AddTransient<IApiErrorHandler, ToastApiErrorHandler>();
 
-// Override default context provider with a persistent one (Singleton)
-builder.Services.AddSingleton<PersistentClientContextProvider>();
-builder.Services.AddSingleton<IClientContextProvider>(sp => sp.GetRequiredService<PersistentClientContextProvider>());
+// Override default context provider with a persistent one (Scoped)
+builder.Services.AddScoped<PersistentClientContextProvider>();
+builder.Services.AddScoped<IClientContextProvider>(sp => sp.GetRequiredService<PersistentClientContextProvider>());
 
 var host = builder.Build();
 

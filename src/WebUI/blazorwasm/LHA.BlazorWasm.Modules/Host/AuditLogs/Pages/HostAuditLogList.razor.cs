@@ -60,8 +60,8 @@ namespace LHA.BlazorWasm.Modules.Host.AuditLogs.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            _canReadHostLogs = PermissionService.HasPermission(AuditLogPermissions.AuditLogs.HostRead);
-            _canDelete = _canReadHostLogs;
+            _canReadHostLogs = PermissionService.HasPermission(AuditLogPermissions.AuditLogs.Read);
+            _canDelete = PermissionService.HasPermission(AuditLogPermissions.AuditLogs.Delete);
             await LoadLogsAsync();
         }
 

@@ -248,21 +248,27 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         // 1. Create Tenant (via Bridge)
         var tenantId = await _tenantManagerBridge.CreateTenantAsync(input.TenantName, input.DatabaseStyle, ct);
 
-        // ── IMPORTANT: Query role BEFORE changing tenant context ────────────────
-        // Seeded roles (SystemSuperAdmin, TenantAdmin) are at the Host level (TenantId = null).
-        // If we query them after switching to the new tenant, the repository filter 
-        // will prevent us from finding them.
+        var outerUow = _uowManager.Current;
+        if (outerUow is not null)
+        {
+            await outerUow.SaveChangesAsync(ct);
+        }
+
         var normalizedRoleName = _lookupNormalizer.NormalizeName(TenantAdminRole);
         var role = await _roleRepository.FindByNormalizedNameAsync(normalizedRoleName, ct);
+
+        List<IdentityPermissionGrant> hostRoleGrants = [];
+        if (role is not null)
+        {
+            hostRoleGrants = await _permissionGrantRepository
+                .GetGrantsByProvidersAsync("R", [role.Id.ToString()], ct);
+        }
 
         // 2. Change ambient context to the new tenant so EF uses its connection settings
         using (_currentTenant.Change(tenantId))
         {
             await using (var uow = _uowManager.Begin(new UnitOfWorkOptions { IsTransactional = true }, requiresNew: true))
             {
-                // IMPORTANT: Use named parameter to avoid C# overload resolution ambiguity.
-                // Without it, Guid matches the 'id' param (Guid) of the 5-arg overload
-                // instead of the 'tenantId' param (Guid?) of the 4-arg overload.
                 var user = await _userManager.CreateAsync(
                     input.AdminUserName,
                     input.AdminEmail,
@@ -273,11 +279,9 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
                 Guid? assignedRoleId = null;
                 if (role != null)
                 {
-                    // For isolated databases, the role record must exist in the tenant's own IdentityRoles table.
                     var tenantRole = await _roleRepository.FindAsync(role.Id, ct);
                     if (tenantRole == null)
                     {
-                        // Generate a NEW ID for the tenant-specific copy to avoid collisions in Shared Table mode.
                         tenantRole = await _roleManager.CreateAsync(role.Name, tenantId, isStatic: true, isPublic: true);
                         await _roleRepository.InsertAsync(tenantRole, ct);
                     }
@@ -298,14 +302,25 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
 
                 await _userRepository.InsertAsync(user, ct);
 
-                // Commit UoW before generating tokens to ensure data is persistent
-                await uow.CompleteAsync();
-            } // Unit of Work is fully disposed here
+                // 4. Seed permission grants for the newly created tenant role.
+                if (assignedRoleId.HasValue && hostRoleGrants.Count > 0)
+                {
+                    var newRoleKey = assignedRoleId.Value.ToString();
+                    foreach (var grant in hostRoleGrants)
+                    {
+                        var exists = await _permissionGrantRepository.FindAsync(grant.Name, "R", newRoleKey, ct);
+                        if (exists is null)
+                            await _permissionGrantRepository.InsertAsync(
+                                new IdentityPermissionGrant(
+                                    Guid.CreateVersion7(), grant.Name, "R", newRoleKey,
+                                    tenantId: tenantId, isGranted: grant.IsGranted), ct);
+                    }
+                }
 
-            // 4. Automated login for the new admin
-            // We MUST do this INSIDE the change tenant block so that LoginAsync
-            // uses the new tenant context to find the user.
-            // By calling it after the using(uow) block, LoginAsync will start its own root UoW.
+                await uow.CompleteAsync();
+            }
+
+            // 5. Automated login for the new admin
             return await LoginAsync(new LoginInput
             {
                 UserNameOrEmail = input.AdminUserName,
@@ -474,12 +489,6 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             if (roleNames.Contains(SystemSuperAdminRole) && tenantId == null)
             {
                 return await _permissionStore.GetAllPermissionsAsync(ct);
-            }
-
-            // Tenant Admin gets all tenant-scoped permissions (excludes host-only like tenant CRUD)
-            if (roleNames.Contains(TenantAdminRole))
-            {
-                return await _permissionStore.GetTenantPermissionsAsync(ct);
             }
 
             // 1. Role-based grants (ProviderName="R", ProviderKey=roleId)

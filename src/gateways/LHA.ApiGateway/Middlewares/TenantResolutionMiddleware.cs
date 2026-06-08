@@ -2,7 +2,7 @@ namespace LHA.ApiGateway.Middlewares;
 
 public class TenantResolutionMiddleware(RequestDelegate next)
 {
-    private const string TenantIdHeaderName = "X-Tenant-Id";
+    private const string TenantIdHeaderName = "X-Tenant-ID";
 
     public async Task InvokeAsync(HttpContext context)
     {

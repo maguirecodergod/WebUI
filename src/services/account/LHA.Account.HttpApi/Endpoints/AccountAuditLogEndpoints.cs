@@ -98,7 +98,7 @@ public static class AccountAuditLogEndpoints
             await service.DeleteAuditLogAsync(id);
             return Results.NoContent();
         })
-        .RequireAuthorization(AccountPermissions.AuditLogManagement.Read)
+        .RequireAuthorization(AccountPermissions.AuditLogManagement.Delete)
         .WithName("DeleteAccountAuditLog")
         .WithSummary("Deletes a specific audit log.")
         .Produces(204);
@@ -110,7 +110,7 @@ public static class AccountAuditLogEndpoints
             var count = await service.DeleteAuditLogOlderThanAsync(cutoffTime);
             return Results.Ok(ApiResponse<int>.Ok(count));
         })
-        .RequireAuthorization(AccountPermissions.AuditLogManagement.Read)
+        .RequireAuthorization(AccountPermissions.AuditLogManagement.Delete)
         .WithName("DeleteOlderAccountAuditLogs")
         .WithSummary("Deletes audit logs older than the specified date.")
         .Produces<ApiResponse<int>>();

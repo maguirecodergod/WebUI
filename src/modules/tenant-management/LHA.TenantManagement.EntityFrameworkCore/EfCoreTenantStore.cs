@@ -35,13 +35,20 @@ public sealed class EfCoreTenantStore(IServiceScopeFactory scopeFactory) : ITena
         string normalizedName,
         CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(normalizedName))
+        {
+            return null;
+        }
+
+        var upperNormalizedName = normalizedName.ToUpperInvariant();
+
         await using var scope = scopeFactory.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<TenantManagementDbContext>();
 
         var tenant = await dbContext.Tenants
             .AsNoTracking()
             .Include(t => t.ConnectionStrings)
-            .FirstOrDefaultAsync(t => t.NormalizedName == normalizedName, cancellationToken);
+            .FirstOrDefaultAsync(t => t.NormalizedName == upperNormalizedName, cancellationToken);
 
         return tenant is not null ? MapToConfiguration(tenant) : null;
     }

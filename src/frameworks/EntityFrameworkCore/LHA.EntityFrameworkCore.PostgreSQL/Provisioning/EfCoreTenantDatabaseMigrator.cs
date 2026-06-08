@@ -50,12 +50,8 @@ public class EfCoreTenantDatabaseMigrator<TDbContext> : ITenantDatabaseMigrator
                 var builder = new Npgsql.NpgsqlConnectionStringBuilder(resolvedConnectionString);
                 if (!string.IsNullOrWhiteSpace(builder.SearchPath))
                 {
-                    // Escape double quotes to prevent SQL injection in schema name
                     var safeSchemaName = builder.SearchPath.Replace("\"", "\"\"");
-                    
-                    // We create a separate connection to avoid interfering with the DbContext's state.
-                    // Using ExecuteSqlInterpolatedAsync provides better security than ExecuteSqlRawAsync
-                    await dbContext.Database.ExecuteSqlInterpolatedAsync($"CREATE SCHEMA IF NOT EXISTS \"{safeSchemaName}\";", cancellationToken);
+                    await dbContext.Database.ExecuteSqlRawAsync($"CREATE SCHEMA IF NOT EXISTS \"{safeSchemaName}\";", cancellationToken);
                 }
             }
 

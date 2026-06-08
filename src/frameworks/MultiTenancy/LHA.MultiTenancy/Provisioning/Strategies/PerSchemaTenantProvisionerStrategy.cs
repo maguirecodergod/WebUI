@@ -38,8 +38,8 @@ public sealed class PerSchemaTenantProvisionerStrategy : ITenantProvisionerStrat
             throw new InvalidOperationException("Default connection string is missing.");
         }
 
-        // 2. Generate schema name
-        var schemaName = $"tenant_{normalizedTenantName.ToLowerInvariant()}";
+        // 2. Generate schema name (replace spaces and invalid chars with underscores)
+        var schemaName = $"tenant_{normalizedTenantName.ToLowerInvariant().Replace(" ", "_")}";
         
         var builder = new DbConnectionStringBuilder
         {

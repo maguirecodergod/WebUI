@@ -44,6 +44,6 @@ public sealed class RegisterTenantInputValidator : AbstractValidator<RegisterTen
             .NotEmpty().WithMessage("TenantRegister.Validation.AdminPasswordRequired")
             .MinimumLength(6).WithMessage("TenantRegister.Validation.PasswordTooShort");
 
-        RuleFor(x => x.DatabaseStyle).InclusiveBetween(1, 3);
+        RuleFor(x => x.DatabaseStyle).Must(x => x == 1 || x == 2 || x == 4).WithMessage("TenantRegister.Validation.InvalidDatabaseStyle");
     }
 }

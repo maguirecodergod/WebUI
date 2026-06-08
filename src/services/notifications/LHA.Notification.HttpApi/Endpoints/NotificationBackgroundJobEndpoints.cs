@@ -50,21 +50,24 @@ public static class NotificationBackgroundJobEndpoints
             }).ToList();
 
             return Results.Ok(ApiResponse<List<Shared.Contracts.BackgroundJobs.RecurringJobDto>>.Ok(result));
-        });
+        })
+        .WithSummary("Get a list of all recurring notification background jobs");
 
         // 2. Trigger a Recurring Job
         group.MapPost("/recurring/{id}/trigger", ([FromServices] IRecurringJobManager recurringJobManager, string id) =>
         {
             recurringJobManager.Trigger(id);
             return Results.Ok(ApiResponse<bool>.Ok(true));
-        });
+        })
+        .WithSummary("Trigger a specific recurring notification background job by ID");
 
         // 3. Delete a Recurring Job
         group.MapDelete("/recurring/{id}", ([FromServices] IRecurringJobManager recurringJobManager, string id) =>
         {
             recurringJobManager.RemoveIfExists(id);
             return Results.Ok(ApiResponse<bool>.Ok(true));
-        });
+        })
+        .WithSummary("Delete a specific recurring notification background job by ID");
 
         // 4. Get Enqueued Jobs
         group.MapGet("/enqueued", ([FromServices] JobStorage jobStorage, string queue = "default") =>
@@ -80,7 +83,8 @@ public static class NotificationBackgroundJobEndpoints
             }).ToList();
 
             return Results.Ok(ApiResponse<List<EnqueuedJobDto>>.Ok(result));
-        });
+        })
+        .WithSummary("Get a list of enqueued notification background jobs");
 
         // 5. Get Failed Jobs
         group.MapGet("/failed", ([FromServices] JobStorage jobStorage) =>
@@ -97,21 +101,24 @@ public static class NotificationBackgroundJobEndpoints
             }).ToList();
 
             return Results.Ok(ApiResponse<List<FailedJobDto>>.Ok(result));
-        });
+        })
+        .WithSummary("Get a list of failed notification background jobs");
 
         // 6. Delete a specific Job (e.g., failed job)
         group.MapDelete("/{jobId}", ([FromServices] IBackgroundJobClient backgroundJobClient, string jobId) =>
         {
             var deleted = backgroundJobClient.Delete(jobId);
             return Results.Ok(ApiResponse<bool>.Ok(deleted));
-        });
+        })
+        .WithSummary("Delete a specific notification background job by ID");
 
         // 7. Requeue a specific Job (e.g., retry failed job)
         group.MapPost("/{jobId}/requeue", ([FromServices] IBackgroundJobClient backgroundJobClient, string jobId) =>
         {
             var requeued = backgroundJobClient.Requeue(jobId);
             return Results.Ok(ApiResponse<bool>.Ok(requeued));
-        });
+        })
+        .WithSummary("Requeue a specific notification background job by ID");
 
         // 8. Queues
         group.MapGet("/queues", ([FromServices] JobStorage jobStorage) =>
@@ -131,7 +138,8 @@ public static class NotificationBackgroundJobEndpoints
                 }).ToList()
             }).ToList();
             return Results.Ok(ApiResponse<List<QueueWithTopEnqueuedJobsDto>>.Ok(result));
-        });
+        })
+        .WithSummary("Get list of notification background job queues");
 
         // 9. Servers
         group.MapGet("/servers", ([FromServices] JobStorage jobStorage) =>
@@ -147,7 +155,8 @@ public static class NotificationBackgroundJobEndpoints
                 Heartbeat = s.Heartbeat
             }).ToList();
             return Results.Ok(ApiResponse<List<ServerDto>>.Ok(result));
-        });
+        })
+        .WithSummary("Get list of active notification background job servers");
 
         // 10. Job Details
         group.MapGet("/{jobId}/details", ([FromServices] JobStorage jobStorage, string jobId) =>
@@ -172,7 +181,8 @@ public static class NotificationBackgroundJobEndpoints
                 ExpireAt = details.ExpireAt
             };
             return Results.Ok(ApiResponse<JobDetailsDto>.Ok(result));
-        });
+        })
+        .WithSummary("Get details of a specific notification background job by ID");
 
         // 11. Statistics
         group.MapGet("/statistics", ([FromServices] JobStorage jobStorage) =>
@@ -194,7 +204,8 @@ public static class NotificationBackgroundJobEndpoints
                 Awaiting = stats.Awaiting
             };
             return Results.Ok(ApiResponse<StatisticsDto>.Ok(result));
-        });
+        })
+        .WithSummary("Get notification background job system statistics");
 
         return endpoints;
     }

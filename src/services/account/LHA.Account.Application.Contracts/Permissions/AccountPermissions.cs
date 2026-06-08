@@ -98,16 +98,18 @@ public static class AccountPermissions
     public static class AuditLogManagement
     {
         public const string GroupName = "AuditLogManagement";
-        public const string Read = AuditLogPermissions.AuditLogs.Read;
-
-        /// <summary>Host-level permission to view ALL audit logs cross-tenant.</summary>
-        public const string HostRead = AuditLogPermissions.AuditLogs.HostRead;
+        public const string Read   = AuditLogPermissions.AuditLogs.Read;
+        public const string Create = AuditLogPermissions.AuditLogs.Create;
+        public const string Update = AuditLogPermissions.AuditLogs.Update;
+        public const string Delete = AuditLogPermissions.AuditLogs.Delete;
 
         public static class L
         {
-            public const string Group = "Permissions.AuditLogManagement.Group";
-            public const string Read = "Permissions.AuditLogManagement.Read";
-            public const string HostRead = "Permissions.AuditLogManagement.HostRead";
+            public const string Group  = "Permissions.AuditLogManagement.Group";
+            public const string Read   = "Permissions.AuditLogManagement.Read";
+            public const string Create = "Permissions.AuditLogManagement.Create";
+            public const string Update = "Permissions.AuditLogManagement.Update";
+            public const string Delete = "Permissions.AuditLogManagement.Delete";
         }
     }
 
