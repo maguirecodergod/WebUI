@@ -111,6 +111,12 @@ public sealed class EfCorePermissionGroupRepository
         return await dbSet.Include(g => g.Items).FirstOrDefaultAsync(g => g.Name == name, ct);
     }
 
+    public async Task<List<PermissionGroupEntity>> GetAllWithItemsAsync(CancellationToken ct = default)
+    {
+        var dbSet = await GetDbSetAsync();
+        return await dbSet.Include(g => g.Items).ToListAsync(ct);
+    }
+
     public async Task<List<PermissionGroupEntity>> GetListAsync(
         PagingParam paging, SorterParam? sorter = null,
         string? filter = null, string? serviceName = null,
@@ -160,6 +166,12 @@ public sealed class EfCorePermissionTemplateRepository
     {
         var dbSet = await GetDbSetAsync();
         return await dbSet.Include(t => t.Items).FirstOrDefaultAsync(t => t.Name == name, ct);
+    }
+
+    public async Task<List<PermissionTemplateEntity>> GetAllWithItemsAsync(CancellationToken ct = default)
+    {
+        var dbSet = await GetDbSetAsync();
+        return await dbSet.Include(t => t.Items).ToListAsync(ct);
     }
 
     public async Task<List<PermissionTemplateEntity>> GetListAsync(

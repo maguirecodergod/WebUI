@@ -26,6 +26,7 @@ internal static class DbSchemeConsts
         public const string ClaimType       = PAuth + "ClaimType";
         public const string SecurityLog     = PAuth + "SecurityLog";
         public const string PermissionGrant = PAuth + "PermissionGrant";
+        public const string UserTenantIndex = PAuth + "UserTenantIndex";
     }
 
     // ─── Tenant Management ───────────────────────────────────────

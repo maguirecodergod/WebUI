@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LHA.Account.EntityFrameworkCore.Migrations
 {
     /// <inheritdoc />
-    public partial class InitAccountDb : Migration
+    public partial class InitAccountServiceDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,6 +18,7 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ApplicationName = table.Column<string>(type: "character varying(96)", maxLength: 96, nullable: true),
                     ActionName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    RequestType = table.Column<byte>(type: "smallint", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -47,15 +48,15 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                 name: "Audit_LogPipeline",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Timestamp = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     DurationMs = table.Column<long>(type: "bigint", nullable: false),
                     ServiceName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     InstanceId = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ActionName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     ActionType = table.Column<byte>(type: "smallint", nullable: false),
+                    RequestType = table.Column<byte>(type: "smallint", nullable: false),
                     UserId = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
-                    TenantId = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Roles = table.Column<string>(type: "text", nullable: true),
                     TraceId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
@@ -70,7 +71,8 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     ClientIp = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     UserAgent = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Exception = table.Column<string>(type: "text", nullable: true),
-                    Tags = table.Column<string>(type: "text", nullable: true)
+                    Tags = table.Column<string>(type: "text", nullable: true),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -207,6 +209,23 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Auth_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Auth_UserTenantIndex",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreationTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auth_UserTenantIndex", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -624,6 +643,11 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                 column: "HttpStatusCode");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Audit_Log_RequestType",
+                table: "Audit_Log",
+                column: "RequestType");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Audit_Log_TenantId",
                 table: "Audit_Log",
                 column: "TenantId");
@@ -632,6 +656,11 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                 name: "IX_Audit_Log_UserId",
                 table: "Audit_Log",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Audit_LogPipeline_RequestType",
+                table: "Audit_LogPipeline",
+                column: "RequestType");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Audit_LogPipeline_ServiceName_Timestamp",
@@ -730,6 +759,23 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                 table: "Auth_UserRole",
                 columns: new[] { "UserId", "RoleId" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_UserTenantIndex_NormalizedEmail",
+                table: "Auth_UserTenantIndex",
+                column: "NormalizedEmail",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_UserTenantIndex_NormalizedUserName",
+                table: "Auth_UserTenantIndex",
+                column: "NormalizedUserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_UserTenantIndex_TenantId",
+                table: "Auth_UserTenantIndex",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Auth_UserToken_UserId_LoginProvider_Name",
@@ -845,6 +891,9 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "Auth_UserRole");
+
+            migrationBuilder.DropTable(
+                name: "Auth_UserTenantIndex");
 
             migrationBuilder.DropTable(
                 name: "Auth_UserToken");

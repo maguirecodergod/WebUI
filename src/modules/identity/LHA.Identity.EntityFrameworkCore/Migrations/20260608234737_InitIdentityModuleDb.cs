@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LHA.Identity.EntityFrameworkCore.Migrations
 {
     /// <inheritdoc />
-    public partial class InitIdentityDb : Migration
+    public partial class InitIdentityModuleDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -176,6 +176,23 @@ namespace LHA.Identity.EntityFrameworkCore.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IdentityUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTenantIndexes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreationTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTenantIndexes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -370,6 +387,23 @@ namespace LHA.Identity.EntityFrameworkCore.Migrations
                 table: "IdentityUserTokens",
                 columns: new[] { "UserId", "LoginProvider", "Name" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTenantIndexes_NormalizedEmail",
+                table: "UserTenantIndexes",
+                column: "NormalizedEmail",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTenantIndexes_NormalizedUserName",
+                table: "UserTenantIndexes",
+                column: "NormalizedUserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTenantIndexes_TenantId",
+                table: "UserTenantIndexes",
+                column: "TenantId");
         }
 
         /// <inheritdoc />
@@ -404,6 +438,9 @@ namespace LHA.Identity.EntityFrameworkCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "IdentityUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "UserTenantIndexes");
 
             migrationBuilder.DropTable(
                 name: "IdentityRoles");

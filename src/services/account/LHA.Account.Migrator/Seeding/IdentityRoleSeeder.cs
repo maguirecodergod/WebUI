@@ -19,11 +19,12 @@ internal sealed class IdentityRoleSeeder : IDataSeeder
 
     public async Task SeedAsync(IServiceProvider serviceProvider, SeedingContext context)
     {
-        var uowManager    = serviceProvider.GetRequiredService<IUnitOfWorkManager>();
-        var roleManager   = serviceProvider.GetRequiredService<IdentityRoleManager>();
-        var roleRepo      = serviceProvider.GetRequiredService<IIdentityRoleRepository>();
-        var userManager   = serviceProvider.GetRequiredService<IdentityUserManager>();
-        var userRepo      = serviceProvider.GetRequiredService<IIdentityUserRepository>();
+        var uowManager            = serviceProvider.GetRequiredService<IUnitOfWorkManager>();
+        var roleManager           = serviceProvider.GetRequiredService<IdentityRoleManager>();
+        var roleRepo              = serviceProvider.GetRequiredService<IIdentityRoleRepository>();
+        var userManager           = serviceProvider.GetRequiredService<IdentityUserManager>();
+        var userRepo              = serviceProvider.GetRequiredService<IIdentityUserRepository>();
+        var userTenantIndexRepo   = serviceProvider.GetRequiredService<IUserTenantIndexRepository>();
 
         using var uow = uowManager.Begin(isTransactional: true);
 
@@ -41,7 +42,7 @@ internal sealed class IdentityRoleSeeder : IDataSeeder
         context.SystemSuperAdminRoleId = systemSuperAdminRole.Id;
         context.TenantAdminRoleId      = tenantAdminRole.Id;
 
-        await EnsureAdminUserAsync(userManager, userRepo, context);
+        await EnsureAdminUserAsync(userManager, userRepo, userTenantIndexRepo, context);
 
         await uow.CompleteAsync();
     }
@@ -67,6 +68,7 @@ internal sealed class IdentityRoleSeeder : IDataSeeder
     private async Task EnsureAdminUserAsync(
         IdentityUserManager userManager,
         IIdentityUserRepository userRepo,
+        IUserTenantIndexRepository userTenantIndexRepo,
         SeedingContext context)
     {
         var existing = await userRepo.FindByNormalizedUserNameAsync(
@@ -87,6 +89,14 @@ internal sealed class IdentityRoleSeeder : IDataSeeder
         adminUser.AddRole(context.SystemSuperAdminRoleId);
         adminUser.AddRole(context.TenantAdminRoleId);
         await userRepo.InsertAsync(adminUser);
+
+        // Create UserTenantIndex for fast cross-tenant lookup
+        var adminIndex = new IdentityUserTenantIndex(
+            adminUser.NormalizedUserName,
+            adminUser.NormalizedEmail,
+            adminUser.Id,
+            adminUser.TenantId);
+        await userTenantIndexRepo.InsertAsync(adminIndex);
 
         _logger.LogInformation(
             "Admin user '{UserName}' created (ID: {UserId}).",

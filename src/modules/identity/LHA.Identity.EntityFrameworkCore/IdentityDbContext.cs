@@ -32,6 +32,7 @@ public sealed class IdentityDbContext
     // ─── Standalone entities ─────────────────────────────────────────
     public DbSet<IdentitySecurityLog> SecurityLogs => Set<IdentitySecurityLog>();
     public DbSet<IdentityPermissionGrant> PermissionGrants => Set<IdentityPermissionGrant>();
+    public DbSet<IdentityUserTenantIndex> UserTenantIndexes => Set<IdentityUserTenantIndex>();
 
     // ─── Outbox / Inbox ──────────────────────────────────────────────
     /// <inheritdoc />

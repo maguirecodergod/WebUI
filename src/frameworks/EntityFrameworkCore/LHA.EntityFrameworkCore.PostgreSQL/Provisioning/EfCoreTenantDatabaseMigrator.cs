@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using LHA.MultiTenancy.Provisioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,11 +49,19 @@ public class EfCoreTenantDatabaseMigrator<TDbContext> : ITenantDatabaseMigrator
             if (!string.IsNullOrWhiteSpace(resolvedConnectionString) && resolvedConnectionString.Contains("SearchPath=", StringComparison.OrdinalIgnoreCase))
             {
                 var builder = new Npgsql.NpgsqlConnectionStringBuilder(resolvedConnectionString);
-                if (!string.IsNullOrWhiteSpace(builder.SearchPath))
+                await using var conn = new Npgsql.NpgsqlConnection(connectionString);
+                await conn.OpenAsync(cancellationToken);
+
+                var schemaName = builder.SearchPath ?? string.Empty;
+
+                if (!Regex.IsMatch(schemaName, @"^[a-zA-Z_][a-zA-Z0-9_]*$"))
                 {
-                    var safeSchemaName = builder.SearchPath.Replace("\"", "\"\"");
-                    await dbContext.Database.ExecuteSqlRawAsync($"CREATE SCHEMA IF NOT EXISTS \"{safeSchemaName}\";", cancellationToken);
+                    throw new InvalidOperationException($"Invalid schema name: {schemaName}");
                 }
+
+                await using var cmd = conn.CreateCommand();
+                cmd.CommandText = $"CREATE SCHEMA IF NOT EXISTS \"{schemaName}\"";
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
             }
 
             // Executes schema creation (creates DB if not exists contextually via the connection string)

@@ -61,6 +61,7 @@ using (var seedScope = host.Services.CreateScope())
     var roleRepository = seedScope.ServiceProvider.GetRequiredService<IIdentityRoleRepository>();
     var userManager = seedScope.ServiceProvider.GetRequiredService<IdentityUserManager>();
     var userRepository = seedScope.ServiceProvider.GetRequiredService<IIdentityUserRepository>();
+    var userTenantIndexRepository = seedScope.ServiceProvider.GetRequiredService<IUserTenantIndexRepository>();
 
     using var uow = uowManager.Begin(isTransactional: true);
 
@@ -92,6 +93,15 @@ using (var seedScope = host.Services.CreateScope())
             adminUserName, "admin@lienhoaapp.com", "Admin@123456");
         adminUser.AddRole(adminRole.Id);
         await userRepository.InsertAsync(adminUser);
+
+        // Create UserTenantIndex for fast cross-tenant lookup
+        var adminIndex = new IdentityUserTenantIndex(
+            adminUser.NormalizedUserName,
+            adminUser.NormalizedEmail,
+            adminUser.Id,
+            adminUser.TenantId);
+        await userTenantIndexRepository.InsertAsync(adminIndex);
+
         logger.LogInformation("Admin user '{UserName}' created.", adminUser.UserName);
     }
     else

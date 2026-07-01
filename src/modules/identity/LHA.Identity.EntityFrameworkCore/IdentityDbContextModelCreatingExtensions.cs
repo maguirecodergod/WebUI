@@ -311,5 +311,37 @@ public static class IdentityDbContextModelCreatingExtensions
             b.HasIndex(pg => new { pg.TenantId, pg.Name, pg.ProviderName, pg.ProviderKey })
                 .IsUnique();
         });
+
+        // ─── IdentityUserTenantIndex ─────────────────────────────────
+        modelBuilder.Entity<IdentityUserTenantIndex>(b =>
+        {
+            b.ToTable("UserTenantIndexes");
+            b.ConfigureByConvention();
+
+            b.HasKey(uti => uti.Id);
+
+            b.Property(uti => uti.NormalizedUserName)
+                .IsRequired()
+                .HasMaxLength(IdentityUserConsts.MaxUserNameLength);
+
+            b.Property(uti => uti.NormalizedEmail)
+                .IsRequired()
+                .HasMaxLength(IdentityUserConsts.MaxEmailLength);
+
+            b.Property(uti => uti.UserId)
+                .IsRequired();
+
+            b.Property(uti => uti.TenantId)
+                .IsRequired(false);
+
+            // Unique indexes for fast lookups
+            b.HasIndex(uti => uti.NormalizedUserName)
+                .IsUnique();
+
+            b.HasIndex(uti => uti.NormalizedEmail)
+                .IsUnique();
+
+            b.HasIndex(uti => uti.TenantId);
+        });
     }
 }

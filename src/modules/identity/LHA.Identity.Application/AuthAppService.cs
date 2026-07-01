@@ -35,6 +35,8 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private readonly ITenantManagerBridge _tenantManagerBridge;
     private readonly ICurrentTenant _currentTenant;
     private readonly IStringLocalizer<IdentityResource> L;
+    private readonly IUserTenantIndexRepository _userTenantIndexRepository;
+    
 
     public const string SystemSuperAdminRole = CurrentUserDefaults.SystemSuperAdminRoleName;
     public const string TenantAdminRole = CurrentUserDefaults.TenantAdminRoleName;
@@ -55,7 +57,8 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         IPermissionStore permissionStore,
         ITenantManagerBridge tenantManagerBridge,
         ICurrentTenant currentTenant,
-        IStringLocalizer<IdentityResource> l)
+        IStringLocalizer<IdentityResource> l,
+        IUserTenantIndexRepository userTenantIndexRepository)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -72,12 +75,29 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         _permissionStore = permissionStore;
         _tenantManagerBridge = tenantManagerBridge;
         _currentTenant = currentTenant;
+        _userTenantIndexRepository = userTenantIndexRepository;
         L = l;
     }
 
     /// <inheritdoc />
-    public async Task<AuthResultDto> LoginAsync(LoginInput input, CancellationToken ct)
+    public async Task<AuthResultDto> LoginAsync(LoginInput input,
+        CancellationToken ct = default)
     {
+        if (!_currentTenant.Id.HasValue)
+        {
+            (Guid UserId, Guid? TenantId)? userTenantIndex = null;
+            using (_currentTenant.Change(null, null))
+            {
+                var normalizedInput = _lookupNormalizer.NormalizeName(input.UserNameOrEmail);
+                userTenantIndex = await _userTenantIndexRepository.FindUserAndTenantAsync(normalizedInput, ct);
+                if (userTenantIndex is null)
+                {
+                    throw new BusinessException(L["Identity_Auth_UserNotFound_Error_Message_Entry"]);
+                }
+            }
+            _currentTenant.Change(userTenantIndex.Value.TenantId);
+        }
+
         await using var uow = _uowManager.Begin(
             new UnitOfWorkOptions { IsTransactional = true });
 
@@ -265,11 +285,12 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         }
 
         // 2. Change ambient context to the new tenant so EF uses its connection settings
+        IdentityUser? identityUser = null;
         using (_currentTenant.Change(tenantId))
         {
             await using (var uow = _uowManager.Begin(new UnitOfWorkOptions { IsTransactional = true }, requiresNew: true))
             {
-                var user = await _userManager.CreateAsync(
+                identityUser = await _userManager.CreateAsync(
                     input.AdminUserName,
                     input.AdminEmail,
                     input.AdminPassword,
@@ -297,10 +318,10 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
 
                 if (assignedRoleId.HasValue)
                 {
-                    user.AddRole(assignedRoleId.Value);
+                    identityUser.AddRole(assignedRoleId.Value);
                 }
 
-                await _userRepository.InsertAsync(user, ct);
+                await _userRepository.InsertAsync(identityUser, ct);
 
                 // 4. Seed permission grants for the newly created tenant role.
                 if (assignedRoleId.HasValue && hostRoleGrants.Count > 0)
@@ -320,7 +341,27 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
                 await uow.CompleteAsync();
             }
 
-            // 5. Automated login for the new admin
+            // 5. Add user to the tenant host.
+            if (identityUser is null)
+            {
+                throw new InvalidOperationException("IdentityUser is null after creation");
+            }
+
+            using (_currentTenant.Change(null, null))
+            {
+                // Add user to the tenant
+                var userTenantIndex = await _userTenantIndexRepository.InsertAsync(
+                    new IdentityUserTenantIndex(normalizedEmail: identityUser.NormalizedEmail,
+                        normalizedUserName: identityUser.NormalizedUserName,
+                        userId: identityUser.Id, tenantId: tenantId), ct);
+
+                if (userTenantIndex is null)
+                {
+                    throw new InvalidOperationException("UserTenantIndex is null after creation");
+                }
+            }
+
+            // 6. Automated login for the new admin
             return await LoginAsync(new LoginInput
             {
                 UserNameOrEmail = input.AdminUserName,
@@ -522,7 +563,27 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
             foreach (var g in userGrants)
                 final[g.Name] = g.IsGranted;
 
-            return final.Where(kv => kv.Value).Select(kv => kv.Key).ToList();
+            var resolved = final.Where(kv => kv.Value).Select(kv => kv.Key).ToList();
+
+            // 4. Global restriction for tenants: Intersect with Host's TenantAdmin permissions
+            if (tenantId.HasValue)
+            {
+                using (_currentTenant.Change(null))
+                {
+                    var normalizedRoleName = _lookupNormalizer.NormalizeName(TenantAdminRole);
+                    var hostAdminRole = await _roleRepository.FindByNormalizedNameAsync(normalizedRoleName, ct);
+                    if (hostAdminRole != null)
+                    {
+                        var hostGrants = await _permissionGrantRepository
+                            .GetGrantsByProvidersAsync("R", [hostAdminRole.Id.ToString()], ct);
+
+                        var hostAllowed = hostGrants.Where(g => g.IsGranted).Select(g => g.Name).ToHashSet();
+                        resolved = resolved.Where(hostAllowed.Contains).ToList();
+                    }
+                }
+            }
+
+            return resolved;
         }
     }
 

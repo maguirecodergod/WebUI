@@ -88,6 +88,7 @@ public sealed class AccountDbContext
         modelBuilder.Entity<Identity.Domain.IdentityClaimType>().ToTable(DbSchemeConsts.Auth.ClaimType);
         modelBuilder.Entity<Identity.Domain.IdentitySecurityLog>().ToTable(DbSchemeConsts.Auth.SecurityLog);
         modelBuilder.Entity<Identity.Domain.IdentityPermissionGrant>().ToTable(DbSchemeConsts.Auth.PermissionGrant);
+        modelBuilder.Entity<Identity.Domain.IdentityUserTenantIndex>().ToTable(DbSchemeConsts.Auth.UserTenantIndex);
 
         // Tenant Management
         modelBuilder.Entity<TenantManagement.Domain.TenantEntity>().ToTable(DbSchemeConsts.Tenant.Main);

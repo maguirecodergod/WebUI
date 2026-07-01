@@ -5,6 +5,7 @@ namespace LHA.PermissionManagement.Domain.PermissionTemplates;
 public interface IPermissionTemplateRepository : IRepository<PermissionTemplateEntity, Guid>
 {
     Task<PermissionTemplateEntity?> FindByNameAsync(string name, CancellationToken ct = default);
+    Task<List<PermissionTemplateEntity>> GetAllWithItemsAsync(CancellationToken ct = default);
     Task<List<PermissionTemplateEntity>> GetListAsync(
         PagingParam paging, SorterParam? sorter = null,
         string? filter = null,

@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-
 namespace LHA.EntityFrameworkCore;
 
 /// <summary>
@@ -85,30 +84,52 @@ public sealed class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider
     }
 
     /// <summary>
-    /// Creates a new DbContext, optionally switching its connection to the tenant's
-    /// dedicated database if the current tenant has a custom connection string.
+    /// Creates a new DbContext instance using ActivatorUtilities.
+    /// This ensures we get a fresh instance per UoW key (Host vs different Tenants)
+    /// and avoids mutating a single request-scoped DbContext connection string.
     /// </summary>
     private static async Task<DbContext> CreateDbContextAsync(
         IUnitOfWork unitOfWork, Type actualType, ICurrentTenant? currentTenant)
     {
-        var dbContext = (DbContext)unitOfWork.ServiceProvider.GetRequiredService(actualType);
+        var dbContext = (DbContext)ActivatorUtilities.CreateInstance(unitOfWork.ServiceProvider, actualType);
 
         // ── Multi-Tenant Connection Resolution ──────────────────────────────
         // If the current tenant has a dedicated connection string (PerTenant mode),
         // switch the DbContext to use that connection string instead of the default.
         if (currentTenant is { IsAvailable: true })
         {
-            var tenantStore = unitOfWork.ServiceProvider.GetService<ITenantStore>();
-            if (tenantStore is not null)
+            // First check if the connection string is stored in the current Unit of Work items (e.g. for newly created tenants in the same transaction)
+            string? tenantConnectionString = null;
+            var tempUow = unitOfWork;
+            while (tempUow is not null)
             {
-                var tenantConfig = await tenantStore.FindAsync(currentTenant.Id!.Value);
-                if (tenantConfig is not null)
+                if (tempUow.Items.TryGetValue("TenantConnectionString_" + currentTenant.Id!.Value, out var connStrObj)
+                    && connStrObj is string connStr)
                 {
-                    // Check for a "Default" connection string override
-                    if (tenantConfig.ConnectionStrings.TryGetValue("Default", out var tenantConnectionString)
-                        && !string.IsNullOrWhiteSpace(tenantConnectionString))
+                    tenantConnectionString = connStr;
+                    break;
+                }
+                tempUow = tempUow.Outer;
+            }
+
+            if (!string.IsNullOrWhiteSpace(tenantConnectionString))
+            {
+                dbContext.Database.SetConnectionString(tenantConnectionString);
+            }
+            else
+            {
+                var tenantStore = unitOfWork.ServiceProvider.GetService<ITenantStore>();
+                if (tenantStore is not null)
+                {
+                    var tenantConfig = await tenantStore.FindAsync(currentTenant.Id!.Value);
+                    if (tenantConfig is not null)
                     {
-                        dbContext.Database.SetConnectionString(tenantConnectionString);
+                        // Check for a "Default" connection string override
+                        if (tenantConfig.ConnectionStrings.TryGetValue("Default", out var tenantConnectionStringOverride)
+                            && !string.IsNullOrWhiteSpace(tenantConnectionStringOverride))
+                        {
+                            dbContext.Database.SetConnectionString(tenantConnectionStringOverride);
+                        }
                     }
                 }
             }

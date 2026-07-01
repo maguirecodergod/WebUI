@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LHA.Account.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(AccountDbContext))]
-    [Migration("20260422131614_AddRequestTypeToAuditLogs")]
-    partial class AddRequestTypeToAuditLogs
+    [Migration("20260608234546_InitAccountServiceDb")]
+    partial class InitAccountServiceDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.6")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -166,9 +166,9 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
 
             modelBuilder.Entity("LHA.AuditLog.Domain.AuditLogPipelineEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(26)
-                        .HasColumnType("character varying(26)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ActionName")
                         .HasMaxLength(512)
@@ -232,9 +232,8 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                     b.Property<string>("Tags")
                         .HasColumnType("text");
 
-                    b.Property<string>("TenantId")
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)");
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("Timestamp")
                         .HasColumnType("timestamp with time zone");
@@ -946,6 +945,50 @@ namespace LHA.Account.EntityFrameworkCore.Migrations
                         .IsUnique();
 
                     b.ToTable("Auth_UserRole", (string)null);
+                });
+
+            modelBuilder.Entity("LHA.Identity.Domain.IdentityUserTenantIndex", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreationTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("NormalizedEmail")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("TenantId");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .IsUnique();
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique();
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("Auth_UserTenantIndex", (string)null);
                 });
 
             modelBuilder.Entity("LHA.Identity.Domain.IdentityUserToken", b =>

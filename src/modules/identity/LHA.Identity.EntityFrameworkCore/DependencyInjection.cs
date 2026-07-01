@@ -25,12 +25,14 @@ public static class IdentityEntityFrameworkCoreDependencyInjection
         services.AddEfCoreRepository<IdentityDbContext, IdentityClaimType, Guid>();
         services.AddEfCoreRepository<IdentityDbContext, IdentitySecurityLog, Guid>();
         services.AddEfCoreRepository<IdentityDbContext, IdentityPermissionGrant, Guid>();
+        services.AddEfCoreRepository<IdentityDbContext, IdentityUserTenantIndex, Guid>();
 
         services.TryAddScoped<IIdentityUserRepository, EfCoreIdentityUserRepository>();
         services.TryAddScoped<IIdentityRoleRepository, EfCoreIdentityRoleRepository>();
         services.TryAddScoped<IIdentityClaimTypeRepository, EfCoreIdentityClaimTypeRepository>();
         services.TryAddScoped<IIdentitySecurityLogRepository, EfCoreIdentitySecurityLogRepository>();
         services.TryAddScoped<IPermissionGrantRepository, EfCorePermissionGrantRepository>();
+        services.TryAddScoped<IUserTenantIndexRepository, EfCoreIdentityUserTenantIndexRepository>();
 
         return services;
     }

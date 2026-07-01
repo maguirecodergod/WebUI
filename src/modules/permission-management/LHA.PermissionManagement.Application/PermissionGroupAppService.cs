@@ -6,6 +6,8 @@ using LHA.PermissionManagement.Domain.PermissionGroups;
 using LHA.MultiTenancy;
 using LHA.UnitOfWork;
 using LHA.PermissionManagement.Domain.Shared;
+using LHA.Core.Users;
+using LHA.Core.Security;
 
 namespace LHA.PermissionManagement.Application;
 
@@ -16,17 +18,20 @@ public sealed class PermissionGroupAppService
     private readonly IPermissionDefinitionRepository _defRepo;
     private readonly IUnitOfWorkManager _uowManager;
     private readonly ICurrentTenant _currentTenant;
+    private readonly ICurrentUser _currentUser;
 
     public PermissionGroupAppService(
         IPermissionGroupRepository groupRepo,
         IPermissionDefinitionRepository defRepo,
         IUnitOfWorkManager uowManager,
-        ICurrentTenant currentTenant)
+        ICurrentTenant currentTenant,
+        ICurrentUser currentUser)
     {
         _groupRepo = groupRepo;
         _defRepo = defRepo;
         _uowManager = uowManager;
         _currentTenant = currentTenant;
+        _currentUser = currentUser;
     }
 
     public async Task<PermissionGroupDto> GetAsync(Guid id)
@@ -53,6 +58,8 @@ public sealed class PermissionGroupAppService
         var permLookup = allPerms.ToDictionary(p => p.Id);
 
         var currentSide = _currentTenant.GetSide();
+        var isAdmin = _currentUser.IsAdmin();
+        var userPermissions = _currentUser.FindClaimValues(LhaClaimTypes.Permission).ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         var dtos = groups.ConvertAll(g =>
         {
@@ -60,6 +67,7 @@ public sealed class PermissionGroupAppService
                 .Where(i => permLookup.ContainsKey(i.PermissionDefinitionId))
                 .Select(i => permLookup[i.PermissionDefinitionId])
                 .Where(p => (MapToSide(p.MultiTenancySide) & currentSide) != 0)
+                .Where(p => isAdmin || userPermissions.Contains(p.Name))
                 .ToList();
             
             if (perms.Count == 0 && g.Items.Count > 0) return null; // Skip groups with no allowed perms
