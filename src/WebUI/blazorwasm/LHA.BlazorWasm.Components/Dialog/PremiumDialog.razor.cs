@@ -46,6 +46,7 @@ public partial class PremiumDialog : LHAComponentBase
     [Parameter] public bool ShowFooter { get; set; } = true;
     [Parameter] public bool ShowCloseButton { get; set; } = true;
     [Parameter] public bool CloseOnOverlayClick { get; set; } = false;
+    [Parameter] public bool AllowDismiss { get; set; } = true;
 
     [Parameter] public string OkText { get; set; } = "Common.Confirm";
     [Parameter] public string CancelText { get; set; } = "Common.Cancel";
@@ -95,6 +96,11 @@ public partial class PremiumDialog : LHAComponentBase
 
     protected async Task HandleCancelAsync()
     {
+        if (!AllowDismiss)
+        {
+            return;
+        }
+
         if (OnCancel.HasDelegate)
         {
             await OnCancel.InvokeAsync();
@@ -112,7 +118,7 @@ public partial class PremiumDialog : LHAComponentBase
 
     protected async Task HandleOverlayClick()
     {
-        if (CloseOnOverlayClick && !IsClosing)
+        if (AllowDismiss && CloseOnOverlayClick && !IsClosing)
         {
             await CloseAsync();
         }
@@ -120,7 +126,7 @@ public partial class PremiumDialog : LHAComponentBase
 
     protected async Task HandleKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs args)
     {
-        if (args.Key == "Escape" && !IsClosing)
+        if (AllowDismiss && args.Key == "Escape" && !IsClosing)
         {
             await HandleCancelAsync();
         }

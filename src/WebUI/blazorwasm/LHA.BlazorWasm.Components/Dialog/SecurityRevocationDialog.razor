@@ -1,0 +1,14 @@
+@namespace LHA.BlazorWasm.Components.Dialog
+
+<PremiumDialog IsVisible="RevocationUi.State.IsVisible"
+               Title="@L("Security.SessionRevokedTitle")"
+               Type="DialogType.Warning"
+               Size="DialogSize.Small"
+               ShowCloseButton="false"
+               ShowCancelButton="false"
+               CloseOnOverlayClick="false"
+               AllowDismiss="false"
+               OkText="Security.LogoutNow"
+               OnOk="HandleLogoutAsync">
+    <p>@L("Security.SessionRevokedMessage", RevocationUi.State.RemainingSeconds)</p>
+</PremiumDialog>

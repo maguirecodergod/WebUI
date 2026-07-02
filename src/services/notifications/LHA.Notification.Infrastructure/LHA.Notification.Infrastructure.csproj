@@ -22,6 +22,7 @@
     <PackageReference Include="FirebaseAdmin" />
     <PackageReference Include="Handlebars.Net" />
     <PackageReference Include="MailKit" />
+    <PackageReference Include="MessagePack" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" />
     <PackageReference Include="Microsoft.Extensions.Resilience" />
     <PackageReference Include="Polly" />

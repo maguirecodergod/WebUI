@@ -9,15 +9,18 @@ namespace LHA.BlazorWasm.HttpApi.Client.Handlers;
 public class AuthMessageHandler : DelegatingHandler
 {
     private readonly IAccessTokenProvider _tokenProvider;
+    private readonly ITokenRevocationHandler? _revocationHandler;
 
     /// <summary>
     /// Initializes a new instance of the AuthMessageHandler class.
     /// </summary>
-    /// <param name="tokenProvider"></param>
+    /// <param name="tokenProvider">The token provider to use for obtaining access tokens.</param>
+    /// <param name="revocationHandler">Optional token revocation handler to notify about revocations.</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public AuthMessageHandler(IAccessTokenProvider tokenProvider)
+    public AuthMessageHandler(IAccessTokenProvider tokenProvider, ITokenRevocationHandler? revocationHandler = null)
     {
         _tokenProvider = tokenProvider ?? throw new ArgumentNullException(nameof(tokenProvider));
+        _revocationHandler = revocationHandler;
     }
 
     /// <summary>
@@ -46,6 +49,17 @@ public class AuthMessageHandler : DelegatingHandler
         // Reactive Refresh: If 401 Unauthorized, try to refresh and retry
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
+            if (response.Headers.TryGetValues("X-Token-Revoked", out var values)
+                && values.Any(v => string.Equals(v, "true", StringComparison.OrdinalIgnoreCase)))
+            {
+                if (_revocationHandler is not null)
+                {
+                    await _revocationHandler.HandleRevocationAsync(cancellationToken).ConfigureAwait(false);
+                }
+
+                return response;
+            }
+
             var refreshedToken = await _tokenProvider.ForceRefreshAsync(token, cancellationToken).ConfigureAwait(false);
             // Only retry if we got a new token that is different from the old one
             if (!string.IsNullOrWhiteSpace(refreshedToken) && refreshedToken != token)

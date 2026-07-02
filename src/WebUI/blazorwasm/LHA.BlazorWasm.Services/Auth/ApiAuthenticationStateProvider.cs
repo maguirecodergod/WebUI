@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using LHA.BlazorWasm.Services.Realtime;
 using LHA.BlazorWasm.Services.Storage;
 using LHA.Shared.Contracts.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -12,6 +13,7 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
     private readonly IPermissionService _permissionService;
     private readonly LHA.BlazorWasm.HttpApi.Client.Abstractions.IClientContextProvider _clientContextProvider;
     private readonly AuthTokenCache _authTokenCache;
+    private readonly SignalRConnectionManager _signalRConnectionManager;
 
     // Use a constant key for storing AuthResultDto. You can define this in your shared constants.
     private const string AuthStorageKey = "auth_result";
@@ -21,12 +23,14 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
         ILocalStorageService localStorage,
         IPermissionService permissionService,
         LHA.BlazorWasm.HttpApi.Client.Abstractions.IClientContextProvider clientContextProvider,
-        AuthTokenCache authTokenCache)
+        AuthTokenCache authTokenCache,
+        SignalRConnectionManager signalRConnectionManager)
     {
         _localStorage = localStorage;
         _permissionService = permissionService;
         _clientContextProvider = clientContextProvider;
         _authTokenCache = authTokenCache;
+        _signalRConnectionManager = signalRConnectionManager;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -89,10 +93,12 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
         _permissionService.SetUser(user);
 
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
+        await _signalRConnectionManager.StartAsync();
     }
 
     public async Task MarkUserAsLoggedOutAsync()
     {
+        await _signalRConnectionManager.StopAsync();
         await _localStorage.RemoveAsync(AuthStorageKey);
         await _localStorage.RemoveAsync(TenantIdStorageKey);
         _authTokenCache.Clear();

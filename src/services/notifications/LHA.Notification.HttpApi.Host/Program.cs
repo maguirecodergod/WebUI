@@ -24,6 +24,7 @@ using LHA.Notification.HttpApi;
 using LHA.Notification.HttpApi.Host.BackgroundJobs;
 using LHA.Grpc.Client;
 using LHA.Grpc.Contracts.Services.Account.V1;
+using LHA.AspNetCore.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,6 +101,7 @@ builder.Services.AddLHAAspNetCore(typeof(NotificationResource));
 
 // ── JWT configuration ────────────────────────────────────────────
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
+builder.Services.AddLHASecurityVersioning(builder.Configuration);
 
 var jwtSection = builder.Configuration.GetSection(JwtOptions.SectionName);
 var secretKey = jwtSection["SecretKey"] ?? throw new InvalidOperationException("Missing JWT SecretKey.");
@@ -119,6 +121,7 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
             ClockSkew = TimeSpan.FromMinutes(1),
         };
+        options.EnableSecurityVersionValidation();
     });
 
 builder.Services.AddLHAPermissionAuthorization();
@@ -150,6 +153,7 @@ app.UseAuthorization();
 
 // ── Endpoints ────────────────────────────────────────────────────
 app.MapNotificationEndpoints();
+app.MapHub<NotificationHub>("/hubs/notifications");
 app.MapLHAGrpcInfrastructure();
 
 // ── Auto Migration ───────────────────────────────────────────────

@@ -14,6 +14,7 @@ using LHA.BlazorWasm.Services.Auth;
 using FluentValidation;
 using LHA.Shared.Contracts.Identity.Auth;
 using LHA.BlazorWasm.Shared.Abstractions.Localization;
+using LHA.BlazorWasm.Services.Realtime;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -53,6 +54,9 @@ builder.Services.AddLhaHttpApiClient(options =>
 
 // Real service for authentication in API Client
 builder.Services.AddScoped<IAccessTokenProvider, StorageAccessTokenProvider>();
+builder.Services.AddSecurityRevocationUi();
+builder.Services.AddScoped<ITokenRevocationHandler, SecurityRevocationHandler>();
+builder.Services.AddScoped<SignalRConnectionManager>();
 
 // Integrate IToastService into API error handling
 builder.Services.AddTransient<IApiErrorHandler, ToastApiErrorHandler>();
@@ -75,5 +79,7 @@ host.Services.GetRequiredService<PersistentClientContextProvider>().SetTenantId(
 
 var localizer = host.Services.GetRequiredService<ILocalizationService>();
 await localizer.InitializeAsync();
+
+await host.Services.GetRequiredService<SignalRConnectionManager>().StartAsync();
 
 await host.RunAsync();

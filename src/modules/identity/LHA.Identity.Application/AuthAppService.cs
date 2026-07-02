@@ -11,6 +11,7 @@ using LHA.UnitOfWork;
 using Microsoft.Extensions.Localization;
 using LHA.Identity.Domain.Shared.Localization;
 using LHA.Core.Users;
+using LHA.Shared.Contracts.Security;
 
 namespace LHA.Identity.Application;
 
@@ -36,6 +37,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
     private readonly ICurrentTenant _currentTenant;
     private readonly IStringLocalizer<IdentityResource> L;
     private readonly IUserTenantIndexRepository _userTenantIndexRepository;
+    private readonly ISecurityVersionManager _securityVersionManager;
     
 
     public const string SystemSuperAdminRole = CurrentUserDefaults.SystemSuperAdminRoleName;
@@ -58,7 +60,8 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         ITenantManagerBridge tenantManagerBridge,
         ICurrentTenant currentTenant,
         IStringLocalizer<IdentityResource> l,
-        IUserTenantIndexRepository userTenantIndexRepository)
+        IUserTenantIndexRepository userTenantIndexRepository,
+        ISecurityVersionManager securityVersionManager)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -76,6 +79,7 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         _tenantManagerBridge = tenantManagerBridge;
         _currentTenant = currentTenant;
         _userTenantIndexRepository = userTenantIndexRepository;
+        _securityVersionManager = securityVersionManager;
         L = l;
     }
 
@@ -418,8 +422,21 @@ public sealed class AuthAppService : ApplicationService, IAuthAppService
         if (user.Status != CMasterStatus.Active)
             throw new UnauthorizedAccessException("User account is not active.");
 
-        // Rotate tokens
         var (roleIds, roleNames) = await GetRolesAsync(user, user.TenantId, ct);
+        var currentRefreshToken = user.FindToken(JwtTokenService.RefreshTokenProvider, JwtTokenService.RefreshTokenName);
+        var refreshIssuedAt = currentRefreshToken?.IssuedAtUnixSeconds ?? 0;
+        var isRefreshSecurityVersionValid = await _securityVersionManager.IsIssuedAtValidAsync(
+            refreshIssuedAt,
+            user.Id.ToString(),
+            roleNames,
+            ct);
+
+        if (!isRefreshSecurityVersionValid)
+        {
+            throw new SecurityVersionExpiredException();
+        }
+
+        // Rotate tokens
         var permissions = await ResolvePermissionsAsync(user.Id, roleIds, user.TenantId, ct);
         var accessToken = _jwtTokenService.GenerateAccessToken(
             user.Id, user.UserName, user.Email, user.TenantId, roleNames, permissions);

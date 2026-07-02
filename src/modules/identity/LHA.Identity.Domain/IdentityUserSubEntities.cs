@@ -90,6 +90,7 @@ public sealed class IdentityUserToken : Entity<Guid>, IMultiTenant
     public string LoginProvider { get; private init; } = null!;
     public string Name { get; private init; } = null!;
     public string Value { get; private set; } = null!;
+    public long IssuedAtUnixSeconds { get; private set; }
     public DateTimeOffset? ExpiresAt { get; private set; }
     public Guid? TenantId { get; private init; }
 
@@ -109,6 +110,7 @@ public sealed class IdentityUserToken : Entity<Guid>, IMultiTenant
         LoginProvider = loginProvider;
         Name = name;
         Value = value;
+        IssuedAtUnixSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         ExpiresAt = expiresAt;
     }
 
@@ -116,6 +118,7 @@ public sealed class IdentityUserToken : Entity<Guid>, IMultiTenant
     internal void SetValue(string value, DateTimeOffset? expiresAt = null)
     {
         Value = value;
+        IssuedAtUnixSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         ExpiresAt = expiresAt;
     }
 }

@@ -24,7 +24,10 @@ public static class ApplicationBuilderExtensions
         // 4. Resilience & Rate Limiting
         app.UseRateLimiter();
 
-        // 5. Map Reverse Proxy
+        // 5. WebSockets (required for SignalR proxying)
+        app.UseWebSockets();
+
+        // 6. Map Reverse Proxy
         app.MapReverseProxy();
 
         return app;

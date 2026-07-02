@@ -15,6 +15,8 @@ public static class EventTopics
     /// </summary>
     public const string NotificationEvents = "notification-events";
 
+    public const string SecurityEvents = "security-events";
+
     /// <summary>
     /// Topic for mega-promotion and campaign-related events.
     /// </summary>

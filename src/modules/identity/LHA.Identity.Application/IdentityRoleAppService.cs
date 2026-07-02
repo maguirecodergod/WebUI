@@ -3,6 +3,8 @@ using LHA.Ddd.Application;
 using LHA.Ddd.Domain;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
+using LHA.EventBus;
+using LHA.Shared.Contracts.Security;
 using LHA.UnitOfWork;
 
 namespace LHA.Identity.Application;
@@ -15,15 +17,21 @@ public sealed class IdentityRoleAppService : ApplicationService, IIdentityRoleAp
     private readonly IIdentityRoleRepository _roleRepository;
     private readonly IdentityRoleManager _roleManager;
     private readonly IUnitOfWorkManager _uowManager;
+    private readonly ISecurityVersionManager _securityVersionManager;
+    private readonly IEventBus _eventBus;
 
     public IdentityRoleAppService(
         IIdentityRoleRepository roleRepository,
         IdentityRoleManager roleManager,
-        IUnitOfWorkManager uowManager)
+        IUnitOfWorkManager uowManager,
+        ISecurityVersionManager securityVersionManager,
+        IEventBus eventBus)
     {
         _roleRepository = roleRepository;
         _roleManager = roleManager;
         _uowManager = uowManager;
+        _securityVersionManager = securityVersionManager;
+        _eventBus = eventBus;
     }
 
     // ─── CRUD ────────────────────────────────────────────────────────
@@ -87,6 +95,7 @@ public sealed class IdentityRoleAppService : ApplicationService, IIdentityRoleAp
 
         await _roleRepository.UpdateAsync(role);
         await uow.CompleteAsync();
+        await PublishRoleSecurityStateChangedAsync(role, "role_updated");
 
         return MapToDto(role);
     }
@@ -104,6 +113,7 @@ public sealed class IdentityRoleAppService : ApplicationService, IIdentityRoleAp
 
         await _roleRepository.DeleteAsync(id);
         await uow.CompleteAsync();
+        await PublishRoleSecurityStateChangedAsync(role, "role_deleted");
     }
 
     // ─── Extended ────────────────────────────────────────────────────
@@ -129,6 +139,7 @@ public sealed class IdentityRoleAppService : ApplicationService, IIdentityRoleAp
         role.Activate();
         await _roleRepository.UpdateAsync(role);
         await uow.CompleteAsync();
+        await PublishRoleSecurityStateChangedAsync(role, "role_activated", ct);
 
         return MapToDto(role);
     }
@@ -143,6 +154,7 @@ public sealed class IdentityRoleAppService : ApplicationService, IIdentityRoleAp
         role.Deactivate();
         await _roleRepository.UpdateAsync(role);
         await uow.CompleteAsync();
+        await PublishRoleSecurityStateChangedAsync(role, "role_deactivated", ct);
 
         return MapToDto(role);
     }
@@ -167,4 +179,12 @@ public sealed class IdentityRoleAppService : ApplicationService, IIdentityRoleAp
         DeletionTime = role.DeletionTime,
         DeleterId = role.DeleterId,
     };
+
+    private async Task PublishRoleSecurityStateChangedAsync(IdentityRole role, string reason, CancellationToken ct = default)
+    {
+        var version = await _securityVersionManager.BumpRoleAsync(role.Name, ct);
+        await _eventBus.PublishAsync(
+            new SecurityStateChangedEto(SecurityStateTargetType.Role, role.Name, version, reason),
+            ct);
+    }
 }

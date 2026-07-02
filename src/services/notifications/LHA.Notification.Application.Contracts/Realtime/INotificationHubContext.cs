@@ -10,4 +10,6 @@ public interface INotificationHubContext
     Task SendBatchProgressUpdatedAsync(Guid tenantId, Guid batchId, BatchProgressDto progress);
     Task SendToTopicAsync(Guid tenantId, string topicName, NotificationDto notification);
     Task BroadcastAsync(Guid tenantId, NotificationDto notification);
+    Task SendSecurityStateChangedToUserAsync(string userId, object payload, CancellationToken ct = default);
+    Task SendSecurityStateChangedToRoleAsync(string roleName, object payload, CancellationToken ct = default);
 }

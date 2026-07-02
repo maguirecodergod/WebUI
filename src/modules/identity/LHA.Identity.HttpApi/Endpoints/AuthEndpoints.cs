@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using LHA.Ddd.Application;
 using LHA.Identity.Application.Contracts;
+using LHA.Shared.Contracts.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -66,10 +67,19 @@ public static class AuthEndpoints
         // ── Refresh Token ────────────────────────────────────────────
         group.MapPost("/refresh", async (
             RefreshTokenInput input,
+            HttpContext httpContext,
             IAuthAppService service) =>
         {
-            var result = await service.RefreshTokenAsync(input);
-            return Results.Ok(ApiResponse<AuthResultDto>.Ok(result));
+            try
+            {
+                var result = await service.RefreshTokenAsync(input);
+                return Results.Ok(ApiResponse<AuthResultDto>.Ok(result));
+            }
+            catch (SecurityVersionExpiredException)
+            {
+                httpContext.Response.Headers[SecurityRevocationConstants.TokenRevokedHeaderName] = "true";
+                return Results.Json(new OAuthErrorDto(), statusCode: StatusCodes.Status400BadRequest);
+            }
         })
         .AllowAnonymous()
         .WithName("RefreshToken")

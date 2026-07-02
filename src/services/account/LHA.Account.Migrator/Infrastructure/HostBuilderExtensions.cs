@@ -8,7 +8,10 @@ using LHA.Identity.Domain.Shared.Localization;
 using LHA.Account.Domain.Shared.Localization;
 using LHA.Localization;
 using LHA.MultiTenancy;
+using LHA.TenantManagement.Domain;
+using LHA.TenantManagement.EntityFrameworkCore;
 using LHA.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,5 +51,11 @@ internal static class HostBuilderExtensions
         // Module services
         builder.Services.AddAccountApplication();
         builder.Services.AddAccountEntityFrameworkCore(connectionString);
+        builder.Services.AddTenantManagementEntityFrameworkCore(options =>
+        {
+            options.Configure<TenantManagementDbContext>(ctx =>
+                ctx.DbContextOptions.UseNpgsql(connectionString));
+        });
+        builder.Services.AddTransient<TenantManager>();
     }
 }

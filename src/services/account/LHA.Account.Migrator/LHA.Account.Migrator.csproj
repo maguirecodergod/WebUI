@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\..\frameworks\DistributedLocking\LHA.DistributedLocking.Abstraction\LHA.DistributedLocking.Abstraction.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Auditing\LHA.Auditing.Contracts\LHA.Auditing.Contracts.csproj" />
     <ProjectReference Include="..\..\..\frameworks\Localization\LHA.Localization\LHA.Localization.csproj" />
+    <ProjectReference Include="..\..\..\modules\tenant-management\LHA.TenantManagement.EntityFrameworkCore\LHA.TenantManagement.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

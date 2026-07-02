@@ -8,6 +8,7 @@ using LHA.EventBus;
 using LHA.Notification.Application.DependencyInjection;
 using LHA.Notification.Infrastructure;
 using LHA.Shared.Contracts;
+using LHA.Shared.Contracts.Security;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -52,6 +53,7 @@ builder.Services.AddKafkaEventConsumer(EventTopics.AccountEvents);
 // ── Register Event Handlers ─────────────────────────────────────
 builder.Services.AddTransient<IEventHandler<LHA.Identity.Application.Contracts.UserCreatedEto>, LHA.Notification.Consumer.Handlers.UserCreatedEventHandler>();
 builder.Services.AddTransient<IEventHandler<LHA.Identity.Application.Contracts.LoginSucceededEto>, LHA.Notification.Consumer.Handlers.LoginSucceededEventHandler>();
+builder.Services.AddTransient<IEventHandler<SecurityStateChangedEto>, LHA.Notification.Consumer.Handlers.SecurityStateChangedEventHandler>();
 
 var host = builder.Build();
 host.Run();

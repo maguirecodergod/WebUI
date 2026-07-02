@@ -55,12 +55,15 @@ public sealed class JwtTokenService
         if (permissions.Count > 0)
             claims[LhaClaimTypes.Permission] = permissions.ToArray();
 
+        var now = DateTime.UtcNow;
         var descriptor = new SecurityTokenDescriptor
         {
             Issuer = _options.Issuer,
             Audience = _options.Audience,
             Claims = claims,
-            Expires = DateTime.UtcNow.AddMinutes(_options.AccessTokenExpirationMinutes),
+            IssuedAt = now,
+            NotBefore = now,
+            Expires = now.AddMinutes(_options.AccessTokenExpirationMinutes),
             SigningCredentials = credentials,
         };
 

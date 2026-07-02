@@ -23,11 +23,14 @@
     <ProjectReference Include="..\..\UnitOfWork\LHA.UnitOfWork\LHA.UnitOfWork.csproj" />
     <ProjectReference Include="..\..\MultiTenancy\LHA.MultiTenancy\LHA.MultiTenancy.csproj" />
     <ProjectReference Include="..\..\..\shared\LHA.Shared.Domain\LHA.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\..\shared\LHA.Shared.Contracts\LHA.Shared.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Http" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
   </ItemGroup>
 
 </Project>

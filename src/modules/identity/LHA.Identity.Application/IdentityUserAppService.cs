@@ -1,8 +1,10 @@
 using LHA.Core;
 using LHA.Ddd.Application;
 using LHA.Ddd.Domain;
+using LHA.EventBus;
 using LHA.Identity.Application.Contracts;
 using LHA.Identity.Domain;
+using LHA.Shared.Contracts.Security;
 using LHA.UnitOfWork;
 
 namespace LHA.Identity.Application;
@@ -16,17 +18,23 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
     private readonly IIdentityRoleRepository _roleRepository;
     private readonly IdentityUserManager _userManager;
     private readonly IUnitOfWorkManager _uowManager;
+    private readonly ISecurityVersionManager _securityVersionManager;
+    private readonly IEventBus _eventBus;
 
     public IdentityUserAppService(
         IIdentityUserRepository userRepository,
         IIdentityRoleRepository roleRepository,
         IdentityUserManager userManager,
-        IUnitOfWorkManager uowManager)
+        IUnitOfWorkManager uowManager,
+        ISecurityVersionManager securityVersionManager,
+        IEventBus eventBus)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _userManager = userManager;
         _uowManager = uowManager;
+        _securityVersionManager = securityVersionManager;
+        _eventBus = eventBus;
     }
 
     // ─── CRUD ────────────────────────────────────────────────────────
@@ -105,6 +113,7 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
 
         await _userRepository.UpdateAsync(user);
         await uow.CompleteAsync();
+        await PublishUserSecurityStateChangedAsync(user.Id, "user_updated");
 
         return await MapToDtoAsync(user);
     }
@@ -117,6 +126,7 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
 
         await _userRepository.DeleteAsync(id);
         await uow.CompleteAsync();
+        await PublishUserSecurityStateChangedAsync(id, "user_deleted");
     }
 
     // ─── Extended Operations ─────────────────────────────────────────
@@ -169,6 +179,7 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
         SyncRoles(user, roleIds);
         await _userRepository.UpdateAsync(user);
         await uow.CompleteAsync();
+        await PublishUserSecurityStateChangedAsync(user.Id, "user_roles_changed", ct);
 
         return await MapToDtoAsync(user);
     }
@@ -187,6 +198,7 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
         _userManager.ChangePassword(user, input.NewPassword);
         await _userRepository.UpdateAsync(user);
         await uow.CompleteAsync();
+        await PublishUserSecurityStateChangedAsync(user.Id, "password_changed", ct);
     }
 
     /// <inheritdoc />
@@ -199,6 +211,7 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
         user.Activate();
         await _userRepository.UpdateAsync(user);
         await uow.CompleteAsync();
+        await PublishUserSecurityStateChangedAsync(user.Id, "user_activated", ct);
 
         return await MapToDtoAsync(user);
     }
@@ -213,6 +226,7 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
         user.Deactivate();
         await _userRepository.UpdateAsync(user);
         await uow.CompleteAsync();
+        await PublishUserSecurityStateChangedAsync(user.Id, "user_deactivated", ct);
 
         return await MapToDtoAsync(user);
     }
@@ -268,6 +282,15 @@ public sealed class IdentityUserAppService : ApplicationService, IIdentityUserAp
         // Add new roles
         foreach (var addId in desiredRoleIds.Except(currentRoleIds))
             user.AddRole(addId);
+    }
+
+    private async Task PublishUserSecurityStateChangedAsync(Guid userId, string reason, CancellationToken ct = default)
+    {
+        var targetId = userId.ToString();
+        var version = await _securityVersionManager.BumpUserAsync(targetId, ct);
+        await _eventBus.PublishAsync(
+            new SecurityStateChangedEto(SecurityStateTargetType.User, targetId, version, reason),
+            ct);
     }
 }
 

@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using System.Threading.RateLimiting;
 using LHA.ApiGateway.ReverseProxy;
+using LHA.AspNetCore.Security;
+using LHA.Shared.Contracts.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Yarp.ReverseProxy.Transforms;
@@ -16,6 +18,7 @@ public static class ServiceCollectionExtensions
     {
         // 1. Dependency Injection
         services.AddSingleton<ProxyConfigProvider>();
+        services.AddLHASecurityVersioning(configuration);
 
         // 2. YARP Reverse Proxy
         services.AddReverseProxy()
@@ -56,6 +59,7 @@ public static class ServiceCollectionExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey)),
                     ClockSkew = TimeSpan.FromMinutes(1)
                 };
+                options.EnableSecurityVersionValidation();
             });
 
         services.AddAuthorization();
@@ -92,7 +96,8 @@ public static class ServiceCollectionExtensions
             {
                 policy.AllowAnyOrigin()
                       .AllowAnyMethod()
-                      .AllowAnyHeader();
+                      .AllowAnyHeader()
+                      .WithExposedHeaders(SecurityRevocationConstants.TokenRevokedHeaderName);
             });
         });
 

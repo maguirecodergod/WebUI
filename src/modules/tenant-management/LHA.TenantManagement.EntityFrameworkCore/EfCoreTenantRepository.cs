@@ -1,6 +1,7 @@
 using LHA.Core;
 using LHA.Ddd.Domain;
 using LHA.EntityFrameworkCore;
+using LHA.Shared.Domain.TenantManagement;
 using LHA.TenantManagement.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -81,5 +82,22 @@ public sealed class EfCoreTenantRepository
             .SearchDynamic(filter, SearchColumns)
             .WhereIf(status.HasValue, t => t.Status == status!.Value)
             .LongCountAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Returns a list of tenants with their connection strings eagerly loaded.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<List<TenantEntity>> GetTenantWithConnectionStringAsync(CancellationToken cancellationToken = default)
+    {
+        IQueryable<TenantEntity> dbSet = await GetDbSetAsync();
+        dbSet = dbSet.AsNoTracking();
+        return await dbSet
+            .Include(t => t.ConnectionStrings)
+            .Where(t => t.Status == CMasterStatus.Active
+                && t.ConnectionStrings.Any()
+                && t.DatabaseStyle != CMultiTenancyDatabaseStyle.Shared)
+            .ToListAsync(cancellationToken);
     }
 }

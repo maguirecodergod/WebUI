@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using LHA.Shared.Contracts;
+using LHA.AspNetCore.Security;
+using LHA.MessageBroker.Kafka;
+using LHA.EventBus.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +41,21 @@ builder.Services.AddLHAAuditLogging(
 builder.Services.AddLHAMultiTenancy();
 builder.Services.AddLHAUnitOfWork();
 builder.Services.AddLHADistributedLocking();
-builder.Services.AddLHAInMemoryEventBus();
+builder.Services.AddLHAKafka(kafka =>
+{
+    kafka.BootstrapServers = builder.Configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
+});
+builder.Services.AddLHAKafkaEventBus(
+    eventBus =>
+    {
+        eventBus.ConsumerGroup = "identity-service";
+        eventBus.ApplicationName = "Identity";
+        eventBus.EnableOutbox = false;
+    },
+    kafka =>
+    {
+        kafka.DefaultTopic = EventTopics.SecurityEvents;
+    });
 
 // ── Swagger / OpenAPI ─────────────────────────────────────────────
 builder.Services.AddLhaApiVersioning();
@@ -49,6 +66,7 @@ builder.Services.AddLHAAspNetCore(typeof(IdentityResource));
 
 // ── JWT configuration ────────────────────────────────────────────
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
+builder.Services.AddLHASecurityVersioning(builder.Configuration);
 
 var jwtSection = builder.Configuration.GetSection(JwtOptions.SectionName);
 var secretKey = jwtSection["SecretKey"] ?? throw new InvalidOperationException("Missing JWT SecretKey.");
@@ -68,6 +86,7 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
             ClockSkew = TimeSpan.FromMinutes(1),
         };
+        options.EnableSecurityVersionValidation();
     });
 
 builder.Services.AddAuthorization();

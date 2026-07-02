@@ -413,6 +413,10 @@ public sealed class IdentityUser : FullAuditedAggregateRoot<Guid>, IMultiTenant
         => _tokens.FirstOrDefault(
             t => t.LoginProvider == loginProvider && t.Name == name)?.Value;
 
+    public IdentityUserToken? FindToken(string loginProvider, string name)
+        => _tokens.FirstOrDefault(
+            t => t.LoginProvider == loginProvider && t.Name == name);
+
     // ─── Security Stamp ──────────────────────────────────────────────
 
     /// <summary>Generates a new security stamp (invalidates existing tokens).</summary>

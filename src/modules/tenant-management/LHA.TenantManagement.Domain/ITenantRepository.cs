@@ -34,4 +34,9 @@ public interface ITenantRepository : IRepository<TenantEntity, Guid>
         string? filter = null,
         CMasterStatus? status = null,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns a list of tenants with their connection strings eagerly loaded. 
+    /// </summary>
+    Task<List<TenantEntity>> GetTenantWithConnectionStringAsync(CancellationToken cancellationToken = default);
 }

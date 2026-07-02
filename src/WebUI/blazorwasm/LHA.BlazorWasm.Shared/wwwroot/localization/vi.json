@@ -468,5 +468,10 @@
             "Twilio": "Twilio (SMS)",
             "SignalR": "SignalR (InApp)"
         }
+    },
+    "Security": {
+        "SessionRevokedTitle": "Phiên làm việc sắp kết thúc",
+        "SessionRevokedMessage": "Quyền truy cập của bạn đã thay đổi. Bạn sẽ bị đăng xuất tự động sau {0} giây.",
+        "LogoutNow": "Đăng xuất"
     }
 }

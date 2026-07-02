@@ -65,7 +65,7 @@ public sealed class TenantEntity : FullAuditedAggregateRoot<Guid>
             return this;
 
         var oldName = Name;
-        SetNameInternal(name!);
+        SetNameInternal(name ?? throw new ArgumentNullException(nameof(name)));
 
         AddDomainEvent(new TenantNameChangedDomainEvent(Id, oldName, Name));
         return this;

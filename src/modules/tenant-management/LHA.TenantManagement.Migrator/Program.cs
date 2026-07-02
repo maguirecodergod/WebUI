@@ -27,48 +27,71 @@ builder.Services.AddTenantManagementEntityFrameworkCore(options =>
         ctx.DbContextOptions.UseNpgsql(connectionString));
 });
 builder.Services.AddTransient<TenantManager>();
+builder.Services.AddTransient<TenantDatabaseMigrationService>();
 
 using var host = builder.Build();
 
 var logger = host.Services.GetRequiredService<ILoggerFactory>()
     .CreateLogger("TenantManagement.Migrator");
 
-// -- 1. Apply pending migrations ----------------------------------
-logger.LogInformation("Applying TenantManagement migrations...");
-
-using (var migrationScope = host.Services.CreateScope())
+try
 {
-    var dbContext = migrationScope.ServiceProvider.GetRequiredService<TenantManagementDbContext>();
-    await dbContext.Database.MigrateAsync();
-}
+    // -- 1. Apply pending migrations to TenantManagement database --
+    logger.LogInformation("Applying TenantManagement migrations...");
 
-logger.LogInformation("TenantManagement migrations applied successfully.");
-
-// -- 2. Seed default data -----------------------------------------
-logger.LogInformation("Seeding default data...");
-
-using (var seedScope = host.Services.CreateScope())
-{
-    var uowManager = seedScope.ServiceProvider.GetRequiredService<IUnitOfWorkManager>();
-    var tenantManager = seedScope.ServiceProvider.GetRequiredService<TenantManager>();
-    var tenantRepo = seedScope.ServiceProvider.GetRequiredService<ITenantRepository>();
-
-    using var uow = uowManager.Begin(isTransactional: true);
-
-    var existing = await tenantRepo.FindByNameAsync("DEFAULT");
-
-    if (existing is null)
+    using (var migrationScope = host.Services.CreateScope())
     {
-        var tenant = await tenantManager.CreateAsync("Default");
-        await tenantRepo.InsertAsync(tenant);
-        logger.LogInformation("Default tenant '{TenantName}' created.", tenant.Name);
-    }
-    else
-    {
-        logger.LogInformation("Default tenant already exists, skipping seed.");
+        var dbContext = migrationScope.ServiceProvider.GetRequiredService<TenantManagementDbContext>();
+        await dbContext.Database.MigrateAsync();
     }
 
-    await uow.CompleteAsync();
-}
+    logger.LogInformation("TenantManagement migrations applied successfully.");
 
-logger.LogInformation("Seeding complete.");
+    // -- 2. Seed default data -----------------------------------------
+    logger.LogInformation("Seeding default data...");
+
+    using (var seedScope = host.Services.CreateScope())
+    {
+        var uowManager = seedScope.ServiceProvider.GetRequiredService<IUnitOfWorkManager>();
+        var tenantManager = seedScope.ServiceProvider.GetRequiredService<TenantManager>();
+        var tenantRepo = seedScope.ServiceProvider.GetRequiredService<ITenantRepository>();
+
+        using var uow = uowManager.Begin(isTransactional: true);
+
+        var existing = await tenantRepo.FindByNameAsync("DEFAULT");
+
+        if (existing is null)
+        {
+            var tenant = await tenantManager.CreateAsync("Default");
+            await tenantRepo.InsertAsync(tenant);
+            logger.LogInformation("Default tenant '{TenantName}' created.", tenant.Name);
+        }
+        else
+        {
+            logger.LogInformation("Default tenant already exists, skipping seed.");
+        }
+
+        await uow.CompleteAsync();
+    }
+
+    logger.LogInformation("Seeding complete.");
+
+    // -- 3. Migrate all tenant databases -----------------------------
+    logger.LogInformation("Migrating all tenant databases...");
+
+    using (var tenantMigrationScope = host.Services.CreateScope())
+    {
+        var tenantMigrationService = tenantMigrationScope.ServiceProvider
+            .GetRequiredService<TenantDatabaseMigrationService>();
+
+        await tenantMigrationService.MigrateAllTenantDatabasesAsync();
+    }
+
+    logger.LogInformation("All tenant databases migrated successfully.");
+    logger.LogInformation("✓ Migration complete!");
+}
+catch (Exception ex)
+{
+    logger.LogCritical(ex, "Migration failed!");
+    Environment.Exit(1);
+}

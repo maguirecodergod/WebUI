@@ -15,4 +15,8 @@
     <ProjectReference Include="..\..\..\modules\audit-log\LHA.AuditLog.Application\LHA.AuditLog.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MessagePack" />
+  </ItemGroup>
+
 </Project>

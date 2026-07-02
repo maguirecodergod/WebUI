@@ -10,6 +10,7 @@ using LHA.MessageBroker.Kafka;
 using LHA.MultiTenancy;
 using LHA.Swagger;
 using LHA.UnitOfWork;
+using LHA.AspNetCore.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -47,6 +48,7 @@ builder.Services.AddLHASwagger(builder.Configuration);
 builder.Services.AddLHAExceptionHandler();
 
 // ── JWT configuration ────────────────────────────────────────────
+builder.Services.AddLHASecurityVersioning(builder.Configuration);
 var jwtSection = builder.Configuration.GetSection("Jwt");
 var secretKey = jwtSection["SecretKey"] ?? throw new InvalidOperationException("Missing JWT SecretKey.");
 
@@ -65,6 +67,7 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
             ClockSkew = TimeSpan.FromMinutes(1),
         };
+        options.EnableSecurityVersionValidation();
     });
 
 builder.Services.AddLHAPermissionAuthorization();

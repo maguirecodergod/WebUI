@@ -4,6 +4,7 @@ using LHA.Shared.Contracts.Identity;
 using LHA.Shared.Contracts.Identity.Auth;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace LHA.BlazorWasm.Services.Auth;
 
@@ -154,6 +155,17 @@ public class StorageAccessTokenProvider : IAccessTokenProvider
                     return true;
                 }
             }
+
+            if (await IsRevocationResponseAsync(response))
+            {
+                var handler = _serviceProvider.GetService<ITokenRevocationHandler>();
+                if (handler is not null)
+                {
+                    await handler.HandleRevocationAsync();
+                }
+
+                return false;
+            }
         }
         catch (Exception)
         {
@@ -162,6 +174,41 @@ public class StorageAccessTokenProvider : IAccessTokenProvider
 
         _cache.Clear();
         await _localStorage.RemoveAsync(AuthStorageKey);
+
+        return false;
+    }
+
+    private static async Task<bool> IsRevocationResponseAsync(HttpResponseMessage response)
+    {
+        if (response.Headers.TryGetValues("X-Token-Revoked", out var values)
+            && values.Any(v => string.Equals(v, "true", StringComparison.OrdinalIgnoreCase)))
+        {
+            return true;
+        }
+
+        try
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return false;
+            }
+
+            using var document = JsonDocument.Parse(content);
+            if (document.RootElement.TryGetProperty("error_description", out var errorDescription))
+            {
+                return string.Equals(errorDescription.GetString(), "security_version_expired", StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (document.RootElement.TryGetProperty("errorDescription", out var camelDescription))
+            {
+                return string.Equals(camelDescription.GetString(), "security_version_expired", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+        catch
+        {
+            return false;
+        }
 
         return false;
     }

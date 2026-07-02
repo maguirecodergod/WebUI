@@ -468,5 +468,10 @@
             "Twilio": "Twilio (SMS)",
             "SignalR": "SignalR (InApp)"
         }
+    },
+    "Security": {
+        "SessionRevokedTitle": "Session Ending",
+        "SessionRevokedMessage": "Your access permissions have changed. You will be signed out automatically in {0} seconds.",
+        "LogoutNow": "Sign Out"
     }
 }

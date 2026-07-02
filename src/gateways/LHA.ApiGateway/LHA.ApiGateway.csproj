@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\frameworks\Core\LHA.AspNetCore\LHA.AspNetCore.csproj" />
     <ProjectReference Include="..\..\frameworks\Swagger\LHA.Swagger\LHA.Swagger.csproj" />
+    <ProjectReference Include="..\..\shared\LHA.Shared.Contracts\LHA.Shared.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -646,8 +646,7 @@ namespace LHA.Identity.EntityFrameworkCore.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<Guid?>("TenantId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("TenantId");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -673,6 +672,11 @@ namespace LHA.Identity.EntityFrameworkCore.Migrations
 
                     b.Property<DateTimeOffset?>("ExpiresAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("IssuedAtUnixSeconds")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
 
                     b.Property<string>("LoginProvider")
                         .IsRequired()

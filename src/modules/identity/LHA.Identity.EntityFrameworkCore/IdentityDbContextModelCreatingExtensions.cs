@@ -166,6 +166,10 @@ public static class IdentityDbContextModelCreatingExtensions
                 .IsRequired()
                 .HasMaxLength(IdentityUserTokenConsts.MaxValueLength);
 
+            b.Property(ut => ut.IssuedAtUnixSeconds)
+                .IsRequired()
+                .HasDefaultValue(0L);
+
             b.HasIndex(ut => new { ut.UserId, ut.LoginProvider, ut.Name }).IsUnique();
         });
 
