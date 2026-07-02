@@ -3,6 +3,7 @@ using LHA.EntityFrameworkCore;
 using LHA.MultiTenancy;
 using LHA.TenantManagement.Domain;
 using LHA.TenantManagement.EntityFrameworkCore;
+using LHA.TenantManagement.Migrator;
 using LHA.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
